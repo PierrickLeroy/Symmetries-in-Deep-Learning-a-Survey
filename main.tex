@@ -1,0 +1,298 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[
+% backend=biber,
+style=alphabetic,
+% maxnames=1,
+% sorting=ynt
+]{biblatex}
+\AtEveryBibitem{
+    \clearfield{urlyear}
+    \clearfield{urlmonth}
+}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{wrapfig}
+\usepackage{multirow}  % tables double entry
+\usepackage{geometry}
+\usepackage{bbm}  % makes mathbbm{1} vector 1
+\usepackage{cleveref}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{parskip}
+\usepackage{amsthm}
+
+% for definitions
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}{Example}[section]
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\newtheoremstyle{resultstyle}% name of the style to be used
+  {10pt}% measure of space to leave above the theorem. E.g.: 3pt
+  {\topsep}% measure of space to leave below the theorem. E.g.: 3pt
+  {\itshape}% name of font to use in the body of the theorem
+  {0pt}% measure of space to indent
+  {\bfseries}% name of head font
+  {. ---}% punctuation between head and body
+  { }% space after theorem head; " " = normal interword space
+  {\thmname{#1}\thmnumber{ #2}\textnormal{\thmnote{ (#3)}}}
+\theoremstyle{resultstyle}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{conjecture}{Conjecture}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{lemma}{Lemma}[section]
+
+\geometry{margin=1in}
+% \setlength\parindent{10pt}  % Paragraph indentation
+\newcommand{\pnote}[1]{\textcolor{red}{PL: #1}}
+\newcommand{\myline}{%
+  \vspace{5mm}%
+  \hrule%
+  \vspace{5mm}%
+}
+
+\addbibresource{references.bib} %Import the bibliography file
+
+\title{Symmetries and Deep Learning: A Survey}
+\author{Pierrick Leroy}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\pnote{write at the end}    
+\end{abstract}
+
+\section{Introduction}
+
+
+
+\subsection{Related work}
+We list previous work that have collected or formalized literature on symmetries in a deep learning context.
+Symmetric architecture (such as Siamese networks) are surveyed in \cite{ilina2022sa}.
+\cite{zhao2025} focuses on parameter-space symmetries: transformation that change the representation of a neural network but do not modify the implemented function.
+\cite{sipiran202523scgpis} references symmetry discovery methods in 3D shapes
+% geometric deep learning
+\cite{bronstein2021} is the reference textbook on geometric deep learning,  \cite{gerken2021,carlsson} study the mathematical formalism of this field and \cite{basheer2025ijdsa,habte2023} focus more specifically on equivariant convolutions, \cite{fei2024air} on 3D rotations and \cite{seo2025a} on robotics.
+\cite{rath2024air} gathers methods that integrate geometric prior knowledge to neural network such that their representations are invariant or equivariant.
+
+\section{Mathematical Background}
+% Definitions: symmetry, invariance/equivariance, approximate symmetry
+% Math branches: Group theory (Group, Group action), Lie group theory, Lie algebra, Lie algebra basis, Representation theory, Tensor algebra, spherical harmonics (specific to Euclidean neural networks)
+% Symmetry breaking
+% Examples: translation invariance, permutation invariance, rotation equivariance
+% Possibly conservation laws
+
+\subsection{What is a Symmetry?}
+
+
+
+A \textit{symmetry} is a transformation that leaves an object as a whole unchanged, it is statement about identity.
+\textit{Invariance} is a broader, functional term that refers to the situation where a property of an object does not change under a transformation.
+Symmetry can be defined by invariance by saying that an object has a symmetry if its identity is invariant under a specific transformation.
+
+\begin{definition}[$\phi$-equivalence, {\cite{cohen2014}}]\label{def:equivalence}
+    Let $\phi : \mathcal{X} \to \mathcal{Y}$ be a function from an input domain $\mathcal{X}$ to a codomain $\mathcal{Y}$, where for example $\mathcal{X} \subseteq \mathbb{R}^d$, and $\mathcal{Y}$ may be $\{0,1\}$ (binary classification), $\{1,\dots,L\}$ (multiclass classification), $\mathbb{R}$ (regression), or $\mathbb{R}^e$ (feature representation).
+    
+    Two elements $x, y \in \mathcal{X}$ are said to be \emph{$\phi$-equivalent}, denoted $x \sim_{\phi} y$, if
+    \[
+        \phi(x) = \phi(y).
+    \]
+    The relation $\equiv_{\phi}$ is an equivalence relation on $\mathcal{X}$ and induces a partition of $\mathcal{X}$ into equivalence classes.
+    \end{definition}
+
+\begin{example}[Image segmentation]\label{ex:image-segmentation}
+    If $\mathcal{X}$ is an image, $x\in \mathcal{X}$ a pixel and $\mathcal Y = \left \{ 1\dots L\right \}$ are segmentation labels, then the sets defined by the equivalence relation are the pixels that belong of the same segmentation class.
+\end{example}
+
+\begin{example}[Image classification]\label{ex:image-classification}
+    If $\mathcal{X}$ is a \emph{set of images}, $x\in \mathcal{X}$ is an image, $\mathcal Y = \left \{ 1\dots L\right \}$ are the labels, then the sets defined by the equivalence relation are images of the same class.
+\end{example}
+
+\begin{example}[Loss level sets]
+    If $\mathcal Y = \mathbb R$ and $\phi$ is a generic loss function, then the sets defined by the equivalence relation are the level set of the loss function.
+\end{example}
+
+\begin{example}[Observationally equivalent parameters]\label{ex:equivalence_observational}
+    If $\mathcal X$ a parameter space, $\mathcal{Y}$ a functional space and $\phi$ is the implementation map then the sets given by the equivalence relation $\phi$ are the observationally equivalent parameters
+\end{example}
+
+\begin{definition}[Invariance]\label{def:invariance}
+    Let $G$ be a group acting on a set $\mathcal{X}$.
+    A function $\phi : \mathcal{X} \to \mathcal{Y}$ is $G$-invariant if $\phi(g\cdot x)=\phi(x)$ for all $g\in G$ and $x\in X$.
+\end{definition}
+
+In \cref{ex:image-classification,ex:image-segmentation}, $G$ acts on images and could contain translations, rotations or reflections while in \cref{ex:equivalence_observational}, $G$ acts on parameters and contains transformations that leave the implemented function unchanged such as within-layer neuron permutations for MLPs.
+
+\begin{definition}[Equivariance]\label{def:equivariance}
+    Let $G$ be a group acting on sets $\mathcal{X}$ and $\mathcal{Y}$. 
+    A function $\phi : \mathcal{X} \to \mathcal{Y}$ is $G$-equivariant if
+    \[
+        \phi(g \cdot x) = g \cdot \phi(x)
+    \]
+    for all $g \in G$ and $x \in \mathcal{X}$.
+\end{definition}
+
+In equivariance, the group $G$ acts both on the input and output.
+$G$ can act similarly on the two sets, as it can be the case for 3D physical data \cite{geiger2022,bogatskiy2020p3icml}, for example when studying forces acting on a molecule one might want to encode in $G$ the fact that when rotating the molecules, a similar rotation must be applied to the forces.
+A similar case is in image segmentation where translation of the domain must induce the same translation of segmentation map.
+
+However, equivariance does not require that the group $G$ acts in the same way on input and output.
+Formally, let $T$ and $T'$ be two transformations taking inputs from $G$ and forming $T_g$ and $T_g'$ acting on $\mathcal{X}$ and $\mathcal{Y}$ respectively.
+In general, the only requirement is that $T$ and $T'$ are linear representations of $G$, \textit{i.e.} that the following holds: 
+
+\begin{equation}\label{eq:general-equivariance}
+    T(gh)=T(g)T(h) \quad \textrm{and} \quad T'(gh)=T'(g)T'(h) \qquad \forall g, h \in G.
+\end{equation}
+
+From \Cref{eq:general-equivariance}, we see that invariance can be realized as a special case of equivariance, namely taking $T'(g)=id_{\mathcal Y}$ for all $g$.
+In words, $T'$ maps all group elements to the identity group action.
+
+\newpage
+
+\printbibliography
+
+\section*{\textnormal{\textless \textgreater}}
+
+\paragraph{Face-recognition}
+Face recognition poses the problem of invariance to several interpretable attributes such as pose, illumination, age or face mirroring
+\cite{lal2018ijacsa,leroy2025} and facial emotion recognition adds identity to this list of desirable invariances \cite{bhattacharya20192sicaccpi,huang2019s}.
+
+\myline
+
+\paragraph{Promises of symmetries as a design principle} Incorporating a symmetric prior into a network reduces the hypothesis class and therefore has the potential to increase data-efficiency.
+This also simplify the evaluation since the network behavior becomes more predictable. 
+
+\myline
+
+\paragraph{Symmetries and training dynamics} \cite{chen2024jsm} \pnote{Ziyin's works}
+
+\myline
+
+\paragraph{Expressivity} Designing invariant or equivariant architecture can introduce unwanted effects, notably lack of separability as a excess of symmetries.
+The separation power of architectures has been measured for instance with Weisfeler-Lehman hierarchy in GNNs \pnote{references}.
+
+\pnote{See first paragraph of \cite{pacini2026}}
+
+\myline
+
+\cite{borde2025} is an introduction to the mathematical background of geometric deep learning 
+
+\myline
+
+\paragraph{Hierarchies of symmetries}
+% domain-signal framing in geometric deep learning
+% Equivalent point of view: partial symmetries
+When studying the symmetries of a system, it is important that the scope is clearly defined as conditioning on components of the system can increase the number of symmetries.
+For example, consider feedforward ReLU networks for which we can distinguish a hierarchy of three levels of symmetries.
+The most general are ones are rescaling, permutation or adding a neuron to the computational graph with $0$ input or output.
+For the inner levels, we can consider symmetries when either the data or the parameter has been specified and take particular values.
+For the data case, keep the parameter be arbitrary and let $x\in \mathbb R^d$ such that $x_i=x_j$ for some $i\neq j$.
+Then at any neuron $v$ connected to the input has an action by the group $(\mathbb R, .)$.
+Denoting by $w_i$ and $w_j$ respectively the weights connecting $x_i$ and $x_j$ to $v$, we have the group action:
+\begin{align*}
+    T: (\mathbb R, .)\times \Theta&\to\Theta\\
+        \big (t, (w_1, \dots, w_i, \dots , w_j, \dots, w_n) \big )& \mapsto (w_1, \dots, tw_i+(1-t)w_j, \dots , tw_j+(1-t)w_i, \dots, w_n).
+\end{align*}
+Similarly, keep the data arbitrary and let $\theta\in \Theta$ such that the input parameters $\theta_v^+\in \mathbb R^{d_v^+}_{\geq0}$ of a hidden neuron beyond layer $2$ is negative for all coordinates.
+Then there is an action of the group $\mathbb R^{d_v^+}$ as:
+\begin{align*}
+    T: (\mathbb R^{d_v^+}_{\geq0}, .)\times \Theta&\to\Theta\\
+        \big (u, (\theta_v^+, \bar\theta) \big )& \mapsto (\operatorname{diag}(u)\theta_v^+, \bar\theta),
+\end{align*}
+where $\bar \theta$ denotes all parameters not in $\theta_v^+$.
+Finally, letting $x\in \mathbb R^d$ and $\theta\in \Theta$ be such that the first layer activation $z^{(1)}$ is strictly positive for a set of neurons $V$.
+Then, there is an action by $\mathbb R^{|V|^2}$ encoding linear transformations stable in the positive orthant:
+\begin{align*}
+    T: \mathbb R^{|V|^2} \times  \Theta &\to \Theta\\
+    \big (M,(\theta_V^+, \theta_V^-, \bar \theta)\big ) &\mapsto (M\theta_V^+, M^{-1}\theta_V^-, \bar \theta) 
+\end{align*}
+where $\theta_V^+$ and $\theta_V^-$ denote the input and output parameters of neurons in $V$.
+
+In summary, if we specify the architecture, the parameter and data we have more types of symmetries than specifying the architecture and either the parameter or the data, these cases having more types of symmetries than specifying only the architecture.
+This idea can be found in geometric deep learning which explicitly distinguishes between the domain (the "grid" or "graph") and the signal on that domain \cite{bronstein2021,borde2025}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{images/draft/hierarchy-symmetries.jpg}
+    \caption{From top to bottom:\textbf{(1.)} A rescaling symmetry is valid for all parameters and dataset. \textbf{(2.)} A shared input symmetry is valid at any neurons with equal inputs \textbf{(3.)} A dead ReLU symmetry is valid after layer $1$ for any neuron with all input parameter negative \textbf{(4.)} An active subspace symmetry is valid for parameter and data such that a set of neurons in a layer have positive only activations.\pnote{Last symmetry is harder to formalize: describe $M$}}
+    \label{fig:hierarchy-symmetries}
+\end{figure}
+
+\myline
+
+\paragraph{Data augmentation as a cheap ways to achieve invariance}
+Data augmentation is a brute force approach in which a dataset is enriched with . This is inelegant and has inherent limits like computational and storage limits. Indeed, a single continuous symmetry can generate infinitely many augmented points.
+Still, data augmentation has empirical success and is used frequently in industry. In the symmetry discovery scenario, \cite{yang2023p4icml} reports better performances when using data augmentation generated from learned symmetries rather than pure equivariance to those learned symmetries even though for the ground truth symmetries, pure equivariance performs better.
+In the end, data augmentation may be useful when the the transformations are difficult to express with group theory, for example partial symmetry.
+
+\myline
+
+\paragraph{Crafting invariant features}
+Feature engineering, the goal is to featurize so that the featurization is invariant w.r.t. symmetries. However, this featurization might not be lossless, nor tailored to the specific need of the problem. Moreover one of the core strength of deep learning is learning representation, so doing featurization is doing by hand something that should be done by the model. 
+\begin{itemize}
+    \item random walk
+    \item compute edge distances in geometric graphs
+\end{itemize}
+
+\myline
+
+\paragraph{Predictable transformation}
+Translate the input by one unit and rotate the output by a quarter. This is predictable but different from equivariance.
+Or even in the case of scalar: move to the right by 1 unit and increase a scalar quantity by $C$ (constant) or move by 1 unit and multiply a quantity by $C$.
+
+\myline
+
+\paragraph{Interplay between invariance and equivariance in geometric deep learning}
+A common scheme to build a globally invariant model is to stack equivariant layers and put an invariant layer at the end.
+
+\myline
+
+\paragraph{Symmetry discovery and symmetry breaking}
+Symmetry breaking and discovery are in some way conceptual opposites of one another. Symmetry discovery makes few assumptions on the embedded symmetries and let the model learn them, while symmetry breaking does the opposite: it makes too much assumptions and let the model break, or unlearn them, that is to say the model learn when to deviate from the posited symmetries. 
+
+\myline
+
+\paragraph{Symmetry to subsets of group, partial symmetry}
+A relaxation discussed in \cite{romero2023} takes the form of achieving equivariance on a subset of a group (ex: rotations in [-90 degrees, +90 degrees] for face or on MNIST which has 6 and 9 potential confusion). This is particularly weird since the subset is not a group. This is also weird because a tilted 6 will not have the same range as a straight 6. \cite{romero2023} propose a way to have some layers fully equivariant and other layers partially equivariant.
+
+\paragraph{Ranged symmetry} In this case, we would want to have symmetry over a specific range of transformations. For example for the MNIST dataset, we might ideally want symmetry to  some range of 2D rotations but not to the full 2D rotation group because otherwise digits 6 and 9 would be symmetries of each other. 
+
+\paragraph{Small deformation} Consider a hand drawing. This drawing would still be recognizable even if it were drawn with some light tremors or instability. But if we apply the same "tremoring" operation again and again on the drawing, at some point it would not be considered the same anymore. This is another case of partial symmetry w.r.t. a transformation.
+
+\myline
+
+\paragraph{Derivative fields of geometric deep learning}
+These derivative fields are less focused on symmetry.
+\textit{Topological deep learning} is concerned with higher order message passing \cite{papillon2023,papamarkou2024}.
+\textit{Categorical deep learning} seems to be concerned with programs and out of distribution generalization.
+
+\myline
+
+\paragraph{Geometric deep learning}
+The objective of Geometric Deep Learning \cite{bronstein2017ispm, bronstein2021} is twofold: (1) provide a unifying view of deep learning architecture and (2) extend deep learning on new domains like graphs or manifolds in a convincing, principled way
+In this field symmetry and equivariance are used a design principle.
+This makes it possible to derive the form of a convolutional neural network from requiring translational equivariance, convolution is thus given a particular role.
+\cite{kondor2018p3icml} argues that convolution is not just a way to achieve equivariance to a group action, it is also necessary necessary that an equivariant feedforward networks implements a (generalized group) convolution which takes the form 
+\[
+    (f\ast g)(u)=\int_Gf(uv^{-1})g(v)d\mu(v).
+\]
+The discrete counterpart of this equation for the correlation operation of functions having $K$ channels was introduced in \cite{cohen2016}, which reads by adapting notation to stay consistent with the above:
+\[
+    (f\star g)(u)=\sum_{v \in G}\sum_k^Kf_k(v)g_k(u^{-1}v).
+\]
+where $f$ and $g$ are functions on the group $G$.
+
+\myline
+
+\paragraph{Equivariant deep learning}
+The field of equivariant deep learning can be seen as a subfield of Geometric Deep Learning focused on designing equivariant neural networks.
+
+
+\end{document}
