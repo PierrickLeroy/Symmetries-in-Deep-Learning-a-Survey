@@ -1,11 +1,355 @@
 
-@article{pacini2026,
-	title = {{ON} {UNIVERSALITY} {OF} {DEEP} {EQUIVARIANT} {NETWORKS}},
-	abstract = {Universality results for equivariant neural networks remain rare. Those that do exist typically hold only in restrictive settings: either they rely on regular or higher-order tensor representations, leading to impractically high-dimensional hidden spaces, or they target specialized architectures, often confined to the invariant setting. This work develops a more general account. For invariant networks, we establish a universality theorem under separation constraints, showing that the addition of a fully connected readout layer secures approximation within the class of separationconstrained continuous functions. For equivariant networks, where results are even scarcer, we demonstrate that standard separability notions are inadequate and introduce the sharper criterion of entry-wise separability. We show that with sufficient depth or with the addition of appropriate readout layers, equivariant networks attain universality within the entry-wise separable regime. Together with prior results showing the failure of universality for shallow models, our findings identify depth and readout layers as a decisive mechanism for universality, additionally offering a unified perspective that subsumes and extends earlier specialized results.},
+@article{shen,
+	title = {Training {Dynamics} of {Learning} {3D}-{Rotational} {Equivariance}},
+	abstract = {While data augmentation is widely used to train symmetry-agnostic models, it remains unclear how quickly and effectively they learn to respect symmetries. We investigate this by deriving a principled measure of equivariance error that, for convex losses, calculates the percent of total loss attributable to imperfections in learned symmetry. We focus our empirical investigation to 3D-rotation equivariance on high-dimensional molecular tasks (flow matching, force field prediction, denoising voxels) and find that models reduce equivariance error quickly to ≤2\% held-out loss within 1k-10k training steps, a result robust to model and dataset size. This happens because learning 3D-rotational equivariance is an easier learning task, with a smoother and better-conditioned loss landscape, than the main prediction task. For 3D rotations, the loss penalty for non-equivariant models is small throughout training, so they may achieve lower test loss than equivariant models per GPU-hour unless the equivariant “efficiency gap” is narrowed. We also experimentally and theoretically investigate the relationships between relative equivariance error, learning gradients, and model parameters.},
 	language = {en},
-	author = {Pacini, Marco and Petrache, Mircea and Lepri, Bruno and Trivedi, Shubhendu and Walters, Robin},
+	author = {Shen, Max W and Nowara, Ewa M},
+	keywords = {/read, equivariance/equivariance quantification},
+}
+
+@article{xie2026,
+	title = {A {TALE} {OF} {TWO} {GEOMETRIES}: {ADAPTIVE} {OPTIMIZ}- {ERS} {AND} {NON}-{EUCLIDEAN} {DESCENT}},
+	abstract = {Adaptive optimizers can reduce to normalized steepest descent (NSD) when only adapting to the current gradient, suggesting a close connection between the two algorithmic families. A key distinction between their analyses, however, lies in the geometries, e.g., smoothness notions, they rely on. In the convex setting, adaptive optimizers are governed by a stronger adaptive smoothness condition, while NSD relies on the standard notion of smoothness. We extend the theory of adaptive smoothness to the nonconvex setting and show that it precisely characterizes the convergence of adaptive optimizers. Moreover, we establish that adaptive smoothness enables acceleration of adaptive optimizers with Nesterov momentum in the convex setting, a guarantee unattainable under standard smoothness for certain non-Euclidean geometry. We further develop an analogous comparison for stochastic optimization by introducing adaptive gradient variance, which parallels adaptive smoothness and leads to dimension-free convergence guarantees that cannot be achieved under standard gradient variance for certain non-Euclidean geometry.},
+	language = {en},
+	author = {Xie, Shuo and Wang, Tianhao and Wu, Beining and Li, Zhiyuan},
+	year = {2026},
+	keywords = {/on halt},
+}
+
+@article{li2026,
+	title = {{HEEGNET}: {HYPERBOLIC} {EMBEDDINGS} {FOR} {EEG}},
+	language = {en},
+	author = {Li, Shanglin and Chu, Shiwen and Koc, Okan and Ding, Yi and Zhao, Qibin and Kawanabe, Motoaki and Chen, Ziheng},
+	year = {2026},
+	keywords = {/on halt},
+}
+
+@article{karczewski2026,
+	title = {{THE} {SPACETIME} {OF} {DIFFUSION} {MODELS}: {AN} {INFORMATION} {GEOMETRY} {PERSPECTIVE}},
+	abstract = {We present a novel geometric perspective on the latent space of diffusion models. We first show that the standard pullback approach, utilizing the deterministic probability flow ODE decoder, is fundamentally flawed. It provably forces geodesics to decode as straight segments in data space, effectively ignoring any intrinsic data geometry beyond the ambient Euclidean space. Complementing this view, diffusion also admits a stochastic decoder via the reverse SDE, which enables an information geometric treatment with the Fisher-Rao metric. However, a choice of xT as the latent representation collapses this metric due to memorylessness. We address this by introducing a latent spacetime z = (xt, t) that indexes the family of denoising distributions p(x0{\textbar}xt) across all noise scales, yielding a nontrivial geometric structure. We prove these distributions form an exponential family and derive simulation-free estimators for curve lengths, enabling efficient geodesic computation. The resulting structure induces a principled Diffusion Edit Distance, where geodesics trace minimal sequences of noise and denoise edits between data. We also demonstrate benefits for transition path sampling in molecular systems, including constrained variants such as low-variance transitions and region avoidance. Code is available at https://github.com/Aalto-QuML/spacetime-geometry.},
+	language = {en},
+	author = {Karczewski, Rafał and Heinonen, Markus and Pouplin, Alison and Hauberg, Søren and Garg, Vikas},
+	year = {2026},
+	keywords = {/read, Fisher-Rao metric, diffusion model, geodesic, information geometry},
+}
+
+@article{xu2026a,
+	title = {{QUOTIENT}-{SPACE} {DIFFUSION} {MODELS}},
+	abstract = {Diffusion-based generative models have reformed generative AI, and have enabled new capabilities in the science domain, for example, generating 3D structures of molecules. Due to the intrinsic problem structure of certain tasks, there is often a symmetry in the system, which identifies objects that can be converted by a group action as equivalent, hence the target distribution is essentially defined on the quotient space with respect to the group. In this work, we establish a formal framework for diffusion modeling on a general quotient space, and apply it to molecular structure generation which follows the special Euclidean group SE(3) symmetry. The framework reduces the necessity of learning the component corresponding to the group action, hence simplifies learning difficulty over conventional groupequivariant diffusion models, and the sampler guarantees recovering the target distribution, while heuristic alignment strategies lack proper samplers. The arguments are empirically validated on structure generation for small molecules and proteins, indicating that the principled quotient-space diffusion model provides a new framework that outperforms previous symmetry treatments.},
+	language = {en},
+	author = {Xu, Yixian and Wang, Yusong and Luo, Shengjie and Gao, Kaiyuan and He, Tianyu and He, Di and Liu, Chang},
+	year = {2026},
+	keywords = {/read, equivariance, quotient space},
+}
+
+@article{chun2026,
+	title = {{ESTIMATING} {DIMENSIONALITY} {OF} {NEURAL} {REPRESEN}- {TATIONS} {FROM} {FINITE} {SAMPLES}},
+	abstract = {The global dimensionality of a neural representation manifold provides rich insight into the computational process underlying both artificial and biological neural networks. However, all existing measures of global dimensionality are sensitive to the number of samples, i.e., the number of rows and columns of the sample matrix. We show that, in particular, the participation ratio of eigenvalues, a popular measure of global dimensionality, is highly biased with small sample sizes, and propose a bias-corrected estimator that is more accurate with finite samples and with noise. On synthetic data examples, we demonstrate that our estimator can recover the true known dimensionality. We apply our estimator to neural brain recordings, including calcium imaging, electrophysiological recordings, and fMRI data, and to the neural activations in a large language model, and show that our estimator is invariant to the sample size. Finally, our estimators can additionally be used to measure the local dimensionalities of curved neural manifolds by weighting the finite samples appropriately.},
+	language = {en},
+	author = {Chun, Chanwoo and Canatar, Abdulkadir and Chung, SueYeon and Lee, Daniel},
+	year = {2026},
+	keywords = {/read, dimensionality/dimensionality estimation},
+}
+
+@inproceedings{montufar2014anips,
+	title = {On the {Number} of {Linear} {Regions} of {Deep} {Neural} {Networks}},
+	volume = {27},
+	url = {https://proceedings.neurips.cc/paper_files/paper/2014/hash/fa6f2a469cc4d61a92d96e74617c3d2a-Abstract.html},
+	abstract = {We study the complexity of functions computable by deep feedforward neural networks with piecewise linear activations in terms of the symmetries and the number of linear regions that they have. Deep networks are able to sequentially map portions of each layer's input-space to the same output. In this way, deep models compute functions that react equally to complicated patterns of different inputs. The compositional structure of these functions enables them to re-use pieces of computation exponentially often in terms of the network's depth. This paper investigates the complexity of such compositional maps and contributes new theoretical results regarding the advantage of depth for neural networks with piecewise linear activation functions. In particular, our analysis is not specific to a single family of models, and as an example, we employ it for rectifier and maxout networks. We improve complexity bounds from pre-existing work and investigate the behavior of units in higher layers.},
+	urldate = {2025-10-27},
+	booktitle = {Advances in {Neural} {Information} {Processing} {Systems}},
+	publisher = {Curran Associates, Inc.},
+	author = {Montúfar, Guido and Pascanu, Razvan and Cho, Kyunghyun and Bengio, Yoshua},
+	year = {2014},
+	note = {GSCC: 0002999 2025-10-27T22:16:37.808Z 4.86},
+	keywords = {/read, ReLU network, symmetry},
+}
+
+@article{demirci2026,
+	title = {{FLOWSYMM}: {PHYSICS} {AWARE}, {SYMMETRY} {PRESERV}- {ING} {GRAPH} {ATTENTION} {FOR} {NETWORK} {FLOW} {COM}- {PLETION}},
+	abstract = {Recovering missing flows on the edges of a network, while exactly respecting local conservation laws, is a fundamental inverse problem that arises in many systems such as transportation, energy, and mobility. We introduce FLOWSYMM, a novel architecture that combines (i) a group-action on divergence-free flows, (ii) a graph-attention encoder to learn feature-conditioned weights over these symmetrypreserving actions, and (iii) a lightweight Tikhonov refinement solved via implicit bilevel optimization. The method first anchors the given observation on a minimumnorm divergence-free completion. We then compute an orthonormal basis for all admissible group actions that leave the observed flows invariant and parameterize the valid solution subspace, which shows an Abelian group structure under vector addition. A stack of GATv2 layers then encodes the graph and its edge features into per-edge embeddings, which are pooled over the missing edges and produce per-basis attention weights. This attention-guided process selects a set of physicsaware group actions that preserve the observed flows. Finally, a scalar Tikhonov penalty refines the missing entries via a convex least-squares solver, with gradients propagated implicitly through Cholesky factorization. Across three real-world flow benchmarks (traffic, power, bike), FLOWSYMM outperforms state-of-the-art baselines in RMSE, MAE and correlation metrics.},
+	language = {en},
+	author = {Demirci, Ege and Bullo, Francesco and Swami, Ananthram and Singh, Ambuj},
 	year = {2026},
 	keywords = {/unread},
+}
+
+@article{urbano2026,
+	title = {{RECON}: {ROBUST} {SYMMETRY} {DISCOVERY} {VIA} {EXPLICIT} {CANONICAL} {ORIENTATION} {NORMALIZATION}},
+	abstract = {Real world data often exhibits unknown, instance-specific symmetries that rarely exactly match a transformation group G fixed a priori. Class-pose decompositions aim to create disentangled representations by factoring inputs into invariant features and a pose g ∈ G defined relative to a training-dependent, arbitrary canonical representation. We introduce RECON, a class-pose agnostic canonical orientation normalization that corrects arbitrary canonicals via a simple right translation, yielding natural, data-aligned canonicalizations. This enables (i) unsupervised discovery of instance-specific pose distributions, (ii) detection of out-of-distribution poses and (iii) a plug-and-play test-time canonicalization layer. This layer can be attached on top of any pre-trained model to infuse group invariance, improving its performance without retraining. We validate on images and molecular ensembles, demonstrating accurate symmetry discovery, and matching or outperforming other canonicalizations in downstream classification.},
+	language = {en},
+	author = {Urbano, Alonso and Romero, David W and Zimmer, Max and Pokutta, Sebastian},
+	year = {2026},
+	keywords = {/read, instance symmetry, symmetry discovery, ⭐},
+}
+
+@article{perina,
+	title = {On the {Ability} of {Deep} {Networks} to {Learn} {Symmetries} from {Data} – {A} {Neural} {Kernel} {Theory}},
+	abstract = {Symmetries (transformations by group actions) are present in many datasets, and leveraging them holds considerable promise for improving predictions in machine learning. In this work, we aim to understand when and how deep networks—with standard architectures trained in a standard, supervised way—learn symmetries from data. Inspired by real-world scenarios, we study a classiﬁcation paradigm where data symmetries are only partially observed during training: some classes include all transformations of a cyclic group, while others—only a subset. We ask: under which conditions will deep networks correctly classify the partially sampled classes? In the inﬁnite-width limit, where neural networks behave like kernel machines, we derive a neural kernel theory of symmetry learning. The group-cyclic nature of the dataset allows us to analyze the Gram matrix of neural kernels in the Fourier domain; here we ﬁnd a simple characterization of the generalization error as a function of class separation (signal) and class-orbit density (noise). This characterization reveals that generalization can only be successful when the local structure of the data prevails over its non-local, symmetryinduced structure, in the kernel space deﬁned by the architecture. This occurs when (1) classes are suﬃciently distinct and (2) class orbits are suﬃciently dense. We extend our theoretical treatment to any ﬁnite group, including non-abelian groups. Our framework also applies to equivariant architectures (e.g., CNNs), and recovers their success in the special case where the architecture matches the inherent symmetry of the data. Empirically, our theory reproduces the generalization failure of ﬁnite-width networks (MLP, CNN, ViT) trained on partially observed versions of rotated-MNIST. We conclude that conventional deep networks lack a mechanism to learn symmetries that have not been explicitly embedded in their architecture a priori. In the future, our framework could be extended to guide the design of architectures and training procedures able to learn symmetries from data. All code is available at https://github.com/Andrea-Perin/gpsymm.},
+	language = {en},
+	author = {Perin, Andrea},
+	keywords = {/read},
+}
+
+@article{hennick2026,
+	title = {{ALMOST} {BAYESIAN}: {DYNAMICS} {OF} {SGD} {THROUGH} {SINGULAR} {LEARNING} {THEORY}},
+	abstract = {The nature of the relationship between Bayesian sampling and stochastic gradient descent in neural networks has been a long-standing open question in the theory of deep learning. We shed light on this question by modeling the long runtime behaviour of SGD as diffusion on porous media. Using singular learning theory, we show that the late stage dynamics are strongly impacted by the degeneracies of the loss surface. From this we are able to show that under reasonable choices of hyperparameters for SGD, the local steady state distribution of SGD is effectively a tempered version of the Bayesian posterior over the weights which accounts for local accessibility constraints. We then empirically verify the porous diffusion picture across multiple models and datasets, and provide experimental evidence of the steady state-Bayesian posterior correspondence.},
+	language = {en},
+	author = {Hennick, Max and Baerdemacker, Stijn De},
+	year = {2026},
+	keywords = {/read, dynamics, implicit bias, sgd, singular learning theory},
+}
+
+@article{wang2026a,
+	title = {{PREDICTIVE} {DIFFERENTIAL} {TRAINING} {GUIDED} {BY} {TRAINING} {DYNAMICS}},
+	language = {en},
+	author = {Wang, Fanqi and Tang, Weisheng and Harris, Landon and Qi, Hairong and Wilson, Dan and Mezic, Igor},
+	year = {2026},
+	keywords = {/read},
+}
+
+@article{jeong2026,
+	title = {{SYMMETRIC} {SPACE} {LEARNING} {FOR} {COMBINATORIAL} {GENERALIZATION}},
+	abstract = {Combinatorial generalization (CG)—generalizing to unseen combinations of known semantic factors—remains a fundamental challenge in machine learning. While symmetry-based methods are promising, they learn from observed data and thus fail at what we term symmetry generalization: extending learned symmetries to novel data. We address this by proposing a novel framework that endows the latent space with the structure of a symmetric space. This class of manifolds provides a principled geometric foundation for extending learned symmetries. Our method operates in two steps: first, it imposes this structure by learning the underlying algebraic properties via the Cartan decomposition of a learnable Lie algebra. Second, it uses geodesic symmetry as a powerful self-supervisory signal to ensure this learned structure extrapolates from observed samples to unseen ones. A detailed analysis on a synthetic dataset validates our geometric claims, and experiments on standard CG benchmarks show our method significantly outperforms existing approaches.},
+	language = {en},
+	author = {Jeong, Jaehyoung and Jung, Hee-Jun and Kim, Kangil},
+	year = {2026},
+	keywords = {/read, geodesic symmetry, symmetry discovery, symmetry generalization},
+}
+
+@book{docarmo1976,
+	title = {Differential {Geometry} of {Curves} and {Surfaces}},
+	url = {http://home.ustc.edu.cn/~huangty0407/DGNotes/Do%20Carmo%20-%20Differential%20Geometry%20of%20Curves%20and%20Surfaces.pdf},
+	urldate = {2024-05-24},
+	author = {Do Carmo, Manfredo},
+	year = {1976},
+	note = {GSCC: 0011030 2026-04-18T09:32:04.247Z 4.20 
+rate: 1},
+	keywords = {/textbook, curve, differential geometry, exponential map, geodesic, surface, vector field},
+}
+
+@article{ponce2026,
+	title = {{DUAL} {PERSPECTIVES} {ON} {NON}-{CONTRASTIVE} {SELF}-{SUPERVISED} {LEARNING}},
+	abstract = {The stop gradient and exponential moving average iterative procedures are commonly used in non-contrastive approaches to self-supervised learning to avoid representation collapse, with excellent performance in downstream applications in practice. This presentation investigates these procedures from the dual viewpoints of optimization and dynamical systems. We show that, in general, although they do not optimize the original objective, or any other smooth function, they do avoid collapse. Following Tian et al. (2021), but without any of the extra assumptions used in their proofs, we then show using a dynamical system perspective that, in the linear case, minimizing the original objective function without the use of a stop gradient or exponential moving average always leads to collapse. Conversely, we characterize explicitly the equilibria of the dynamical systems associated with these two procedures in this linear setting as algebraic varieties in their parameter space, and show that they are, in general, asymptotically stable. Our theoretical findings are illustrated by empirical experiments with real and synthetic data.},
+	language = {en},
+	author = {Ponce, Jean and Terver, Basile and Hebert, Martial and Arbel, Michael},
+	year = {2026},
+	keywords = {/read, exponential moving average, representation collapse, stop gradient},
+}
+
+@misc{grill2020,
+	title = {Bootstrap your own latent: {A} new approach to self-supervised {Learning}},
+	shorttitle = {Bootstrap your own latent},
+	url = {http://arxiv.org/abs/2006.07733},
+	doi = {10.48550/arXiv.2006.07733},
+	abstract = {We introduce Bootstrap Your Own Latent (BYOL), a new approach to self-supervised image representation learning. BYOL relies on two neural networks, referred to as online and target networks, that interact and learn from each other. From an augmented view of an image, we train the online network to predict the target network representation of the same image under a different augmented view. At the same time, we update the target network with a slow-moving average of the online network. While state-of-the art methods rely on negative pairs, BYOL achieves a new state of the art without them. BYOL reaches \$74.3{\textbackslash}\%\$ top-1 classification accuracy on ImageNet using a linear evaluation with a ResNet-50 architecture and \$79.6{\textbackslash}\%\$ with a larger ResNet. We show that BYOL performs on par or better than the current state of the art on both transfer and semi-supervised benchmarks. Our implementation and pretrained models are given on GitHub.},
+	urldate = {2026-04-18},
+	publisher = {arXiv},
+	author = {Grill, Jean-Bastien and Strub, Florian and Altché, Florent and Tallec, Corentin and Richemond, Pierre H. and Buchatskaya, Elena and Doersch, Carl and Pires, Bernardo Avila and Guo, Zhaohan Daniel and Azar, Mohammad Gheshlaghi and Piot, Bilal and Kavukcuoglu, Koray and Munos, Rémi and Valko, Michal},
+	month = sep,
+	year = {2020},
+	note = {arXiv:2006.07733 [cs]},
+	keywords = {/unread, bootstrap, contrastive learning},
+}
+
+@misc{chen2020a,
+	title = {Exploring {Simple} {Siamese} {Representation} {Learning}},
+	url = {http://arxiv.org/abs/2011.10566},
+	doi = {10.48550/arXiv.2011.10566},
+	abstract = {Siamese networks have become a common structure in various recent models for unsupervised visual representation learning. These models maximize the similarity between two augmentations of one image, subject to certain conditions for avoiding collapsing solutions. In this paper, we report surprising empirical results that simple Siamese networks can learn meaningful representations even using none of the following: (i) negative sample pairs, (ii) large batches, (iii) momentum encoders. Our experiments show that collapsing solutions do exist for the loss and structure, but a stop-gradient operation plays an essential role in preventing collapsing. We provide a hypothesis on the implication of stop-gradient, and further show proof-of-concept experiments verifying it. Our "SimSiam" method achieves competitive results on ImageNet and downstream tasks. We hope this simple baseline will motivate people to rethink the roles of Siamese architectures for unsupervised representation learning. Code will be made available.},
+	urldate = {2026-04-18},
+	publisher = {arXiv},
+	author = {Chen, Xinlei and He, Kaiming},
+	month = nov,
+	year = {2020},
+	note = {arXiv:2011.10566 [cs]},
+	keywords = {/unread, siamese network, stop gradient},
+}
+
+@article{rahma2026,
+	title = {{RAPID} {TRAINING} {OF} {HAMILTONIAN} {GRAPH} {NETWORKS} {USING} {RANDOM} {FEATURES}},
+	abstract = {Learning dynamical systems that respect physical symmetries and constraints remains a fundamental challenge in data-driven modeling. Integrating physical laws with graph neural networks facilitates principled modeling of complex N-body dynamics and yields accurate and permutation-invariant models. However, training graph neural networks with iterative, gradient-descent-based optimization algorithms (e.g., Adam, RMSProp, LBFGS) often leads to slow training, especially for large, complex systems. In comparison to 15 different optimizers, we demonstrate that Hamiltonian Graph Networks (HGN) can be trained 150-600× faster–but with comparable accuracy–by replacing iterative optimization with random featurebased parameter construction. We show robust performance in diverse simulations, including N-body mass-spring and molecular systems in up to 3 dimensions and 10,000 particles with different geometries, while retaining essential physical invariances with respect to permutation, rotation, and translation. Our proposed approach is benchmarked using a NeurIPS 2022 Datasets and Benchmarks Track publication to further demonstrate its versatility. We reveal that even when trained on minimal 8-node systems, the model can generalize in a zero-shot manner to systems as large as 4096 nodes without retraining. Our work challenges the dominance of iterative gradient-descent-based optimization algorithms for training neural network models for physical systems.},
+	language = {en},
+	author = {Rahma, Atamert and Datar, Chinmay},
+	year = {2026},
+	keywords = {/unread},
+}
+
+@incollection{crane2020posiam,
+	address = {Providence, Rhode Island},
+	title = {Conformal geometry of simplicial surfaces},
+	volume = {76},
+	isbn = {978-1-4704-4662-8 978-1-4704-6337-3 978-1-4704-6003-7},
+	url = {https://www.ams.org/psapm/076},
+	doi = {10.1090/psapm/076/04},
+	language = {en},
+	urldate = {2026-04-10},
+	booktitle = {Proceedings of {Symposia} in {Applied} {Mathematics}},
+	publisher = {American Mathematical Society},
+	author = {Crane, Keenan},
+	editor = {Crane, Keenan},
+	month = sep,
+	year = {2020},
+	note = {GSCC: 0000014 2026-04-17T21:54:48.203Z 0.05},
+	keywords = {/unread},
+	pages = {59--101},
+}
+
+@article{hanocka2020atga,
+	title = {{Point2Mesh}: {A} {Self}-{Prior} for {Deformable} {Meshes}},
+	volume = {39},
+	issn = {0730-0301, 1557-7368},
+	shorttitle = {{Point2Mesh}},
+	url = {http://arxiv.org/abs/2005.11084},
+	doi = {10.1145/3386569.3392415},
+	abstract = {In this paper, we introduce Point2Mesh, a technique for reconstructing a surface mesh from an input point cloud. Instead of explicitly specifying a prior that encodes the expected shape properties, the prior is defined automatically using the input point cloud, which we refer to as a self-prior. The self-prior encapsulates reoccurring geometric repetitions from a single shape within the weights of a deep neural network. We optimize the network weights to deform an initial mesh to shrink-wrap a single input point cloud. This explicitly considers the entire reconstructed shape, since shared local kernels are calculated to fit the overall object. The convolutional kernels are optimized globally across the entire shape, which inherently encourages local-scale geometric self-similarity across the shape surface. We show that shrink-wrapping a point cloud with a self-prior converges to a desirable solution; compared to a prescribed smoothness prior, which often becomes trapped in undesirable local minima. While the performance of traditional reconstruction approaches degrades in non-ideal conditions that are often present in real world scanning, i.e., unoriented normals, noise and missing (low density) parts, Point2Mesh is robust to non-ideal conditions. We demonstrate the performance of Point2Mesh on a large variety of shapes with varying complexity.},
+	number = {4},
+	urldate = {2026-04-17},
+	journal = {ACM Transactions on Graphics},
+	author = {Hanocka, Rana and Metzer, Gal and Giryes, Raja and Cohen-Or, Daniel},
+	month = aug,
+	year = {2020},
+	note = {arXiv:2005.11084 [cs]},
+	keywords = {/unread},
+}
+
+@misc{iguenfer2026,
+	title = {Point {Cloud} to {Mesh} {Reconstruction}: {Methods}, {Trade}-offs, and {Implementation} {Guide}},
+	shorttitle = {Point {Cloud} to {Mesh} {Reconstruction}},
+	url = {http://arxiv.org/abs/2412.10977},
+	doi = {10.48550/arXiv.2412.10977},
+	abstract = {Reconstructing meshes from point clouds is a fundamental task in computer vision with applications spanning robotics, autonomous systems, and medical imaging. Selecting an appropriate learning-based method requires understanding trade-offs between computational efficiency, geometric accuracy, and output constraints. This paper categorizes over fifteen methods into five paradigms -- PointNet family, autoencoder architectures, deformation-based methods, point-move techniques, and primitive-based approaches -- and provides practical guidance for method selection. We contribute: (1) a decision framework mapping input/output requirements to suitable paradigms, (2) a failure mode analysis to assist practitioners in debugging implementations, (3) standardized comparisons on ShapeNet benchmarks, and (4) a curated list of maintained codebases with implementation resources. By synthesizing both theoretical foundations and practical considerations, this work serves as an entry point for practitioners and researchers new to learning-based 3D mesh reconstruction.},
+	urldate = {2026-04-17},
+	publisher = {arXiv},
+	author = {Iguenfer, Fatima Zahra and Hsain, Achraf and Amissa, Hiba and Chtouki, Yousra},
+	month = jan,
+	year = {2026},
+	note = {arXiv:2412.10977 [cs]},
+	keywords = {/unread, 3D mesh, point cloud},
+}
+
+@article{chen2026a,
+	title = {{GUARANTEED} {SIMPLY} {CONNECTED} {MESH} {RECON}- {STRUCTION} {FROM} {AN} {UNORGANIZED} {POINT} {CLOUD}},
+	abstract = {We introduce an approach that reconstructs a closed surface mesh from a noisy point cloud, with a guarantee that the reconstructed surface is simply connected (homeomorphic to a 2-sphere). This task enjoys a wide range of applications, e.g., 3D organ and vessel reconstruction from CT scans. Central to our approach is a robust module that takes a collection of oriented triangles in a 3D triangulation as input and outputs a simply connected volumetric mesh whose boundary approximates the input triangles. Starting from a 3D Delaunay triangulation of the input point cloud and initial triangle orientations obtained through a spectral approach, our approach alternates between applying the module to obtain a reconstruction and using that reconstruction to reorient the input triangles. Experimental results on real and synthetic datasets demonstrate the robustness and accuracy of our approach.},
+	language = {en},
+	author = {Chen, Liyan and Li, Jingyi and Huang, Qixing},
+	year = {2026},
+	keywords = {/read, Paris},
+}
+
+@misc{cohen2014,
+	title = {Learning the {Irreducible} {Representations} of {Commutative} {Lie} {Groups}},
+	url = {http://arxiv.org/abs/1402.4437},
+	doi = {10.48550/arXiv.1402.4437},
+	abstract = {We present a new probabilistic model of compact commutative Lie groups that produces invariant-equivariant and disentangled representations of data. To define the notion of disentangling, we borrow a fundamental principle from physics that is used to derive the elementary particles of a system from its symmetries. Our model employs a newfound Bayesian conjugacy relation that enables fully tractable probabilistic inference over compact commutative Lie groups -- a class that includes the groups that describe the rotation and cyclic translation of images. We train the model on pairs of transformed image patches, and show that the learned invariant representation is highly effective for classification.},
+	urldate = {2024-05-05},
+	publisher = {arXiv},
+	author = {Cohen, Taco and Welling, Max},
+	month = may,
+	year = {2014},
+	note = {GSCC: 0000151 2026-04-17T14:01:30.048Z 0.24 
+arXiv:1402.4437 [cs]},
+	keywords = {/read, Lie group, equivalence/observational equivalence, invariance, irreducible representation, reducibility, symmetry discovery},
+}
+
+@article{amboage2026,
+	title = {{LEAP}: {LOCAL} {ECT}-{BASED} {LEARNABLE} {POSITIONAL} {ENCODINGS} {FOR} {GRAPHS}},
+	abstract = {Graph neural networks (GNNs) largely rely on the message-passing paradigm, where nodes iteratively aggregate information from their neighbors. Yet, standard message passing neural networks (MPNNs) face well-documented theoretical and practical limitations. Graph positional encoding (PE) has emerged as a promising direction to address these limitations. The Euler Characteristic Transform (ECT) is an efficiently computable geometric–topological invariant that characterizes shapes and graphs. In this work, we combine the differentiable approximation of the ECT (DECT) and its local variant (ℓ-ECT) to propose LEAP, a new end-to-end trainable local structural PE for graphs. We evaluate our approach on multiple real-world datasets as well as on a synthetic task designed to test its ability to extract topological features. Our results underline the potential of ℓ-ECT-based encodings as a powerful component for graph representation learning pipelines.},
+	language = {en},
+	author = {Amboage, Juan and Roell, Ernst and Schnider, Patrick and Rieck, Bastian},
+	year = {2026},
+	keywords = {/read, graph, positional encoding/node positional encoding},
+}
+
+@article{lecha2026,
+	title = {{DIRECTED} {SEMI}-{SIMPLICIAL} {LEARNING} {WITH} {APPLICATIONS} {TO} {BRAIN} {ACTIVITY} {DECODING}},
+	abstract = {Graph Neural Networks (GNNs) excel at learning from pairwise interactions but often overlook multi-way and hierarchical relationships. Topological Deep Learning (TDL) addresses this limitation by leveraging combinatorial topological spaces, such as simplicial or cell complexes. However, existing TDL models are restricted to undirected settings and fail to capture the higher-order directed patterns prevalent in many complex systems, e.g., brain networks, where such interactions are both abundant and functionally significant. To fill this gap, we introduce SemiSimplicial Neural Networks (SSNs), a principled class of TDL models that operate on semi-simplicial sets, combinatorial structures that encode directed higher-order motifs and their directional relationships. To enhance scalability, we propose Routing-SSNs, which dynamically select the most informative relations in a learnable manner. We theoretically characterize SSNs by proving they are strictly more expressive than standard graph and TDL models, and they are able to recover several topological descriptors. Building on previous evidence that such descriptors are critical for characterizing brain activity, we then introduce a new rigorous framework for brain dynamics representation learning centered on SSNs. Empirically, we test SSNs on 4 distinct tasks across 13 datasets, spanning from brain dynamics to node classification, showing competitive performance. Notably, SSNs consistently achieve state-of-the-art performance on brain dynamics classification tasks, outperforming the second-best model by up to 27\%, and message passing GNNs by up to 50\% in accuracy. Our results highlight the potential of topological models for learning from structured brain data, establishing a unique real-world case study for TDL.},
+	language = {en},
+	author = {Lecha, Manuel and Cavallo, Andrea and Dominici, Francesca and Levi, Ran and Bue, Alessio Del and Isufi, Elvin and Morerio, Pietro and Battiloro, Claudio},
+	year = {2026},
+	keywords = {/read, directionality, higher order, topological deep learning},
+}
+
+@article{uddin2026,
+	title = {{TOPOFORMER}: {TOPOLOGY} {MEETS} {ATTENTION} {FOR} {GRAPH} {LEARNING}},
+	abstract = {We introduce TOPOFORMER, a lightweight and scalable framework for graph representation learning that encodes topological structure into attention-friendly sequences. At the core of our method is Topo-Scan, a novel module that decomposes a graph into a short, ordered sequence of topological tokens by slicing over node or edge filtrations. These sequences capture multi-scale structural patterns, from local motifs to global organization, and are processed by a Transformer to produce expressive graph-level embeddings. Unlike traditional persistent homology pipelines, Topo-Scan is parallelizable, avoids costly diagram computations, and integrates seamlessly with standard deep learning architectures. We provide theoretical guarantees on the stability of our topological encodings and demonstrate state-of-the-art performance across graph classification and molecular property prediction benchmarks. Our results show that TOPOFORMER matches or exceeds strong GNN and topology-based baselines while offering predictable and efficient compute. This work opens a new path for parallelizable and unifying approaches to graph representation learning that integrate topological inductive biases into attention frameworks.},
+	language = {en},
+	author = {Uddin, Joshem and Tola, Astrit and Akcora, Cuneyt Gurcan and Coskunuzer, Baris},
+	year = {2026},
+	keywords = {/on halt, filtration},
+}
+
+@misc{fay2025,
+	title = {The {Shape} of {Adversarial} {Influence}: {Characterizing} {LLM} {Latent} {Spaces} with {Persistent} {Homology}},
+	shorttitle = {The {Shape} of {Adversarial} {Influence}},
+	url = {http://arxiv.org/abs/2505.20435},
+	doi = {10.48550/arXiv.2505.20435},
+	abstract = {Existing interpretability methods for Large Language Models (LLMs) often fall short by focusing on linear directions or isolated features, overlooking the high-dimensional, nonlinear, and relational geometry within model representations. This study focuses on how adversarial inputs systematically affect the internal representation spaces of LLMs, a topic which remains poorly understood. We propose persistent homology (PH), a tool from topological data analysis, as a principled framework to characterize the multi-scale dynamics within LLM activations. Using PH, we systematically analyze six state-of-the-art models under two distinct adversarial conditions, indirect prompt injection and backdoor fine-tuning, and identify a consistent topological signature of adversarial influence. Across architectures and model sizes, adversarial inputs induce ``topological compression'', where the latent space becomes structurally simpler, collapsing from varied, compact, small-scale features into fewer, dominant, and more dispersed large-scale ones. This topological signature is statistically robust across layers, highly discriminative, and provides interpretable insights into how adversarial effects emerge and propagate. By quantifying the shape of activations and neuronal information flow, our architecture-agnostic framework reveals fundamental invariants of representational change, offering a complementary perspective to existing interpretability methods.},
+	urldate = {2026-02-23},
+	publisher = {arXiv},
+	author = {Fay, Aideen and García-Redondo, Inés and Wang, Qiquan and Dubossarsky, Haim and Monod, Anthea},
+	month = oct,
+	year = {2025},
+	note = {arXiv:2505.20435 [cs]},
+	keywords = {/read, LLM, persistent homology},
+}
+
+@article{loiseaux,
+	title = {Stable {Vectorization} of {Multiparameter} {Persistent} {Homology} using {Signed} {Barcodes} as {Measures}},
+	abstract = {Persistent homology (PH) provides topological descriptors for geometric data, such as weighted graphs, which are interpretable, stable to perturbations, and invariant under, e.g., relabeling. Most applications of PH focus on the one-parameter case—where the descriptors summarize the changes in topology of data as it is filtered by a single quantity of interest—and there is now a wide array of methods enabling the use of one-parameter PH descriptors in data science, which rely on the stable vectorization of these descriptors as elements of a Hilbert space. Although the multiparameter PH (MPH) of data that is filtered by several quantities of interest encodes much richer information than its one-parameter counterpart, the scarceness of stability results for MPH descriptors has so far limited the available options for the stable vectorization of MPH. In this paper, we aim to bring together the best of both worlds by showing how the interpretation of signed barcodes—a recent family of MPH descriptors—as signed measures leads to natural extensions of vectorization strategies from one parameter to multiple parameters. The resulting feature vectors are easy to define and to compute, and provably stable. While, as a proof of concept, we focus on simple choices of signed barcodes and vectorizations, we already see notable performance improvements when comparing our feature vectors to state-of-the-art topology-based methods on various types of data.},
+	language = {en},
+	author = {Loiseaux, David and Scoccola, Luis and Carrière, Mathieu and Botnan, Magnus B and Oudot, Steve},
+	keywords = {/unread},
+}
+
+@article{chazal2021faia,
+	title = {An {Introduction} to {Topological} {Data} {Analysis}: {Fundamental} and {Practical} {Aspects} for {Data} {Scientists}},
+	volume = {4},
+	issn = {2624-8212},
+	shorttitle = {An {Introduction} to {Topological} {Data} {Analysis}},
+	url = {https://www.frontiersin.org/journals/artificial-intelligence/articles/10.3389/frai.2021.667963/full},
+	doi = {10.3389/frai.2021.667963},
+	abstract = {Topological Data Analysis (TDA ) is a recent and fast growing field providing a set of new topological and geometric tools to infer relevant features for possibly complex data. This paper is a brief introduction, through a few selected topics, to basic fundamental and practical aspects of TDA for non experts.},
+	language = {English},
+	urldate = {2026-04-17},
+	journal = {Frontiers in Artificial Intelligence},
+	publisher = {Frontiers},
+	author = {Chazal, Frédéric and Michel, Bertrand},
+	month = sep,
+	year = {2021},
+	keywords = {/unread},
+}
+
+@inproceedings{chazal2014p3icml,
+	title = {Convergence rates for persistence diagram estimation in {Topological} {Data} {Analysis}},
+	issn = {1938-7228},
+	url = {https://proceedings.mlr.press/v32/chazal14.html},
+	abstract = {Computational topology  has recently seen an important development toward data analysis, giving birth to Topological Data Analysis. Persistent homology appears as a fundamental tool in this field. We show that  the use of persistent homology can be naturally considered in general statistical frameworks. We establish convergence rates of persistence diagrams associated to data randomly sampled from any compact metric space to a well defined limit diagram encoding the topological features of the support of the measure from which the data have been sampled. Our approach relies on a recent and deep stability result for persistence that allows to relate our problem to support estimation problems (with respect to the Gromov-Hausdorff distance). Some numerical experiments are performed in various contexts to illustrate our results.},
+	language = {en},
+	urldate = {2026-04-17},
+	booktitle = {Proceedings of the 31st {International} {Conference} on {Machine} {Learning}},
+	publisher = {PMLR},
+	author = {Chazal, Frédéric and Glisse, Marc and Labruère, Catherine and Michel, Bertrand},
+	month = jan,
+	year = {2014},
+	keywords = {/unread},
+	pages = {163--171},
+}
+
+@inproceedings{chazal2015p3icml,
+	title = {Subsampling {Methods} for {Persistent} {Homology}},
+	issn = {1938-7228},
+	url = {https://proceedings.mlr.press/v37/chazal15.html},
+	abstract = {Persistent homology is a multiscale method for analyzing the shape of sets and functions from point cloud data arising from an unknown distribution supported on those sets. When the size of the sample is large, direct computation of the persistent homology is prohibitive due to the combinatorial nature of the existing algorithms. We propose to compute the persistent homology of several subsamples of the data and then combine the resulting estimates. We study the risk of two estimators and we prove that the subsampling approach carries stable topological information while achieving a great reduction in computational complexity.},
+	language = {en},
+	urldate = {2026-04-17},
+	booktitle = {Proceedings of the 32nd {International} {Conference} on {Machine} {Learning}},
+	publisher = {PMLR},
+	author = {Chazal, Frederic and Fasy, Brittany and Lecci, Fabrizio and Michel, Bertrand and Rinaldo, Alessandro and Wasserman, Larry},
+	month = jun,
+	year = {2015},
+	keywords = {/unread},
+	pages = {2143--2151},
 }
 
 @article{vesseron2026,
@@ -14,7 +358,103 @@
 	language = {en},
 	author = {Vesseron, Nina and Cazelles, Elsa},
 	year = {2026},
-	keywords = {/read, geodesic, optimal transport},
+	keywords = {/read, Paris, geodesic, optimal transport},
+}
+
+@misc{marcotte2026,
+	title = {Intrinsic training dynamics of deep neural networks},
+	url = {http://arxiv.org/abs/2508.07370},
+	doi = {10.48550/arXiv.2508.07370},
+	abstract = {A fundamental challenge in the theory of deep learning is to understand whether gradient-based training can promote parameters belonging to certain lower-dimensional structures (e.g., sparse or low-rank sets), leading to so-called implicit bias. As a stepping stone, motivated by the proof structure of existing implicit bias analyses, we study when a gradient flow on a parameter \$θ\$ implies an intrinsic gradient flow on a ``lifted'' variable \$z = φ(θ)\$, for an architecture-related function \$φ\$. We express a so-called intrinsic dynamic property and show how it is related to the study of conservation laws associated with the factorization \$φ\$. This leads to a simple criterion based on the inclusion of kernels of linear maps, which yields a necessary condition for this property to hold. We then apply our theory to general ReLU networks of arbitrary depth and show that, for a dense set of initializations, it is possible to rewrite the flow as an intrinsic dynamic in a lower dimension that depends only on \$z\$ and the initialization, when \$φ\$ is the so-called path-lifting. In the case of linear networks with \$φ\$, the product of weight matrices, the intrinsic dynamic is known to hold under so-called balanced initializations; we generalize this to a broader class of \{{\textbackslash}em relaxed balanced\} initializations, showing that, in certain configurations, these are the {\textbackslash}emph\{only\} initializations that ensure the intrinsic metric property. Finally, for the linear neural ODE associated with the limit of infinitely deep linear networks, with relaxed balanced initialization, we make explicit the corresponding intrinsic dynamics.},
+	urldate = {2026-04-13},
+	publisher = {arXiv},
+	author = {Marcotte, Sibylle and Peyré, Gabriel and Gribonval, Rémi},
+	month = mar,
+	year = {2026},
+	note = {arXiv:2508.07370 [cs]},
+	keywords = {/read, Paris, ReLU network},
+}
+
+@article{yang2026,
+	title = {{PROBABILITY} {DISTRIBUTIONS} {COMPUTED} {BY} {AUTOREGRESSIVE} {TRANSFORMERS}},
+	abstract = {Most expressivity results for transformers treat them as language recognizers—devices that accept or reject strings—rather than as they are used in practice: as language models that generate strings autoregressively and probabilistically. We characterize the probability distributions that transformer language models can express. We show that making transformer language recognizers autoregressive can sometimes increase their expressivity, and that making them probabilistic can break equivalences that hold in the non-probabilistic case. Our overall contribution is to tease apart what functions transformers are capable of expressing in their most common use case as language models.},
+	language = {en},
+	author = {Yang, Andy and Svete, Anej and Li, Jiaoda and Lin, Anthony Widjaja and Rawski, Jonathan and Cotterell, Ryan and Chiang, David},
+	year = {2026},
+	keywords = {/on halt},
+}
+
+@article{amad2026,
+	title = {{HYPERPARAMETER} {TRAJECTORY} {INFERENCE} {WITH} {CONDITIONAL} {LAGRANGIAN} {OPTIMAL} {TRANSPORT}},
+	abstract = {Neural networks (NNs) often have critical behavioural trade-offs that are set at design time with hyperparameters—such as reward weights in reinforcement learning or quantile targets in regression. Post-deployment, however, user preferences can evolve, making initial settings undesirable, necessitating potentially expensive retraining. To circumvent this, we introduce the task of Hyperparameter Trajectory Inference (HTI): to learn, from observed data, how a NN’s conditional output distribution changes with its hyperparameters, and construct a surrogate model that approximates the NN at unobserved hyperparameter settings. HTI requires extending existing trajectory inference approaches to incorporate conditions, exacerbating the challenge of ensuring inferred paths are feasible. We propose an approach based on conditional Lagrangian optimal transport, jointly learning the Lagrangian function governing hyperparameter-induced dynamics along with the associated optimal transport maps and geodesics between observed marginals, which form the surrogate model. We incorporate inductive biases based on the manifold hypothesis and least-action principles into the learned Lagrangian, improving surrogate model feasibility. We empirically demonstrate that our approach reconstructs NN outputs across various hyperparameter spectra better than other alternatives.},
+	language = {en},
+	author = {Amad, Harry},
+	year = {2026},
+	keywords = {/on halt},
+}
+
+@article{bu2026a,
+	title = {{HARMONIZED} {CONE} {FOR} {FEASIBLE} {AND} {NON}-{CONFLICT} {DIRECTIONS} {IN} {TRAINING} {PHYSICS}-{INFORMED} {NEURAL} {NETWORKS}},
+	abstract = {Physics-Informed Neural Networks (PINNs) have emerged as a powerful tool for solving PDEs, yet training is difficult due to a multi-objective loss that couples PDE residuals, initial/boundary conditions, and auxiliary physics terms. Existing remedies often yield infeasible scaling factors or conflicting update directions, resulting in degraded performance. In this paper, we show that training PINNs requires jointly considering feasible scaling factors and a non-conflict direction. Through a geometric analysis of per-loss gradients, we define the harmonized cone as the intersection of their primal and dual cones, which characterizes directions that are simultaneously feasible and non-conflicting. Building on this, we propose HARMONIC (HARMONIzed Cone gradient descent), a training procedure that computes updates within the harmonized cone by leveraging the Double Description method to aggregate extreme rays. Theoretically, we establish convergence guarantees in nonconvex settings and prove the existence of a nontrivial harmonized cone. Across standard PDE benchmarks, HARMONIC generally outperforms state-of-the-art methods while ensuring feasible and non-conflict updates.},
+	language = {en},
+	author = {Bu, Dohyun and Byun, Yujung and Lee, Jong-Seok},
+	year = {2026},
+	keywords = {/read, PINN, cone, multiple losses},
+}
+
+@article{lanzillotta2026,
+	title = {{HEADS} {COLLAPSE}, {FEATURES} {STAY}: {WHY} {REPLAY} {NEEDS} {BIG} {BUFFERS}},
+	abstract = {A persistent paradox in continual learning (CL) is that neural networks often retain linearly separable representations of past tasks even when their output predictions fail. We formalize this distinction as the gap between deep (feature-space) and shallow (classifier-level) forgetting. We reveal a critical asymmetry in Experience Replay: while minimal buffers successfully anchor feature geometry and prevent deep forgetting, mitigating shallow forgetting typically requires substantially larger buffer capacities. To explain this, we extend the Neural Collapse framework to the sequential setting. We characterize deep forgetting as a geometric drift toward out-of-distribution subspaces and prove that any non-zero replay fraction asymptotically guarantees the retention of linear separability. Conversely, we identify that the “strong collapse” induced by small buffers leads to rank-deficient covariances and inflated class means, effectively blinding the classifier to true population boundaries. By unifying CL with out-of-distribution detection, our work challenges the prevailing reliance on large buffers, suggesting that explicitly correcting these statistical artifacts could unlock robust performance with minimal replay.},
+	language = {en},
+	author = {Lanzillotta, Giulia and Meier, Damiano and Hofmann, Thomas},
+	year = {2026},
+	keywords = {/read, classification boundary, continual learning, neural collapse},
+}
+
+@misc{bruno2025,
+	title = {A multiscale analysis of mean-field transformers in the moderate interaction regime},
+	url = {http://arxiv.org/abs/2509.25040},
+	doi = {10.48550/arXiv.2509.25040},
+	abstract = {In this paper, we study the evolution of tokens through the depth of encoder-only transformer models at inference time by modeling them as a system of particles interacting in a mean-field way and studying the corresponding dynamics. More specifically, we consider this problem in the moderate interaction regime, where the number \$N\$ of tokens is large and the inverse temperature parameter \$β\$ of the model scales together with \$N\$. In this regime, the dynamics of the system displays a multiscale behavior: a fast phase, where the token empirical measure collapses on a low-dimensional space, an intermediate phase, where the measure further collapses into clusters, and a slow one, where such clusters sequentially merge into a single one. We provide a rigorous characterization of the limiting dynamics in each of these phases and prove convergence in the above mentioned limit, exemplifying our results with some simulations.},
+	urldate = {2026-04-16},
+	publisher = {arXiv},
+	author = {Bruno, Giuseppe and Pasqualotto, Federico and Agazzi, Andrea},
+	month = sep,
+	year = {2025},
+	note = {arXiv:2509.25040 [cs]},
+	keywords = {/read, attention, mean-field},
+}
+
+@misc{borde2025,
+	title = {Mathematical {Foundations} of {Geometric} {Deep} {Learning}},
+	url = {http://arxiv.org/abs/2508.02723},
+	doi = {10.48550/arXiv.2508.02723},
+	abstract = {We review the key mathematical concepts necessary for studying Geometric Deep Learning.},
+	urldate = {2025-09-11},
+	publisher = {arXiv},
+	author = {Borde, Haitz Sáez de Ocáriz and Bronstein, Michael},
+	month = aug,
+	year = {2025},
+	note = {arXiv:2508.02723 [cs]},
+	keywords = {/textbook, geometric deep learning, logml2025},
+}
+
+@article{klee2026,
+	title = {{RAVEN}: {END}-{TO}-{END} {EQUIVARIANT} {ROBOT} {LEARN}- {ING} {WITH} {RGB} {CAMERAS}},
+	abstract = {Recent work has shown that equivariant policy networks can achieve strong performance on robot manipulation tasks with limited human demonstrations. However, existing equivariant methods typically require structured inputs, such as 3D point clouds or top-down camera views, which prevents their use in low-cost setups or dynamic environments. In this work, we propose the first SE(3)-equivariant policy learning framework that operates with only RGB image observations. The key insight is to treat image-based data as collections of rays that, unlike 2D pixels, transform under 3D roto-translations. Extensive experiments in both simulation with diverse robot configurations and real-world settings demonstrate that our method consistently surpasses strong baselines in both performance and efficiency. Our project page is available at https://dmklee.github.io/raven.},
+	language = {en},
+	author = {Klee, David M and Hu, Boce and Cole, Andrew and Tian, Heng and Wang, Dian and Platt, Robert and Walters, Robin},
+	year = {2026},
+	keywords = {/unread, equivariance},
+}
+
+@article{pacini2026,
+	title = {{ON} {UNIVERSALITY} {OF} {DEEP} {EQUIVARIANT} {NETWORKS}},
+	abstract = {Universality results for equivariant neural networks remain rare. Those that do exist typically hold only in restrictive settings: either they rely on regular or higher-order tensor representations, leading to impractically high-dimensional hidden spaces, or they target specialized architectures, often confined to the invariant setting. This work develops a more general account. For invariant networks, we establish a universality theorem under separation constraints, showing that the addition of a fully connected readout layer secures approximation within the class of separationconstrained continuous functions. For equivariant networks, where results are even scarcer, we demonstrate that standard separability notions are inadequate and introduce the sharper criterion of entry-wise separability. We show that with sufficient depth or with the addition of appropriate readout layers, equivariant networks attain universality within the entry-wise separable regime. Together with prior results showing the failure of universality for shallow models, our findings identify depth and readout layers as a decisive mechanism for universality, additionally offering a unified perspective that subsumes and extends earlier specialized results.},
+	language = {en},
+	author = {Pacini, Marco and Petrache, Mircea and Lepri, Bruno and Trivedi, Shubhendu and Walters, Robin},
+	year = {2026},
+	keywords = {/read, equivariance, expressivity, invariance, separation, universality},
 }
 
 @article{sun2026,
@@ -200,110 +640,6 @@
 	keywords = {/unread},
 }
 
-@article{gerken2023air,
-	title = {Geometric deep learning and equivariant neural networks},
-	volume = {56},
-	issn = {0269-2821, 1573-7462},
-	url = {https://link.springer.com/10.1007/s10462-023-10502-7},
-	doi = {10.1007/s10462-023-10502-7},
-	abstract = {Abstract
-            
-              We survey the mathematical foundations of geometric deep learning, focusing on group equivariant and gauge equivariant neural networks. We develop gauge equivariant convolutional neural networks on arbitrary manifolds
-              
-                
-                  \$\${\textbackslash}mathcal \{M\}\$\$
-                  
-                    M
-                  
-                
-              
-              using principal bundles with structure group
-              K
-              and equivariant maps between sections of associated vector bundles. We also discuss group equivariant neural networks for homogeneous spaces
-              
-                
-                  \$\${\textbackslash}mathcal \{M\}=G/K\$\$
-                  
-                    
-                      M
-                      =
-                      G
-                      /
-                      K
-                    
-                  
-                
-              
-              , which are instead equivariant with respect to the global symmetry
-              G
-              on
-              
-                
-                  \$\${\textbackslash}mathcal \{M\}\$\$
-                  
-                    M
-                  
-                
-              
-              . Group equivariant layers can be interpreted as intertwiners between induced representations of
-              G
-              , and we show their relation to gauge equivariant convolutional layers. We analyze several applications of this formalism, including semantic segmentation and object detection networks. We also discuss the case of spherical networks in great detail, corresponding to the case
-              
-                
-                  \$\${\textbackslash}mathcal \{M\}=S{\textasciicircum}2={\textbackslash}textrm\{SO\}(3)/{\textbackslash}textrm\{SO\}(2)\$\$
-                  
-                    
-                      M
-                      =
-                      
-                        S
-                        2
-                      
-                      =
-                      SO
-                      
-                        (
-                        3
-                        )
-                      
-                      /
-                      SO
-                      
-                        (
-                        2
-                        )
-                      
-                    
-                  
-                
-              
-              . Here we emphasize the use of Fourier analysis involving Wigner matrices, spherical harmonics and Clebsch–Gordan coefficients for
-              
-                
-                  \$\$G={\textbackslash}textrm\{SO\}(3)\$\$
-                  
-                    
-                      G
-                      =
-                      SO
-                      (
-                      3
-                      )
-                    
-                  
-                
-              
-              , illustrating the power of representation theory for deep learning.},
-	language = {en},
-	number = {12},
-	urldate = {2026-04-15},
-	journal = {Artificial Intelligence Review},
-	author = {Gerken, Jan E. and Aronsson, Jimmy and Carlsson, Oscar and Linander, Hampus and Ohlsson, Fredrik and Petersson, Christoffer and Persson, Daniel},
-	month = dec,
-	year = {2023},
-	pages = {14605--14662},
-}
-
 @misc{zotero-item-8433,
 	title = {Quantitative {Homotopy} {Theory}},
 	author = {Gromov, Mikhail},
@@ -424,20 +760,6 @@
 	keywords = {/read},
 }
 
-@misc{marcotte2026,
-	title = {Intrinsic training dynamics of deep neural networks},
-	url = {http://arxiv.org/abs/2508.07370},
-	doi = {10.48550/arXiv.2508.07370},
-	abstract = {A fundamental challenge in the theory of deep learning is to understand whether gradient-based training can promote parameters belonging to certain lower-dimensional structures (e.g., sparse or low-rank sets), leading to so-called implicit bias. As a stepping stone, motivated by the proof structure of existing implicit bias analyses, we study when a gradient flow on a parameter \$θ\$ implies an intrinsic gradient flow on a ``lifted'' variable \$z = φ(θ)\$, for an architecture-related function \$φ\$. We express a so-called intrinsic dynamic property and show how it is related to the study of conservation laws associated with the factorization \$φ\$. This leads to a simple criterion based on the inclusion of kernels of linear maps, which yields a necessary condition for this property to hold. We then apply our theory to general ReLU networks of arbitrary depth and show that, for a dense set of initializations, it is possible to rewrite the flow as an intrinsic dynamic in a lower dimension that depends only on \$z\$ and the initialization, when \$φ\$ is the so-called path-lifting. In the case of linear networks with \$φ\$, the product of weight matrices, the intrinsic dynamic is known to hold under so-called balanced initializations; we generalize this to a broader class of \{{\textbackslash}em relaxed balanced\} initializations, showing that, in certain configurations, these are the {\textbackslash}emph\{only\} initializations that ensure the intrinsic metric property. Finally, for the linear neural ODE associated with the limit of infinitely deep linear networks, with relaxed balanced initialization, we make explicit the corresponding intrinsic dynamics.},
-	urldate = {2026-04-13},
-	publisher = {arXiv},
-	author = {Marcotte, Sibylle and Peyré, Gabriel and Gribonval, Rémi},
-	month = mar,
-	year = {2026},
-	note = {arXiv:2508.07370 [cs]},
-	keywords = {/unread},
-}
-
 @misc{llmsresearch[@llmsresearch]2026t,
 	type = {Tweet},
 	title = {Mamba's {Memory} {Problem}},
@@ -481,25 +803,6 @@
 	month = oct,
 	year = {2025},
 	keywords = {/unread},
-}
-
-@incollection{crane2020posiam,
-	address = {Providence, Rhode Island},
-	title = {Conformal geometry of simplicial surfaces},
-	volume = {76},
-	isbn = {978-1-4704-4662-8 978-1-4704-6337-3 978-1-4704-6003-7},
-	url = {https://www.ams.org/psapm/076},
-	doi = {10.1090/psapm/076/04},
-	language = {en},
-	urldate = {2026-04-10},
-	booktitle = {Proceedings of {Symposia} in {Applied} {Mathematics}},
-	publisher = {American Mathematical Society},
-	author = {Crane, Keenan},
-	editor = {Crane, Keenan},
-	month = sep,
-	year = {2020},
-	keywords = {/unread},
-	pages = {59--101},
 }
 
 @misc{badrinarayanan2015,
@@ -2083,21 +2386,6 @@ arXiv:2602.03566 [cs]},
 	keywords = {/on halt, optimal transport/neural optimal transport},
 }
 
-@misc{fay2025,
-	title = {The {Shape} of {Adversarial} {Influence}: {Characterizing} {LLM} {Latent} {Spaces} with {Persistent} {Homology}},
-	shorttitle = {The {Shape} of {Adversarial} {Influence}},
-	url = {http://arxiv.org/abs/2505.20435},
-	doi = {10.48550/arXiv.2505.20435},
-	abstract = {Existing interpretability methods for Large Language Models (LLMs) often fall short by focusing on linear directions or isolated features, overlooking the high-dimensional, nonlinear, and relational geometry within model representations. This study focuses on how adversarial inputs systematically affect the internal representation spaces of LLMs, a topic which remains poorly understood. We propose persistent homology (PH), a tool from topological data analysis, as a principled framework to characterize the multi-scale dynamics within LLM activations. Using PH, we systematically analyze six state-of-the-art models under two distinct adversarial conditions, indirect prompt injection and backdoor fine-tuning, and identify a consistent topological signature of adversarial influence. Across architectures and model sizes, adversarial inputs induce ``topological compression'', where the latent space becomes structurally simpler, collapsing from varied, compact, small-scale features into fewer, dominant, and more dispersed large-scale ones. This topological signature is statistically robust across layers, highly discriminative, and provides interpretable insights into how adversarial effects emerge and propagate. By quantifying the shape of activations and neuronal information flow, our architecture-agnostic framework reveals fundamental invariants of representational change, offering a complementary perspective to existing interpretability methods.},
-	urldate = {2026-02-23},
-	publisher = {arXiv},
-	author = {Fay, Aideen and García-Redondo, Inés and Wang, Qiquan and Dubossarsky, Haim and Monod, Anthea},
-	month = oct,
-	year = {2025},
-	note = {arXiv:2505.20435 [cs]},
-	keywords = {/unread},
-}
-
 @misc{cheng2025a,
 	title = {Riemannian {Consistency} {Model}},
 	url = {http://arxiv.org/abs/2510.00983},
@@ -2399,6 +2687,34 @@ version: 1},
 	pages = {1294--1303},
 }
 
+@misc{2024c,
+	title = {What are {Diffusion} {Models}? {\textbar} {IBM}},
+	shorttitle = {What are {Diffusion} {Models}?},
+	url = {https://www.ibm.com/think/topics/diffusion-models},
+	abstract = {Diffusion models are generative models that “diffuse” training data with random noise, then learn to reverse the diffusion process to output new images.},
+	language = {en},
+	urldate = {2025-04-07},
+	month = aug,
+	year = {2024},
+	keywords = {/read, course/ComputationBiologySystems, diffusion model},
+}
+
+@misc{bantzis2025,
+	title = {Saddle-{To}-{Saddle} {Dynamics} in {Deep} {ReLU} {Networks}: {Low}-{Rank} {Bias} in the {First} {Saddle} {Escape}},
+	shorttitle = {Saddle-{To}-{Saddle} {Dynamics} in {Deep} {ReLU} {Networks}},
+	url = {http://arxiv.org/abs/2505.21722},
+	doi = {10.48550/arXiv.2505.21722},
+	abstract = {When a deep ReLU network is initialized with small weights, GD is at first dominated by the saddle at the origin in parameter space. We study the so-called escape directions, which play a similar role as the eigenvectors of the Hessian for strict saddles. We show that the optimal escape direction features a low-rank bias in its deeper layers: the first singular value of the \${\textbackslash}ell\$-th layer weight matrix is at least \${\textbackslash}ell{\textasciicircum}\{{\textbackslash}frac\{1\}\{4\}\}\$ larger than any other singular value. We also prove a number of related results about these escape directions. We argue that this result is a first step in proving Saddle-to-Saddle dynamics in deep ReLU networks, where GD visits a sequence of saddles with increasing bottleneck rank.},
+	urldate = {2026-01-20},
+	publisher = {arXiv},
+	author = {Bantzis, Ioannis and Simon, James B. and Jacot, Arthur},
+	month = may,
+	year = {2025},
+	note = {arXiv:2505.21722 [cs]
+TLDR: It is argued that this result is a first step in proving Saddle-to-Saddle dynamics in deep ReLU networks, where GD visits a sequence of saddles with increasing bottleneck rank, where GD visits a sequence of saddles with increasing bottleneck rank.},
+	keywords = {/read, low rank bias, saddle to saddle},
+}
+
 @misc{zhao2025,
 	title = {Symmetry in {Neural} {Network} {Parameter} {Spaces}},
 	url = {http://arxiv.org/abs/2506.13018},
@@ -2687,22 +3003,6 @@ TLDR: It is shown that for sufficiently small initializations, the gradient flow
 	note = {arXiv:2505.24061 [cs]
 TLDR: It is argued that in advanced RL agents, maintaining a neuron's learning capacity, its ability to adapt via gradient updates, is more critical than preserving its expressive ability, and introduced GraMa (Gradient Magnitude Neural Activity Metric), a lightweight, architecture-agnostic metric for quantifying neuron-level learning capacity.},
 	keywords = {/unread, gradient/gradient magnitude},
-}
-
-@misc{bantzis2025,
-	title = {Saddle-{To}-{Saddle} {Dynamics} in {Deep} {ReLU} {Networks}: {Low}-{Rank} {Bias} in the {First} {Saddle} {Escape}},
-	shorttitle = {Saddle-{To}-{Saddle} {Dynamics} in {Deep} {ReLU} {Networks}},
-	url = {http://arxiv.org/abs/2505.21722},
-	doi = {10.48550/arXiv.2505.21722},
-	abstract = {When a deep ReLU network is initialized with small weights, GD is at first dominated by the saddle at the origin in parameter space. We study the so-called escape directions, which play a similar role as the eigenvectors of the Hessian for strict saddles. We show that the optimal escape direction features a low-rank bias in its deeper layers: the first singular value of the \${\textbackslash}ell\$-th layer weight matrix is at least \${\textbackslash}ell{\textasciicircum}\{{\textbackslash}frac\{1\}\{4\}\}\$ larger than any other singular value. We also prove a number of related results about these escape directions. We argue that this result is a first step in proving Saddle-to-Saddle dynamics in deep ReLU networks, where GD visits a sequence of saddles with increasing bottleneck rank.},
-	urldate = {2026-01-20},
-	publisher = {arXiv},
-	author = {Bantzis, Ioannis and Simon, James B. and Jacot, Arthur},
-	month = may,
-	year = {2025},
-	note = {arXiv:2505.21722 [cs]
-TLDR: It is argued that this result is a first step in proving Saddle-to-Saddle dynamics in deep ReLU networks, where GD visits a sequence of saddles with increasing bottleneck rank, where GD visits a sequence of saddles with increasing bottleneck rank.},
-	keywords = {/read, low rank bias, saddle to saddle},
 }
 
 @misc{walter2025a,
@@ -5593,20 +5893,6 @@ TLDR: A family of large language models in such a lightweight manner that can be
 	pages = {216--242},
 }
 
-@inproceedings{montufar2014anips,
-	title = {On the {Number} of {Linear} {Regions} of {Deep} {Neural} {Networks}},
-	volume = {27},
-	url = {https://proceedings.neurips.cc/paper_files/paper/2014/hash/fa6f2a469cc4d61a92d96e74617c3d2a-Abstract.html},
-	abstract = {We study the complexity of functions computable by deep feedforward neural networks with piecewise linear activations in terms of the symmetries and the number of linear regions that they have. Deep networks are able to sequentially map portions of each layer's input-space to the same output. In this way, deep models compute functions that react equally to complicated patterns of different inputs. The compositional structure of these functions enables them to re-use pieces of computation exponentially often in terms of the network's depth. This paper investigates the complexity of such compositional maps and contributes new theoretical results regarding the advantage of depth for neural networks with piecewise linear activation functions. In particular, our analysis is not specific to a single family of models, and as an example, we employ it for rectifier and maxout networks. We improve complexity bounds from pre-existing work and investigate the behavior of units in higher layers.},
-	urldate = {2025-10-27},
-	booktitle = {Advances in {Neural} {Information} {Processing} {Systems}},
-	publisher = {Curran Associates, Inc.},
-	author = {Montúfar, Guido and Pascanu, Razvan and Cho, Kyunghyun and Bengio, Yoshua},
-	year = {2014},
-	note = {GSCC: 0002999 2025-10-27T22:16:37.808Z 4.86},
-	keywords = {/unread, ReLU network, symmetry},
-}
-
 @misc{bartlett2019,
 	title = {Nearly-tight {VC}-dimension and pseudodimension bounds for piecewise linear neural networks},
 	url = {http://arxiv.org/abs/1703.02930},
@@ -7514,20 +7800,6 @@ TLDR: It is suggested that a central high-dimensionality phase underlies core li
 	keywords = {/unread, attention, nlp, transfomer},
 }
 
-@misc{borde2025,
-	title = {Mathematical {Foundations} of {Geometric} {Deep} {Learning}},
-	url = {http://arxiv.org/abs/2508.02723},
-	doi = {10.48550/arXiv.2508.02723},
-	abstract = {We review the key mathematical concepts necessary for studying Geometric Deep Learning.},
-	urldate = {2025-09-11},
-	publisher = {arXiv},
-	author = {Borde, Haitz Sáez de Ocáriz and Bronstein, Michael},
-	month = aug,
-	year = {2025},
-	note = {arXiv:2508.02723 [cs]},
-	keywords = {/unread, geometric deep learning, logml2025},
-}
-
 @misc{beshkov2024,
 	title = {A rank decomposition for the topological classification of neural representations},
 	url = {http://arxiv.org/abs/2404.19710},
@@ -9272,18 +9544,6 @@ CONCLUSIONS AND RELEVANCE: In this study, the MELD Graph represented a state-of-
 	author = {Tu, Loring W.},
 	year = {2017},
 	keywords = {/textbook, Gauss-Bonnet theorem, atlas, chart, connection/affine connection, curvature, derivation, differential form, differential geometry, directional derivative, distance, exponential map, exterior derivative, geodesic, local operator, manifold/Riemannian manifold, manifold/topological manifold, principal bundle, pullback, shape operator, tangent space, tangent vector, theorema egregium, torsion form, vector bundle, vector field, volume},
-}
-
-@misc{2024c,
-	title = {What are {Diffusion} {Models}? {\textbar} {IBM}},
-	shorttitle = {What are {Diffusion} {Models}?},
-	url = {https://www.ibm.com/think/topics/diffusion-models},
-	abstract = {Diffusion models are generative models that “diffuse” training data with random noise, then learn to reverse the diffusion process to output new images.},
-	language = {en},
-	urldate = {2025-04-07},
-	month = aug,
-	year = {2024},
-	keywords = {/read, course/ComputationBiologySystems, diffusion models},
 }
 
 @misc{zotero-5192,
@@ -17586,16 +17846,6 @@ Plus d'info : laurentschwartz24.sciencesconf.org
 	keywords = {/read, umap},
 }
 
-@book{docarmo1976,
-	title = {Differential {Geometry} of {Curves} and {Surfaces}},
-	url = {http://home.ustc.edu.cn/~huangty0407/DGNotes/Do%20Carmo%20-%20Differential%20Geometry%20of%20Curves%20and%20Surfaces.pdf},
-	urldate = {2024-05-24},
-	author = {Do Carmo, Manfredo},
-	year = {1976},
-	note = {rate: 1},
-	keywords = {/textbook, curve, differential geometry, exponential map, geodesic, surface, vector field},
-}
-
 @misc{ballester2024,
 	title = {Topological {Data} {Analysis} for {Neural} {Network} {Analysis}: {A} {Comprehensive} {Survey}},
 	shorttitle = {Topological {Data} {Analysis} for {Neural} {Network} {Analysis}},
@@ -18616,20 +18866,6 @@ See you next time!},
 	year = {2023},
 	note = {rate: 1},
 	keywords = {/unread, Lie algebra, Lie group},
-}
-
-@misc{cohen2014,
-	title = {Learning the {Irreducible} {Representations} of {Commutative} {Lie} {Groups}},
-	url = {http://arxiv.org/abs/1402.4437},
-	doi = {10.48550/arXiv.1402.4437},
-	abstract = {We present a new probabilistic model of compact commutative Lie groups that produces invariant-equivariant and disentangled representations of data. To define the notion of disentangling, we borrow a fundamental principle from physics that is used to derive the elementary particles of a system from its symmetries. Our model employs a newfound Bayesian conjugacy relation that enables fully tractable probabilistic inference over compact commutative Lie groups -- a class that includes the groups that describe the rotation and cyclic translation of images. We train the model on pairs of transformed image patches, and show that the learned invariant representation is highly effective for classification.},
-	urldate = {2024-05-05},
-	publisher = {arXiv},
-	author = {Cohen, Taco and Welling, Max},
-	month = may,
-	year = {2014},
-	note = {arXiv:1402.4437 [cs]},
-	keywords = {/read, Lie group, equivalence/observational equivalence, invariance, irreducible representation, reducibility, symmetry discovery},
 }
 
 @inproceedings{finzi2021p3icml,
