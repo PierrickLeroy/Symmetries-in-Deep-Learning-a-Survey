@@ -55,7 +55,8 @@ style=alphabetic,
   \vspace{5mm}%
 }
 
-\addbibresource{references.bib} %Import the bibliography file
+% \addbibresource{references.bib} %Import the bibliography file
+\addbibresource{references_checkpoint.bib} %Import the bibliography file
 
 \title{Symmetries and Deep Learning: A Survey}
 \author{Pierrick Leroy}
@@ -66,7 +67,7 @@ style=alphabetic,
 \maketitle
 
 \begin{abstract}
-\pnote{write at the end}    
+\pnote{write at the end}
 \end{abstract}
 
 \section{Introduction}
@@ -158,7 +159,26 @@ In words, $T'$ maps all group elements to the identity group action.
 
 \printbibliography
 
+
+
 \section*{\textnormal{\textless \textgreater}}
+
+
+\myline
+
+\paragraph{Complex transformations} For complex transformations, there might not be a straightforward way to describe the group acting on input space (\textit{e.g.} illumination or age in face recognition \cite{bhattacharya20192sicaccpi}, or partial rotations of digits \cite{urbano2026}).
+Moreover, systems can be quasi-invariant to individual transformations, but this ability might not be robust to composition (\textit{e.g.} illumination and age simultaneously \cite{bhattacharya20192sicaccpi}).
+
+\myline
+
+Riemannian optimization on oblique manifold $\operatorname{diag}(WW^T)=1$ \cite{badrinarayanan2015}
+
+\myline
+
+\paragraph{Invariance\/ Equivariance Quantification}
+\cite{leroy2025} quantifies invariance by analyzing how direction fields in input space are reflected in the embedding space of face recognition models.
+\cite{shen} derives an equivariance error which is a percentage of the total loss and uses it to quantify the cost induced by non-equivariance.
+Empirically, they find that the equivariance error is low for 3D rotation equivariant tasks and quickly optimized under $2$ \% of the total loss.
 
 \paragraph{Lower bound on model expressivity by $\phi$-equivalence}
 \cite{montufar2014anips} recursively identifies disconnected components of the input domain (\cref{def:equivalence}) to lower bound the total number of regions, a measure of the model expressivity, thereby showing that deeper model are exponentially more expressive than shallow ones.
@@ -166,8 +186,7 @@ In words, $T'$ maps all group elements to the identity group action.
 \myline
 
 \paragraph{Face-recognition}
-Face recognition poses the problem of invariance to several interpretable attributes such as pose, illumination, age or face mirroring
-\cite{lal2018ijacsa,leroy2025} and facial emotion recognition adds identity to this list of desirable invariances \cite{bhattacharya20192sicaccpi,huang2019s}.
+Face recognition poses the problem of invariance to several interpretable attributes such as pose, illumination, age or face mirroring \cite{lal2018ijacsa,leroy2025} and facial emotion recognition adds identity to this list of desirable invariances \cite{bhattacharya20192sicaccpi,huang2019s}.
 
 \myline
 
@@ -232,10 +251,15 @@ This idea can be found in geometric deep learning which explicitly distinguishes
 
 \myline
 
-\paragraph{Data augmentation as a cheap ways to achieve invariance}
-Data augmentation is a brute force approach in which a dataset is enriched with . This is inelegant and has inherent limits like computational and storage limits. Indeed, a single continuous symmetry can generate infinitely many augmented points.
-Still, data augmentation has empirical success and is used frequently in industry. In the symmetry discovery scenario, \cite{yang2023p4icml} reports better performances when using data augmentation generated from learned symmetries rather than pure equivariance to those learned symmetries even though for the ground truth symmetries, pure equivariance performs better.
-In the end, data augmentation may be useful when the the transformations are difficult to express with group theory, for example partial symmetry.
+\paragraph{Data augmentation}
+Data augmentation is a brute force approach in which a dataset is enriched with new samples crafted from original ones.
+Note that a single continuous symmetry can generate infinitely many augmented points, so it is clear that the augmented dataset cannot be complete.
+A drawback of data augmentation is the impact on storage and computational costs due to increase in data points.
+In the symmetry discovery scenario, \cite{yang2023p4icml} reports better performances when using data augmentation generated from learned symmetries rather than pure equivariance to those learned symmetries even though for the ground truth symmetries, pure equivariance performs better.
+Data augmentations may be the only game in town when the transformations are difficult to express with group theory (e.g. face recognition \cite{bhattacharya20192sicaccpi}), or to address example partial symmetry.
+Instead of inferring symmetries as in symmetry discovery, some works propose to search directly for data augmentation policies with positive impact on the validation set \cite{cubuk20192iccvprc,lim2019anips}.
+Data augmentation are often perceived as a cheap way to achieve invariance, less elegant than invariant architecture, but they have empirical success and are used frequently in industry.
+\cite{shen} provides insight on the relevance of using equivariant architectures
 
 \myline
 
