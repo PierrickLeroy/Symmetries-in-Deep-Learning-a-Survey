@@ -55,8 +55,7 @@ style=alphabetic,
   \vspace{5mm}%
 }
 
-% \addbibresource{references.bib} %Import the bibliography file
-\addbibresource{references_checkpoint.bib} %Import the bibliography file
+\addbibresource{references.bib} %Import the bibliography file
 
 \title{Symmetries and Deep Learning: A Survey}
 \author{Pierrick Leroy}
@@ -72,7 +71,7 @@ style=alphabetic,
 
 \section{Introduction}
 
-
+\pnote{write at the end}
 
 \subsection{Related work}
 We list previous work that have collected or formalized literature on symmetries in a deep learning context.
@@ -155,14 +154,60 @@ In general, the only requirement is that $T$ and $T'$ are linear representations
 From \Cref{eq:general-equivariance}, we see that invariance can be realized as a special case of equivariance, namely taking $T'(g)=id_{\mathcal Y}$ for all $g$.
 In words, $T'$ maps all group elements to the identity group action.
 
+\section{Symmetry as a design principle}
+
+\subsection{Geometric deep learning}
+
+% Equivariant layers, domain it has been applied to
+
+\subsection{Data augmentation}
+
+\section{Symmetry as an unknown}
+
+\subsection{Symmetry discovery}
+
+\subsection{Symmetry breaking}
+
+\section{Parameter space symmetries}
+
+\subsection{Consequences on learning dynamics}
+
+\section{Extended symmetries}
+
+\subsection{Partial, approximate symmetries}
+
+\subsection{Orbital position, pose}
+
+% Pose or canonical orientation, class-specific symmetries
+Class-pose methods factor data points into an \textit{invariant representation} and a \textit{pose}.
+\cite{urbano2026} proposes to extract a class-specific canonical representative pose which can be used as an independent layer to convert a non-invariant model into and invariant one.
+
+
+
 \newpage
 
 \printbibliography
 
-
-
 \section*{\textnormal{\textless \textgreater}}
 
+
+
+\myline
+
+\paragraph{Information geometry}
+\cite{liang2019pticais} utilize the Fisher-Rao metric to develop a norm-based complexity measure that remains invariant to reparameterization.
+
+\myline
+
+\paragraph{Linear networks}\cite{li2018}
+
+\myline
+
+\cite{wang2025} uses a permutation-equivariant architecture to remove the reliance on a reference frame in visual geometry reconstruction.
+
+\myline
+
+\cite{elbaz2025} proposes a permutation equivariant version of the KAN architecture\cite{liu2025c}.
 
 \myline
 
@@ -305,7 +350,7 @@ These derivative fields are less focused on symmetry.
 \myline
 
 \paragraph{Geometric deep learning}
-The objective of Geometric Deep Learning \cite{bronstein2017ispm, bronstein2021} is twofold: (1) provide a unifying view of deep learning architecture and (2) extend deep learning on new domains like graphs or manifolds in a convincing, principled way
+The objective of Geometric Deep Learning \cite{bronstein2017ispm, bronstein2021} is twofold: (1) provide a unifying view of deep learning architectures and (2) extend deep learning on new domains like graphs or manifolds in a convincing, principled way
 In this field symmetry and equivariance are used a design principle.
 This makes it possible to derive the form of a convolutional neural network from requiring translational equivariance, convolution is thus given a particular role.
 \cite{kondor2018p3icml} argues that convolution is not just a way to achieve equivariance to a group action, it is also necessary necessary that an equivariant feedforward networks implements a (generalized group) convolution which takes the form 
@@ -322,6 +367,7 @@ where $f$ and $g$ are functions on the group $G$.
 
 \paragraph{Equivariant deep learning}
 The field of equivariant deep learning can be seen as a subfield of Geometric Deep Learning focused on designing equivariant neural networks.
+Diffusion models can be made equivariant: \cite{xu2026a} propose an architecture for molecular structure generation which constrains the target probability distribution to be SE(3)-equivariant.
 
 
 \end{document}
