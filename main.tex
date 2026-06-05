@@ -496,17 +496,19 @@ Furthermore, \citet{yang2023p4icml} observe, and \citet{finzi2021anips} formaliz
 
 
 \subsubsection{Symmetry Extraction from Learned Models}
-
-% seminal papers: goodfellow2009anips, lenc2014a
-% Using a firing rate of neurons, \citet{goodfellow2009anips} propose a template for invariance measure at the neuron level: $S(i)=\frac{L(i}{G(i)}$ where the numerator $L(i)$ computes the average firing rate of a neuron for a given transformation type and range, while the denominator $G(i)$ is a normalization making sure the neuron is not always active. To be considered invariant, the neuron must stably activate and be selective and this definition is extended to the whole network by averaging over top invariant subpopulation of neurons.
-% \cite{lenc2014a} propose a way to test whether features of trained networks are compatible with learning an equivariant mapping \textit{i.e.} whether there exist a $M_g$ linear such that $M_g \phi (x) \approx \phi (g x)$ (the same methodology is applied to test if two networks can be stitched together, see \pnote{ref section}) for a single, specific transformation at a time.
-
 % what symmetries have been learned by a network
 % perin2025
 
 % otto2025
 
-% krippendorf2020: full loop with \Cref{sec:sym-disc-from-data} symmetry extraction for data symmetry discovery
+\paragraph{Seminal works}
+\citet{goodfellow2009anips} propose an empirical invariance score at the neuron level: $S(i) = L(i)/G(i)$, where $L(i) = \frac{1}{|Z|}\sum_{z \in Z}\frac{1}{|T(z)|}\sum_{x \in T(z)} f_i(x)$ is a \textit{local firing rate}—the fraction of transformed versions of a maximally activating input $z \in Z$ that still activate neuron $i$, and $G(i) = \mathbb{E}[f_i(x)]$ is a \textit{global firing rate} on random stimuli, enforcing selectivity by penalizing neurons that fire indiscriminately.
+A neuron scores high on $S(i)$ only if it reliably responds to transformations of its preferred input while remaining silent on generic ones, thereby capturing an activity-dependent measure of neuron-level invariance.
+A network-level score averages $S(i)$ over top-$p$ fractions of neurons in a layer, allowing different subpopulations to specialize in different transformation types while still detecting it symmetry.
+\citet{lenc2014a} take a complementary approach: rather than measuring invariance directly, they probe whether a learned representation is compatible with equivariance by testing for the existence of a linear map $M_g$ such that $M_g \phi(\mathbf{x}) \approx \phi(g\mathbf{x})$, one transformation $g$ at a time.
+When such a map can be learned, the representation is equivariant to $g$ (invariant if $M_g$ reduces to the identity).
+The map is estimated via sparse regression with structured sparsity constraints that respect the convolutional locality of the representation, making the problem tractable.
+Applied layer-by-layer to AlexNet, the method reveals that equivariance to geometric transformations (vertical flips, rotations) degrades with depth while task-specificity increases, confirming the progressive specialization of deep features.
 
 \citet{krippendorf2020} exploit the observation that, when a classifier is trained on a task whose labels are invariant under a group action—for instance, predicting the discretized value of a rotation-invariant potential $V(\|x\|)$—symmetry-related inputs (points on the same orbit) collapse to tighter clusters in the embedding layer than arbitrary same-class points. This tighter clustering is used to identify orbit point clouds in the input space, from which infinitesimal generators are extracted by linear regression on nearest-neighbor pairs $(p, p')$ under the first-order ansatz $p' \approx p + \varepsilon_a T^a p$, where $T^a$ are the unknown generators. The method recovers $SO(n)$ and $SU(2)$ generators from noisy data and constitutes a full loop with \Cref{sec:sym-disc-from-data}: the learned model's representations serve as the probe that reveals the symmetry structure of the data.
 
@@ -584,6 +586,9 @@ They argue that early layers focusing on local features could be most equivarian
 % Symmetry as an analytical lens — using symmetry to understand generalization, optimization, and representations
 
 \subsection{Parameter-space symmetries}
+
+% seminal work on parameter-space symmetries testing: lenc2014a
+\citet{lenc2014a} use the same stitching-layer methodology that allowed them to test equivariance, repurposed to test whether two independently trained networks are equivalent i.e., whether a map $E_{\phi \to \phi'}$ exists such that $E_{\phi \to \phi'} \phi(\mathbf{x}) \approx \phi'(\mathbf{x})$---see \Cref{sec:sym-disc-from-data}.
 
 % Characterization: what transformations preserve the function?
 
