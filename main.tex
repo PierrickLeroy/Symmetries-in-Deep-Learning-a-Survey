@@ -2,7 +2,7 @@
 \usepackage{graphicx} % Required for inserting images
 \usepackage[
 % backend=biber,
-style=alphabetic, % alphabetic, numeric
+style=numeric, % alphabetic, numeric
 natbib=true,
 % maxnames=1,
 % sorting=ynt
@@ -28,6 +28,7 @@ natbib=true,
 \usepackage{booktabs}
 \usepackage{tabularx} % For text wrapping in the last column
 \usepackage{multirow} % Required to span cells across rows
+\usepackage[title]{appendix} % Generates "Appendix A" instead of just "A"
 
 % for definitions
 \theoremstyle{definition}
@@ -83,6 +84,8 @@ natbib=true,
 
 % First paragraph of the introduction in ennes2025fcm
 
+% makse2025: book on symmetries
+
 \subsection{Methodology}
 % Starting point: initial stack of paper collected over 2 years along the way
 % Completion of the initial stack by keyword search on scopus, google scholar and by AI powered tools like research-rabbit or elicit
@@ -91,13 +94,14 @@ natbib=true,
 % The different sections have some degree of overlap and the positioning of branches in the taxonomy is indicative of main tendencies but not capturing all the diversity or granularity (many works combine different technique, or could be classified in two different ways depending on what is put forward). It is a simplifying picture.
 
 \subsection{Related work}
-We list previous work that have collected or formalized literature on symmetries in a deep learning context.
+Previous work have collected or formalized literature on symmetries in a deep learning context.
 Symmetric architecture (such as Siamese networks) are surveyed in \cite{ilina2022sa}.
 \cite{zhao2025} focuses on parameter-space symmetries: transformation that change the representation of a neural network but do not modify the implemented function.
 \cite{sipiran202523scgpis} references symmetry discovery methods in 3D shapes
 % geometric deep learning
 \cite{bronstein2021} is the reference textbook on geometric deep learning,  \cite{gerken2021,carlsson} study the mathematical formalism of this field and \cite{basheer2025ijdsa,habte2023} focus more specifically on equivariant convolutions, \cite{fei2024air} on 3D rotations and \cite{seo2025a} on robotics.
 \cite{rath2024air} gathers methods that integrate geometric prior knowledge to neural network such that their representations are invariant or equivariant.
+Compared to these works, we work in a reverse and go broad, starting from the concept of symmetry listing its occurrences and trying to delineate a conceptual understanding, adopting a high level point of view.
 
 
 \section{Background}
@@ -106,7 +110,7 @@ Symmetric architecture (such as Siamese networks) are surveyed in \cite{ilina202
 
 \subsection{What is a Symmetry?}
 
-
+% reasons symmetry appears: (a) it's present in the problem, (b) it emerges from the architecture or training procedure
 
 A \textit{symmetry} is a transformation that leaves an object as a whole unchanged, it is statement about identity.
 \textit{Invariance} is a broader, functional term that refers to the situation where a property of an object does not change under a transformation.
@@ -169,14 +173,35 @@ In general, the only requirement is that $T$ and $T'$ are linear representations
 From \Cref{eq:general-equivariance}, we see that invariance can be realized as a special case of equivariance, namely taking $T'(g)=id_{\mathcal Y}$ for all $g$.
 In words, $T'$ maps all group elements to the identity group action.
 
+\subsection{Mathematical Foundations of Symmetry}
 
-\subsection{ Mathematical Foundations of Symmetry}
-% Group Theory: discrete (permutation, cyclic…) or continuous/Lie (Euclidean, Lorentz) groups and Lie algebra, representation theory and irreducible representations
-% Group action, Tensor algebra, spherical harmonics (used a lot in Euclidean neural networks)
-% Manifold/Gauge Theory: fiber bundles, local symmetries
-% Homogeneous space
-% Category theory
+% Core notions
 % \cite{borde2025,carlsson,chen2020,2023tg,bronstein2021}
+
+% Group Theory, the algebraic backbone: Group (closure, associativity, identity, inverses), group action (orbits, stabilizers, free vs. transitive actions)
+% Discrete (permutation, cyclic...) vs continuous/Lie (Euclidean, Lorentz...) groups
+% Subgroups, direct products, semidirect products
+% Compactness and Peter-Weyl theorem guaranteing reducibility, non-compact groups are more difficult: no reducibility of representations, Haar measure
+% give an example of a simple group, reference a textbook
+
+% Representation theory: linear representation, group homomorphism
+% irreducible representations (irreps), reducibility for compact groups (kondor2018p3icml,cohen2014), tensor algebra
+% Schur's lemma
+% Isotypic decomposition and its role in constraining architecture: used in weiler2019anips.md, xu2022p3icml.md, yarotsky2018r.md, gibson2024.md
+
+% Harmonic analysis on groups
+
+% Homogeneous Spaces cohen2019anips
+
+% Advanced notions
+% Structures beyond groups (no inverse: semigroup)
+% Tensor algebra
+% spherical harmonics (used a lot in Euclidean neural networks)
+% Lie algebra, Exponential and logarithmic map, Infinitesimal generators
+% Manifold/Gauge Theory: fiber bundles, Principal bundle, section, steerable kernels, local symmetries, free action
+% Symmetry breaking
+
+% CLAUDE WRITE HERE
 
 \subsection{Taxonomy and paper organization}
 % A taxonomy where each cell contains a branch name and a few representative works
@@ -185,7 +210,7 @@ In words, $T'$ maps all group elements to the identity group action.
 We propose a few criterion to categorize occurrences of symmetries in a deep learning context.
 
 
-\begin{table}[h]
+\begin{table}[ht]
     \centering
     \begin{tabularx}{\textwidth}{|c|c|c|c|X|}
         \hline
@@ -231,6 +256,7 @@ We propose a few criterion to categorize occurrences of symmetries in a deep lea
 
 % Irreducible representation (seems to be particularly used for E(n) equivariance)
 % add citation to dehmamy2021anips: achieve equivariance through Lie algebra
+% scale: sosnovik2020 (scale equivariant convolutions), bekkers2021, sosnovik20212iwcacvw (application of scale equivariance in object tracking with Siamese architecture)
 
 Geometric Deep Learning (GDL) \cite{bronstein2017ispm,bronstein2021} is concerned with the design of equivariant layers on various geometric domains.
 It provides a unifying framework for deep learning architectures by viewing them through the lens of symmetry and group equi\slash invariance.
@@ -239,43 +265,51 @@ This perspective simultaneously furnishes a common mathematical framework for ex
 As a result, equivariant neural network architectures typically benefit from fewer learnable parameters, better interpretability (\textit{e.g.} CNNs filter), robustness guarantees (since the network behavior is dictated by symmetry groups, its response to some data manipulation is deterministic) and generalization properties (out-of-distribution data points can become in-distribution once a symmetry is imposed \textit{e.g.} an image with an upside down car).
 An accessible treatment of the underlying mathematical foundations is given in \cite{borde2025,gerken2021,carlsson}.
 
-\paragraph{The role of convolution}
-\cite{cohen2016} showed how convolutional networks can be generalized into Group Convolutional neural networks (G-CNNs) to exploit larger groups of symmetries, including discrete rotations and reflections.
+\subsubsection{The role of convolution}
+\cite{cohen2016} showed how convolutional networks can be generalized into \textit{Group Convolutional neural networks} (G-CNNs) to exploit larger groups of symmetries, including discrete rotations and reflections.
 An important result of GDL is obtained by \cite{kondor2018p3icml} for compact groups.
 They provide general guidelines for constructing equivariant neural networks with respect to compact groups and show that the convolutional structure is not just sufficient but necessary for designing equivariant NN (under some hypotheses).
 Similar statements are obtained in the context of the $SE(3)$ group\cite{weiler2018anips} and for homogeneous spaces in \cite{cohen2019anips} by rephrasing G-CNNs in a general fiber bundle formalism.
 
-\paragraph{Euclidean transformations}
+\subsubsection{Euclidean transformations}
 % Tess schmidt, Euclidean neural network, spherical harmonics, irreducible representations
+% thomas2018
 An important branch of GDL is concerned with Euclidean transformation since these are pertaining to the physical world.
-For planar images, \cite{weiler2019anips} provides a general description of $E(2)$-equivariant convolutions in the Steerable CNN framework \cite{cohen2016a}, constraining convolution kernels via the irreducible representations of the group, yielding a kernel basis whose elements are combined by learnable weights and thus ensuring equivariance.
+With the introduction of G-CNNs, \cite{cohen2016} demonstrate its principle on discrete rotations and reflections.
+\citet{worrall2017} achieve continuous rotation equivariance for CNN on 2D images by restricting the filters to the class of circular harmonics.
 Spherical CNNs \cite{cohen2018} uses a generalized Fast Fourier Transform to achieve $3$D rotation equivariance and the $SE(3)$ case is addressed in \cite{weiler2018anips}.
-A practical software framework implementing $E(3)$-equivariant operations including tensor products, spherical harmonics, and attention mechanisms is provided by \texttt{e3nn} \cite{geiger2022}.
+For planar images, \cite{weiler2019anips} provides a general description of $E(2)$-equivariant convolutions in the Steerable CNN framework \cite{cohen2016a}, constraining convolution kernels via the irreducible representations of the group, yielding a kernel basis whose elements are combined by learnable weights and thus ensuring equivariance.
+A practical software implementing $E(3)$-equivariant operations including tensor products, spherical harmonics, and attention mechanisms is provided by \texttt{e3nn} \cite{geiger2022}.
 
-\paragraph{Extensions}
+\subsubsection{Extensions: Lie groups and Gauges}
 % Lie groups
 \cite{finzi2020p3icml} proposes a general method to construct equivariant convolutional layers for any Lie group with a surjective exponential map.
-\cite{finzi2021p3icml} provides a general algorithm for constructing equivariant MLP for arbitrary matrix groups by collecting symmetry constraints and solving the system with an SVD decomposition, recovering known solutions as special cases.
 G-CNNs are further generalized to arbitrary Lie group in \cite{bekkers2021}.
+\cite{finzi2021p3icml} provides a general algorithm for constructing equivariant MLP for arbitrary matrix groups by collecting symmetry constraints and solving the system with an SVD decomposition, recovering known solutions as special cases.
 % Gauge
 A gauge-equivariance perspective is given by \cite{cohen2019p3icml,gerken2021,weiler2026,boyda2021prd}.
+% GATr and Clifford/geometric algebra approach: ruhe2023, brehmer2023
 
-\paragraph{Permutations}
+\subsubsection{Permutations}
+
+\paragraph{Sets}
+% maron2020p3icml
 When data is unstructured (sets), spatially unorganized (point clouds), or defined on a graph, models must be invariant to the order of input elements.
 \cite{zaheer2018} characterizes permutation-invariant functions on sets and derives necessary and sufficient conditions for permutation equivariance in deep models, showing that any such function decomposes into a sum of per-element transformations followed by a global aggregation (universal approximation of set functions) and \cite{lee2019p3icml} extends the methods to allow for interaction between set elements with an attention-based architecture.
 PointNet \cite{qi2017a} pioneered deep learning directly on raw point clouds by applying a symmetric aggregation function to independently transformed elements, and PointNet++ \cite{qi2017} introduced hierarchical local grouping to capture multi-scale geometric structure.
 \cite{wang2019} bridges point clouds and graphs by dynamically computing a k-nearest-neighbor graph in feature space at each layer, enabling richer local context without a fixed input graph.
 
+\paragraph{Graphs}
+% huang2023: distinguishes active and passive graph symmetries in constrat to CNNs
 On graphs, permutation equivariance applies to the node indices.
 The message passing framework \cite{gilmer2017} unified earlier graph models \cite{duvenaud2015,kipf2017,bruna2014} into a single formalism involving a message function, an aggregation function (enforcing permutation invariance), and an update function.
 \cite{velickovic2018} incorporated an attention-like mechanism into this scheme while preserving permutation invariance.
 % TODO: morris2019pacai, xu2019, bouritsas2021, bodnar2021a, maron2020
-
 For geometric graphs, where nodes carry coordinates in $\mathbb{R}^3$, permutation equivariance must be combined with Euclidean symmetries.
 \cite{satorras2021p3icml} achieves joint $E(n)$-equivariance and permutation equivariance through invariant edge features based on interpoint distances, without requiring costly higher-order representations.
 \cite{fuchs2020} attains $SE(3)$-equivariance via self-attention on steerable features, at higher computational cost but with greater expressivity.
 
-\paragraph{Applications}
+\subsubsection{Applications}
 GDL principles have been successfully applied to a wide range of domains. In molecular science, \cite{satorras2021p3icml} demonstrates joint $E(n)$-equivariance and permutation equivariance for chemical property prediction and $n$-body dynamics, while \cite{cornet2024} extends this to equivariant diffusion models for 3D molecule generation.
 Atomic energy and force prediction benefit from equivariant graph transformers such as Equiformer \cite{liao2022} and its scaled variant EquiformerV2 \cite{liao2023}.
 In structural biology, AlphaFold \cite{jumper2021na} and RoseTTAFold \cite{baek2021s} leverage geometric inductive biases for highly accurate protein structure prediction, while \cite{townshend2021s} applies $SE(3)$-equivariant networks to RNA structure scoring, achieving state-of-the-art results in a limited data settings.
@@ -285,31 +319,49 @@ In natural language processing, \cite{gordon2020} exploits permutation equivaria
 In computer vision, equivariant networks have been applied to omnidirectional images and global climate pattern recognition via spherical CNNs \cite{cohen2018,cohen2019p3icml}, and to 3D object detection \cite{yu2022}.
 For robotics and 3D scene understanding, equivariance to Euclidean transformations is a natural requirement, as surveyed in \cite{seo2025a,fei2024air}.
 
-\paragraph{Expressivity}
+\subsubsection{Expressivity}
 % Expressivity: do symmetry constraints impact the approximation power of GDL models ?
+% ravanbakhsh2020p3icml: universality of an MLP architecture
 Enforcing symmetry constraints raises the question of expressivity (or \textit{universality} \cite{maass2024}) \textit{i.e.} the ability to represent an arbitrary function within its symmetric hypothesis class.
 In that regard, distinguishing non-isomorphic graphs has been a central theoretical concern in the GNN community: \cite{xu2019} proved that message passing networks are at most as powerful as the Weisfeiler--Lehman (WL) graph isomorphism test, and \cite{maron2020} showed that higher-order tensor networks can match higher-order WL tests.
 Subsequent work sought to surpass the 1-WL barrier by incorporating structural features: \cite{bouritsas2021} counts subgraph isomorphisms, and \cite{bodnar2021a} lifts graphs to cell complexes, achieving provably greater expressivity while retaining efficient computation.
 Universality results remain scarce, for Euclidean equivariant networks \cite{yarotsky2018r} establishes universal approximation for invariant maps, and \cite{bogatskiy2020p3icml} proves universality for Lorentz-equivariant models, while \cite{kondor2018p3icml} shows that equivariant linear maps between feature spaces over homogeneous spaces are necessarily generalized convolutions and \cite{pacini2026} establishes that shallow equivariant models can fail to be universal, but that sufficient depth or the addition of appropriate readout layers restores universality within the entry-wise separable regime.
 
-\paragraph{Optimization challenge}
+\subsubsection{Topological domains}
+% papillon2023, bodnar2021a, battiloro2024
+
+\subsubsection{Challenges}
+
+\paragraph{Optimization}
 % Optimization of GDL models: does the symmetry constraint make optimization harder compared to a vanilla model ?
 Maintaining exact equivariance can introduce significant computational overhead.
 Models based on irreducible representations are computationally heavy even though recent work has optimized the tensor product decomposition \cite{passaro2023,luo2024a}.
 Equivariant architectures may require higher numerical precision, larger memory footprints, longer wall-clock training times relative to unconstrained counterparts and have a dependence to the input size which can limit their scalability to large systems \cite{bogatskiy2020p3icml}.
 Optimization difficulties for equivariant neural networks have been observed \citep{pertigkiozoglou2024,lawrence2026}.
 
-\paragraph{Equivariant or vanilla architectures ?}
+\paragraph{The ``symmetry bottleneck''}\label{par:sym-bottleneck}
+Equivariant neural network methods demand \textit{a priori} knowledge of the data's symmetries before they can be hard coded to the architecture.
+While not preventing adoption of these methods, this create a bottleneck because:
+\begin{enumerate}
+    \item \textbf{Unknown symmetries}: in real datasets symmetries are often unspecified or difficult to define analytically.
+    \item \textbf{Manual sophistication}: understanding which symmetry group acts on data or designing a novel architecture requires domain expertise and mathematical sophistication.
+    \item \textbf{Inflexibility}: once a symmetry is hard-coded into the architecture, the model cannot adapt if the assumptions are wrong.
+    Many real-world datasets only approximately satisfy a given symmetry, for instance due to sensor noise, occlusions, or genuine symmetry breaking in the underlying phenomenon and in that case strictly equivariant models may then be over-constrained
+\end{enumerate}
+Fortunately, these hurdles are being addressed: (1) by symmetry discovery (\Cref{sec:sym-disc-from-data}), (2) by theoretical work aiming to construct equivariant networks for arbitrary groups and (3) by approximate or soft-equivariance methods (\Cref{sec:soft-equivariance}).
+
+% Are there problems that remain unadressed: which groups have not been conquered
+
+\subsubsection{Equivariant or vanilla architectures ?}
 % Equivariant architecture vs vanilla
+% add: brehmer2025
+% tahmasebi2023: similar to elesedy2021p3icml, obtains theoretical sample complexity gains
+% vadgama2025 similar to lawrence2026
 A practical question is whether the design costs, potential difficulties in optimization and hardware regret due to less mature technology of equivariant models is justified over a simpler model, possibly trained with data augmentation.
 \cite{nordenfors2024} compare stability of equivariant and vanilla counterpart with data augmentation and \cite{shen2026} provides empirical evidence that, for 3D-rotation equivariant tasks, unconstrained models trained with augmentation reduce their equivariance error rapidly to below 2\% of the total loss within thousands of steps
 However equivariant architectures are arguably preferable when data is scarce, when physical consistency of predictions is required, or when generalization to unseen orientations or configurations is critical.
-\citet{lawrence2026} propose a decision rule depending on the amount of symmetry bias in the dataset and its correlation with labels.
+\citet{lawrence2026} propose a decision rule depending on the amount of symmetry bias in the dataset and its correlation with labels and \citet{rygiel2026} find similar conclusion by empirically comparing equivariant and vanilla models on datasets having a varying degree of alignement.
 On the theoretical side, \cite{elesedy2021p3icml} obtain a strict generalization benefit in favor of equivariance for linear models.
-
-\paragraph{Real-world applicability}
-% Which problems remain challenging
-Many real-world datasets only approximately satisfy a given symmetry, for instance due to sensor noise, occlusions, or genuine symmetry breaking in the underlying phenomenon and in that case strictly equivariant models may then be over-constrained (see other sections).
 
 \subsection{Data augmentation}
 Data augmentation (DA) enriches a training set by applying transformations that are known, or assumed, to leave the target label unchanged.
@@ -330,12 +382,13 @@ For infinite width and kernel classifier settings,  is shown to be equivalent to
 The value of DA might be context dependent with relevant aspect being the learning regime (over- or underparametrized) and task (classification or regression).
 A spectral point of view is given in \citet{lin2024} while \citet{lawrence2026} further studies the role of the symmetry distribution.
 
-\paragraph{Automated  strategies}
+\paragraph{Automated  strategies}\label{par:auto-da}
+% automated DA vs sym discovery: automated DA has the goal of producing new augmentations, it can be transductive whereas sym discovery is more inductive and aims at recognizing the group and its actions (which can be an intermediate step before generating augmentations anyways)
 Rather than hand-crafting augmentation policies, several works have proposed to search for them automatically.
 \citet{cubuk20192iccvprc} introduce AutoAugment, which uses reinforcement learning to find a policy composed of image-processing operations such as rotations, translations, and shearing, optimized for validation accuracy.
 \citet{lim2019anips} reduced the search time by leveraging Bayesian optimization over policies and using \textit{density matching} as a criterion: a minimization of the divergence between the augmented and training distributions and a differentiable approach was proposed in \citet{hataya2020cv-e2} by training a generative adversarial network (GAN) to output augmentation parameters minimizing a similar density-matching objective, further accelerating the search.
 Another strategy is to transfer augmentations across domains: \citet{antoniou2018} learn a GAN on a data-rich source domain and replay the learned transformations on a data-scarce target domain.
-Symmetry discovery can be operationalized by  in a straightforward two-step pipeline, for instance by inferring a Lie algebra basis and using augmentation in a (soft) inductive bias \citep{escriche2025,yang2023p4icml}.
+Symmetry discovery can be operationalized by in a straightforward two-step pipeline, for instance by inferring a Lie algebra basis and using augmentation in a (soft) inductive bias \citep{escriche2025,yang2023p4icml} (see \Cref{sec:sym-disc-from-data} for more on symmetry discovery).
 A practical advantage shared by all these approaches is interpretability: learned augmentations produce concrete transformed examples that can be inspected directly.
 One limitation, however, is that materializing augmentations requires an explicit parametric form for the transformations.
 \citet{shoshan2021} partly circumvent this in the face-generation setting by showing that a scalar attribute predictor (\textit{e.g.} age) provides sufficient supervision for a GAN to learn to manipulate that attribute in a controllable way without a closed-form group action.
@@ -348,116 +401,291 @@ Similarly to DA, FA can be applied beyond strict group-invariance settings, acco
 Comparing DA to equivariant architectures, \citet{nordenfors2024} show that the relative advantage depends on a compatibility condition between the spaces of admissible and equivariant layers: when it holds, the two strategies share the same set of equivariant stationary points.
 Empirically, \citet{shen2026} find that DA rapidly learn 3D rotation equivariance with negligible efficiency gap attributable to lack of strict equivariance.
 
+\subsection{Symmetric framework: Siamese networks and self-supervised learning}
+
+
+
 \section{Symmetry as an unknown}
 
 % One way to look at symmetry discovery vs approximate (or soft) equivariance. Symmetry discovery is additive: it assumes less symmetry and gathers evidence for, while symmetry breaking is retractive: it assumes more and gathers evidence against.
-Approximate equivariance and discovery are in some sense conceptual opposites of one another.
-Symmetry discovery makes few assumptions on the possible symmetries and let the model learn them, while approximate equivariance does the opposite: it makes too much assumptions and let the model disrespect or unlearn them if necessary \textit{i.e.} what the model learns is when to deviate from the posited symmetries.
+% Approximate equivariance and discovery are in some sense conceptual opposites of one another.
+% Symmetry discovery makes few assumptions on the possible symmetries and let the model learn them, while approximate equivariance does the opposite: it makes too much assumptions and let the model disrespect or unlearn them if necessary \textit{i.e.} what the model learns is when to deviate from the posited symmetries.
+% A common theme that makes working with unknown symmetries difficult is that symmetries are constraints on the functions a model can represent and are therefore not encouraged by objectives that optimize data fit, thus methods need to be nudged towards symmetries otherwise the asymmetric version is always favored \citep{ouderaa2022,benton2020anips,ouderaa2024}.
+
+\subsection{Symmetry Discovery}
+
+Symmetry discovery refers to the problem of automatically learning or identifying symmetries present in data or learned by neural networks, without requiring (full) prior knowledge of what those symmetries are.
+The core motivation is twofold:
+\begin{enumerate}
+    \item \textbf{Practical}: Overcome partly the symmetry bottleneck (\Cref{par:sym-bottleneck}) or obtain performance improvements by leveraging previously unidentified symmetries in real-world dataset (data symmetries).
+    \item \textbf{Theoretical}: Understanding what symmetries a network implicitly learns provides insights into its behavior and learned inductive biases.
+\end{enumerate}
+
+In full generality, the object to identify is a triple $(G, \rho_X, \rho_Y)$, where the equivariance constraint is :
+\begin{equation}
+    f(\rho_X(g) x) = \rho_Y(g) f(x) \quad \forall g \in G.
+\end{equation}
+$\rho_X$ and $\rho_Y$ are representations of the same abstract group $G$, but they can be entirely different---same symmetry, different actions.
+$f$ is the predictor $f_\theta$ in the case of symmetry extraction from a trained network and the unknown ground truth function $y^*$ in the case of symmetry discovery from data.
+% works are not always explicit about finding \rho_X, \rho_Y in the triple $(G, \rho_X, \rho_Y)$
+
+In the first part of this section, we look at symmetry discovery in data, then proceed with learned symmetries.
 
 
+\subsubsection{Symmetry Discovery from Data}\label{sec:sym-disc-from-data}
 
-\subsection{Symmetry discovery}
+% hu2025nn seems similar to krippendorf2020
+% add: ko2024anips
 
 % Introduction on symmetry discovery: what it is and why is it relevant.
-Symmetry discovery addresses the problem of identifying, from data alone, the transformations under which a system or dataset is invariant or equivariant, without prior specification of the symmetry group.
-This is practically motivated as faced with a task, the correct symmetry group may not be obvious (if it exists) and specifying the wrong symmetry group could affect performance.
+We review works aiming to identify the transformations under which a dataset is invariant or equivariant.
 The goal is therefore to infer a group $G$ and its action on data such that a target function $\phi$ satisfies \Cref{def:invariance} or \Cref{def:equivariance}, purely from a finite number of observations.
+
+% ---- Relation to automated DA and GDL ----
+Symmetry discovery is conceptually related to automated DA (\Cref{par:auto-da}), but with the distinction that automated augmentation policies produce new training examples while symmetry discovery methods place emphasis on the extraction of the symmetry itself as an interpretable, reusable object that can be injected into a model's inductive bias, used for augmentation or simply as a diagnostic.
+Similarly, the field is related to geometric deep learning and equivariant layer design as several works simultaneously discover and enforce symmetries so that the model becomes more equivariant as evidence for the symmetry accumulates \citep{benton2020anips,ouderaa2022,otto2025,escriche2025}.
 
 % A simple mathematical statement to formalize the problem.
 Formally, in the simpler case of invariance detection, given a dataset $\{x_i\}_{i=1}^n \subset \mathcal{X}$ drawn from a distribution $p$, symmetry discovery seeks a set of transformations $\mathcal{T} = \{T_g : \mathcal{X} \to \mathcal{X} \mid g \in G\}$ such that $p$ is invariant under $\mathcal{T}$, i.e.\ $T_g \# p = p$ for all $g \in G$, where $T_g \# p$ denotes the pushforward of $p$ under $T_g$.
-The discovered group should be non-trivial: the identity transformation is always a solution, so methods must preempt this degenerate collapse.
+The discovered group should be non-trivial: the identity is always a valid solution leading some works to actively incorporate mechanisms such as volume-preservation constraints, or entropy maximizers to avoid this degenerate outcome \citep{benton2020anips,yang2023p4icml,escriche2025}.
  
 % Seminal works: highnam1985,wolter1985tvc (the problem is not new)
+\paragraph{Seminal works}
 The problem of detecting symmetries from finite data is not new; in the 1980s \citet{highnam1985} and \citet{wolter1985tvc} provided algorithms for finding all rotational and reflective symmetries of planar and three-dimensional point sets.
 An early machine learning approach appeared in \citet{rao1998anips}, who framed symmetry discovery in visual perception as learning Lie group operators from infinitesimally transformed image patches via an unsupervised Bayesian algorithm.
 
-% Sym disco is related to automatic data augmentation policies
-% Which work learn discrete vs continuous symmetries ?
-% Lie group prevalence, compact Lie groups, representation of compact Lie groups (linear actions), Lie algebra
-% GANs
-% cite: yeh2022p2icais, zhou2021, krippendorf2020
-% Learn groups and their disentangled/irreducible representations: cohen2014, quessard2020anips, ennes2025fcm
-% Lie groups
-% GANs
-% Avoid collapse to identity in discovery
-% Which works use Lie algebra formalism ?
+\paragraph{Discrete vs continuous symmetry learning}
+Discrete symmetries, can be approached through combinatorial search over parameter-sharing schemes \citep{yeh2022p2icais,zhou2021} or Cayley table extraction~\citep{sanborn2022}.
+Continuous symmetries benefit from the smooth structure of Lie groups and are usually approached by parameterizing transformations through their Lie algebra and the matrix exponential map \citep{benton2020anips,ouderaa2022}.
+Estimation of the Lie algebra by learning a basis of infinitesimal generators from data is proposed by  \citet{dehmamy2021anips,yang2023p4icml}.
+Additionally, regularization terms can be put on Lie generators \citep{escriche2025} to prevent collapse.
 
-Closer to our time, \citet{cohen2014} proposed a probabilistic model that learns irreducible representations for compact commutative Lie groups such as toroidal subgroups (\textit{i.e. }the commutative part) of $SO(D)$.
+% ---- Compact Lie groups, representation theory, and GAN-based methods ----
+\paragraph{Generative approaches}
+\citet{desai2022prd} introduce a GAN-based framework, where the generator learns maps that preserve the data distribution relative to a reference, formalizing a statistical notion of symmetry.
+\citet{yang2023p4icml} propose \textit{LieGAN}, where a generator learns a Lie algebra basis $\{L_i\}$ such that transformations of the form $\exp(\sum_i w_i L_i)$ preserve the data distribution, with an additional discriminator forcing \textit{distribution-matching} while regularizers on the generators prevent both identity collapse and redundancy of learning basis elements.
 
-\citet{vanderwilk2018anips} incorporates invariance desiderata into the prior of a Gaussian Process, the parameters of these transformations are learned end-to-end by maximizing the marginal likelihood.
+% ---- Disentangled and irreducible representations ----
+% goodfellow2009anips: extract distinct invariant subpopulations of neurons from a model allowing each to be invariant to different transformation (e.g. one subpopulation would be invariant to illumination, another to rotation etc...)
+\paragraph{Learning groups and their representations}
+A line of work frames symmetry discovery as learning not only the group but also its decomposition into independent factors or irreps \textit{i.e.} a form of disentangled representation learning \citep{higgins2018}.
+\citet{cohen2014} propose a probabilistic model that learns irreducible representations for compact commutative Lie groups, in particular the toroidal subgroups (\textit{i.e.}\ the commutative part) of $SO(D)$.
+In the context of dynamic environments where observations are paired with transformations, \citet{quessard2020anips} addresses disentanglement by a sparsity regularizer that encourages each symmetry generator to act on as few latent dimensions as possible, thereby identifying a block-diagonal structure in the representation.
+\citet{sanborn2022} introduce Bispectral Neural Networks, which learn a Fourier basis for compact groups and \citet{ennes2025fcm} tackle the problem from a geometric perspective: given a point cloud sampled from orbits of a compact Lie group, their \textit{LieDetect} algorithm estimates the Lie algebra via a PCA-like operator and projects onto the closest valid Lie algebra for a set of candidate groups ($SO(2)$, $T^d$, $SU(2)$, $SO(3)$), with theoretical stability guarantees in terms of Wasserstein distances.
 
-% krippendorf2020: rely on trained neural network to collapse orbits in the embedding space (betting on the neural network learning the symmetry) and then interpreting back the input space by extracting a Lie algebra 
+% ---- Other methods: VAEs, GPs, info-theory, and conserved quantities ----
+\paragraph{Other estimation strategies}
+\citet{krippendorf2020} bet on the fact that a classifier trained on symmetric data will collapse symmetry-related inputs to nearby positions in the embedding layer and exploit this by performing linear regression on pairs of proximate embedding points to extract infinitesimal generators, effectively reading the symmetry off the network's representations.
+\citet{vanderwilk2018anips} incorporate invariance desiderata directly into the prior of a Gaussian Process by constructing an invariant kernel that averages over an orbit of transformations; the parameters of these transformations are then learned end-to-end by maximizing the marginal likelihood, which naturally penalizes complexity and avoids overfitting to spurious symmetries.
+\citet{wieser2020anips} employ an autoencoder framework in which the latent space is partitioned into a property-sensitive and a property-invariant subspace, with a mutual information regularizer enforcing that the invariant subspace carries no information about a target quantity.
+\citet{dehmamy2021anips} introduce Lie Algebra Convolutional Networks (L-conv), whose layers make the Lie algebra basis itself a learnable parameter allowing discovery at a non-negligible computational cost.
+\citet{ouderaa2024} take a physics-inspired approach via Noether's theorem: they parameterize symmetries as quadratic conserved quantities of a Hamiltonian system and learn them by maximizing a variational lower bound.
 
-% quessard2020anips: dynamic environment pairing observations and transformations; disentangled representation achieved by regularizer
+% ---- Parameter sharing schemes ----
+\paragraph{Symmetry discovery through parameter-sharing schemes}
+A layer's equivariance can be determined by which weight entries are shared, so the problem of symmetry discovery can be framed as learning the partition of weights into equivalence classes; factorizing the weight space into a \textit{structural component} (the parameter-sharing scheme) and a \textit{value component} (the actual shared parameters).
+\citet{zhou2021} operationalize this idea via a reparameterization $\mathrm{vec}(W) = Uv$, where the sharing matrix $U$ is optimized in a meta-learning outer loop while $v$ (value) adapts per task.
+They prove that this factorization can represent equivariance to any finite group.
+\citet{yeh2022p2icais} directly optimize over partitions of weight indices.
 
-% wieser2020anips: autoencoder framework and information theory
+% ---- Caveat ----
+\paragraph{Caveats}
+Despite the appeal of symmetry discovery as a path around the symmetry bottleneck or as a diagnostic tool, it comes with important limitations.
+\citet{rath2024air} caution that, while discovery is valuable when prior knowledge is unavailable or hard to specify, automatically learned symmetries are generally unable to outperform models whose equivariance is correctly specified by design.
+Furthermore, \citet{yang2023p4icml} observe, and \citet{finzi2021anips} formalize, that enforcing the \emph{wrong} symmetry group (too large, small, or simply incorrect) can be actively harmful.
 
-% dehmamy2021anips: Lie algebra parametrization (a bit costly)
+
+\subsubsection{Symmetry Extraction from Learned Models}
+
+% seminal papers: goodfellow2009anips, lenc2014a
+% Using a firing rate of neurons, \citet{goodfellow2009anips} propose a template for invariance measure at the neuron level: $S(i)=\frac{L(i}{G(i)}$ where the numerator $L(i)$ computes the average firing rate of a neuron for a given transformation type and range, while the denominator $G(i)$ is a normalization making sure the neuron is not always active. To be considered invariant, the neuron must stably activate and be selective and this definition is extended to the whole network by averaging over top invariant subpopulation of neurons.
+% \cite{lenc2014a} propose a way to test whether features of trained networks are compatible with learning an equivariant mapping \textit{i.e.} whether there exist a $M_g$ linear such that $M_g \phi (x) \approx \phi (g x)$ (the same methodology is applied to test if two networks can be stitched together, see \pnote{ref section}) for a single, specific transformation at a time.
+
+% what symmetries have been learned by a network
+% perin2025
+
+% otto2025
+
+% krippendorf2020: full loop with \Cref{sec:sym-disc-from-data} symmetry extraction for data symmetry discovery
+
+\citet{krippendorf2020} exploit the observation that, when a classifier is trained on a task whose labels are invariant under a group action—for instance, predicting the discretized value of a rotation-invariant potential $V(\|x\|)$—symmetry-related inputs (points on the same orbit) collapse to tighter clusters in the embedding layer than arbitrary same-class points. This tighter clustering is used to identify orbit point clouds in the input space, from which infinitesimal generators are extracted by linear regression on nearest-neighbor pairs $(p, p')$ under the first-order ansatz $p' \approx p + \varepsilon_a T^a p$, where $T^a$ are the unknown generators. The method recovers $SO(n)$ and $SU(2)$ generators from noisy data and constitutes a full loop with \Cref{sec:sym-disc-from-data}: the learned model's representations serve as the probe that reveals the symmetry structure of the data.
 
 \subsection{Symmetry-breaking}
 
-
-
 % What is symmetry breaking
-% [shen2026]: breaking exact equivariance improves learning equivariance improves learning (Qu & Krishnapriyan, 2024; Pertigkiozoglou et al., 2024; Canez et al., 2024).
+% keywords: phase transitions, order parameters, spontaneous symmetry breaking, bifurcation structure, discovering broken generators
+
+% shen2026: breaking exact equivariance improves learning equivariance improves learning (Qu & Krishnapriyan, 2024; Pertigkiozoglou et al., 2024; Canez et al., 2024).
+
+% Symmetry breaking: needs an introductory paragraph to disambiguate the loaded term 
+% spontaneous SB: ziyin2025, ziyin2025a
+% explicit SB in learning: tanaka2021
+% explicit SB can also be intended as deliberately reducing equivariance: goel2025, lim2024, (spinner2024)
+% smidt2021prr: the goal is to achieve symmetry breaking
+% lawrence2026 also use "distributional symmetry breaking" to refer to the case when $p_X (x) ̸= pp_X (gx)$ for some $x\inX$ and $g\inG$, where $p_X : X \to R$ is the data distribution.
+% symmetry brealing by input space information like positional encoding in transformers: vadgama2025
 
 \paragraph{Symmetry breaking through layers}
+
 \cite{weiler2019anips} discusses that layers at different depths could benefit from different levels of equivariance.
 They argue that early layers focusing on local features could be most equivariant (e.g. $E(2)$ for images) while later layers could be only equivariant to reflections for instance, as global features might have a preferred pose in natural images (the subject is typically centered and vertically aligned)
 
-% phase transitions, order parameters, spontaneous symmetry breaking, bifurcation structure, discovering broken generators
 
 \subsection{Partial and approximate symmetries}
 
+% Placed here because for partial symmetries the exact range is often unknown while for approximate symmetry the game revolves around knowing how much deviation is allowed - being conceptually a dual approach to symmetry discovery (\Cref{sec:sym-disc-from-data}) (also linked in that regard to quantification \Cref{sec:quantification})
+
 \subsubsection{Partial symmetries: beyond groups}
 % Generalization to sets of transforms $\mathcal T: X\to X$
-% semi-group, inverse not necessarily defined
+% semi-group, inverse not necessarily defined: worrall2019anips (downsampling of an image modelled as a Gaussian scale space; the semigroup structure comes from the lack of an inverse transform with downsampling due to information loss)
 % range subset: works that discuss equivariance to [-90, 90] rotation
-% romero2023: definition of partial equivariance contrasted with soft/approximate equivariance
+% romero2023: definition of partial equivariance contrasted with soft/approximate equivariance, proposes architectures that learn layer-wise levels of partial equivariance, retaining full equivariance where beneficial while adapting it elsewhere.
 
 % theoretical \cite{petrache2023}
 
-\subsubsection{Approximate symmetries: noise}
+% goodfellow2009anips consider a limited range of transformation (e.g. $\pm 5$ frames for time translation in video) in order to detect invariances i.e. partial orbits
+
+% \paragraph{Subgroups}
+% goel2025: "symmetry breaking" with input augmentation (ex: positional encoding)
+% otto2025 section 8.4: want to maximize the size of the subgroup to which a model is equivariant to promote equivariance
+
+\subsubsection{Approximate symmetries: noise}\label{sec:soft-equivariance}
 
 % Approximate symmetry: the symmetry group approximately holds (e.g. deviates with time in physics simulations)
 % learning near-equivariances, soft constraints, relaxed group convolutions, approximate invariants
+
+% hard-coding a specific symmetry can be detrimental to performance if the true data distribution does not perfectly reflect that exact symmetry: zhou2021, finzi2021anips
+% and, maybe surprisingly, even when the symmetry is exact, equivariant designs are not guaranteed to be the best performing models: \citet{lawrence2026, rygiel2026} observe that when the data is canonically presented (\textit{i.e.} the probability distribution is far from uniform on symmetry orbits) then non-equivariant can outperform equivariant models with the correct symmetry because (1) they can exploit ``spurious but useful'' correlations (ex: camel in the sand, penguin on ice) or (2) find a more efficient way to solve the dataset because of its canonicalization (ex: running right to compute speed)
 
 % theoretical \cite{petrache2023}
 
 % approximate invariance is called insensitivity in vanderwilk2018anips
 
-\subsection{Quantification}
+% huang2023: approximate \textit{active} graph symmetries
 
+% \cite{wang2022p3icml} introduce approximately equivariant networks that are biased towards symmetry but not strictly constrained, and demonstrate that this relaxation can outperform both fully equivariant and non-equivariant baselines on imperfectly symmetric dynamical systems.
+
+\subsection{Quantification}\label{sec:quantification}
+
+% Works that try to quantify the degree to which a symmetry is respected
 % Understand which invariances have been learned by a model, which transformations leave the model quasi-invariant, sensitivity analysis
 % shen2026 (measures an equivariance error)
+% cohen2018: measure of the impact of discretization on the equivariance error
+% lawrence2026: proposes a metric to measure the degree of distributional symmetry breaking, ie the degree to which for a task involving dataset D acted on by group G, the data distribution is not uniformally distributed on the orbits of G. They report that commonly used datasets don't have a distribution symmetric under the group acting (e.g. QM9 for molecular properties from 3D atomic coordinates, ModelNet40 for synthetic 3D CAD models \pnote{cite refs})
 
-\section{Understanding consequences of symmetries}
+% yeh2022p2icais introduce the Partition Distance, a quantitative metric for comparing their learned sharing scheme against a known ground truth
+
+% gruver2024
+
+% lenc2014a: quantifies invariance to transformation by assessing how close to the identity an equivariant mapping is
+
+\section{Analysis of symmetries}
+
+% Symmetry as an analytical lens — using symmetry to understand generalization, optimization, and representations
 
 \subsection{Parameter-space symmetries}
 
+% Characterization: what transformations preserve the function?
+
+% Reference the survey by Bo Zhao et al.
+
+% lenc2014a: feature space mapping, stitching networks
+
+% ziyin2025: param space symmetries explain abrupt jumps in learning dynamics, simplicity bias (model complexity) and feature learning phenomenon such as neural collapse
+
 \subsubsection{Identifiability}
+
+% Identifiability: when can parameters be recovered? (grillo2026,rolnick2020p3icml)
+% Functional dimension and redundancy: elisendagrigsby2025aim, phuong2019 - singular learning theory
 
 % paragraph on symmetry discovery in parameter space (® like zhao2024a, but who is a methodological reject)
 
-\subsubsection{Learning dynamics}
+% global vs local vs data-dependent symmetries
+
+\subsubsection{Effects on optimization landscape and learning dynamics}
+
+% esmaeili2023: homeomorphic encoding to a latent space structured as a Lie is initialization dependent (sgd obstruction)
+
+% ziyin's papers on learning dynamics: ziyin2025a, ziyin2024
+% lim2024: making network asymmetric
+
+% Symmetry-induced saddle points and critical manifolds (brea2019, simsek2021, li2018)
+% jacot2022: phase transition depending on initialization variance that determines which is closest between a global minima and a saddle (saddle at origin)
+
+% Mode connectivity and permutation (entezari2022, ainsworth2023, jordan2023, tatro2020)
+
+% Flatness, SAM, invariant flatness measures: dinh2017 etc
+
+% learning algorithm modification
+% tanaka2021: for normalized layer, explicit SB by momentum and weight decay induces an implicit RMSProp optimization
+% arjevani2023: SGD biased to find minima that have least symmetry breaking wrt to teacher network
+
+% implicit regularization: du2018anips (homogeneity naturally induces layer balancing)
+
+% preservation of the target function/data symmetries by GF (infinitely wide two-layers ReLU networks): hajjar2023, maass2024
+
+% ziyin2024a: exponential symmetry, gradient noise
+
+\paragraph{Conservation laws}
+% CL of gradient flow kunin2020, marcotte2023, gluch2021
+% taking advantage of symmetries for pruning tanaka2020anips (at init), nurisso2025(along training)
 
 \subsection{Learning theory}
-% sample complexity, theoretical gains in data efficiency provided by symmetry, 
+% sample complexity, theoretical gains in data efficiency provided by symmetry
 
 \section{Extensions}
+
+\subsection{Pipelines}
+% Works that bring all multiple parts together
+% otto2025
+% anselmi2019pr
 
 \subsection{Orbital position, pose}
 
 % Pose or canonical orientation, class-specific symmetries
 Class-pose methods factor data points into an \textit{invariant representation} and a \textit{pose}.
 \cite{urbano2026} proposes to extract a class-specific canonical representative pose which can be used as an independent layer to convert a non-invariant model into and invariant one.
+% wieser2020anips: similar to class pose
+
+% lawrence2026 discusses canonicalization
 
 % cohen2014 can be considered an early work that discusses the idea of separating in different subspaces the identity of an object from its ``factors of variations'' 
 
 \newpage
+\begin{appendices}
+% Reset table numbering to A.1, A.2, etc. per section
+\counterwithin{table}{section}
+
+\section{Group table}
+% The group table: a table listing [group, nature, papers]
+\begin{table}[ht]
+    \centering
+    \begin{tabularx}{\textwidth}{|l|l|X|}
+        \hline
+        \textbf{Group} & \textbf{Nature} & \textbf{References} \\
+        \hline
+        $O(1,3)$ / $SO^+(1,3)$ (Lorentz) & Non-compact, non-semisimple
+            & \cite{bogatskiy2020p3icml,spinner2024,ruhe2023,ali2024,yang2023p4icml} \\
+        \hline
+        $SE(n) = \mathbb{R}^n \rtimes SO(n)$ & Non-compact (translation factor)
+            & \cite{yarotsky2018r,finzi2020p3icml,finzi2021p3icml} \\
+        \hline
+        $Sp(n)$ (symplectic) & Non-compact (split real form)
+            & \cite{finzi2021p3icml,pearce-crump2023p4icml} \\
+        \hline
+        General matrix groups & Potentially non-compact
+            & \cite{finzi2021p3icml,desai2022prd} \\
+        \hline
+    \end{tabularx}
+    \caption{The group table \pnote{draft, to check}}
+    \label{tab:groups}
+\end{table}
+
+\end{appendices}
 
 \printbibliography
 
 \input{unfinished-thoughts}
+
 
 \end{document}
