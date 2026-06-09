@@ -520,6 +520,9 @@ Applied layer-by-layer to AlexNet, the method reveals that equivariance to geome
 \citet{barenboim2021sp} train a FCNN on a \emph{decoy task} such as background segmentation, without any symmetry label provided and show that the penultimate-layer activations implicitly encode symmetry structure.
 PCA projections of those activations are fed as images to a ResNet18 classifier which recovers the correct symmetry class (from $O(2)$, $\mathbb{Z}_2$, $T$, $T_n$, or $\emptyset$) with 73\% accuracy, demonstrating that a network can create internal representations according symmetries of the data distribution.
 
+\citet{moskalev2023p2awtagmlt} distinguish between \emph{genuine invariance} and a weaker learned invariance where networks (e.g. trained by data augmentation) attain correct predictions on orbits by learning separate internal representations per transformation.
+Under a distribution shift between MNIST and Fashion-MNIST, they measure a predictive distribution invariance $DI_f = \sum_{x,g} D_{KL}(f(x) \| f(gx))$, which compares the raw output distribution $f(x)$ and the transformed output distribution $f(gx)$ over orbits, and find that learned invariance suffer a rapid deterioration.
+This is a direct empirical argument for the robustness guarantee that strict equivariant architectures provide.
 
 \subsection{Symmetry-breaking}
 
