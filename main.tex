@@ -259,12 +259,13 @@ We propose a few criterion to categorize occurrences of symmetries in a deep lea
 % scale: sosnovik2020 (scale equivariant convolutions), bekkers2021, sosnovik20212iwcacvw (application of scale equivariance in object tracking with Siamese architecture)
 % ravanbakhsh2017p3icml: weight-tying and equivariance
 
-Geometric Deep Learning (GDL) \cite{bronstein2017ispm,bronstein2021} is concerned with the design of equivariant layers on various geometric domains.
+Geometric Deep Learning (GDL) \citep{bronstein2017ispm,bronstein2021} studies how to exploit the symmetry group and geometric structure of the data domain to design architectures that are sample-efficient, generalizable, and principled.
 It provides a unifying framework for deep learning architectures by viewing them through the lens of symmetry and group equi\slash invariance.
 Its central thesis, inspired by Felix Klein's Erlangen Program, is that the appropriate inductive bias for a learning problem is determined by the symmetries of its domain.
 This perspective simultaneously furnishes a common mathematical framework for existing architectures such as CNNs, RNNs, GNNs and Transformers, and a constructive blueprint for designing new ones on non-Euclidean domains such as graphs and manifolds.
 As a result, equivariant neural network architectures typically benefit from fewer learnable parameters, better interpretability (\textit{e.g.} CNNs filter), robustness guarantees (since the network behavior is dictated by symmetry groups, its response to some data manipulation is deterministic) and generalization properties (out-of-distribution data points can become in-distribution once a symmetry is imposed \textit{e.g.} an image with an upside down car).
-An accessible treatment of the underlying mathematical foundations is given in \cite{borde2025,gerken2021,carlsson}.
+A treatment of the underlying mathematical foundations is given in \cite{borde2025,gerken2021,carlsson}, with \cite{borde2025} being the most accessible.
+While the scope of GDL includes a taxonomic point of view and geometry of the domain itself, we will focus on equivariant architecture design since it directly pertains to symmetries.
 
 \subsubsection{The role of convolution}
 \cite{cohen2016} showed how convolutional networks can be generalized into \textit{Group Convolutional neural networks} (G-CNNs) to exploit larger groups of symmetries, including discrete rotations and reflections.
@@ -329,6 +330,7 @@ Subsequent work sought to surpass the 1-WL barrier by incorporating structural f
 Universality results remain scarce, for Euclidean equivariant networks \cite{yarotsky2018r} establishes universal approximation for invariant maps, and \cite{bogatskiy2020p3icml} proves universality for Lorentz-equivariant models, while \cite{kondor2018p3icml} shows that equivariant linear maps between feature spaces over homogeneous spaces are necessarily generalized convolutions and \cite{pacini2026} establishes that shallow equivariant models can fail to be universal, but that sufficient depth or the addition of appropriate readout layers restores universality within the entry-wise separable regime.
 
 \subsubsection{Topological domains}
+% works that extend symmetry-guided desgin with message passing to higher order structures 
 % papillon2023, bodnar2021a, battiloro2024
 
 \subsubsection{Challenges}
