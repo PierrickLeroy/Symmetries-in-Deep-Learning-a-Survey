@@ -257,6 +257,7 @@ We propose a few criterion to categorize occurrences of symmetries in a deep lea
 % Irreducible representation (seems to be particularly used for E(n) equivariance)
 % add citation to dehmamy2021anips: achieve equivariance through Lie algebra
 % scale: sosnovik2020 (scale equivariant convolutions), bekkers2021, sosnovik20212iwcacvw (application of scale equivariance in object tracking with Siamese architecture)
+% ravanbakhsh2017p3icml: weight-tying and equivariance
 
 Geometric Deep Learning (GDL) \cite{bronstein2017ispm,bronstein2021} is concerned with the design of equivariant layers on various geometric domains.
 It provides a unifying framework for deep learning architectures by viewing them through the lens of symmetry and group equi\slash invariance.
@@ -505,12 +506,18 @@ Furthermore, \citet{yang2023p4icml} observe, and \citet{finzi2021anips} formaliz
 \citet{goodfellow2009anips} propose an empirical invariance score at the neuron level: $S(i) = L(i)/G(i)$, where $L(i) = \frac{1}{|Z|}\sum_{z \in Z}\frac{1}{|T(z)|}\sum_{x \in T(z)} f_i(x)$ is a \textit{local firing rate}—the fraction of transformed versions of a maximally activating input $z \in Z$ that still activate neuron $i$, and $G(i) = \mathbb{E}[f_i(x)]$ is a \textit{global firing rate} on random stimuli, enforcing selectivity by penalizing neurons that fire indiscriminately.
 A neuron scores high on $S(i)$ only if it reliably responds to transformations of its preferred input while remaining silent on generic ones, thereby capturing an activity-dependent measure of neuron-level invariance.
 A network-level score averages $S(i)$ over top-$p$ fractions of neurons in a layer, allowing different subpopulations to specialize in different transformation types while still detecting it symmetry.
+A close point of view is taken by \citet{olah2020d} which studies how unconstrained neural networks learn symmetry representations by analyzing \textit{circuits}, human-interpretable subgraphs of the overall computational graph.
+Utilizing activation maximization to synthesize optimal feature stimuli and relying on visual interpretation, the authors identify clusters of ``equivariant'' neurons: neurons that respond to transformed variations (e.g. rotations, hue, scale) of the same semantic feature (here the definition of equivariance differs from the standard one).
+They demonstrate how equivariant neurons can be composed by downstream circuits to create invariant representations at deeper layers.
 \citet{lenc2014a} take a complementary approach: rather than measuring invariance directly, they probe whether a learned representation is compatible with equivariance by testing for the existence of a linear map $M_g$ such that $M_g \phi(\mathbf{x}) \approx \phi(g\mathbf{x})$, one transformation $g$ at a time.
 When such a map can be learned, the representation is equivariant to $g$ (invariant if $M_g$ reduces to the identity).
 The map is estimated via sparse regression with structured sparsity constraints that respect the convolutional locality of the representation, making the problem tractable.
 Applied layer-by-layer to AlexNet, the method reveals that equivariance to geometric transformations (vertical flips, rotations) degrades with depth while task-specificity increases, confirming the progressive specialization of deep features.
 
 \citet{krippendorf2020} exploit the observation that, when a classifier is trained on a task whose labels are invariant under a group action—for instance, predicting the discretized value of a rotation-invariant potential $V(\|x\|)$—symmetry-related inputs (points on the same orbit) collapse to tighter clusters in the embedding layer than arbitrary same-class points. This tighter clustering is used to identify orbit point clouds in the input space, from which infinitesimal generators are extracted by linear regression on nearest-neighbor pairs $(p, p')$ under the first-order ansatz $p' \approx p + \varepsilon_a T^a p$, where $T^a$ are the unknown generators. The method recovers $SO(n)$ and $SU(2)$ generators from noisy data and constitutes a full loop with \Cref{sec:sym-disc-from-data}: the learned model's representations serve as the probe that reveals the symmetry structure of the data.
+\citet{barenboim2021sp} train a FCNN on a \emph{decoy task} such as background segmentation, without any symmetry label provided and show that the penultimate-layer activations implicitly encode symmetry structure.
+PCA projections of those activations are fed as images to a ResNet18 classifier which recovers the correct symmetry class (from $O(2)$, $\mathbb{Z}_2$, $T$, $T_n$, or $\emptyset$) with 73\% accuracy, demonstrating that a network can create internal representations according symmetries of the data distribution.
+
 
 \subsection{Symmetry-breaking}
 
