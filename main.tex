@@ -97,7 +97,7 @@ natbib=true,
 Previous work have collected or formalized literature on symmetries in a deep learning context.
 Symmetric architecture (such as Siamese networks) are surveyed in \cite{ilina2022sa}.
 \cite{zhao2025} focuses on parameter-space symmetries: transformation that change the representation of a neural network but do not modify the implemented function.
-\cite{sipiran202523scgpis} references symmetry discovery methods in 3D shapes
+\cite{sipiran202523scgpis} references symmetry discovery methods in 3D shapes.
 % geometric deep learning
 \cite{bronstein2021} is the reference textbook on geometric deep learning,  \cite{gerken2021,carlsson} study the mathematical formalism of this field and \cite{basheer2025ijdsa,habte2023} focus more specifically on equivariant convolutions, \cite{fei2024air} on 3D rotations and \cite{seo2025a} on robotics.
 \cite{rath2024air} gathers methods that integrate geometric prior knowledge to neural network such that their representations are invariant or equivariant.
@@ -360,6 +360,8 @@ Fortunately, these hurdles are being addressed: (1) by symmetry discovery (\Cref
 % add: brehmer2025
 % tahmasebi2023: similar to elesedy2021p3icml, obtains theoretical sample complexity gains
 % vadgama2025 similar to lawrence2026
+% abramson2024n: alphafold train equivariance by data augmentation
+% qu2024anips: scale compensates for lack of symmetry prior
 A practical question is whether the design costs, potential difficulties in optimization and hardware regret due to less mature technology of equivariant models is justified over a simpler model, possibly trained with data augmentation.
 \cite{nordenfors2024} compare stability of equivariant and vanilla counterpart with data augmentation and \cite{shen2026} provides empirical evidence that, for 3D-rotation equivariant tasks, unconstrained models trained with augmentation reduce their equivariance error rapidly to below 2\% of the total loss within thousands of steps
 However equivariant architectures are arguably preferable when data is scarce, when physical consistency of predictions is required, or when generalization to unseen orientations or configurations is critical.
@@ -391,6 +393,7 @@ Rather than hand-crafting augmentation policies, several works have proposed to 
 \citet{cubuk20192iccvprc} introduce AutoAugment, which uses reinforcement learning to find a policy composed of image-processing operations such as rotations, translations, and shearing, optimized for validation accuracy.
 \citet{lim2019anips} reduced the search time by leveraging Bayesian optimization over policies and using \textit{density matching} as a criterion: a minimization of the divergence between the augmented and training distributions and a differentiable approach was proposed in \citet{hataya2020cv-e2} by training a generative adversarial network (GAN) to output augmentation parameters minimizing a similar density-matching objective, further accelerating the search.
 Another strategy is to transfer augmentations across domains: \citet{antoniou2018} learn a GAN on a data-rich source domain and replay the learned transformations on a data-scarce target domain.
+For this symmetry transfer to be effective, it requires that the symmetry group of the domain is a subgroup of the target. 
 Symmetry discovery can be operationalized by in a straightforward two-step pipeline, for instance by inferring a Lie algebra basis and using augmentation in a (soft) inductive bias \citep{escriche2025,yang2023p4icml} (see \Cref{sec:sym-disc-from-data} for more on symmetry discovery).
 A practical advantage shared by all these approaches is interpretability: learned augmentations produce concrete transformed examples that can be inspected directly.
 One limitation, however, is that materializing augmentations requires an explicit parametric form for the transformations.
@@ -405,7 +408,7 @@ Comparing DA to equivariant architectures, \citet{nordenfors2024} show that the 
 Empirically, \citet{shen2026} find that DA rapidly learn 3D rotation equivariance with negligible efficiency gap attributable to lack of strict equivariance.
 
 \subsection{Symmetric framework: Siamese networks and self-supervised learning}
-
+% see perin2025 paragraph "Many methods have been proposed to learn symmetries from data"
 
 
 \section{Symmetry as an unknown}
@@ -474,7 +477,7 @@ Additionally, regularization terms can be put on Lie generators \citep{escriche2
 A line of work frames symmetry discovery as learning not only the group but also its decomposition into independent factors or irreps \textit{i.e.} a form of disentangled representation learning \citep{higgins2018}.
 \citet{cohen2014} propose a probabilistic model that learns irreducible representations for compact commutative Lie groups, in particular the toroidal subgroups (\textit{i.e.}\ the commutative part) of $SO(D)$.
 In the context of dynamic environments where observations are paired with transformations, \citet{quessard2020anips} addresses disentanglement by a sparsity regularizer that encourages each symmetry generator to act on as few latent dimensions as possible, thereby identifying a block-diagonal structure in the representation.
-\citet{sanborn2022} introduce Bispectral Neural Networks, which learn a Fourier basis for compact groups and \citet{ennes2025fcm} tackle the problem from a geometric perspective: given a point cloud sampled from orbits of a compact Lie group, their \textit{LieDetect} algorithm estimates the Lie algebra via a PCA-like operator and projects onto the closest valid Lie algebra for a set of candidate groups ($SO(2)$, $T^d$, $SU(2)$, $SO(3)$), with theoretical stability guarantees in terms of Wasserstein distances.
+\citet{sanborn2022} introduce Bispectral Neural Networks, which learn a Fourier basis for compact groups and \citet{ennes2025fcm} tackle the problem from a geometric perspective: given a point cloud sampled from orbits of a compact Lie group, their \textit{LieDetect} algorithm estimates the Lie algebra via a PCA-like operator and projects onto the closest valid Lie algebra for a set of candidate groups ($SO(2)$, $T^d$, $SU(2)$, $SO(3)$), with theoretical stability guarantees given in terms of Wasserstein distances.
 
 % ---- Other methods: VAEs, GPs, info-theory, and conserved quantities ----
 \paragraph{Other estimation strategies}
@@ -499,10 +502,11 @@ Furthermore, \citet{yang2023p4icml} observe, and \citet{finzi2021anips} formaliz
 
 
 \subsubsection{Symmetry Extraction from Learned Models}
-% what symmetries have been learned by a network
+% which symmetries have been learned by a network
 % perin2025
-
 % otto2025
+
+In this part we report the main techniques used to detect, measure, and identify symmetries that a neural network has learned, as opposed to symmetries that were *enforced* by design: extraction refers to a post-hoc or diagnostic operation on a trained model.
 
 \paragraph{Seminal works}
 \citet{goodfellow2009anips} propose an empirical invariance score at the neuron level: $S(i) = L(i)/G(i)$, where $L(i) = \frac{1}{|Z|}\sum_{z \in Z}\frac{1}{|T(z)|}\sum_{x \in T(z)} f_i(x)$ is a \textit{local firing rate}—the fraction of transformed versions of a maximally activating input $z \in Z$ that still activate neuron $i$, and $G(i) = \mathbb{E}[f_i(x)]$ is a \textit{global firing rate} on random stimuli, enforcing selectivity by penalizing neurons that fire indiscriminately.
@@ -516,11 +520,11 @@ When such a map can be learned, the representation is equivariant to $g$ (invari
 The map is estimated via sparse regression with structured sparsity constraints that respect the convolutional locality of the representation, making the problem tractable.
 Applied layer-by-layer to AlexNet, the method reveals that equivariance to geometric transformations (vertical flips, rotations) degrades with depth while task-specificity increases, confirming the progressive specialization of deep features.
 
-\citet{krippendorf2020} exploit the observation that, when a classifier is trained on a task whose labels are invariant under a group action—for instance, predicting the discretized value of a rotation-invariant potential $V(\|x\|)$—symmetry-related inputs (points on the same orbit) collapse to tighter clusters in the embedding layer than arbitrary same-class points. This tighter clustering is used to identify orbit point clouds in the input space, from which infinitesimal generators are extracted by linear regression on nearest-neighbor pairs $(p, p')$ under the first-order ansatz $p' \approx p + \varepsilon_a T^a p$, where $T^a$ are the unknown generators. The method recovers $SO(n)$ and $SU(2)$ generators from noisy data and constitutes a full loop with \Cref{sec:sym-disc-from-data}: the learned model's representations serve as the probe that reveals the symmetry structure of the data.
+\citet{krippendorf2020} exploit the observation that when a classifier is trained on a task whose labels are invariant under a group action—for instance, predicting the discretized value of a rotation-invariant potential $V(\|x\|)$—symmetry-related inputs (points on the same orbit) collapse to tighter clusters in the embedding layer than arbitrary same-class points. This tighter clustering is used to identify orbit point clouds in the input space, from which infinitesimal generators are extracted by linear regression on nearest-neighbor pairs $(p, p')$ under the first-order approximation $p' \approx p + \varepsilon_a T^a p$, where $T^a$ are the unknown generators. The method recovers $SO(n)$ and $SU(2)$ generators from noisy data and constitutes a full loop with \Cref{sec:sym-disc-from-data}: the learned model's representations serve as the probe that reveals the symmetry structure of the data.
 \citet{barenboim2021sp} train a FCNN on a \emph{decoy task} such as background segmentation, without any symmetry label provided and show that the penultimate-layer activations implicitly encode symmetry structure.
 PCA projections of those activations are fed as images to a ResNet18 classifier which recovers the correct symmetry class (from $O(2)$, $\mathbb{Z}_2$, $T$, $T_n$, or $\emptyset$) with 73\% accuracy, demonstrating that a network can create internal representations according symmetries of the data distribution.
 
-\citet{moskalev2023p2awtagmlt} distinguish between \emph{genuine invariance} and a weaker learned invariance where networks (e.g. trained by data augmentation) attain correct predictions on orbits by learning separate internal representations per transformation.
+\citet{moskalev2023p2awtagmlt} distinguish between \emph{genuine invariance} and a weaker \emph{apparent invariance} where networks (e.g. trained by data augmentation) attain correct predictions on orbits with different internal representations, hence the decision process is not unified on an orbit.
 Under a distribution shift between MNIST and Fashion-MNIST, they measure a predictive distribution invariance $DI_f = \sum_{x,g} D_{KL}(f(x) \| f(gx))$, which compares the raw output distribution $f(x)$ and the transformed output distribution $f(gx)$ over orbits, and find that learned invariance suffer a rapid deterioration.
 This is a direct empirical argument for the robustness guarantee that strict equivariant architectures provide.
 
