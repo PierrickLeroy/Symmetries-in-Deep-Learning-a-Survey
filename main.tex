@@ -201,8 +201,6 @@ In words, $T'$ maps all group elements to the identity group action.
 % Manifold/Gauge Theory: fiber bundles, Principal bundle, section, steerable kernels, local symmetries, free action
 % Symmetry breaking
 
-% CLAUDE WRITE HERE
-
 \subsection{Taxonomy and paper organization}
 % A taxonomy where each cell contains a branch name and a few representative works
 % The linear structure of the paper is organized along the methodological dimension of the taxonomy
@@ -362,6 +360,7 @@ Fortunately, these hurdles are being addressed: (1) by symmetry discovery (\Cref
 % vadgama2025 similar to lawrence2026
 % abramson2024n: alphafold train equivariance by data augmentation
 % qu2024anips: scale compensates for lack of symmetry prior
+% olah: same features can be learned by vanilla and equivariant architecture, could lead to interactive design where vanilla model prototype quickly/discover then equivariant models are developed (see also krippendorf2020, hu2025nn on relying on nn to extract symmetries in symmetry as an unknown part)
 A practical question is whether the design costs, potential difficulties in optimization and hardware regret due to less mature technology of equivariant models is justified over a simpler model, possibly trained with data augmentation.
 \cite{nordenfors2024} compare stability of equivariant and vanilla counterpart with data augmentation and \cite{shen2026} provides empirical evidence that, for 3D-rotation equivariant tasks, unconstrained models trained with augmentation reduce their equivariance error rapidly to below 2\% of the total loss within thousands of steps
 However equivariant architectures are arguably preferable when data is scarce, when physical consistency of predictions is required, or when generalization to unseen orientations or configurations is critical.
@@ -502,31 +501,67 @@ Furthermore, \citet{yang2023p4icml} observe, and \citet{finzi2021anips} formaliz
 
 
 \subsubsection{Symmetry Extraction from Learned Models}
-% which symmetries have been learned by a network
-% perin2025
-% otto2025
 
 In this part we report the main techniques used to detect, measure, and identify symmetries that a neural network has learned, as opposed to symmetries that were *enforced* by design: extraction refers to a post-hoc or diagnostic operation on a trained model.
 
-\paragraph{Seminal works}
-\citet{goodfellow2009anips} propose an empirical invariance score at the neuron level: $S(i) = L(i)/G(i)$, where $L(i) = \frac{1}{|Z|}\sum_{z \in Z}\frac{1}{|T(z)|}\sum_{x \in T(z)} f_i(x)$ is a \textit{local firing rate}—the fraction of transformed versions of a maximally activating input $z \in Z$ that still activate neuron $i$, and $G(i) = \mathbb{E}[f_i(x)]$ is a \textit{global firing rate} on random stimuli, enforcing selectivity by penalizing neurons that fire indiscriminately.
-A neuron scores high on $S(i)$ only if it reliably responds to transformations of its preferred input while remaining silent on generic ones, thereby capturing an activity-dependent measure of neuron-level invariance.
-A network-level score averages $S(i)$ over top-$p$ fractions of neurons in a layer, allowing different subpopulations to specialize in different transformation types while still detecting it symmetry.
-A close point of view is taken by \citet{olah2020d} which studies how unconstrained neural networks learn symmetry representations by analyzing \textit{circuits}, human-interpretable subgraphs of the overall computational graph.
-Utilizing activation maximization to synthesize optimal feature stimuli and relying on visual interpretation, the authors identify clusters of ``equivariant'' neurons: neurons that respond to transformed variations (e.g. rotations, hue, scale) of the same semantic feature (here the definition of equivariance differs from the standard one).
-They demonstrate how equivariant neurons can be composed by downstream circuits to create invariant representations at deeper layers.
-\citet{lenc2014a} take a complementary approach: rather than measuring invariance directly, they probe whether a learned representation is compatible with equivariance by testing for the existence of a linear map $M_g$ such that $M_g \phi(\mathbf{x}) \approx \phi(g\mathbf{x})$, one transformation $g$ at a time.
-When such a map can be learned, the representation is equivariant to $g$ (invariant if $M_g$ reduces to the identity).
-The map is estimated via sparse regression with structured sparsity constraints that respect the convolutional locality of the representation, making the problem tractable.
-Applied layer-by-layer to AlexNet, the method reveals that equivariance to geometric transformations (vertical flips, rotations) degrades with depth while task-specificity increases, confirming the progressive specialization of deep features.
 
-\citet{krippendorf2020} exploit the observation that when a classifier is trained on a task whose labels are invariant under a group action—for instance, predicting the discretized value of a rotation-invariant potential $V(\|x\|)$—symmetry-related inputs (points on the same orbit) collapse to tighter clusters in the embedding layer than arbitrary same-class points. This tighter clustering is used to identify orbit point clouds in the input space, from which infinitesimal generators are extracted by linear regression on nearest-neighbor pairs $(p, p')$ under the first-order approximation $p' \approx p + \varepsilon_a T^a p$, where $T^a$ are the unknown generators. The method recovers $SO(n)$ and $SU(2)$ generators from noisy data and constitutes a full loop with \Cref{sec:sym-disc-from-data}: the learned model's representations serve as the probe that reveals the symmetry structure of the data.
-\citet{barenboim2021sp} train a FCNN on a \emph{decoy task} such as background segmentation, without any symmetry label provided and show that the penultimate-layer activations implicitly encode symmetry structure.
-PCA projections of those activations are fed as images to a ResNet18 classifier which recovers the correct symmetry class (from $O(2)$, $\mathbb{Z}_2$, $T$, $T_n$, or $\emptyset$) with 73\% accuracy, demonstrating that a network can create internal representations according symmetries of the data distribution.
+\paragraph{Capability}
+% add lenc2014a: if the linear map exists but only one transformation at a time
+Before measuring \emph{how much} symmetry a model has acquired, one can ask the more basic question: can a network whose architecture does \emph{not} hard-code a group $G$ incorporate, represent or learn symmetries at all, and under what conditions?
+\citet{olah2020d} give a \emph{mechanistic} demonstration: by inspecting circuits---human-interpretable subgraphs of a trained convolutional network---they find with a combination of activation maximization and visual intepretation, clusters of ``equivariant'' neurons that respond to transformed variants (rotation, hue, scale) of the same feature.
+They then show how downstream circuits combine them to synthesize invariant units at deeper layers, i.e.\ invariance can be built compositionally from equivariant parts.
+\citet{barenboim2021sp} give a \emph{decodability} argument: a network trained on a symmetry-agnostic decoy task nonetheless encodes the symmetry class of the data in its penultimate representations, which a secondary classifier recovers ($O(2)$, $\mathbb{Z}_2$, $T$, $T_n$ or $\emptyset$) largely above chance: symmetry is thus learned in the absence of any explicit symmetry label, since a structure that can be decoded must have been represented.\newline
+These existence results leave open \emph{when} learning succeeds, a question that can be envisioned through training regimes.
+In the lazy (NTK) regime, \citet{perin2025} prove a negative result: generalization to a held-out orbit point is governed entirely by \emph{local} kernel geometry through the spectral ratio $\varepsilon_s = \lambda_N^{-1}/\langle\lambda^{-1}\rangle$ (class separation versus orbit density), with no mechanism to transport a symmetry.
+Concretely, they illustrate that rotation poses seen only on some classes cannot be extrapolated to other classes with missing poses in the training set: if not hard-coded; the symmetry is not discovered.
+This places symmetry learning in the feature-learning regime.
+In the active (feature-learning) regime, \citet{jacot2025} establish a positive counterpart: depth lets a network learn \emph{compositions} $f^\ast = h \circ g$, and when the target is $G$-invariant the inner map $g$ can play the role of a quotient map $\mathbb{R}^{d_{\mathrm{in}}} \to \mathbb{R}^{d_{\mathrm{in}}}/G$.
+In summary representational mechanisms are directly shown \citep{olah2020d,barenboim2021sp} while precise feasibility depends on conditions such as depth-enabled compositionality or learning regime \citep{perin2025,jacot2025}.
 
-\citet{moskalev2023p2awtagmlt} distinguish between \emph{genuine invariance} and a weaker \emph{apparent invariance} where networks (e.g. trained by data augmentation) attain correct predictions on orbits with different internal representations, hence the decision process is not unified on an orbit.
-Under a distribution shift between MNIST and Fashion-MNIST, they measure a predictive distribution invariance $DI_f = \sum_{x,g} D_{KL}(f(x) \| f(gx))$, which compares the raw output distribution $f(x)$ and the transformed output distribution $f(gx)$ over orbits, and find that learned invariance suffer a rapid deterioration.
-This is a direct empirical argument for the robustness guarantee that strict equivariant architectures provide.
+\paragraph{Identification}\label{par:identification-anchor}
+Beyond proving that neural networks can represent symmetries, another challenge is to identify the symmetry a trained model has internalised: to recover the group acting on the data, or for continuous groups the Lie-algebra generators.
+Two types of methods are (1) to read the symmetry off the network's \emph{representations} or more locally (2) off its \emph{gradients}.\newline
+The representational approach inspects what the trained model has stored.
+\citet{krippendorf2020} exploit the empirical observation that, when a classifier is trained on a label invariant under a group action---e.g.\ the discretised value of a rotation-invariant potential $V(\|x\|)$---points on the same orbit collapse into clusters in the embedding layer that are \emph{tighter} than generic same-class points.
+That is, if $(x_1, y_1)$, $(x_2, y_2)$, $(x_3, y_3)$ are three points with $y_1 = y_2 = y_3$ but only $x_1$ and $x_2$ are related by a group action $x_1\sim_g x_2$, then the embedding distance $d(\phi(x_1), \phi(x_2))$ is expected to be smaller than $d(\phi(x_1), \phi(x_3))$.
+This clustering is used as a probe: orbit point clouds detected in embedding space are pulled back to the input space, and infinitesimal generators $T^a$ are recovered by linear regression on nearest-neighbour pairs $(p,p')$ under the first-order relation $p' \approx p + \varepsilon_a T^a p$, yielding the $SO(n)$ and $SU(2)$ generators even from noisy, sparse point clouds.
+\citet{olah2020d} work one unit at a time: \emph{activation maximisation} generates inputs that strongly excites neurons, and direct visual interpretation of this preferred stimulus names the feature it encodes; a group of neurons whose preferred stimuli are rotated, hue-shifted or rescaled copies of one feature is then read as an ``equivariant'' family.
+Tracing a neuron's activation along an orbit, a \emph{tuning curve}, further confirms the symmetry: a flat curve signals invariance while shifted curves indicate equivariance.\newline
+The gradient approach achieves identification by a nullspace computation.
+Restricting to matrix Lie groups $G \leq \mathrm{GL}(n)$, \citet{moskalev2023} (LieGG) read the trained network as a discriminator $F$ and invoke the criterion that a generator $\mathfrak{h}$ is an infinitesimal symmetry iff $\sum_{i,j} \partial_{x_i} F(x)\,\mathfrak{h}_{ij}\, x_j = 0$ on the data.
+Stacking this constraint over the dataset $D$ yields the \emph{network polarization matrix} $\mathcal{E} \in \mathbb{R}^{|D| \times n^2}$, whose nullspace \emph{is} the learned Lie algebra.
+In practice the approximate nullspace is extracted from the right-singular vectors of $\mathcal{E}$ associated with near-zero singular values (SVD), the count of which gives the algebra's dimension.
+\citet{hu2025nn} (LieSD) follow the same SVD-nullspace philosophy but start from a characterisation of \emph{equivariance} requiring only inputs, outputs and gradients: $f$ is $G$-equivariant iff $\mathrm{d}\rho_Y(A_i)\,f(x) = \nabla f(x)\,\mathrm{d}\rho_X(A_i)\,x$ for every generator $A_i$, with invariance the special case $\rho_Y = \mathrm{id}$.
+Assembling these constraints into a coefficient matrix, the zero singular values again count the Lie-algebra dimension and singular vectors are the generators.\newline
+Notably, both \citet{krippendorf2020} and \citet{hu2025nn} rely on the assumption that a sufficiently trained network absorbs the symmetry present in its data, so identifying the model's symmetry doubles as \emph{discovery} of the data's symmetry, closing the loop with \Cref{sec:sym-disc-from-data}.
+
+\paragraph{Quantification}
+Once one knows \emph{which} symmetry a model carries, the natural follow-up is \emph{how much} of it the model has actually learned.
+The works below share a common template: a transformation (or its infinitesimal generator) is assumed to be given, and one measures a notion of sensitivity of the model under it, assessing how well invariance or equivariance is respected.\newline
+For seminal works, \citet{goodfellow2009anips} define a neuron-level \emph{invariance score} $S(i) = L(i)/G(i)$, where the \emph{local firing rate} $L(i)$ is the fraction of transformed versions of a maximally activating input $z$ that still excite neuron $i$, and the \emph{global firing rate} $G(i) = \mathbb{E}_{x\sim P}[f_i(x)]$ measures indiscriminate firing under a random sampling $P$.
+A neuron scores high only if it tracks transformations of its preferred stimulus while staying silent on generic inputs because the denominator enforces selectivity.
+A network-level score averages $S(i)$ over only the top-$p$ fraction of neurons in a layer, which permits a \emph{modular} detection in which one subpopulation specialises to rotation, another to translation or illumination.
+The score is parametrised by a \emph{type} $\tau$ (an action), a \emph{range} $\Gamma$ (a partial orbit, not necessarily the full one) and the sampling $P$: varying these parameters instantiates different tests under the same template e.g. on video $\tau$ can be forward time-translation and $\Gamma$ the maximal number of frames skipped.
+Rather than measuring invariance directly, \citet{lenc2014a} test whether a learned representation $\phi$ is compatible with equivariance by fitting a linear map $M_g$ such that $M_g\,\phi(\mathbf{x}) \approx \phi(g\mathbf{x})$, but only one transformation $g$ at a time.
+This map is estimated by sparse regression with structured-sparsity constraints respecting the convolutional locality of $\phi$, making the problem tractable.
+Two quantifications are used: (i) the reconstruction error $\mathbb E_x[\|\phi(gx)-M_g\phi(x)\|]$, evaluates the goodness-of-fit i.e. the degree of linear equivariance of a representation and (ii) invariance is assessed by measuring how close $M_g$ is from the identity; practically they look at off-diagonal weights of $M_g$ with a ratio $\frac{\|(M_g)_{i,:}\|_2}{\|(M_g)_{i,:}-(M_g)_{i,i}e_{ii}\|_2}$, where $e_{ii}$ is the $(i,i)$ element of the canonical basis of matrices.
+Applied layer-by-layer to AlexNet, it reveals that equivariance to geometric transformations (vertical flips, rotations) degrades with depth.
+
+For subsequent works, translation equivariance in CNNs is studied by \citet{zhang2019p3icml} who track an \emph{internal feature distance} $d\big(\mathrm{Shift}(\widetilde{\mathcal{F}}(x)),\,\widetilde{\mathcal{F}}(\mathrm{Shift}(x))\big)$ across layers, exposing how downsampling destroys shift-equivariance.
+A simple performance check is used by \citet{finzi2020p3icml} (App.~B.1): the prediction gap under a group transformation of the input which is expected to vanish up to stochasticity and numerical approximation for a truly equivariant model.
+Logit-based scores sharpen this input-output analysis: \citet{hutchinson2021p3icml} report an \emph{invariance error} $\lVert \Phi(g\cdot x) - \Phi(x)\rVert_\infty$, the worst-case logit deviation under $g$.
+\citet{moskalev2023p2awtagmlt} propose other invariance errors based on the consistency of logits and saliency maps along orbits.
+Crucially they distinguish \emph{genuine} invariance from a weaker \emph{learned} invariance, in which a network (e.g.\ trained by data augmentation) reaches correct predictions on an orbit while maintaining \emph{separate} internal representations per transformation.
+Under an MNIST $\to$ Fashion-MNIST interpolation their predictive-distribution invariance $DI_f = \sum_{x\sim D}\sum_{g\sim G} D_{\mathrm{KL}}\big(f(x)\,\Vert\,f(gx)\big)$ finds that learned invariance deteriorates rapidly with the domain shift, a direct empirical argument for the robustness that strictly equivariant architectures guarantee by construction.
+\citet{shen2026} instead define an \emph{equivariance error} as the share of the total loss attributable to non-equivariance, $L_{\mathrm{equiv}}(\theta)/L(\theta)$, and observe that for augmentation-trained non-equivariant models it drops quickly to low values ($\approx 2\%$ of the loss).\newline
+A final family quantifies sensitivity infinitesimally or as a by-product of discovery.
+\citet{gruver2024} use the \emph{Lie derivative} $\mathcal{L}_X f$, where the vector field $X$ along which $f$ is differentiated is precisely an infinitesimal symmetry generator, yielding a hyperparameter-free local equivariance error that quantifies local sensitivity in the symmetry direction.
+The nullspace methods of \Cref{par:identification-anchor} used for identification can serve as quantification: \citet{moskalev2023} (LieGG) read off a \emph{symmetry variance} $\mathcal{V}(\mathcal{E}) = \sigma_{\min}(\mathcal{E})^2/|D|$ characterizing how close the network is to admitting an invariant direction in data space, and, against a known generator, a \emph{symmetry bias} measuring how faithfully that symmetry is respected.
+\citet{hu2025nn} (LieSD) push the comparison to ground truth further with a \emph{space error} and an \emph{orthogonality error}.
+The proposed space error is $E_{\text{space}} = \min_{X} \|VX - V^*\|_F^2 + \min_{Y} \|V^*Y - V\|_F^2$ which encodes the mutual expressibility of the spans of the true ($V^\star$) and recovered ($V$) generators bases.
+The orthogonality error is $E_{\text{orth}} = \sum_{i=1}^{D-1} \sum_{j=i+1}^{D} |\langle v_i, v_j \rangle|$ and computes a notion of redundancy among recovered generators $v_i$.
+
+Taken together, these measures range from single-neuron firing ratios to loss-fraction and generator-level errors, but all instantiate the same idea: probe the trained model along an assumed transformation and quantify its residual variation making them a natural counterpart of the identification methods above.
 
 \subsection{Symmetry-breaking}
 
