@@ -256,6 +256,11 @@ We propose a few criterion to categorize occurrences of symmetries in a deep lea
 % add citation to dehmamy2021anips: achieve equivariance through Lie algebra
 % scale: sosnovik2020 (scale equivariant convolutions), bekkers2021, sosnovik20212iwcacvw (application of scale equivariance in object tracking with Siamese architecture)
 % ravanbakhsh2017p3icml: weight-tying and equivariance
+% place G-equivariant convolution and G-steerable convolution more clearly as two emblematic methods to achieve equivariance
+% figure: draft/orbit-stability.png to reproduce or illustrate conceptually (equivariant models guarantee results don't change over an orbit)
+% figure: reproduce a toy example where equivariant models are more sample efficient ie they reach faster the best accuracy than vanilla models
+% romero2023tmlr: scale equivariance for audio signal
+% could add a warning about misspecification of symmetries: yang2023p4icml,finzi2021anips and the fact that approximate equivariance addresses the case where specification is slightly off due to real world fluctuations
 
 Geometric Deep Learning (GDL) \citep{bronstein2017ispm,bronstein2021} studies how to exploit the symmetry group and geometric structure of the data domain to design architectures that are sample-efficient, generalizable, and principled.
 It provides a unifying framework for deep learning architectures by viewing them through the lens of symmetry and group equi\slash invariance.
@@ -358,7 +363,8 @@ Fortunately, these hurdles are being addressed: (1) by symmetry discovery (\Cref
 % add: brehmer2025
 % tahmasebi2023: similar to elesedy2021p3icml, obtains theoretical sample complexity gains
 % vadgama2025 similar to lawrence2026
-% abramson2024n: alphafold train equivariance by data augmentation
+% include distribution symmetry breaking as a paragraph here ?
+% abramson2024n: alphafold (jumper2021na) train equivariance by data augmentation. Similarly wang2024p4icmla argue for scale above equivariant design for molecular conformers prediction.
 % qu2024anips: scale compensates for lack of symmetry prior
 % olah: same features can be learned by vanilla and equivariant architecture, could lead to interactive design where vanilla model prototype quickly/discover then equivariant models are developed (see also krippendorf2020, hu2025nn on relying on nn to extract symmetries in symmetry as an unknown part)
 A practical question is whether the design costs, potential difficulties in optimization and hardware regret due to less mature technology of equivariant models is justified over a simpler model, possibly trained with data augmentation.
@@ -368,13 +374,16 @@ However equivariant architectures are arguably preferable when data is scarce, w
 On the theoretical side, \cite{elesedy2021p3icml} obtain a strict generalization benefit in favor of equivariance for linear models.
 
 \subsection{Data augmentation}
+% add adversarial training ? [Goodfellow, Explaining and harnessing adversarial examples] and [Madry, Towards deep learning models resistant to adversarial attacks]
+% shorten2019jbd and mumuni2022a: surveys on DA
+% miao2023p4icml: instance-dependent DA
 Data augmentation (DA) enriches a training set by applying transformations that are known, or assumed, to leave the target label unchanged.
 Formally letting $G$ act on input space $\mathcal X$, the augmented risk replaces the standard empirical risk by averaging over orbits:
 $$
 \hat R_{\text{aug}}(\theta)=\frac{1}{|G|}\sum_{g\in G}\hat R(\theta |g\cdot \mathcal D),
 $$
 with the hope of encouraging the learned function to be approximately invariant to those transformations (for a continuous group, an expectation is taken over a distribution on $G$).
-Compared to designing an equivariant architecture, DA is attractive in several practical scenarios: it can be applied on top of any pretrained model without architectural changes, making it well-suited to fine-tuning; it requires no group-theoretic implementation, lowering the barrier for rapid prototyping; it naturally accommodates complex or poorly characterized transformations (\textit{e.g.} variations in illumination, viewpoint, or background in images) not easily amenable to an algebraic description and it handles approximate or partial symmetries without additional formalism.
+Compared to designing an equivariant architecture, DA is attractive in several practical scenarios: it can be applied on top of any pretrained model without architectural changes, making it well-suited to fine-tuning; it requires no group-theoretic implementation, lowering the barrier for rapid prototyping; it naturally accommodates complex or poorly characterized transformations (\textit{e.g.} variations in illumination, viewpoint, or background in images) not easily amenable to an algebraic description and it handles approximate or partial symmetries (see \Cref{sec:incomplete-symmetries}) without additional formalism.
 On the downside, covering a continuous symmetry group is impossible and materialized augmentation increase storage and compute requirements proportionally to the number of samples drawn per group orbit.
 
 \paragraph{Theoretical approaches}
@@ -408,6 +417,9 @@ Empirically, \citet{shen2026} find that DA rapidly learn 3D rotation equivarianc
 
 \subsection{Symmetric framework: Siamese networks and self-supervised learning}
 % see perin2025 paragraph "Many methods have been proposed to learn symmetries from data"
+% ilina2022sa
+% video from Jia-Bin Huang on learning without labels https://youtu.be/gVEr2cnDE_8
+
 
 
 \section{Symmetry as an unknown}
@@ -441,6 +453,9 @@ In the first part of this section, we look at symmetry discovery in data, then p
 
 % hu2025nn seems similar to krippendorf2020
 % add: ko2024anips
+% non-linear SD: yang2024p4icml, shaw2024
+% add ouderaa2023
+% seems that some GAN objective assume distribution invariance
 
 % Introduction on symmetry discovery: what it is and why is it relevant.
 We review works aiming to identify the transformations under which a dataset is invariant or equivariant.
@@ -497,7 +512,8 @@ They prove that this factorization can represent equivariance to any finite grou
 \paragraph{Caveats}
 Despite the appeal of symmetry discovery as a path around the symmetry bottleneck or as a diagnostic tool, it comes with important limitations.
 \citet{rath2024air} caution that, while discovery is valuable when prior knowledge is unavailable or hard to specify, automatically learned symmetries are generally unable to outperform models whose equivariance is correctly specified by design.
-Furthermore, \citet{yang2023p4icml} observe, and \citet{finzi2021anips} formalize, that enforcing the \emph{wrong} symmetry group (too large, small, or simply incorrect) can be actively harmful.
+Furthermore, \citet{yang2023p4icml} observe, and \citet{finzi2021anips} formalize, that enforcing the \emph{wrong} symmetry group (too large, small, or simply incorrect) can be harmful.
+% could add benton2020anips,miao2023p4icml as additional papers supporting that imposing a wrong symmetry can affect performance
 
 
 \subsubsection{Symmetry Extraction from Learned Models}
@@ -536,6 +552,11 @@ Assembling these constraints into a coefficient matrix, the zero singular values
 Notably, both \citet{krippendorf2020} and \citet{hu2025nn} rely on the assumption that a sufficiently trained network absorbs the symmetry present in its data, so identifying the model's symmetry doubles as \emph{discovery} of the data's symmetry, closing the loop with \Cref{sec:sym-disc-from-data}.
 
 \paragraph{Quantification}
+% mention sensitivity analysis as the broader field that studies how the variation in the output of a model can be apportioned to different sources of variation in its inputs - see storm2024prl for an example of local sensitivity analysis applied to deep networks. Symmetry quantification could be likened to sensitivity analysis to specific directions in input space.
+% petrache2023 3.2 equivariance error
+% yeh2022p2icais introduce the Partition Distance, a quantitative metric for comparing their learned sharing scheme against a known ground truth (an equivariance error)
+% leroy2025 invariance energy estimated in embedding space from discrete infinitesimal curves (to be added in the last paragraph on infinitesimal methods)
+% qu2024anips: sec 5.4 cosine similarity >0.99 for atom force prediction in a scaled non-equivariant model
 Once one knows \emph{which} symmetry a model carries, the natural follow-up is \emph{how much} of it the model has actually learned.
 The works below share a common template: a transformation (or its infinitesimal generator) is assumed to be given, and one measures a notion of sensitivity of the model under it, assessing how well invariance or equivariance is respected.\newline
 For seminal works, \citet{goodfellow2009anips} define a neuron-level \emph{invariance score} $S(i) = L(i)/G(i)$, where the \emph{local firing rate} $L(i)$ is the fraction of transformed versions of a maximally activating input $z$ that still excite neuron $i$, and the \emph{global firing rate} $G(i) = \mathbb{E}_{x\sim P}[f_i(x)]$ measures indiscriminate firing under a random sampling $P$.
@@ -553,8 +574,9 @@ Logit-based scores sharpen this input-output analysis: \citet{hutchinson2021p3ic
 \citet{moskalev2023p2awtagmlt} propose other invariance errors based on the consistency of logits and saliency maps along orbits.
 Crucially they distinguish \emph{genuine} invariance from a weaker \emph{learned} invariance, in which a network (e.g.\ trained by data augmentation) reaches correct predictions on an orbit while maintaining \emph{separate} internal representations per transformation.
 Under an MNIST $\to$ Fashion-MNIST interpolation their predictive-distribution invariance $DI_f = \sum_{x\sim D}\sum_{g\sim G} D_{\mathrm{KL}}\big(f(x)\,\Vert\,f(gx)\big)$ finds that learned invariance deteriorates rapidly with the domain shift, a direct empirical argument for the robustness that strictly equivariant architectures guarantee by construction.
+In the same vein, an equivariance error $\frac{1}{n} \sum_{i=1}^{n} \text{std}(L_{R_i} \Phi(f_i) - \Phi(L_{R_i} f_i)) / \text{std}(\Phi(f_i))$ is proposed by \citet{cohen2018}, measuring an average normalized difference between pre and post application of group actions $L_{R_i}$ on feature maps $f_i$.
 \citet{shen2026} instead define an \emph{equivariance error} as the share of the total loss attributable to non-equivariance, $L_{\mathrm{equiv}}(\theta)/L(\theta)$, and observe that for augmentation-trained non-equivariant models it drops quickly to low values ($\approx 2\%$ of the loss).\newline
-A final family quantifies sensitivity infinitesimally or as a by-product of discovery.
+A final family quantifies sensitivity infinitesimally.
 \citet{gruver2024} use the \emph{Lie derivative} $\mathcal{L}_X f$, where the vector field $X$ along which $f$ is differentiated is precisely an infinitesimal symmetry generator, yielding a hyperparameter-free local equivariance error that quantifies local sensitivity in the symmetry direction.
 The nullspace methods of \Cref{par:identification-anchor} used for identification can serve as quantification: \citet{moskalev2023} (LieGG) read off a \emph{symmetry variance} $\mathcal{V}(\mathcal{E}) = \sigma_{\min}(\mathcal{E})^2/|D|$ characterizing how close the network is to admitting an invariant direction in data space, and, against a known generator, a \emph{symmetry bias} measuring how faithfully that symmetry is respected.
 \citet{hu2025nn} (LieSD) push the comparison to ground truth further with a \emph{space error} and an \emph{orthogonality error}.
@@ -563,30 +585,12 @@ The orthogonality error is $E_{\text{orth}} = \sum_{i=1}^{D-1} \sum_{j=i+1}^{D} 
 
 Taken together, these measures range from single-neuron firing ratios to loss-fraction and generator-level errors, but all instantiate the same idea: probe the trained model along an assumed transformation and quantify its residual variation making them a natural counterpart of the identification methods above.
 
-\subsection{Symmetry-breaking}
-
-% What is symmetry breaking
-% keywords: phase transitions, order parameters, spontaneous symmetry breaking, bifurcation structure, discovering broken generators
-
-% shen2026: breaking exact equivariance improves learning equivariance improves learning (Qu & Krishnapriyan, 2024; Pertigkiozoglou et al., 2024; Canez et al., 2024).
-
-% Symmetry breaking: needs an introductory paragraph to disambiguate the loaded term 
-% spontaneous SB: ziyin2025, ziyin2025a
-% explicit SB in learning: tanaka2021
-% explicit SB can also be intended as deliberately reducing equivariance: goel2025, lim2024, (spinner2024)
-% smidt2021prr: the goal is to achieve symmetry breaking
-% lawrence2026 also use "distributional symmetry breaking" to refer to the case when $p_X (x) ̸= pp_X (gx)$ for some $x\inX$ and $g\inG$, where $p_X : X \to R$ is the data distribution.
-% symmetry brealing by input space information like positional encoding in transformers: vadgama2025
-
-\paragraph{Symmetry breaking through layers}
-
-\cite{weiler2019anips} discusses that layers at different depths could benefit from different levels of equivariance.
-They argue that early layers focusing on local features could be most equivariant (e.g. $E(2)$ for images) while later layers could be only equivariant to reflections for instance, as global features might have a preferred pose in natural images (the subject is typically centered and vertically aligned)
 
 
-\subsection{Partial and approximate symmetries}
-
-% Placed here because for partial symmetries the exact range is often unknown while for approximate symmetry the game revolves around knowing how much deviation is allowed - being conceptually a dual approach to symmetry discovery (\Cref{sec:sym-disc-from-data}) (also linked in that regard to quantification \Cref{sec:quantification})
+\subsection{Incomplete symmetries}\label{sec:incomplete-symmetries}
+% Partial symmetries: the exact range can be unknown, while for approximate symmetry the goal it is often unknown how much deviation is allowed
+% Incomplete symmetries study to what extent symmetries don't hold, therefore it is a sort of dual to symmetry discovery (to what extent a transformation is a symmetry)
+% paragraph 1 of topic-reports/incomplete-symmetry-notions.md: table and unifying object epsilon stabilizer from petrache2023
 
 \subsubsection{Partial symmetries: beyond groups}
 % Generalization to sets of transforms $\mathcal T: X\to X$
@@ -602,7 +606,7 @@ They argue that early layers focusing on local features could be most equivarian
 % goel2025: "symmetry breaking" with input augmentation (ex: positional encoding)
 % otto2025 section 8.4: want to maximize the size of the subgroup to which a model is equivariant to promote equivariance
 
-\subsubsection{Approximate symmetries: noise}\label{sec:soft-equivariance}
+\subsubsection{Approximate symmetries: tolerance}\label{sec:soft-equivariance}
 
 % Approximate symmetry: the symmetry group approximately holds (e.g. deviates with time in physics simulations)
 % learning near-equivariances, soft constraints, relaxed group convolutions, approximate invariants
@@ -618,19 +622,7 @@ They argue that early layers focusing on local features could be most equivarian
 
 % \cite{wang2022p3icml} introduce approximately equivariant networks that are biased towards symmetry but not strictly constrained, and demonstrate that this relaxation can outperform both fully equivariant and non-equivariant baselines on imperfectly symmetric dynamical systems.
 
-\subsection{Quantification}\label{sec:quantification}
 
-% Works that try to quantify the degree to which a symmetry is respected
-% Understand which invariances have been learned by a model, which transformations leave the model quasi-invariant, sensitivity analysis
-% shen2026 (measures an equivariance error)
-% cohen2018: measure of the impact of discretization on the equivariance error
-% lawrence2026: proposes a metric to measure the degree of distributional symmetry breaking, ie the degree to which for a task involving dataset D acted on by group G, the data distribution is not uniformally distributed on the orbits of G. They report that commonly used datasets don't have a distribution symmetric under the group acting (e.g. QM9 for molecular properties from 3D atomic coordinates, ModelNet40 for synthetic 3D CAD models \pnote{cite refs})
-
-% yeh2022p2icais introduce the Partition Distance, a quantitative metric for comparing their learned sharing scheme against a known ground truth
-
-% gruver2024
-
-% lenc2014a: quantifies invariance to transformation by assessing how close to the identity an equivariant mapping is
 
 \section{Analysis of symmetries}
 
@@ -695,6 +687,7 @@ They argue that early layers focusing on local features could be most equivarian
 % Works that bring all multiple parts together
 % otto2025
 % anselmi2019pr
+% escriche2025
 
 \subsection{Orbital position, pose}
 

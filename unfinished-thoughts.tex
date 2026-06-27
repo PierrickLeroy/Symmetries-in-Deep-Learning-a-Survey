@@ -2,6 +2,28 @@
 
 \myline
 
+\subsection{Symmetry-breaking}
+
+% What is symmetry breaking
+% keywords: phase transitions, order parameters, spontaneous symmetry breaking, bifurcation structure, discovering broken generators
+
+% shen2026: breaking exact equivariance improves learning equivariance improves learning (Qu & Krishnapriyan, 2024; Pertigkiozoglou et al., 2024; Canez et al., 2024).
+
+% Symmetry breaking: needs an introductory paragraph to disambiguate the loaded term 
+% spontaneous SB: ziyin2025, ziyin2025a
+% explicit SB in learning: tanaka2021
+% explicit SB can also be intended as deliberately reducing equivariance: goel2025, lim2024, (spinner2024)
+% smidt2021prr: the goal is to achieve symmetry breaking
+% lawrence2026 also use "distributional symmetry breaking" to refer to the case when $p_X (x) ̸= pp_X (gx)$ for some $x\inX$ and $g\inG$, where $p_X : X \to R$ is the data distribution.
+% symmetry brealing by input space information like positional encoding in transformers: vadgama2025
+
+\paragraph{Symmetry breaking through layers}
+
+\cite{weiler2019anips} discusses that layers at different depths could benefit from different levels of equivariance.
+They argue that early layers focusing on local features could be most equivariant (e.g. $E(2)$ for images) while later layers could be only equivariant to reflections for instance, as global features might have a preferred pose in natural images (the subject is typically centered and vertically aligned)
+
+\myline
+
 \cite{olah2020d} In the last section, they observe that the same type of features can be learned by equivariant and vanilla models (but the vanilla learn multiple copies to compensate for non equivariance), suggesting a pipeline where vanilla model discover and inform equivariant deep learning which bakes in the symmetries.
 
 \myline
