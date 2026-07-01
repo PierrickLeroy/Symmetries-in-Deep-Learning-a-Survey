@@ -84,7 +84,7 @@ natbib=true,
 
 % First paragraph of the introduction in ennes2025fcm
 
-% makse2025: book on symmetries
+% makse2025: book on symmetries in living systems, chap 26 about deep learning
 
 \subsection{Methodology}
 % Starting point: initial stack of paper collected over 2 years along the way
@@ -588,23 +588,35 @@ Taken together, these measures range from single-neuron firing ratios to loss-fr
 
 
 \subsection{Incomplete symmetries}\label{sec:incomplete-symmetries}
-% Partial symmetries: the exact range can be unknown, while for approximate symmetry the goal it is often unknown how much deviation is allowed
-% Incomplete symmetries study to what extent symmetries don't hold, therefore it is a sort of dual to symmetry discovery (to what extent a transformation is a symmetry)
+% Incomplete symmetries: to what extent pure symmetries don't hold, therefore it is a sort of dual to symmetry discovery (to what extent a transformation is a symmetry)
+% Partial symmetries: the exact range is often unknown, for approximate symmetry the goal it is often to calibrate how much deviation from exact symmetry is tolerated
 % paragraph 1 of topic-reports/incomplete-symmetry-notions.md: table and unifying object epsilon stabilizer from petrache2023
 
-\subsubsection{Partial symmetries: beyond groups}
-% Generalization to sets of transforms $\mathcal T: X\to X$
-% semi-group, inverse not necessarily defined: worrall2019anips (downsampling of an image modelled as a Gaussian scale space; the semigroup structure comes from the lack of an inverse transform with downsampling due to information loss)
-% range subset: works that discuss equivariance to [-90, 90] rotation
-% romero2023: definition of partial equivariance contrasted with soft/approximate equivariance, proposes architectures that learn layer-wise levels of partial equivariance, retaining full equivariance where beneficial while adapting it elsewhere.
+\subsubsection{Extent restriction: beyond groups}
+% $\pm 90^\circ$ example is doubly useful** precisely because it exposes the closure subtlety: $\{+90^\circ,-90^\circ\}$ is a non-closed subset (since $+90^\circ\!\circ\!+90^\circ=180^\circ\notin S$), whereas $\{0,90,180,270\}=C_4$ *is* a subgroup. Use it explicitly to mark the boundary between categories (1) and (2).
 
-% theoretical \cite{petrache2023}
+We organize this section based on the \emph{algebraic structure} of the set $S$ of transformations i.e.\ by which of the group axioms (closure, identity, inverses) $S$ retains.
+\Cref{table:extent-restriction} classifies the main cases along this axis.
 
-% goodfellow2009anips consider a limited range of transformation (e.g. $\pm 5$ frames for time translation in video) in order to detect invariances i.e. partial orbits
-
-% \paragraph{Subgroups}
-% goel2025: "symmetry breaking" with input augmentation (ex: positional encoding)
-% otto2025 section 8.4: want to maximize the size of the subgroup to which a model is equivariant to promote equivariance
+\begin{table}[ht]
+    \centering
+    \begin{tabularx}{\textwidth}{|l|c|c|c|X|}
+        \hline
+        \textbf{Structure of $S$} & \textbf{Closure} & \textbf{Identity} & \textbf{Inverses} & \textbf{Canonical example / refs} \\
+        \hline
+        Subgroup $S \le G$ & \checkmark & \checkmark & \checkmark & restricted equivariance; \citet{goel2025} (mechanism), \citet{weiler2019anips} (choose $G$) \\
+        \hline
+        Non-closed subset $S \subsetneq G$ & $\times$ & \checkmark & \checkmark & \emph{partial equivariance} proper, \citet{romero2023}; $\pm 90^\circ$ MNIST \\
+        \hline
+        Semigroup / monoid & \checkmark & (monoid) & $\times$ & scale / downsampling, \citet{worrall2019anips} \\
+        \hline
+        Groupoid & partial & \checkmark & \checkmark & \citet{sareen2026} \\
+        \hline
+    \end{tabularx}
+    \caption{Restricting the \emph{extent} of symmetry: each row relaxes a different group axiom of the transformation set $S\subseteq G$.
+    For the groupoid closure, \textit{partial} is meant is the sense that the binary operation is a partial function on $S\times S$ (not automatically defined for all pairs).}
+    \label{table:extent-restriction}
+\end{table}
 
 \subsubsection{Approximate symmetries: tolerance}\label{sec:soft-equivariance}
 
