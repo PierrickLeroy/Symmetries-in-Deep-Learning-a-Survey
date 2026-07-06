@@ -1,0 +1,2368 @@
+\documentclass[mathematics,review,submit,moreauthors]{Definitions/mdpi} 
+
+% MDPI internal commands - do not modify
+\firstpage{1} 
+\makeatletter 
+\setcounter{page}{\@firstpage} 
+\makeatother
+\pubvolume{1}
+\issuenum{1}
+\articlenumber{0}
+\pubyear{2026}
+\copyrightyear{2026}
+%\externaleditor{Firstname Lastname} % More than 1 editor, please add `` and '' before the last editor name
+\datereceived{ } 
+\daterevised{ } % Comment out if no revised date
+\dateaccepted{ } 
+\datepublished{ } 
+%\datecorrected{} % For corrected papers: "Corrected: XXX" date in the original paper.
+%\dateretracted{} % For retracted papers: "Retracted: XXX" date in the original paper.
+%\doinum{} % Used for some special journals, like molbank
+%\pdfoutput=1 % Uncommented for upload to arXiv.org
+%\CorrStatement{yes}  % For updates
+%\longauthorlist{yes} % For many authors that exceed the left citation part
+%\IsAssociation{yes} % For association journals
+
+%=================================================================
+% Add packages and commands here. The following packages are loaded in our class file: fontenc, inputenc, calc, indentfirst, fancyhdr, graphicx, epstopdf, lastpage, ifthen, float, amsmath, amssymb, lineno, setspace, enumitem, mathpazo, booktabs, titlesec, etoolbox, tabto, xcolor, colortbl, soul, multirow, microtype, tikz, totcount, changepage, attrib, upgreek, array, tabularx, pbox, ragged2e, tocloft, marginnote, marginfix, enotez, amsthm, natbib, hyperref, cleveref, scrextend, url, geometry, newfloat, caption, draftwatermark, seqsplit
+\usepackage{biblatex}
+\newcommand{\pnote}[1]{\textcolor{red}{PL: #1}}
+\newcommand{\myline}{
+  \vspace{5mm}
+  \hrule
+  \vspace{5mm}
+  }
+
+%=================================================================
+% Please use the following mathematics environments: Theorem, Lemma, Corollary, Proposition, Characterization, Property, Problem, Example, ExamplesandDefinitions, Hypothesis, Remark, Definition, Notation, Assumption
+%% For proofs, please use the proof environment (the amsthm package is loaded by the MDPI class).
+
+%=================================================================
+\Title{Symmetries and Deep Learning: a Survey}
+\addbibresource{bibliography.bib}
+\newcommand{\orcidauthorA}{0009-0004-2050-916X}\newcommand{\orcidauthorB}{0000-0002-0610-9168}
+\Author{Pierrick Leroy $^{*}$\orcidA{} and Francesco Vaccarino\orcidB{}}
+% MDPI internal command: Authors, for metadata in PDF
+\AuthorNames{Pierrick Leroy and Francesco Vaccarino}
+\address[1]{Department of Mathematical Sciences, Politecnico di Torino, Turin, Italy}
+\corres{Correspondence: pierrick.leroy@polito.it}
+
+\abstract{
+\pnote{write at the end}
+}
+
+\keyword{deep learning, symmetry, neural network, invariance, equivariance, group theory}
+
+\setlength{\headheight}{20pt}
+\begin{document}
+
+\section{Introduction}
+% ennes2025fcm: first paragraph of the introduction
+% makse2025: book on symmetries in living systems, chap 26 about deep learning
+
+\pnote{write at the end}
+
+\section{Materials and Methods}
+% The different sections have some degree of overlap and the positioning of branches in the taxonomy is indicative of main tendencies but not capturing all the diversity or granularity (many works combine different technique, or could be classified in two different ways depending on what is put forward). It is a simplifying picture.
+
+\subsection{Methodology}
+% Starting point: initial stack of paper collected over 2 years along the way
+% Completion of the initial stack by keyword search on scopus, google scholar and by AI powered tools like research-rabbit or elicit
+% Criterion for retaining a reference: published in a peer-reviewed venue OR high impact (>100 citations on google scholar) OR recent (publication date<2 years)
+% 315 works were identified, out of which 120 are retained in the final version
+% AI statement: knowledge base
+
+\subsection{Related work}
+Previous work have collected or formalized literature on symmetries in a deep learning context.
+Symmetric architecture (such as Siamese networks) are surveyed in \cite{ilina2022sa}.
+\cite{zhao2025} focuses on parameter-space symmetries: transformation that change the representation of a neural network but do not modify the implemented function.
+\cite{sipiran202523scgpis} references symmetry discovery methods in 3D shapes.
+% geometric deep learning
+\cite{bronstein2021} is the reference textbook on geometric deep learning,  \cite{gerken2021,carlsson} study the mathematical formalism of this field and \cite{basheer2025ijdsa,habte2023} focus more specifically on equivariant convolutions, \cite{fei2024air} on 3D rotations and \cite{seo2025a} on robotics.
+\cite{rath2024air} gathers methods that integrate geometric prior knowledge to neural network such that their representations are invariant or equivariant.
+Compared to these works, we work in a reverse and go broad, starting from the concept of symmetry listing its occurrences and trying to delineate a conceptual understanding, adopting a high level point of view.
+
+
+
+\subsection{Taxonomy and paper organization}
+% A taxonomy where each cell contains a branch name and a few representative works
+% The linear structure of the paper is organized along the methodological dimension of the taxonomy
+
+We propose a few criterion to categorize occurrences of symmetries in a deep learning context.
+
+
+\begin{table}[ht]
+    \centering
+    \begin{tabularx}{\textwidth}{|c|c|c|c|X|}
+        \hline
+        \textbf{Main} & \textbf{Values} & \textbf{Secondary} & \textbf{Values} & \textbf{Description} \\
+        \hline
+        Exactness & Exact       &          &          & \multirow{3}{=}{Whether the symmetry exactly holds or not.} \\
+                  & Approximate &          &          & \\ % Leave the last column empty here
+                  & Partial &          &          & \\ % Leave the last column empty here
+        \hline
+        Methodology & Prescriptive & Encoding & Implicit & \multirow{3}{=}{What is the interaction with the symmetry. Prescriptive assumes prior knowledge.} \\
+                    &              &          & Explicit & \\ % Leave the last column empty here
+        \cline{2-4}
+                    & Descriptive &  &  & \\
+        \hline
+        Object & Data & & & \multirow{4}{=}{What is the relevant scope to consider the symmetry. Data, model and framework are not mutually exclusive.} \\
+        \cline{2-4}
+               & Model & State & Fixed & \\
+               &       &       & Dynamic & \\
+        \cline{2-4}
+               & Framework      &       & &\\
+        \hline
+    \end{tabularx}
+    \caption{\textbf{Main}. Top level criterion \textbf{Secondary}. Optional second level, depending on the value of the main criterion. The main criterion are independent, the secondary level is hierarchically dependent on the main level.}
+    \label{table:taxonomy}
+\end{table}
+
+% Description of the table criteria: approximate if it holds to first order but not strictly (\textit{e.g.} due to noise), incomplete for a restriction (\textit{e.g.} subset of the group
+% Partial vs approximate terminology from \cite{petrache2023}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\linewidth]{images/draft/taxonomy.png}
+    \caption{Classification tree based on the taxonomy from \Cref{table:taxonomy}}
+    \label{fig:taxonomy}
+\end{figure}
+
+
+
+\section{Background: Mathematical Foundations of Symmetry}
+% Conservation laws ?
+% Core notions
+% \cite{borde2025,carlsson,chen2020,2023tg,bronstein2021}
+
+
+
+\subsection{What is a Symmetry?}
+
+% reasons symmetry appears: (a) it's present in the problem, (b) it emerges from the architecture or training procedure
+
+A \textit{symmetry} is a transformation that leaves an object as a whole unchanged, it is statement about identity.
+\textit{Invariance} is a broader, functional term that refers to the situation where a property of an object does not change under a transformation.
+Symmetry can be defined by invariance by saying that an object has a symmetry if its identity is invariant under a specific transformation.
+
+\begin{Definition}[$\phi$-equivalence, {\cite{cohen2014}}]\label{def:equivalence}
+    Let $\phi : \mathcal{X} \to \mathcal{Y}$ be a function from an input domain $\mathcal{X}$ to a codomain $\mathcal{Y}$, where for example $\mathcal{X} \subseteq \mathbb{R}^d$, and $\mathcal{Y}$ may be $\{0,1\}$ (binary classification), $\{1,\dots,L\}$ (multiclass classification), $\mathbb{R}$ (regression), or $\mathbb{R}^e$ (feature representation).
+    
+    Two elements $x, y \in \mathcal{X}$ are said to be \emph{$\phi$-equivalent}, denoted $x \sim_{\phi} y$, if
+    \[
+        \phi(x) = \phi(y).
+    \]
+    The relation $\equiv_{\phi}$ is an equivalence relation on $\mathcal{X}$ and induces a partition of $\mathcal{X}$ into equivalence classes.
+\end{Definition}
+
+\begin{Example}[Image segmentation]\label{ex:image-segmentation}
+    If $\mathcal{X}$ is an image, $x\in \mathcal{X}$ a pixel and $\mathcal Y = \left \{ 1\dots L\right \}$ are segmentation labels, then the sets defined by the equivalence relation are the pixels that belong of the same segmentation class.
+\end{Example}
+
+\begin{Example}[Image classification]\label{ex:image-classification}
+    If $\mathcal{X}$ is a \emph{set of images}, $x\in \mathcal{X}$ is an image, $\mathcal Y = \left \{ 1\dots L\right \}$ are the labels, then the sets defined by the equivalence relation are images of the same class.
+\end{Example}
+
+\begin{Example}[Loss level sets]
+    If $\mathcal Y = \mathbb R$ and $\phi$ is a generic loss function, then the sets defined by the equivalence relation are the level set of the loss function.
+\end{Example}
+
+\begin{Example}[Observationally equivalent parameters]\label{ex:equivalence_observational}
+    If $\mathcal X$ a parameter space, $\mathcal{Y}$ a functional space and $\phi$ is the implementation map then the sets given by the equivalence relation $\phi$ are the observationally equivalent parameters
+\end{Example}
+
+\begin{Definition}[Invariance]\label{def:invariance}
+    Let $G$ be a group acting on a set $\mathcal{X}$.
+    A function $\phi : \mathcal{X} \to \mathcal{Y}$ is $G$-invariant if $\phi(g\cdot x)=\phi(x)$ for all $g\in G$ and $x\in X$.
+\end{Definition}
+
+In \cref{ex:image-classification,ex:image-segmentation}, $G$ acts on images and could contain translations, rotations or reflections while in \cref{ex:equivalence_observational}, $G$ acts on parameters and contains transformations that leave the implemented function unchanged such as within-layer neuron permutations for MLPs.
+
+\begin{Definition}[Equivariance]\label{def:equivariance}
+    Let $G$ be a group acting on sets $\mathcal{X}$ and $\mathcal{Y}$. 
+    A function $\phi : \mathcal{X} \to \mathcal{Y}$ is $G$-equivariant if
+    \[
+        \phi(g \cdot x) = g \cdot \phi(x)
+    \]
+    for all $g \in G$ and $x \in \mathcal{X}$.
+\end{Definition}
+
+In equivariance, the group $G$ acts both on the input and output.
+$G$ can act similarly on the two sets, as it can be the case for 3D physical data \cite{geiger2022,bogatskiy2020p3icml}, for example when studying forces acting on a molecule one might want to encode in $G$ the fact that when rotating the molecules, a similar rotation must be applied to the forces.
+A similar case is in image segmentation where translation of the domain must induce the same translation of segmentation map.
+
+However, equivariance does not require that the group $G$ acts in the same way on input and output \cite{cohen2016a,bogatskiy2020p3icml}.
+Formally, let $T$ and $T'$ be two transformations taking inputs from $G$ and forming $T_g$ and $T_g'$ acting on $\mathcal{X}$ and $\mathcal{Y}$ respectively.
+In general, the only requirement is that $T$ and $T'$ are linear representations of $G$, \textit{i.e.} that the following holds: 
+
+\begin{equation}\label{eq:general-equivariance}
+    T(gh)=T(g)T(h) \quad \textrm{and} \quad T'(gh)=T'(g)T'(h) \qquad \forall g, h \in G.
+\end{equation}
+
+From \Cref{eq:general-equivariance}, we see that invariance can be realized as a special case of equivariance, namely taking $T'(g)=id_{\mathcal Y}$ for all $g$.
+In words, $T'$ maps all group elements to the identity group action.
+
+% Group Theory, the algebraic backbone: Group (closure, associativity, identity, inverses), group action (orbits, stabilizers, free vs. transitive actions)
+\subsection{Group Theory: The Algebraic Backbone}
+\label{sec:group-theory-backbone}
+
+Symmetry underlies much of the structure exploited later in this survey---from
+weight-space quotients in deep networks to invariant statistical models---and
+its precise language is group theory. We recall here the minimal apparatus
+needed: the group axioms, and the theory of group actions, with an emphasis
+on the orbit--stabilizer picture that recurs throughout.
+
+\subsubsection{Groups}\label{subsec:groups}
+
+\begin{Definition}[Group]\label{def:group}
+A \emph{group} is a pair $(G, \cdot)$ consisting of a set $G$ and a binary
+operation $\cdot : G \times G \to G$ satisfying:
+    \begin{enumerate}[label=(G\arabic*), leftmargin=*, labelsep=0.5em]
+        \item \textbf{Closure.} For all $g, h \in G$, $g \cdot h \in G$.
+        \item \textbf{Associativity.} For all $g, h, k \in G$,
+        \[
+            (g \cdot h) \cdot k = g \cdot (h \cdot k).
+        \]
+        \item \textbf{Identity.} There exists $e \in G$ such that
+        \[
+            e \cdot g = g \cdot e = g \qquad \text{for all } g \in G.
+        \]
+        \item \textbf{Inverses.} For every $g \in G$ there exists
+        $g^{-1} \in G$ such that
+        \[
+            g \cdot g^{-1} = g^{-1} \cdot g = e.
+        \]
+    \end{enumerate}
+\end{Definition}
+
+Closure is often stated separately, as above, but is already implicit in the
+requirement that $\cdot$ be a map into $G$; we retain it for emphasis, since
+in practice (e.g.\ when $G$ arises as a subset of a larger ambient set, such
+as permutations of a fixed set or invertible matrices) closure is the axiom
+that must be checked first. The identity $e$ is unique, and each inverse
+$g^{-1}$ is unique, both by a standard cancellation argument from (G2)--(G4).
+If in addition $g \cdot h = h \cdot g$ for all $g,h \in G$, the group is
+\emph{abelian}; otherwise it is \emph{non-abelian}.
+
+\begin{Example}
+\label{ex:groups}
+Groups relevant to the constructions in this survey include:
+\begin{itemize}
+    \item The \emph{symmetric group} $S_n$ of permutations of
+    $\{1, \dots, n\}$ under composition---non-abelian for $n \geq 3$, and the
+    natural home for neuron-permutation symmetries of a network layer.
+    \item The \emph{general linear group} $GL(n, \mathbb{R})$ of invertible
+    $n \times n$ real matrices under multiplication, and its subgroup the
+    \emph{orthogonal group} $O(n) = \{ A \in GL(n,\mathbb{R}) : A^\top A = I \}$.
+    \item The multiplicative group $\mathbb{R}_{>0}$ of positive reals,
+    relevant to positive rescaling symmetries in ReLU networks
+    (cf.\ \S\ref{subsec:balanced-weight-manifolds} where such rescalings act
+    on a layer's incoming/outgoing weights).
+    \item Direct and semidirect products (explained later in this work) of the above, e.g.\
+    $S_n \ltimes \mathbb{R}_{>0}^n$, capturing the combined permutation and
+    positive-scaling symmetries of a hidden layer.
+\end{itemize}
+\end{Example}
+
+A \emph{subgroup} $H \leq G$ is a subset closed under $\cdot$ and inverses
+and containing $e$; equivalently, $H$ is itself a group under the restriction
+of $\cdot$. A map $\varphi : G \to G'$ between groups is a
+\emph{homomorphism} if $\varphi(g h) = \varphi(g)\varphi(h)$ for all
+$g, h \in G$; it is an \emph{isomorphism} if additionally bijective, in which
+case $G$ and $G'$ are structurally indistinguishable as groups.
+
+\subsubsection{Group Actions}
+\label{subsec:group-actions}
+
+Groups become tools for organizing geometric or combinatorial structure once
+they are allowed to \emph{act} on a set.
+
+\begin{Definition}[Group action]
+\label{def:group-action}
+A (left) \emph{action} of a group $G$ on a set $X$ is a map
+$\alpha : G \times X \to X$, written $\alpha(g,x) = g \cdot x$, such that
+\begin{enumerate}[label=(A\arabic*), leftmargin=*, labelsep=0.5em]
+    \item $e \cdot x = x$ for all $x \in X$;
+    \item $g \cdot (h \cdot x) = (gh) \cdot x$ for all $g, h \in G$,
+    $x \in X$.
+\end{enumerate}
+Equivalently, an action is a homomorphism $G \to \mathrm{Sym}(X)$, the group
+of bijections of $X$, sending $g \mapsto (x \mapsto g \cdot x)$.
+\end{Definition}
+
+Two invariants attached to a point $x \in X$ organize the geometry of an
+action.
+
+\begin{Definition}[Orbit and stabilizer]
+\label{def:orbit-stabilizer}
+For $x \in X$, the \emph{orbit} of $x$ under $G$ is
+\[
+    G \cdot x \;=\; \{\, g \cdot x : g \in G \,\} \subseteq X,
+\]
+and the \emph{stabilizer} of $x$ is the subgroup
+\[
+    G_x \;=\; \{\, g \in G : g \cdot x = x \,\} \leq G.
+\]
+\end{Definition}
+
+Orbits partition $X$ into equivalence classes under the relation
+$x \sim y \iff y \in G \cdot x$, and the quotient set $X / G$ of orbits is
+the natural object classifying $X$ \emph{up to symmetry}---the set-theoretic
+precursor of the weight-space quotients used later to remove permutation and
+scaling redundancy from parameter spaces. The stabilizer $G_x$ measures the
+symmetry \emph{fixing} a given representative, and the two invariants are
+linked by the following basic but central fact.
+
+Before stating the theorem, it is worth isolating the coset construction
+that appears in its statement, since it arises itself as the orbit set of a
+natural action.
+
+\begin{Example}[Cosets as orbits]
+\label{ex:cosets-as-orbits}
+Let $H \leq G$ and let $H$ act on the set $X = G$ via
+\[
+    \beta(h,x) = x h, \qquad h \in H,\ x \in G.
+\]
+Composing two such maps gives $\beta(h_2, \beta(h_1,x)) = (x h_1) h_2 = x(h_1 h_2) = \beta(h_1 h_2, x)$,
+so this is a \emph{right} action of $H$ on $G$---the composition order is
+reversed relative to the left-action convention of
+Definition~\ref{def:group-action}. It is transcribed into a left action in
+the sense of Definition~\ref{def:group-action} by setting
+$h \cdot x := x h^{-1}$ instead, at the cost of an inverse; either
+convention produces the same orbits. Taking $\beta$ as written, the orbit of
+a point $x \in G$ is
+\[
+    H \cdot x \;=\; \{\, xh : h \in H \,\} \;=:\; xH,
+\]
+and the stabilizer is trivial: $xh = x$ forces $h = e$ by cancellation, so
+$H_x = \{e\}$ for every $x \in G$---the action is free. The orbit $xH$ is
+called the \emph{left coset} of $H$ represented by $x$.
+\end{Example}
+
+\begin{Definition}[Left coset]
+\label{def:left-coset}
+For a subgroup $H \leq G$ and $x \in G$, the \emph{left coset} of $H$
+represented by $x$ is
+\[
+    xH \;:=\; \{\, xh : h \in H \,\} \subseteq G.
+\]
+The left cosets of $H$ are precisely the orbits of the action in
+Example~\ref{ex:cosets-as-orbits}, and hence partition $G$; the set of all
+left cosets is denoted $G/H$. Since that action is free, the map
+$h \mapsto xh$ is a bijection $H \xrightarrow{\sim} xH$ for every $x$, so all
+left cosets share the cardinality $|H|$. Consequently, when $G$ is finite,
+\[
+    |G| \;=\; [G:H]\,|H|, \qquad [G:H] := |G/H|,
+\]
+where $[G:H]$ is the \emph{index} of $H$ in $G$---this is Lagrange's
+theorem, an immediate corollary of Theorem~\ref{thm:orbit-stabilizer} below
+applied to $X = G$ with $H$ in place of $G$.
+\end{Definition}
+
+With this in hand, the set $G/G_x$ appearing in the theorem below is simply
+the set of left cosets of the stabilizer subgroup $G_x \leq G$, in the sense
+of Definition~\ref{def:left-coset}.
+
+\begin{Theorem}[Orbit--Stabilizer Theorem]
+\label{thm:orbit-stabilizer}
+Let $G$ act on $X$ and fix $x \in X$. The map $g G_x \mapsto g \cdot x$ is a
+well-defined bijection between the set of left cosets $G / G_x$ and the
+orbit $G \cdot x$. Consequently, if $G$ is finite,
+\[
+    |G \cdot x| \;=\; [G : G_x] \;=\; \frac{|G|}{|G_x|}.
+\]
+\end{Theorem}
+
+Two extremal regimes of behavior are of particular interest.
+
+\begin{Definition}[Free and transitive actions]
+\label{def:free-transitive}
+An action of $G$ on $X$ is:
+\begin{itemize}
+    \item \emph{free} if $G_x = \{e\}$ for every $x \in X$, i.e.\ only the
+    identity fixes any point ($g \cdot x = x \implies g = e$);
+    \item \emph{transitive} if $X$ consists of a single orbit, i.e.\ for all
+    $x, y \in X$ there exists $g \in G$ with $g \cdot x = y$.
+\end{itemize}
+An action that is both free and transitive is \emph{simply transitive} (or
+\emph{regular}): for every pair $x, y \in X$ there is a \emph{unique}
+$g \in G$ with $g \cdot x = y$. In this case $X$ is a $G$-\emph{torsor}, and
+the choice of any basepoint $x_0 \in X$ identifies $X \cong G$ as $G$-sets via
+$g \mapsto g \cdot x_0$---though this identification depends on the
+basepoint and carries no group structure of its own on $X$.
+\end{Definition}
+
+Freeness and transitivity are logically independent: an action can be free
+without being transitive (e.g.\ $\mathbb{Z}$ acting on itself by translation
+has trivial stabilizers but, if $X$ is taken larger than a single orbit,
+fails transitivity), transitive without being free (e.g.\ $S_n$ acting on
+$\{1,\dots,n\}$ is transitive but $G_x \cong S_{n-1}$ is nontrivial for
+$n \geq 2$), neither, or both. When the action is free, the Orbit--Stabilizer
+Theorem collapses to $|G \cdot x| = |G|$: every orbit is a faithful copy of
+$G$ itself, with no internal symmetry to quotient by---the situation one
+seeks when a group action is meant to model \emph{pure redundancy} (e.g.\
+positive rescalings acting freely on the nonzero weights of a ReLU unit) with
+no additional accidental coincidences.
+
+Finally, an action is \emph{faithful} if the homomorphism
+$G \to \mathrm{Sym}(X)$ of Definition~\ref{def:group-action} is injective,
+equivalently $\bigcap_{x \in X} G_x = \{e\}$; free actions are automatically
+faithful, but not conversely. Faithfulness is the natural minimality
+condition ensuring $G$ is not acting with redundant, indistinguishable
+elements---a standing assumption whenever a symmetry group is identified
+\emph{as} a subgroup of $\mathrm{Sym}(X)$ rather than merely mapped into it.
+
+
+
+
+% Discrete (permutation, cyclic...) vs continuous/Lie (Euclidean, Lorentz...) groups
+
+\subsubsection{Discrete versus Continuous (Lie) Groups}
+\label{subsec:discrete-vs-lie}
+
+The groups of Example~\ref{ex:groups} split naturally along a second axis,
+orthogonal to the abelian/non-abelian distinction: whether $G$ itself carries
+a topology (indeed a smooth manifold structure) compatible with the group
+operations, or is merely a set with no such structure to speak of. This
+distinction determines whether the tools available are combinatorial
+(orbit-counting, coset enumeration) or differential (tangent spaces, flows,
+one-parameter subgroups), and both regimes recur throughout this survey.
+
+\subsubsection{Discrete groups}
+\label{subsubsec:discrete-groups}
+
+\begin{Definition}[Discrete group]
+\label{def:discrete-group}
+A group $G$ is \emph{discrete} if it is equipped with the discrete topology
+(every subset is open), or, informally, if $G$ is finite or countable with
+no accumulation structure relating distinct elements. Equivalently, the only
+continuous paths $\gamma : [0,1] \to G$ are the constant ones.
+\end{Definition}
+
+\begin{Example}[Discrete groups]
+\label{ex:discrete-groups}
+\begin{itemize}
+    \item The \emph{symmetric group} $S_n$ (Example~\ref{ex:groups}) is
+    finite, of order $n!$, and non-abelian for $n \geq 3$; it acts on
+    $\{1,\dots,n\}$ by permutation, and this action is transitive but---as
+    already noted---not free.
+    \item The \emph{cyclic group} $\mathbb{Z}/n\mathbb{Z}$, the integers
+    modulo $n$ under addition, is the prototypical finite abelian group; more
+    generally $\mathbb{Z}$ itself, under addition, is an infinite discrete
+    abelian group. Every element of $\mathbb{Z}/n\mathbb{Z}$ is a power of a
+    single generator, the defining property of \emph{cyclicity}.
+    \item Finite subgroups of $O(n)$, such as the dihedral groups
+    (symmetries of a regular polygon) or the point groups of crystallography,
+    sit discretely inside a continuous ambient group
+    (\S\ref{subsubsec:lie-groups} below) while remaining discrete as groups
+    in their own right.
+\end{itemize}
+\end{Example}
+
+For discrete $G$, orbits under an action are typically studied by direct
+enumeration, and Theorem~\ref{thm:orbit-stabilizer} is often used
+computationally: $|G\cdot x|$ and $|G_x|$ are counted independently and
+cross-checked against $|G|$. This is the regime relevant, e.g., to
+neuron-permutation symmetries $S_n \curvearrowright \mathbb{R}^{n}$ acting on
+a layer's units.
+
+\subsubsection{Continuous (Lie) groups}
+\label{subsubsec:lie-groups}
+
+\begin{Definition}[Lie group]
+\label{def:lie-group}
+A \emph{Lie group} is a group $G$ that is simultaneously a smooth manifold,
+such that the multiplication map $G \times G \to G$, $(g,h) \mapsto gh$, and
+the inversion map $G \to G$, $g \mapsto g^{-1}$, are both smooth. Unlike a
+discrete group, $G$ then admits nontrivial continuous paths through the
+identity, and the tangent space $\mathfrak{g} = T_e G$ at the identity---the
+\emph{Lie algebra} of $G$---linearizes the group structure infinitesimally.
+\end{Definition}
+
+\begin{Example}[Lie groups]
+\label{ex:lie-groups}
+\begin{itemize}
+    \item The \emph{general linear group} $GL(n,\mathbb{R})$
+    (Example~\ref{ex:groups}) is an open subset of $\mathbb{R}^{n^2}$ under
+    the determinant-nonvanishing condition, hence an $n^2$-dimensional Lie
+    group; its Lie algebra $\mathfrak{gl}(n,\mathbb{R})$ is all of
+    $\mathbb{R}^{n^2}$ under the matrix commutator.
+    \item The \emph{Euclidean group} $E(n) = O(n) \ltimes \mathbb{R}^n$
+    consists of all distance-preserving transformations of
+    $\mathbb{R}^n$---rotations, reflections, and translations---and is the
+    Symmetry group of ordinary (flat, positive-definite) Euclidean geometry.
+    Its subgroup $SE(n) = SO(n) \ltimes \mathbb{R}^n$ of orientation-preserving
+    Isometries are the group of rigid motions.
+    \item The \emph{Lorentz group} $O(1,n)$ (or $O(n,1)$, depending on sign
+    convention) is the analogue of $O(n)$ for Minkowski space
+    $\mathbb{R}^{1,n}$, i.e.\ the group of linear maps preserving the
+    indefinite quadratic form $-t^2 + x_1^2 + \cdots + x_n^2$ rather than the
+    positive-definite Euclidean one; together with translations, it generates
+    the \emph{Poincar\'e group}, the symmetry group of Minkowski spacetime.
+    Its noncompactness (boosts are unbounded) already distinguishes its
+    representation theory sharply from that of the compact group $O(n)$.
+    \item The multiplicative group $\mathbb{R}_{>0}$ and the orthogonal group
+    $O(n)$ of Example~\ref{ex:groups} are themselves Lie groups of dimension
+    $1$ and $\binom{n}{2}$ respectively, and their (semidirect) product
+    actions on network weight layers---mentioned there in the discrete
+    permutation context---are properly continuous, Lie-theoretic actions.
+\end{itemize}
+\end{Example}
+
+For a Lie group $G$ acting smoothly on a manifold $X$, orbits
+$G \cdot x$ need not be discrete sets but are themselves immersed
+submanifolds of $X$, and Theorem~\ref{thm:orbit-stabilizer} upgrades from a
+counting statement to a statement about diffeomorphism: when the action is
+proper, $G \cdot x \cong G / G_x$ as smooth manifolds, with $G_x \leq G$ now
+a closed (possibly positive-dimensional) Lie subgroup rather than a finite
+index-computing subgroup. This differential refinement of the
+orbit--stabilizer picture is the one in play whenever continuous rescaling
+or rotation symmetries---rather than discrete permutation
+symmetries---are quotiented out of a parameter space, as in
+\S\ref{subsec:balanced-weight-manifolds}.
+
+
+% Subgroups, direct products, semidirect products
+
+\subsection{Subgroups, Direct Products, and Semidirect Products}
+\label{subsec:subgroups-products}
+
+Having distinguished discrete from continuous groups, we now record the
+standard constructions for building new groups out of old ones---constructions
+already used implicitly above, e.g.\ in writing $E(n) = O(n) \ltimes
+\mathbb{R}^n$ or $S_n \ltimes \mathbb{R}_{>0}^n$ for the combined permutation
+and rescaling symmetries of a layer.
+
+\subsubsection{Subgroups}
+\label{subsubsec:subgroups}
+
+\begin{Definition}[Subgroup, revisited]
+\label{def:subgroup}
+A subset $H \subseteq G$ is a \emph{subgroup}, written $H \leq G$, if
+$e \in H$ and $H$ is closed under the group operation and inversion:
+$h_1, h_2 \in H \implies h_1 h_2 \in H$ and $h \in H \implies h^{-1} \in H$.
+Equivalently, $H$ is nonempty and $h_1 h_2^{-1} \in H$ for all
+$h_1, h_2 \in H$ (the one-step subgroup criterion). Under the restriction of
+$\cdot$, $H$ then satisfies (G1)--(G4) of Definition~\ref{def:group} in its
+own right.
+\end{Definition}
+
+A subgroup $N \leq G$ is \emph{normal}, written $N \trianglelefteq G$, if it
+is invariant under conjugation: $g N g^{-1} = N$ for every $g \in G$,
+equivalently $g n g^{-1} \in N$ for all $g \in G, n \in N$. Normality is
+exactly the condition under which the coset space $G/N$ of
+Definition~\ref{def:left-coset} inherits a group structure from $G$, via
+$(g_1 N)(g_2 N) := (g_1 g_2) N$---this is well defined precisely because
+conjugation cannot move a coset representative out of $N$. The resulting
+group $G/N$ is the \emph{quotient group}. Normal subgroups will reappear
+below as the fixed piece in a semidirect product, and are the group-theoretic
+analogue of the weight-space quotients used to remove symmetry redundancy
+elsewhere in this survey.
+
+\begin{Example}
+\label{ex:subgroups}
+$SO(n) \trianglelefteq O(n)$ (rotations inside all orthogonal
+transformations, of index $2$, with $O(n)/SO(n) \cong \mathbb{Z}/2\mathbb{Z}$
+recording orientation); the alternating group
+$A_n \trianglelefteq S_n$ (even permutations, likewise of index $2$); and the
+translation subgroup $\mathbb{R}^n \trianglelefteq E(n)$ inside the Euclidean
+group. By contrast, a copy of $O(n) \leq E(n)$ fixing the origin is a
+subgroup but \emph{not} normal for $n \geq 1$: conjugating a rotation about
+the origin by a nontrivial translation produces a rotation about a different
+point, which is not in that particular copy of $O(n)$.
+\end{Example}
+
+\subsubsection{Direct products}
+\label{subsubsec:direct-products}
+
+\begin{Definition}[Direct product]
+\label{def:direct-product}
+Given groups $G_1, G_2$, the \emph{direct product} $G_1 \times G_2$ is the
+group with underlying set $G_1 \times G_2$ and componentwise operation
+\[
+    (g_1, g_2) \cdot (g_1', g_2') = (g_1 g_1',\, g_2 g_2').
+\]
+Both factors sit inside the product as normal subgroups,
+$G_1 \times \{e_2\} \trianglelefteq G_1 \times G_2$ and
+$\{e_1\} \times G_2 \trianglelefteq G_1 \times G_2$, and elements from the
+two factors commute with one another: $(g_1,e_2)(e_1,g_2) = (g_1,g_2) =
+(e_1,g_2)(g_1,e_2)$.
+\end{Definition}
+
+The direct product is the construction that applies when two symmetries act
+\emph{independently}, with no interaction between the factors. It is,
+however, too rigid for many of the situations of interest: when one
+symmetry's action is itself permuted or twisted by the other, a direct
+product cannot express the coupling, and one instead needs the semidirect
+product below.
+
+\subsubsection{Semidirect products}
+\label{subsubsec:semidirect-products}
+
+Suppose $N$ and $H$ are groups and $H$ acts on $N$ \emph{by automorphisms},
+i.e.\ there is a homomorphism $\varphi : H \to \mathrm{Aut}(N)$ (so each
+$\varphi(h) : N \to N$ is itself a group isomorphism, not merely a bijection
+as in Definition~\ref{def:group-action}).
+
+\begin{Definition}[Semidirect product]
+\label{def:semidirect-product}
+The \emph{semidirect product} $N \rtimes_\varphi H$ is the group with
+underlying set $N \times H$ and operation
+\[
+    (n_1, h_1) \cdot (n_2, h_2) \;=\; \bigl(n_1 \, \varphi(h_1)(n_2),\; h_1 h_2 \bigr).
+\]
+This satisfies the group axioms (G1)--(G4) with identity $(e_N, e_H)$ and
+inverse $(n,h)^{-1} = (\varphi(h^{-1})(n^{-1}), h^{-1})$; the verification of
+(G2) is exactly where the requirement that $\varphi(h)$ be an automorphism
+(rather than an arbitrary bijection) is used. The subset
+$N \times \{e_H\}$ is a normal subgroup isomorphic to $N$, the subset
+$\{e_N\} \times H$ is a subgroup isomorphic to $H$ (normal iff $\varphi$ is
+trivial, in which case $N \rtimes_\varphi H$ degenerates to the direct
+product $N \times H$), and every element factors uniquely as a product of
+one element from each.
+\end{Definition}
+
+\begin{Example}[Semidirect products already in use]\label{ex:semidirect-products}
+\phantom{u}
+\begin{itemize}
+    \item \textbf{The Euclidean group.} $E(n) = \mathbb{R}^n \rtimes_\varphi
+    O(n)$, where $\varphi : O(n) \to \mathrm{Aut}(\mathbb{R}^n)$ sends a
+    matrix $A$ to its defining linear action $v \mapsto Av$. Concretely,
+    composing two rigid motions $(v_1, A_1)$ then $(v_2,A_2)$ (translate by
+    $v_1$, rotate by $A_1$, then translate by $v_2$, rotate by $A_2$) gives
+    $(v_2, A_2)(v_1,A_1) = (v_2 + A_2 v_1,\ A_2 A_1)$---the rotation
+    $A_2$ twists the first translation $v_1$ before the two compose, which
+    is exactly the semidirect (as opposed to direct) product structure. The
+    Poincar\'e group $\mathbb{R}^{1,n} \rtimes O(1,n)$ mentioned in
+    \S\ref{subsubsec:lie-groups} has the identical shape, with $O(1,n)$ in
+    place of $O(n)$.
+    \item \textbf{Layer symmetries.} The combined permutation and
+    positive-rescaling symmetry of a hidden layer's units,
+    $S_n \ltimes \mathbb{R}_{>0}^n$, is the semidirect product with
+    $\varphi : S_n \to \mathrm{Aut}(\mathbb{R}_{>0}^n)$ the permutation
+    action on coordinates: a permutation $\sigma \in S_n$ acts on a scaling
+    tuple $(\lambda_1,\dots,\lambda_n) \in \mathbb{R}_{>0}^n$ by
+    $\sigma \cdot (\lambda_i) = (\lambda_{\sigma^{-1}(i)})$, reordering which
+    unit gets which scale factor before the scalings themselves compose
+    coordinatewise. This is the group whose action on weight space underlies
+    the quotient constructions of
+    \S\ref{subsec:balanced-weight-manifolds}.
+    \item \textbf{Dihedral groups revisited.} $D_n \cong \mathbb{Z}/n\mathbb{Z}
+    \rtimes \mathbb{Z}/2\mathbb{Z}$, with the order-$2$ factor acting on the
+    cyclic factor by inversion, $\varphi(-1)(k) = -k$; this exhibits the
+    discrete symmetry group of Example~\ref{ex:discrete-groups} itself as a
+    semidirect product, showing the construction is not confined to the
+    continuous setting.
+\end{itemize}
+\end{Example}
+
+The direct/semidirect distinction is precisely the question of whether the
+two symmetry types present in a problem interact: wherever a rescaling
+symmetry and a permutation symmetry (or a rotation and a translation) must be
+composed in a fixed order with one twisting the other, the semidirect
+product---not the direct product---is the group that actually acts.
+
+
+
+% Compactness and Peter-Weyl theorem guaranteeing reducibility, non-compact groups are more difficult: no reducibility of representations, Haar measure
+
+\subsection{Compactness, the Peter--Weyl Theorem, and the Non-Compact Case}
+\label{subsec:compactness-peter-weyl}
+
+The discrete/continuous dichotomy of \S\ref{subsec:discrete-vs-lie} is not
+the only one that matters for representation theory: among Lie groups, a
+further split---compact versus non-compact---determines whether
+representations behave as tamely as in the finite case or exhibit genuinely
+new phenomena. This subsection makes that distinction precise.
+
+\subsubsection{Compact groups}
+\label{subsubsec:compact-groups}
+
+\begin{Definition}[Compact group]
+\label{def:compact-group}
+A Lie group $G$ is \emph{compact} if it is compact as a topological space,
+i.e.\ every open cover of $G$ admits a finite subcover, equivalently (since
+$G$ is a manifold, hence metrizable) every sequence in $G$ has a convergent
+subsequence.
+\end{Definition}
+
+\begin{Example}[Compact and non-compact groups already introduced]
+\label{ex:compactness}
+The orthogonal group $O(n)$ (Example~\ref{ex:groups}) is compact: it is a
+closed and bounded subset of $\mathbb{R}^{n^2}$, boundedness following from
+$A^\top A = I \implies \sum_{i,j} A_{ij}^2 = n$. Its subgroup $SO(n)$ is
+likewise compact, and finite groups such as $S_n$ or $\mathbb{Z}/n\mathbb{Z}$
+are trivially compact. By contrast, $GL(n,\mathbb{R})$, $\mathbb{R}_{>0}$,
+the translation group $\mathbb{R}^n \leq E(n)$, and the Lorentz group
+$O(1,n)$ (\S\ref{subsubsec:lie-groups}) are all non-compact: each contains
+sequences with no convergent subsequence (e.g.\ dilations $\lambda \to
+\infty$ in $\mathbb{R}_{>0}$, or Lorentz boosts approaching the speed of
+light in $O(1,n)$). Consequently $E(n)$ and the Poincar\'e group, being
+semidirect products with a non-compact factor, are themselves non-compact,
+even though their rotational part $O(n)$, resp.\ $O(1,n)$'s maximal compact
+subgroup, is not the source of the non-compactness.
+\end{Example}
+
+\subsubsection{Haar measure}
+\label{subsubsec:haar-measure}
+
+Representation theory on a Lie group requires a way to integrate functions
+on $G$ that is compatible with the group structure.
+
+\begin{Theorem}[Existence of Haar measure]
+\label{thm:haar-measure}
+On every locally compact topological group $G$ (in particular, every Lie
+group) there exists a nonzero, regular Borel measure $\mu$, unique up to
+positive scalar, that is \emph{left-invariant}:
+\[
+    \mu(gS) = \mu(S) \qquad \text{for all } g \in G \text{ and Borel } S \subseteq G.
+\]
+This $\mu$ is the \emph{(left) Haar measure} of $G$.
+\end{Theorem}
+
+In general $\mu$ need not also be right-invariant; groups for which it is
+(automatically true for compact and for abelian $G$) are called
+\emph{unimodular}. The decisive fact for what follows is:
+
+\begin{Proposition}
+\label{prop:compact-haar-finite}
+If $G$ is compact, its Haar measure $\mu$ has finite total mass,
+$\mu(G) < \infty$, and may be normalized to a left- and right-invariant
+probability measure, $\mu(G) = 1$.
+\end{Proposition}
+
+If $G$ is non-compact, no such normalization is possible: $\mu(G) = \infty$
+necessarily (e.g.\ Lebesgue measure on $\mathbb{R}^n \leq E(n)$, or the
+non-compact directions of $O(1,n)$), and integration over all of $G$ ceases
+to make sense for a constant function. This single fact is the root cause of
+the divergence in behavior described next.
+
+\subsubsection{The Peter--Weyl theorem: compact groups are fully reducible}
+\label{subsubsec:peter-weyl}
+
+Fix a finite-dimensional (or, more generally, unitary) representation
+$\rho : G \to GL(V)$, i.e.\ a homomorphism into the invertible linear maps of
+a vector space $V$ (an action of $G$ on $V$ in the sense of
+Definition~\ref{def:group-action}, compatible with the linear structure). A
+subspace $W \subseteq V$ is \emph{invariant} if $\rho(g)W \subseteq W$ for
+all $g \in G$; $\rho$ is \emph{irreducible} if its only invariant subspaces
+are $0$ and $V$, and \emph{completely reducible} if $V$ decomposes as a
+direct sum of irreducible invariant subspaces.
+
+\begin{Theorem}[Peter--Weyl]
+\label{thm:peter-weyl}
+Let $G$ be a compact (Lie) group. Then:
+\begin{enumerate}
+    \item Every continuous unitary representation of $G$ on a Hilbert space
+    decomposes as a direct sum (in general, a Hilbert-space direct sum) of
+    finite-dimensional irreducible unitary representations.
+    \item Every finite-dimensional representation of $G$ is equivalent to a
+    unitary one, and hence---by (1)---is completely reducible.
+    \item The matrix coefficients of the irreducible unitary representations
+    of $G$ span a dense subspace of $L^2(G,\mu)$ (with $\mu$ the normalized
+    Haar measure of Proposition~\ref{prop:compact-haar-finite}), giving an
+    orthogonal (Peter--Weyl) decomposition
+    \[
+        L^2(G,\mu) \;\cong\; \bigoplus_{\pi \in \widehat{G}} V_\pi \otimes V_\pi^*,
+    \]
+    the sum ranging over the set $\widehat{G}$ of (isomorphism classes of)
+    irreducible unitary representations of $G$.
+\end{enumerate}
+\end{Theorem}
+
+The mechanism behind part (2) is the \emph{unitarizability trick}: given any
+representation $\rho$ of a compact $G$ on an inner product space $(V,
+\langle\cdot,\cdot\rangle)$, average the inner product itself over $G$ using
+the finite Haar measure,
+\[
+    \langle v, w \rangle_G \;:=\; \int_G \langle \rho(g)v,\, \rho(g)w \rangle \, d\mu(g),
+\]
+which converges precisely because $\mu(G) < \infty$, and is by construction
+$G$-invariant, making $\rho$ unitary with respect to $\langle\cdot,\cdot\rangle_G$.
+Once $\rho$ is unitary, the orthogonal complement of any invariant subspace
+is again invariant, and complete reducibility follows by induction on
+$\dim V$. Compactness therefore does not merely simplify representation
+theory---it is the single hypothesis that makes the averaging argument, and
+hence Theorem~\ref{thm:peter-weyl} in its entirety, possible.
+
+\subsubsection{Non-compact groups: no such guarantee}
+\label{subsubsec:noncompact-representations}
+
+When $G$ is non-compact, Proposition~\ref{prop:compact-haar-finite} fails
+($\mu(G) = \infty$), the averaging trick above no longer converges, and both
+conclusions of Theorem~\ref{thm:peter-weyl} can genuinely fail.
+
+\begin{itemize}
+    \item \textbf{Complete reducibility can fail.} A finite-dimensional
+    representation of a non-compact $G$ need not be unitarizable, and an
+    invariant subspace need not admit an invariant complement. The
+    prototypical example is the standard action of $\mathbb{R}$ (as the
+    subgroup of upper unitriangular matrices) on $\mathbb{R}^2$ via
+    $t \cdot (x,y) = (x + ty,\, y)$: the line $y = 0$ is invariant, but no
+    invariant complementary line exists, so this representation is
+    reducible yet \emph{not} completely reducible---a phenomenon that
+    cannot occur for a compact group by Theorem~\ref{thm:peter-weyl}.
+    \item \textbf{Irreducible unitary representations are typically
+    infinite-dimensional.} For non-compact, non-abelian semisimple groups
+    such as the Lorentz group $O(1,n)$, essentially all irreducible unitary
+    representations (beyond trivial finite-dimensional ones on which the
+    noncompact directions act trivially) are infinite-dimensional, organized
+    into families---principal series, complementary series, discrete series
+    (when they exist)---rather than a single discrete spectrum $\widehat{G}$
+    as in part (3) of Theorem~\ref{thm:peter-weyl}. The Peter--Weyl
+    decomposition of $L^2(G,\mu)$ itself must be replaced by a
+    \emph{direct integral} over these families,
+    \[
+        L^2(G,\mu) \;\cong\; \int_{\widehat{G}}^{\oplus} V_\pi \otimes V_\pi^* \, d\nu(\pi),
+    \]
+    with $\nu$ a Plancherel measure on the (now typically continuous)
+    unitary dual $\widehat{G}$---the substance of Harish-Chandra's
+    representation theory of semisimple Lie groups, and considerably harder
+    than the compact case.
+\end{itemize}
+
+The practical consequence for constructions elsewhere in this survey is
+this: whenever a symmetry group acting on a parameter or feature space is
+compact (finite permutation groups, $O(n)$, $SO(n)$), invariant
+decompositions and averaged inner products are available essentially for
+free via Theorem~\ref{thm:peter-weyl}; whenever it is non-compact (scaling
+groups $\mathbb{R}_{>0}$, translation groups, the full Euclidean or Lorentz
+groups), no such decomposition is automatic, and invariance must instead be
+built by hand---e.g.\ by restricting to a compact subgroup, passing to a
+homogeneous space with a genuinely invariant (rather than merely
+quasi-invariant) measure, or working with unbounded, possibly
+infinite-dimensional representations directly.
+
+% Give an example of a simple group, reference a textbook
+
+\subsubsection{Simple groups: an example}
+\label{subsubsec:simple-groups}
+
+The normal subgroups introduced in \S\ref{subsubsec:subgroups} single out a
+distinguished class of groups: those admitting none.
+
+\begin{Definition}[Simple group]
+\label{def:simple-group}
+A group $G$ is \emph{simple} if $G \neq \{e\}$ and the only normal subgroups
+of $G$ are $\{e\}$ and $G$ itself.
+\end{Definition}
+
+Simple groups are the group-theoretic analogue of prime numbers: every
+finite group can be built from simple groups by a finite sequence of
+extensions (a \emph{composition series}), so that classifying finite simple
+groups amounts to classifying the irreducible building blocks out of which
+all finite groups are assembled. Abelian simple groups are easy to
+classify---$\mathbb{Z}/p\mathbb{Z}$ for $p$ prime, since any nontrivial
+proper subgroup of an abelian group is automatically normal, so simplicity
+forces the group to have no nontrivial proper subgroups at all. The first
+genuinely non-abelian example is the following.
+
+\begin{Example}[$A_5$ is simple]
+\label{ex:A5-simple}
+The alternating group $A_5$ (even permutations of $\{1,\dots,5\}$,
+$|A_5| = 60$) introduced alongside $A_n \trianglelefteq S_n$ in
+Example~\ref{ex:subgroups} is the smallest non-abelian simple group. A
+standard proof examines the conjugacy classes of $A_5$, of sizes
+$1, 15, 20, 12, 12$, and shows that no proper nonempty union of these class
+sizes summing to a divisor of $60$ (other than $\{1\}$ and the full set)
+exists---since a normal subgroup must be a union of conjugacy classes
+(including $\{e\}$) whose total size divides $|A_5|$ by
+Theorem~\ref{thm:orbit-stabilizer}, this rules out every candidate normal
+subgroup besides $\{e\}$ and $A_5$ itself. Geometrically, $A_5$ is also the
+rotation group of the icosahedron/dodecahedron, giving a second,
+more visual route to the same conclusion via its action on the $5$
+inscribed cubes of a dodecahedron.
+
+Simplicity of $A_5$ is what obstructs solving the general quintic by
+radicals: Galois theory reduces solvability-by-radicals to the
+\emph{solvability} of a certain group (existence of a composition series
+with abelian factors), and a simple non-abelian composition factor such as
+$A_5$ blocks this, in sharp contrast to $S_n$ for $n \leq 4$, whose
+composition series bottoms out entirely in abelian pieces. A detailed proof
+of simplicity of $A_5$, together with its role in this Galois-theoretic
+obstruction, can be found in Dummit and Foote,
+\emph{Abstract Algebra}~\cite{dummit2003}, \S 3.5 and \S 6.4 (in various
+editions, in the sections on simple groups and Galois theory,
+respectively).
+\end{Example}
+
+The classification of \emph{all} finite simple groups---completed over
+several decades by dozens of authors and running, across all contributing
+papers, to an estimated ten thousand journal pages---identifies $A_5$ as the
+smallest member of the infinite family of alternating groups $A_n$
+($n \geq 5$), one of eighteen infinite families (together with cyclic groups
+of prime order, the alternating groups, and sixteen families of groups of
+Lie type) plus twenty-six sporadic exceptions. This classification lies far
+outside the scope of the present survey; we record it here only to situate
+$A_5$ as the first, and most tractable, instance of a phenomenon that is in
+general extraordinarily deep.
+
+%
+\subsection{Representation Theory}
+\label{subsec:representation-theory}
+
+We now assemble the representation-theoretic vocabulary used implicitly in
+\S\ref{subsubsec:peter-weyl}--\S\ref{subsubsec:noncompact-representations}
+into a self-contained toolkit, since it is this vocabulary---not the group
+axioms themselves---that is invoked directly wherever equivariance and
+invariance are built into a model architecture later in this survey.
+
+\subsubsection{Linear representations}
+\label{subsubsec:linear-representations}
+
+\begin{Definition}[Linear representation]
+\label{def:linear-representation}
+A \emph{linear representation} of a group $G$ on a vector space $V$ (over
+$\mathbb{R}$ or $\mathbb{C}$) is a group homomorphism
+\[
+    \rho : G \longrightarrow GL(V),
+\]
+i.e.\ a map satisfying $\rho(g_1 g_2) = \rho(g_1)\rho(g_2)$ and
+$\rho(e) = \mathrm{id}_V$ for all $g_1, g_2 \in G$---equivalently (as already
+noted in \S\ref{subsubsec:peter-weyl}), a group action of $G$ on $V$
+(Definition~\ref{def:group-action}) through \emph{linear} bijections of $V$
+rather than arbitrary bijections of a set. We write $\dim \rho := \dim V$,
+and call $\rho$ \emph{unitary} if $V$ carries a $G$-invariant inner product,
+i.e.\ $\rho(g) \in U(V)$ for all $g$.
+\end{Definition}
+
+Two representations $\rho_1 : G \to GL(V_1)$, $\rho_2 : G \to GL(V_2)$ are
+\emph{equivalent} (or isomorphic) if there is a linear isomorphism
+$T : V_1 \to V_2$ intertwining the actions,
+$T \rho_1(g) = \rho_2(g) T$ for all $g \in G$; such a $T$ is called an
+\emph{intertwiner}, or a \emph{$G$-equivariant map}, and the representation
+theory of $G$ is, at bottom, the classification of representations up to
+this notion of equivalence.
+
+\begin{Example}[Representations already encountered]
+\label{ex:representations-recap}
+The \emph{defining representation} of $O(n)$ on $\mathbb{R}^n$ (matrices
+acting on column vectors, Example~\ref{ex:groups}) is a linear
+representation in this sense; the \emph{regular representation} of a finite
+group $G$ on $\mathbb{C}[G] = \bigoplus_{g \in G} \mathbb{C}\, g$, defined by
+$\rho(g)\bigl(\sum_h c_h\, h\bigr) = \sum_h c_h\,(gh)$, encodes $G$ acting on
+itself by left multiplication (the free action of
+Example~\ref{ex:cosets-as-orbits} with $H = G$, linearized); and the
+\emph{trivial representation} $\rho(g) = \mathrm{id}_V$ for all $g$ is
+present inside every representation as the subspace of $G$-fixed vectors.
+\end{Example}
+
+\subsubsection{Irreducibility and reducibility for compact groups}
+\label{subsubsec:irreps-recap}
+
+Irreducibility and complete reducibility were already defined in
+\S\ref{subsubsec:peter-weyl} in order to state the Peter--Weyl theorem; we
+restate them here as the central organizing notions of the subject proper.
+
+\begin{Definition}[Irreducible representation]
+\label{def:irrep}
+A representation $\rho : G \to GL(V)$ is \emph{irreducible} (an
+\emph{irrep}) if $V \neq 0$ and $V$ has no $G$-invariant subspace other than
+$0$ and $V$. It is \emph{completely reducible} if $V$ is a direct sum of
+irreducible invariant subspaces.
+\end{Definition}
+
+For $G$ compact, Theorem~\ref{thm:peter-weyl} guarantees that every
+finite-dimensional representation is completely reducible, and organizes the
+whole of $L^2(G)$ into the discrete direct sum indexed by the unitary dual
+$\widehat{G}$; this is the structural fact that recent work on
+group-equivariant deep learning leans on directly, decomposing feature
+spaces into isotypic (irrep-indexed) components in order to constrain
+network layers to be exactly $G$-equivariant by design rather than by
+regularization---see, e.g., the treatment of spherical CNNs and Clebsch--Gordan
+decompositions in \cite{kondor2018p3icml} and the general group-equivariant
+convolutional framework of \cite{cohen2014}, both of which exploit
+compactness of the relevant symmetry group ($SO(3)$, or finite groups such as
+the rotation/reflection group of a square lattice, respectively) precisely
+to invoke the Peter--Weyl decomposition of \S\ref{subsubsec:peter-weyl}. As
+emphasized in \S\ref{subsubsec:noncompact-representations}, this guarantee
+evaporates once $G$ is non-compact, which is exactly why equivariant
+architectures for non-compact symmetry groups (translations, positive
+rescalings) require separate, ad hoc constructions rather than a single
+unified decomposition.
+
+\subsubsection{Tensor algebra}
+\label{subsubsec:tensor-algebra}
+
+Representations combine via the usual multilinear-algebra operations, each
+of which is again a representation.
+
+\begin{Definition}[Operations on representations]
+\label{def:tensor-operations}
+Given representations $\rho_1 : G \to GL(V_1)$ and $\rho_2 : G \to GL(V_2)$:
+\begin{itemize}
+    \item The \emph{direct sum} $\rho_1 \oplus \rho_2$ acts on
+    $V_1 \oplus V_2$ by $(\rho_1 \oplus \rho_2)(g)(v_1,v_2) =
+    (\rho_1(g)v_1,\, \rho_2(g)v_2)$.
+    \item The \emph{tensor product} $\rho_1 \otimes \rho_2$ acts on
+    $V_1 \otimes V_2$ by
+    $(\rho_1 \otimes \rho_2)(g) = \rho_1(g) \otimes \rho_2(g)$, i.e.\
+    $(\rho_1\otimes\rho_2)(g)(v_1 \otimes v_2) = \rho_1(g)v_1 \otimes \rho_2(g)v_2$,
+    extended linearly.
+    \item The \emph{dual representation} $\rho_1^*$ acts on
+    $V_1^* = \mathrm{Hom}(V_1,\mathbb{C})$ by
+    $(\rho_1^*(g)\varphi)(v) = \varphi(\rho_1(g)^{-1} v)$, the inverse
+    ensuring $\rho_1^*$ is itself a homomorphism rather than an
+    anti-homomorphism.
+    \item Iterating the tensor product gives the full \emph{tensor algebra}
+    $T(V) = \bigoplus_{k \geq 0} V^{\otimes k}$ of a representation
+    $\rho: G \to GL(V)$, on which $G$ acts on each graded piece
+    $V^{\otimes k}$ via $\rho^{\otimes k}$; its symmetric and antisymmetric
+    quotients $\mathrm{Sym}^k(V)$ and $\Lambda^k(V)$ are likewise
+    $G$-representations, obtained by restricting $\rho^{\otimes k}$ to the
+    (anti)symmetric subspace of $V^{\otimes k}$.
+\end{itemize}
+\end{Definition}
+
+Unlike direct sum, the tensor product of two irreducibles is typically
+\emph{not} irreducible: for $G$ compact, complete reducibility
+(Theorem~\ref{thm:peter-weyl}) guarantees $\rho_1 \otimes \rho_2$ decomposes
+as a direct sum of irreps,
+\[
+    \rho_1 \otimes \rho_2 \;\cong\; \bigoplus_{\pi \in \widehat{G}} N_{\pi}^{\rho_1,\rho_2}\; \pi,
+\]
+with nonnegative integer multiplicities $N_\pi^{\rho_1,\rho_2}$; determining
+these multiplicities explicitly (the \emph{Clebsch--Gordan problem}, e.g.\
+for $G = SO(3)$ as used in \cite{kondor2018p3icml}) is itself a substantial
+part of the representation theory of any given compact group.
+
+\subsubsection{Schur's lemma}
+\label{subsubsec:schurs-lemma}
+
+The following elementary but pivotal fact controls exactly which
+intertwiners between irreducibles can exist, and underlies both the
+uniqueness statement in Peter--Weyl and the practical computation of
+Clebsch--Gordan multiplicities above.
+
+\begin{Lemma}[Schur]
+\label{lem:schur}
+Let $\rho_1 : G \to GL(V_1)$ and $\rho_2 : G \to GL(V_2)$ be irreducible
+representations over $\mathbb{C}$, and let $T : V_1 \to V_2$ be an
+intertwiner, $T\rho_1(g) = \rho_2(g) T$ for all $g \in G$. Then:
+\begin{enumerate}
+    \item Either $T = 0$, or $T$ is an isomorphism (so $\rho_1 \cong \rho_2$).
+    \item If $\rho_1 = \rho_2 = \rho$ (so $T : V \to V$), then
+    $T = \lambda\, \mathrm{id}_V$ for some scalar $\lambda \in \mathbb{C}$.
+\end{enumerate}
+\end{Lemma}
+
+\begin{proof}[Proof sketch]
+For (1): $\ker T \subseteq V_1$ is a $G$-invariant subspace, since
+$\rho_1(g)v \in \ker T$ whenever $v \in \ker T$ (as $T\rho_1(g)v =
+\rho_2(g)Tv = 0$); irreducibility of $\rho_1$ forces $\ker T \in \{0, V_1\}$.
+Symmetrically, $\mathrm{im}\, T \subseteq V_2$ is $G$-invariant, so
+irreducibility of $\rho_2$ forces $\mathrm{im}\, T \in \{0, V_2\}$. Excluding
+the trivial map leaves $\ker T = 0$ and $\mathrm{im}\, T = V_2$, i.e.\ $T$ is
+an isomorphism. For (2): since $\mathbb{C}$ is algebraically closed, $T$ has
+an eigenvalue $\lambda$; then $T - \lambda\,\mathrm{id}_V$ is again an
+intertwiner of $\rho$ with itself, but now with nontrivial kernel, so by (1)
+it must be the zero map, giving $T = \lambda\,\mathrm{id}_V$.
+\end{proof}
+
+Part (2) is the source of the diagonal, isotypic block structure exploited
+whenever a $G$-equivariant linear layer is constructed for compact $G$: any
+linear map commuting with the $G$-action on an isotypic component (a direct
+sum of copies of one irrep $\pi$) is forced by Schur's lemma to act as a
+single scalar (or, more generally, a small matrix indexed by the
+multiplicity space) on that component, which is precisely the parameter
+reduction---from a dense weight matrix to a handful of learnable
+scalars per irrep---underlying the equivariant convolution constructions of
+\cite{cohen2014} and the tensor-field/Clebsch--Gordan layers of
+\cite{kondor2018p3icml}.
+
+% Isotypic decomposition and its role in constraining architecture: used in weiler2019anips.md, xu2022p3icml.md, yarotsky2018r.md, gibson2024.md
+
+\subsubsection{Isotypic decomposition and its role in constraining architecture}\label{sec:isotypic-decomposition}
+
+The Peter--Weyl and Clebsch--Gordan decompositions of
+\S\ref{subsubsec:irreps-recap}--\S\ref{subsubsec:tensor-algebra} organize a
+representation not merely into individual irreps, but into blocks of
+\emph{repeated} irreps, and it is this coarser block structure---rather than
+the finer decomposition into individual irreducible summands, which is
+unique only up to the choice of an arbitrary basis within each block---that
+is the object directly constrained in equivariant network design.
+
+\begin{Definition}[Isotypic decomposition]
+\label{def:isotypic-decomposition}
+Let $\rho : G \to GL(V)$ be a representation of a compact group $G$, and let
+$\widehat{G}$ denote its unitary dual (Theorem~\ref{thm:peter-weyl}). For
+$\pi \in \widehat{G}$, the \emph{$\pi$-isotypic component} of $V$ is the sum
+of all irreducible invariant subspaces of $V$ isomorphic to $\pi$; it is
+canonically of the form $V_\pi \cong \pi^{\oplus m_\pi} \cong \pi \otimes
+\mathbb{C}^{m_\pi}$, where $m_\pi \in \mathbb{Z}_{\geq 0}$ is the
+\emph{multiplicity} of $\pi$ in $\rho$, and $\mathbb{C}^{m_\pi}$ (the
+\emph{multiplicity space}) carries no $G$-action at all. The
+\emph{isotypic decomposition}
+\[
+    V \;=\; \bigoplus_{\pi \in \widehat{G}} V_\pi \;=\; \bigoplus_{\pi \in \widehat{G}} \pi \otimes \mathbb{C}^{m_\pi}
+\]
+is then canonical (unlike the decomposition of each $V_\pi$ into individual
+irreducible lines, which depends on a basis choice within
+$\mathbb{C}^{m_\pi}$), since distinct isotypic components are automatically
+orthogonal and $G$-invariant, and the summands within a single $V_\pi$ are
+not individually distinguished by the $G$-action.
+\end{Definition}
+
+\begin{Proposition}[Schur blocks intertwiners]
+\label{prop:schur-blocks}
+Let $V = \bigoplus_\pi \pi \otimes \mathbb{C}^{m_\pi}$ and
+$V' = \bigoplus_\pi \pi \otimes \mathbb{C}^{m_\pi'}$ be isotypic
+decompositions of two representations of $G$. Then any $G$-equivariant
+linear map $T : V \to V'$ (Definition~\ref{def:linear-representation})
+vanishes between non-matching isotypic components, and restricts on each
+matching component to a map of the form
+\[
+    T\big|_{V_\pi} \;=\; \mathrm{id}_\pi \otimes A_\pi, \qquad A_\pi \in \mathrm{Hom}(\mathbb{C}^{m_\pi}, \mathbb{C}^{m_\pi'}),
+\]
+i.e.\ $T$ acts as the identity on the irrep factor and as an
+\emph{arbitrary} linear map $A_\pi$ on the multiplicity space alone.
+\end{Proposition}
+
+This is precisely Schur's Lemma (Lemma~\ref{lem:schur}) applied
+componentwise: part (1) kills cross terms between inequivalent irreps, and
+part (2) forces the action on each copy of a given irrep within an isotypic
+block to be a shared scalar, leaving only the multiplicity-space map
+$A_\pi$---an $m_\pi' \times m_\pi$ matrix, independent of $\dim \pi$---as the
+free parameter. This is the entire content of the parameter-count reduction
+already flagged at the end of \S\ref{subsubsec:schurs-lemma}: a general
+linear map $V \to V'$ has $\dim V \cdot \dim V'$ parameters, while the most
+general \emph{equivariant} one has only
+$\sum_\pi m_\pi m_\pi'$---independent of the (typically much larger)
+dimensions $\dim \pi$ of the irreps themselves.
+
+\begin{Example}[Isotypic decomposition constraining architecture]
+\label{ex:isotypic-architecture}
+Proposition~\ref{prop:schur-blocks} is the mechanism, in one form or
+another, behind each of the following constructions:
+\begin{itemize}
+    \item \textbf{Steerable CNNs.} Feature fields on $\mathbb{R}^2$
+    equivariant under $E(2) = \mathbb{R}^2 \rtimes O(2)$
+    (Example~\ref{ex:semidirect-products}) are built by assigning each
+    feature channel to an isotypic component of a chosen irrep of the
+    compact factor $O(2)$ (or a finite subgroup thereof), so that admissible
+    convolution kernels are exactly those satisfying the block-diagonal
+    constraint of Proposition~\ref{prop:schur-blocks}, reducing kernel
+    design to solving a small linear system per pair of irreps rather than
+    over the full spatial kernel~\cite{weiler2019anips}.
+    \item \textbf{Multiplicity-space architectures.} More recent
+    equivariant architectures push the isotypic viewpoint further by
+    treating the multiplicity spaces $\mathbb{C}^{m_\pi}$ themselves as the
+    sole locus of learnable, unconstrained linear structure at each layer,
+    with all cross-irrep mixing explicitly disallowed by
+    Proposition~\ref{prop:schur-blocks}, as in the architecture studied
+    in~\cite{xu2022p3icml}.
+    \item \textbf{Universality and expressivity limits.} Because
+    Proposition~\ref{prop:schur-blocks} caps the free parameters of an
+    equivariant layer at $\sum_\pi m_\pi m_\pi'$, isotypic decomposition
+    also governs what an equivariant network \emph{cannot} express;
+    quantifying this gap---how much approximation power is sacrificed by
+    imposing the isotypic block constraint relative to an unconstrained
+    network of the same width---is the subject of the universal
+    approximation analysis in~\cite{yarotsky2018r}.
+    \item \textbf{Beyond compact symmetry.} Isotypic decomposition, exactly
+    as stated, requires the Peter--Weyl guarantee of
+    Theorem~\ref{thm:peter-weyl} and hence compactness of $G$
+    (\S\ref{subsubsec:noncompact-representations}); extending an isotypic-style
+    block constraint to symmetry groups with a non-compact factor (e.g.\ the
+    translation part of $E(n)$, or scaling symmetries
+    $\mathbb{R}_{>0}$) requires replacing the discrete sum over
+    $\widehat{G}$ with the direct-integral / Plancherel-measure formalism
+    of \S\ref{subsubsec:noncompact-representations}, an approach pursued
+    in~\cite{gibson2024}.
+\end{itemize}
+\end{Example}
+
+% \subsection{Harmonic Analysis on Groups}
+\label{subsec:harmonic-analysis}
+
+The Peter--Weyl decomposition of \S\ref{subsubsec:peter-weyl} is, properly
+understood, a generalization of the Fourier transform, and the isotypic
+constructions of \S\ref{sec:isotypic-decomposition} are best understood
+as \emph{spectral} constraints in this generalized sense. This subsection
+makes that identification explicit and draws out its consequences for
+learning.
+
+\subsubsection{Generalities}
+\label{subsubsec:harmonic-analysis-generalities}
+
+\begin{Definition}[Fourier transform on a compact group]
+\label{def:group-fourier-transform}
+Let $G$ be a compact group with normalized Haar measure $\mu$
+(Proposition~\ref{prop:compact-haar-finite}), and let $\widehat{G}$ be its
+unitary dual. For $f \in L^2(G,\mu)$, the \emph{(non-commutative) Fourier
+transform} of $f$ is the assignment, to each irrep $\pi \in \widehat{G}$
+(realized concretely as $\pi : G \to U(d_\pi)$ on $\mathbb{C}^{d_\pi}$), of
+the $d_\pi \times d_\pi$ matrix
+\[
+    \widehat{f}(\pi) \;:=\; \int_G f(g)\, \pi(g)^{-1} \, d\mu(g) \;\in\; \mathbb{C}^{d_\pi \times d_\pi}.
+\]
+The Peter--Weyl theorem (Theorem~\ref{thm:peter-weyl}) is exactly the
+statement that $f \mapsto \big(\widehat{f}(\pi)\big)_{\pi \in \widehat{G}}$
+is an isometric isomorphism $L^2(G,\mu) \to \bigoplus_\pi \mathbb{C}^{d_\pi
+\times d_\pi}$ (up to normalization by $d_\pi$), with inversion formula
+$f(g) = \sum_{\pi \in \widehat{G}} d_\pi \,\mathrm{tr}\bigl(\widehat{f}(\pi)\,\pi(g)\bigr)$.
+For $G$ abelian, every irrep is $1$-dimensional (Schur's lemma,
+Lemma~\ref{lem:schur}(2), applied to $\rho(h)$ commuting with $\rho(g)$ for
+all $g,h$ forces every $\rho(g)$ to be scalar), $\widehat{G}$ recovers the
+usual group of characters $\chi : G \to U(1)$, and
+Definition~\ref{def:group-fourier-transform} reduces exactly to the
+classical Fourier transform: on $G = \mathbb{Z}/n\mathbb{Z}$ it is the
+discrete Fourier transform, and on $G = \mathbb{R}$ (non-compact, treated
+via the direct-integral formalism of
+\S\ref{subsubsec:noncompact-representations} rather than a discrete sum) it
+is the ordinary Fourier transform on the line.
+\end{Definition}
+
+The essential feature that makes this transform useful, exactly as in the
+classical case, is that it diagonalizes convolution.
+
+\begin{Proposition}[Convolution theorem]
+\label{prop:convolution-theorem}
+For $f_1, f_2 \in L^2(G,\mu)$, define the \emph{convolution}
+\[
+    (f_1 * f_2)(g) \;:=\; \int_G f_1(h)\, f_2(h^{-1}g)\, d\mu(h).
+\]
+Then $\widehat{f_1 * f_2}(\pi) = \widehat{f_1}(\pi)\, \widehat{f_2}(\pi)$ for
+every $\pi \in \widehat{G}$: convolution on $G$ becomes ordinary matrix
+multiplication after Fourier transform.
+\end{Proposition}
+
+Convolution as defined here is exactly the operation with respect to which
+$G$ acts on $L^2(G,\mu)$ by left translation, $(g \cdot f)(x) = f(g^{-1}x)$,
+a special case of the \emph{regular representation} of
+Example~\ref{ex:representations-recap} carried over from $\mathbb{C}[G]$ to
+$L^2(G,\mu)$; Proposition~\ref{prop:convolution-theorem} therefore says that
+the regular representation is, block by block, exactly the isotypic
+decomposition of \S\ref{sec:isotypic-decomposition} applied to itself,
+with each irrep $\pi$ appearing in $L^2(G,\mu)$ with multiplicity
+$m_\pi = d_\pi$ (part (3) of Theorem~\ref{thm:peter-weyl}).
+
+For $G = SO(3)$ acting on the sphere $S^2 = SO(3)/SO(2)$, this specializes
+to classical spherical harmonic analysis: the irreps of $SO(3)$ are indexed
+by $\ell = 0,1,2,\dots$ with $d_\ell = 2\ell+1$, the isotypic components of
+$L^2(S^2)$ are exactly the spans of the degree-$\ell$ spherical harmonics,
+and Proposition~\ref{prop:convolution-theorem} is the statement, familiar
+from physics, that convolution with a rotationally symmetric kernel acts
+diagonally, by a single scalar per degree $\ell$, on the spherical harmonic
+expansion of a function. A systematic treatment of this material at the
+level of generality used here is given in Folland's
+\emph{A Course in Abstract Harmonic Analysis}~\cite{folland2016}.
+
+\subsubsection{Relation to learning}
+\label{subsubsec:harmonic-analysis-learning}
+
+The relevance of this formalism to the learning constructions surveyed in
+\S\ref{sec:isotypic-decomposition} is that a $G$-equivariant linear
+layer is, in these terms, nothing other than a \emph{spectral filter}.
+
+\begin{itemize}
+    \item \textbf{Group convolution as the universal equivariant linear
+    map.} Any $G$-equivariant linear map between two copies of the regular
+    representation $L^2(G,\mu)$ is necessarily convolution by some fixed
+    kernel $\kappa \in L^2(G,\mu)$, $f \mapsto \kappa * f$; this is a special
+    case of Proposition~\ref{prop:schur-blocks} in which the multiplicity
+    spaces $\mathbb{C}^{m_\pi}$ have dimension $d_\pi$ and $A_\pi$ is
+    determined by $\widehat{\kappa}(\pi)$. This is precisely the
+    group-convolutional layer of~\cite{cohen2014}: replacing ordinary
+    translation-convolution by convolution over a general (typically finite
+    or compact) symmetry group $G$ is, by
+    Proposition~\ref{prop:convolution-theorem}, automatically equivariant,
+    and the isotypic block-diagonal parameter count of
+    \S\ref{sec:isotypic-decomposition} is recovered by passing to the
+    Fourier side, where the layer is literally a block-diagonal matrix
+    $\bigl(\widehat{\kappa}(\pi)\bigr)_{\pi}$.
+    \item \textbf{Learning in the spectral domain} In summary, representational mechanisms are directly shown \citep{olah2020d,barenboim2021sp}, while precise feasibility depends on conditions such as depth-enabled compositionality or learning regime \citep{perin2025,jacot2025}. frequently
+    parametrize their learnable kernels directly bBeyond proving that neural networks can represent symmetries, another challenge is to identify the symmetry a trained model has internalized: to recover the group acting on the data, or for continuous groups, the Lie-algebra generators.
+    isotypic block---at the cost of a forward/inverse group Fourier
+    transform (or, on $S^2$, a spherical harmonic transform) at each layer
+    boundary.
+    \item \textbf{Non-compact groups again lose this structure.} As
+    flagged in \S\ref{subsubsec:noncompact-representations} and revisited in
+    Example~\ref{ex:isotypic-architecture}, once $G$ has a non-compact
+    factor (translations, positive rescalings), $\widehat{G}$ is no longer
+    a discrete index set, the sums above become direct integrals against a
+    Plancherel measure, and "one scalar per irrep" becomes "one scalar per
+    point of a continuous spectral parameter" (ordinary frequency, in the
+    translation case)---recovering exactly classical Fourier analysis on
+    $\mathbb{R}^n$ as the $G = \mathbb{R}^n$ special case of this same
+    formalism, but without the finite, enumerable spectral structure that
+    made the compact case so directly exploitable for parameter reduction.
+\end{itemize}
+
+Harmonic analysis on groups is thus the unifying language behind
+\S\ref{sec:isotypic-decomposition}: an isotypic decomposition
+\emph{is} a Fourier decomposition with respect to $G$, an equivariant linear
+layer \emph{is} a (possibly group-)convolution, and Schur's lemma
+(Lemma~\ref{lem:schur}) is, in this dictionary, precisely the statement that
+convolution operators are diagonalized by the group Fourier transform.
+
+
+% Homogeneous Spaces cohen2019anips
+
+\subsection{Homogeneous Spaces}
+\label{subsec:homogeneous-spaces}
+
+The sphere $S^2 = SO(3)/SO(2)$ used to illustrate harmonic analysis in
+\S\ref{subsubsec:harmonic-analysis-generalities} is an instance of a more
+general and recurring pattern: many of the spaces on which learning problems
+are naturally posed are not themselves groups, but arise as a group modulo
+a subgroup of "directions one is willing to forget." This subsection makes
+that pattern precise and connects it back to the orbit--stabilizer picture
+of \S\ref{subsec:group-actions}.
+
+\subsubsection{Definition and basic examples}
+\label{subsubsec:homogeneous-spaces-def}
+
+\begin{Definition}[Homogeneous space]
+\label{def:homogeneous-space}
+A \emph{homogeneous space} for a group $G$ is a set (or manifold) $X$
+equipped with a \emph{transitive} action of $G$
+(Definition~\ref{def:free-transitive}). Given a point $x_0 \in X$ with
+stabilizer $H := G_{x_0} \leq G$ (Definition~\ref{def:orbit-stabilizer}),
+transitivity means $X$ is the single orbit $G \cdot x_0$, so the
+Orbit--Stabilizer Theorem (Theorem~\ref{thm:orbit-stabilizer}) upgrades from
+a statement about one orbit inside a possibly larger $X$ to a statement
+identifying \emph{all} of $X$:
+\[
+    X \;\cong\; G / H
+\]
+as $G$-sets (and, when $G$ is a Lie group acting smoothly and properly, as
+smooth manifolds, per the remark closing
+\S\ref{subsubsec:lie-groups}), via $gH \mapsto g \cdot x_0$. Different choices
+of basepoint $x_0$ give conjugate stabilizers and hence isomorphic, but not
+literally identical, coset descriptions $G/H$.
+\end{Definition}
+
+Homogeneous spaces thus sit at exactly one further level of generality above
+the $G$-torsors of Definition~\ref{def:free-transitive}: a torsor is the
+special case $H = \{e\}$, i.e.\ a homogeneous space with trivial stabilizer,
+so that $X \cong G$ itself once a basepoint is fixed. Allowing $H$ nontrivial
+is what lets $X$ be genuinely smaller than $G$.
+
+\begin{Example}[Homogeneous spaces already in use]
+\label{ex:homogeneous-spaces}
+\begin{itemize}
+    \item $S^{n-1} = SO(n)/SO(n-1)$: the sphere, with $SO(n)$ acting
+    transitively by rotation and $SO(n-1)$ the stabilizer of a fixed pole
+    (rotations fixing a chosen axis)---already used implicitly for $n=3$ in
+    \S\ref{subsubsec:harmonic-analysis-generalities}.
+    \item $\mathbb{R}^n = E(n) / O(n)$: Euclidean space itself, with the
+    full Euclidean group $E(n)$ of \S\ref{subsubsec:semidirect-products}
+    acting transitively by rigid motion and $O(n)$ the stabilizer of the
+    origin---exhibiting $\mathbb{R}^n$ as a homogeneous, but not free
+    (hence not torsor), space for $E(n)$, in contrast to the free
+    translation action of $\mathbb{R}^n \leq E(n)$ alone.
+    \item $G/G = \{pt\}$ and $G/\{e\} = G$ are the two trivial extremes,
+    recovering the single-orbit and torsor cases respectively as special
+    instances of Definition~\ref{def:homogeneous-space}.
+    \item More generally, \emph{Grassmannians} $\mathrm{Gr}(k,n) =
+    O(n)/(O(k)\times O(n-k))$, parametrizing $k$-dimensional subspaces of
+    $\mathbb{R}^n$, arise the same way, with the stabilizer of a fixed
+    $k$-plane splitting as a product acting separately on the plane and its
+    orthogonal complement.
+\end{itemize}
+\end{Example}
+
+\subsubsection{Role in learning}
+\label{subsubsec:homogeneous-spaces-learning}
+
+Homogeneous spaces matter for learning precisely where the isotypic and
+harmonic-analytic machinery of
+\S\ref{sec:isotypic-decomposition}--\S\ref{subsec:harmonic-analysis}
+needs a \emph{domain} to operate on that is not the group $G$ itself, but a
+smaller space $X = G/H$ on which $G$ still acts transitively---this is
+exactly the situation for data living on a sphere, a Grassmannian, or any
+other space with less symmetry-breaking structure than the full group.
+
+\begin{itemize}
+    \item \textbf{Functions on $G/H$ as an $H$-invariant subspace of
+    functions on $G$.} Pulling back along the quotient map $G \to G/H$
+    identifies $L^2(G/H,\mu)$ with the subspace of $L^2(G,\mu)$ consisting
+    of functions invariant under right translation by $H$; under the
+    Peter--Weyl decomposition of
+    Definition~\ref{def:group-fourier-transform}, this subspace is itself
+    isotypic-block-structured, being spanned by exactly those matrix
+    coefficients $\pi(g)_{ij}$ for which the corresponding basis vector is
+    fixed by $H$---so the harmonic analysis of $G/H$ reduces to bookkeeping
+    which irreps of $G$ contain a nonzero $H$-fixed vector, and with what
+    multiplicity.
+    \item \textbf{Equivariant networks on homogeneous spaces.} This is
+    precisely the perspective developed systematically
+    in~\cite{cohen2019anips}, which constructs the general theory of
+    convolutional layers equivariant under a group $G$ acting on data
+    supported on a homogeneous space $X = G/H$ (subsuming, as special cases,
+    planar CNNs with $G = \mathbb{Z}^2 \rtimes$(point group), $H$ trivial,
+    and spherical CNNs with $G = SO(3)$, $H = SO(2)$ as in
+    Example~\ref{ex:homogeneous-spaces}), showing that the admissible
+    linear, equivariant maps between feature fields on $G/H$ are again
+    governed by an isotypic/Schur's-lemma constraint
+    (Proposition~\ref{prop:schur-blocks}) once the group Fourier transform
+    of \S\ref{subsubsec:harmonic-analysis-generalities} is restricted to the
+    $H$-fixed subspace described above.
+    \item \textbf{Non-compact base spaces.} When $G$ has a non-compact
+    factor---e.g.\ $X = \mathbb{R}^n = E(n)/O(n)$ itself---the same
+    quotient construction applies formally, but the underlying harmonic
+    analysis reverts to the direct-integral, Plancherel-measure regime of
+    \S\ref{subsubsec:noncompact-representations} rather than the discrete
+    isotypic sum, exactly mirroring the compact/non-compact split already
+    emphasized throughout this section.
+\end{itemize}
+
+The upshot is that "equivariant network for symmetry group $G$" and
+"network operating on the homogeneous space $X = G/H$" are, in this
+framework, two descriptions of the same underlying construction: the choice
+of $X$ fixes the stabilizer $H$, the stabilizer fixes which isotypic
+components of $L^2(G)$ survive restriction to $X$, and Schur's lemma then
+fixes, exactly as in \S\ref{sec:isotypic-decomposition}, the space of
+admissible equivariant linear layers on $X$.
+
+
+% Advanced notions
+% Structures beyond groups (no inverse: semigroup)
+% Tensor algebra
+% spherical harmonics (used a lot in Euclidean neural networks)
+% Lie algebra, Exponential and logarithmic map, Infinitesimal generators
+% Manifold/Gauge Theory: fiber bundles, Principal bundle, section, steerable kernels, local symmetries, free action
+% Symmetry breaking
+
+\subsection{Advanced Notions}
+\label{sec:advanced-notions}
+
+We close this survey of the algebraic backbone with six topics that sit one
+level beyond the material developed so far: structures that weaken the group
+axioms, the analytic and infinitesimal apparatus attached to a Lie group,
+and the geometric (bundle-theoretic) language required once symmetry is
+allowed to vary from point to point rather than acting globally. Each
+connects directly to a construction already introduced.
+
+\subsubsection{Structures Beyond Groups: Semigroups and Monoids}
+\label{subsec:beyond-groups}
+
+Relaxing the group axioms of Definition~\ref{def:group} produces weaker, but
+still useful, algebraic structures---most importantly by dropping (G4).
+
+\begin{Definition}[Semigroup and monoid]
+\label{def:semigroup-monoid}
+A \emph{semigroup} is a pair $(S,\cdot)$ satisfying only closure (G1) and
+associativity (G2): a set with an associative binary operation, but no
+requirement of an identity or of inverses. A \emph{monoid} is a semigroup
+additionally satisfying the identity axiom (G3). A group is thus a monoid in
+which every element happens to be invertible.
+\end{Definition}
+
+\begin{Example}[Semigroups and monoids arising from learning constructions]
+\label{ex:semigroups-in-learning}
+\begin{itemize}
+    \item The natural numbers $(\mathbb{N}, +)$ form a monoid but not a
+    group: $0$ is an identity, but no positive integer has an additive
+    inverse in $\mathbb{N}$.
+    \item Square matrices $\mathrm{Mat}_n(\mathbb{R})$ under multiplication
+    form a monoid (identity $I$), of which the invertible matrices
+    $GL(n,\mathbb{R})$ of Example~\ref{ex:groups} are precisely the
+    invertible elements---i.e.\ $GL(n,\mathbb{R})$ is the group of units of
+    the monoid $\mathrm{Mat}_n(\mathbb{R})$. Layers of a network built from
+    non-invertible linear maps (e.g.\ any layer that reduces dimension) thus
+    naturally compose as a monoid, not a group, under composition.
+    \item The rescaling symmetry $\mathbb{R}_{>0}$ of
+    \S\ref{subsubsec:lie-groups} is a group, but its closure
+    $\mathbb{R}_{\geq 0}$ under multiplication (allowing the scale factor to
+    reach zero) is only a monoid: $0$ has no multiplicative inverse. This
+    matters directly for ReLU-type rescaling symmetries, where a weight
+    vector is allowed to degenerate to exactly zero along a training
+    trajectory (a "dead unit"); the exact symmetry group
+    $\mathbb{R}_{>0}$ acting on nonzero weights extends only to a
+    monoid action once the zero locus---a lower-dimensional stratum with
+    strictly smaller stabilizer-orbit structure than
+    Theorem~\ref{thm:orbit-stabilizer} describes for a genuine group
+    action---is included.
+    \item The set $\mathrm{End}(V)$ of all linear self-maps of a vector
+    space $V$ is a monoid under composition, and every representation
+    $\rho: G \to GL(V) \subset \mathrm{End}(V)$
+    (Definition~\ref{def:linear-representation}) is, forgetting
+    invertibility, in particular a monoid homomorphism $G \to
+    \mathrm{End}(V)$; this is the observation that lets representation
+    theory be extended, with care, to monoid and semigroup actions where
+    needed.
+\end{itemize}
+\end{Example}
+
+The loss of inverses is consequential: orbits of a semigroup action need not
+partition the underlying set into disjoint equivalence classes (since
+$x \sim y$ via $s \cdot x = y$ no longer implies $y \sim x$), so neither
+Theorem~\ref{thm:orbit-stabilizer} nor the isotypic machinery of
+\S\ref{sec:isotypic-decomposition} extends verbatim; monoid and
+semigroup actions are consequently treated as a genuinely separate,
+order-theoretic (rather than group-theoretic) subject in general.
+
+\subsubsection{Tensor Algebra Revisited: Tensor Fields}
+\label{subsec:tensor-fields}
+
+The tensor algebra of a single representation
+(Definition~\ref{def:tensor-operations}) globalizes, once $G$ acts on a
+manifold $X$ rather than a single vector space, to a \emph{tensor field}: a
+choice of tensor at every point, transforming consistently under the action.
+
+\begin{Definition}[Tensor field]
+\label{def:tensor-field}
+Let $X$ be a manifold with a smooth action of a Lie group $G$
+(Definition~\ref{def:group-action}), and fix a representation
+$\rho : G \to GL(V)$. A \emph{$V$-valued tensor field of type $\rho$} is a
+smooth assignment $x \mapsto \tau(x) \in V$ (or, more generally, a section of
+the vector bundle $X \times_\rho V$ associated to $\rho$, in the sense made
+precise in \S\ref{subsec:manifold-gauge-theory} below) such that
+\[
+    \tau(g \cdot x) \;=\; \rho(g)\, \tau(x) \qquad \text{for all } g \in G,\ x \in X.
+\]
+The tangent, cotangent, and higher tensor bundles $TX$, $T^*X$,
+$T^{\otimes k}X$ are the special cases in which $\rho$ is the (co)tangent
+representation induced by $G$ acting on $X$ by diffeomorphism, so that
+ordinary tensor fields of differential geometry are recovered as the case
+$V = T_x^{\otimes k}X$.
+\end{Definition}
+
+This is the object directly manipulated in equivariant architectures that
+output more than a scalar per point: a steerable CNN feature map
+(Example~\ref{ex:isotypic-architecture}) is exactly a tensor field of type
+$\rho$ for $\rho$ an isotypic sum of irreps of the stabilizer, and the
+transformation law above is the pointwise instance of the global
+equivariance constraint enforced by Proposition~\ref{prop:schur-blocks}.
+
+\subsubsection{Spherical Harmonics}
+\label{subsec:spherical-harmonics}
+
+Spherical harmonics were introduced implicitly in
+\S\ref{subsubsec:harmonic-analysis-generalities} as the isotypic components
+of $L^2(S^2)$; we record their defining properties explicitly, since they
+are used pervasively, by name, throughout the Euclidean-equivariant network
+literature.
+
+\begin{Definition}[Spherical harmonics]
+\label{def:spherical-harmonics}
+For $\ell = 0, 1, 2, \dots$, the space of \emph{degree-$\ell$ spherical
+harmonics} $\mathcal{H}_\ell \subset L^2(S^2)$ is the space of restrictions
+to $S^2 \subset \mathbb{R}^3$ of harmonic, degree-$\ell$ homogeneous
+polynomials on $\mathbb{R}^3$ (i.e.\ $p$ with $\Delta p = 0$ and
+$p(\lambda x) = \lambda^\ell p(x)$). It has dimension $2\ell+1$, is invariant
+under the $SO(3)$-action of Example~\ref{ex:homogeneous-spaces}, and is
+precisely the irrep of $SO(3)$ of "degree $\ell$" appearing in the
+Peter--Weyl decomposition
+\[
+    L^2(S^2) \;=\; \bigoplus_{\ell = 0}^{\infty} \mathcal{H}_\ell,
+\]
+a special case of Definition~\ref{def:group-fourier-transform} for
+$G = SO(3)$, $X = S^2 = SO(3)/SO(2)$.
+\end{Definition}
+
+Spherical harmonics enter Euclidean-equivariant network design because they
+are simultaneously (a) an explicit, orthonormal basis diagonalizing
+rotation-equivariant linear maps on functions of direction, per
+Proposition~\ref{prop:convolution-theorem}, and (b) the natural target
+representation type for features attached to \emph{directions} (bond
+vectors, edge orientations, point-cloud relative positions) in 3D geometric
+learning problems---so that a network layer producing, say, a degree-$\ell$
+feature is by construction guaranteed to transform correctly under any
+ambient $SO(3)$ or $E(3)$ rotation, without the transformation law needing
+to be learned or enforced by a penalty term. Tensor-field networks and the
+spherical-CNN/Clebsch--Gordan constructions of \cite{kondor2018p3icml} use
+the Clebsch--Gordan coefficients of \S\ref{subsubsec:tensor-algebra} exactly
+to combine features of different degrees $\ell_1, \ell_2$ into new features
+of degree $\ell_3$ while staying inside this basis throughout.
+
+\subsubsection{Lie Algebras, Exponential and Logarithmic Maps, Infinitesimal Generators}
+\label{subsec:lie-algebras}
+
+We now make precise the linearization $\mathfrak{g} = T_eG$ of a Lie group
+$G$ mentioned in passing in Definition~\ref{def:lie-group}.
+
+\begin{Definition}[Lie algebra]
+\label{def:lie-algebra}
+The \emph{Lie algebra} of a Lie group $G$ is the tangent space
+$\mathfrak{g} := T_e G$ at the identity, equipped with the \emph{Lie
+bracket} $[\cdot,\cdot] : \mathfrak{g} \times \mathfrak{g} \to \mathfrak{g}$
+induced by the failure of left- and right-translated vector fields to
+commute (equivalently, the derivative at $e$ of the commutator map
+$(g,h) \mapsto ghg^{-1}h^{-1}$ in both variables). The bracket is bilinear,
+antisymmetric ($[X,Y] = -[Y,X]$), and satisfies the Jacobi identity
+$[X,[Y,Z]] + [Y,[Z,X]] + [Z,[X,Y]] = 0$.
+\end{Definition}
+
+\begin{Example}[Matrix Lie algebras]
+\label{ex:matrix-lie-algebras}
+For $G \leq GL(n,\mathbb{R})$ a matrix Lie group, $\mathfrak{g}$ is
+concretely realized as a linear subspace of matrices, with
+$[X,Y] = XY - YX$ the ordinary matrix commutator:
+$\mathfrak{gl}(n,\mathbb{R}) = \mathrm{Mat}_n(\mathbb{R})$ for
+$G = GL(n,\mathbb{R})$; $\mathfrak{so}(n) = \{X : X^\top = -X\}$
+(antisymmetric matrices) for $G = SO(n)$, obtained by differentiating
+$A(t)^\top A(t) = I$ at $t=0$ along a curve $A(t)$ with $A(0)=I$; and
+$\mathfrak{so}(1,n) = \{X : X^\top \eta = -\eta X\}$ for the Lorentz group
+$O(1,n)$ of \S\ref{subsubsec:lie-groups}, with $\eta = \mathrm{diag}(-1,1,\dots,1)$
+the Minkowski metric, by the identical computation.
+\end{Example}
+
+\begin{Definition}[Exponential and logarithmic map]
+\label{def:exp-log-map}
+The \emph{exponential map} $\exp : \mathfrak{g} \to G$ sends $X \in
+\mathfrak{g}$ to $\gamma_X(1)$, where $\gamma_X : \mathbb{R} \to G$ is the
+unique one-parameter subgroup ($\gamma_X(s+t) = \gamma_X(s)\gamma_X(t)$)
+with $\gamma_X'(0) = X$; for matrix groups, $\exp(X) = \sum_{k \geq 0}
+X^k/k!$, the ordinary matrix exponential. $\exp$ is a local
+diffeomorphism near $0 \in \mathfrak{g}$ (and near $e \in G$), with local
+inverse the \emph{logarithmic map} $\log : G \to \mathfrak{g}$ near $e$; for
+$G$ connected and compact, $\exp$ is in fact globally surjective (though
+generally not injective), while for non-compact $G$---consistent with the
+recurring compact/non-compact split of
+\S\ref{subsubsec:noncompact-representations}---surjectivity of $\exp$ can
+fail (e.g.\ not every element of $SL(2,\mathbb{R})$ is $\exp$ of a single
+element of $\mathfrak{sl}(2,\mathbb{R})$).
+\end{Definition}
+
+\begin{Definition}[Infinitesimal generators]
+\label{def:infinitesimal-generators}
+Given a representation $\rho : G \to GL(V)$
+(Definition~\ref{def:linear-representation}) of a Lie group $G$, its
+derivative at the identity, $d\rho_e : \mathfrak{g} \to \mathfrak{gl}(V) =
+\mathrm{End}(V)$, is a Lie algebra representation (a linear map preserving
+the bracket, $d\rho_e[X,Y] = [d\rho_e X, d\rho_e Y]$), and the elements
+$d\rho_e(X)$ for $X \in \mathfrak{g}$ are the \emph{infinitesimal
+generators} of $\rho$. They recover the group representation by
+exponentiation, $\rho(\exp X) = \exp(d\rho_e(X))$, so that on a connected
+Lie group, $\rho$ is entirely determined by the (typically far more
+tractable, since linear rather than group-theoretic) data of $d\rho_e$.
+\end{Definition}
+
+This linearization is what makes symmetry constraints tractable
+computationally: enforcing exact equivariance under the full group $G$ is,
+by Definition~\ref{def:infinitesimal-generators}, equivalent (at least
+locally, and globally when $G$ is connected) to enforcing equivariance under
+the finitely many infinitesimal generators of $\mathfrak{g}$---a Lie
+algebra, hence a linear, condition. This is the mechanism behind
+Lie-algebra-based approaches to learning approximate or exact symmetries
+directly from data, where the generators $d\rho_e(X)$ themselves (rather
+than the full nonlinear group action) are the learned or regularized
+objects.
+
+\subsubsection{Manifolds and Gauge Theory: Fiber Bundles, Principal Bundles, Local Symmetries}
+\label{subsec:manifold-gauge-theory}
+
+The final piece of geometric machinery is needed once symmetry is allowed to
+vary smoothly from point to point of a base space, rather than acting
+globally and uniformly as in every construction so far.
+
+\begin{Definition}[Fiber bundle]
+\label{def:fiber-bundle}
+A \emph{fiber bundle} is a surjective smooth map $\pi : E \to X$ between
+manifolds such that every $x \in X$ has a neighborhood $U$ with
+$\pi^{-1}(U) \cong U \times F$ (a \emph{local trivialization}) for a fixed
+model fiber $F$, compatibly with $\pi$. A \emph{section} of the bundle is a
+smooth map $s : X \to E$ with $\pi \circ s = \mathrm{id}_X$, i.e.\ a smooth
+choice of one point of the fiber $\pi^{-1}(x)$ for each $x$; the tensor
+fields of Definition~\ref{def:tensor-field} are exactly sections of the
+associated bundle $X \times_\rho V$ mentioned there.
+\end{Definition}
+
+\begin{Definition}[Principal bundle]
+\label{def:principal-bundle}
+A \emph{principal $G$-bundle} is a fiber bundle $\pi : P \to X$ with model
+fiber $G$ itself, equipped with a smooth, fiberwise, free and transitive
+right action of $G$ on $P$ (Definition~\ref{def:free-transitive} applied
+fiberwise: each fiber $\pi^{-1}(x)$ is a $G$-torsor). Local
+trivializations correspond to local choices of section (a local "reference
+frame," or \emph{gauge}), and two local sections over overlapping
+neighborhoods differ by a smooth \emph{transition function} $g_{\alpha\beta}
+: U_\alpha \cap U_\beta \to G$---the mathematical formalization of a
+\emph{local (gauge) symmetry}: the group $G$ acting freely and transitively
+on each fiber, as opposed to acting globally on all of $X$ at once as in
+every construction of \S\ref{sec:group-theory-backbone}--\S\ref{subsec:homogeneous-spaces}.
+\end{Definition}
+
+\begin{Example}[Principal bundles in geometric learning]
+\label{ex:principal-bundles-learning}
+\begin{itemize}
+    \item The \emph{frame bundle} of a manifold $X$, whose fiber over $x$ is
+    the set of ordered bases of $T_xX$, is a principal $GL(n,\mathbb{R})$-bundle
+    (or principal $O(n)$-bundle, once restricted to orthonormal frames); a
+    choice of local orthonormal frame field is exactly a local gauge, and
+    changing frame at each point by a rotation is the geometric meaning of
+    the local $O(n)$ symmetry in this setting.
+    \item \textbf{Gauge-equivariant / steerable convolution on a curved
+    manifold.} Where \S\ref{sec:isotypic-decomposition} constrained
+    linear maps equivariant under a \emph{global} symmetry $G$ acting on
+    flat $\mathbb{R}^n$ or a homogeneous space $G/H$, gauge-equivariant CNNs
+    replace the global $G$-action by the structure group of a principal
+    bundle over a general (possibly curved, possibly non-homogeneous)
+    manifold $X$, and require that a convolution kernel, transported between
+    two local gauges related by a transition function $g_{\alpha\beta}$, be
+    equivariant under the fiberwise action of $G$ in exactly the sense of
+    Proposition~\ref{prop:schur-blocks}, applied now pointwise rather than
+    globally---this is the \emph{steerable kernel constraint} that
+    generalizes the flat steerable-CNN condition of~\cite{weiler2019anips}
+    from a homogeneous space (\S\ref{subsec:homogeneous-spaces}) to an
+    arbitrary manifold equipped only with local, rather than global,
+    symmetry.
+    \item Associated vector bundles $X \times_\rho V$
+    (Definition~\ref{def:fiber-bundle}) built from a representation $\rho$
+    of the structure group $G$ of a principal bundle are exactly the
+    bundles whose sections are the tensor fields of
+    Definition~\ref{def:tensor-field}; a gauge transformation acts on such a
+    section by $\rho$ applied fiberwise, and the free, transitive fiberwise
+    action of Definition~\ref{def:principal-bundle} guarantees this action
+    is well defined independent of the (arbitrary) choice of local frame.
+\end{itemize}
+\end{Example}
+
+The key conceptual shift, relative to every earlier construction in this
+survey, is captured by the word \emph{local}: \S\ref{subsec:group-actions}
+through \S\ref{subsec:homogeneous-spaces} concerned a single group acting
+once, globally, on an entire space $X$; gauge theory concerns a group acting
+independently, and freely, on each fiber over each point of $X$
+separately, with the transition functions $g_{\alpha\beta}$ recording how
+these independent local actions are glued together consistently across
+overlapping patches. Equivariance in this setting is consequently a
+\emph{local}, gauge-covariant condition (transforming correctly under
+independent reparametrization of each patch) rather than a single global
+group-homomorphism condition as in Definition~\ref{def:linear-representation}.
+
+\subsubsection{Symmetry Breaking}
+\label{subsec:symmetry-breaking}
+
+We close with the phenomenon that determines when the symmetry-respecting
+machinery of this entire section applies to a given problem \emph{at all}.
+
+\begin{Definition}[Symmetry breaking]
+\label{def:symmetry-breaking}
+Let $G$ act on a set (or space) $Y$ of admissible states, models, or ground
+truths for a given problem. \emph{Symmetry breaking} occurs when the actual
+object of interest $y_0 \in Y$ (a physical ground state, a trained network,
+a data distribution) has stabilizer $G_{y_0} \subsetneq G$
+(Definition~\ref{def:orbit-stabilizer}) strictly smaller than the full
+symmetry group of the ambient problem---equivalently, the orbit
+$G \cdot y_0$ is nontrivial, so distinct elements of $G$ produce genuinely
+distinct, but equally valid, instances $g \cdot y_0$.
+\end{Definition}
+
+\begin{Example}[Symmetry breaking already implicit in this survey]\label{ex:symmetry-breaking}
+\phantom{u}
+\begin{itemize}
+    \item \textbf{Weight-space redundancy versus a trained network.} The
+    full permutation/rescaling group $S_n \ltimes \mathbb{R}_{>0}^n$
+    (Example~\ref{ex:semidirect-products}) acts on the space of all
+    parameterizations of a hidden layer with trivial stabilizer generically
+    (a free action, per Definition~\ref{def:free-transitive}, away from
+    degenerate configurations); a specific trained weight vector $w_0$
+    \emph{breaks} this symmetry down to the trivial subgroup, and the orbit
+    $G \cdot w_0$ is exactly the set of functionally identical
+    reparameterizations quotiented out in
+    \S\ref{subsec:balanced-weight-manifolds}. Here symmetry breaking is
+    generic and unwanted---the entire motivation for passing to the
+    quotient $Y/G$ in the first place.
+    \item \textbf{Physical symmetry breaking.} In the physical setting that
+    originally motivates the term, a Hamiltonian invariant under the full
+    Euclidean or Lorentz group $E(n)$ or $O(1,n)$
+    (\S\ref{subsubsec:lie-groups}) can admit a ground state $y_0$ invariant
+    only under a strict subgroup $H \leq G$ (e.g.\ a crystal breaking
+    continuous translation symmetry down to a discrete lattice subgroup,
+    connecting back to Example~\ref{ex:discrete-groups}); the set of
+    physically equivalent ground states is then the homogeneous space
+    $G/H$ of \S\ref{subsec:homogeneous-spaces} itself, with $H$ playing the
+    role of the unbroken stabilizer.
+    \item \textbf{Symmetry breaking as an architectural design choice.}
+    Equivariant architectures built from the isotypic
+    (\S\ref{sec:isotypic-decomposition}) or gauge-theoretic
+    (\S\ref{subsec:manifold-gauge-theory}) machinery above are exactly
+    calibrated \emph{not} to break a chosen symmetry $G$ at the level of the
+    function class; whether the learned network's specific output on a
+    specific input further breaks symmetry (e.g.\ classifying a
+    rotationally ambiguous image into one class rather than a rotated
+    alternative) is then a separate, data-dependent question about the
+    orbit of that particular output under the residual symmetry of the
+    input, in the sense of Definition~\ref{def:symmetry-breaking} applied
+    to $Y = $ the space of possible outputs.
+\end{itemize}
+\end{Example}
+
+Symmetry breaking is therefore not a single phenomenon but a lens: applied
+to \emph{parameters}, it is the redundancy problem motivating the weight-space
+quotients of this survey; applied to \emph{ground states} or \emph{learned
+solutions}, it is the mechanism by which a fully symmetric problem
+nonetheless admits asymmetric, but equally valid, solutions; and in both
+cases it is measured by exactly the same orbit--stabilizer pair
+(Definition~\ref{def:orbit-stabilizer}) introduced at the very start of this section, closing the loop back to Theorem~\ref{thm:orbit-stabilizer} as the single invariant underlying every construction surveyed here.
+
+
+
+
+
+
+
+\section{Symmetry as a design principle}
+
+This section gathers the methods in which a symmetry is \emph{known in advance} and deliberately built into the learning system.
+This prescriptive stance (\Cref{table:taxonomy}) assumes prior knowledge of the group $G$ acting on the problem and treats it as an inductive bias to be enforced rather than a structure to be discovered.
+We distinguish three broad strategies, ordered by how tightly the symmetry is coupled to the model.
+At one extreme, \emph{equivariant architectures} encode the symmetry \emph{implicitly} in the hypothesis class, so that invariance or equivariance holds by construction for every parameter setting; geometric deep learning is the systematic development of this idea.
+At the other extreme, \emph{data augmentation} leaves the architecture untouched and instead enforces the symmetry \emph{explicitly} on the data, encouraging---but not guaranteeing---invariance through orbit-averaged training.
+In between sits the design of \emph{symmetric frameworks}, such as Siamese networks, where the symmetry is expressed in the training objective and the relational structure of the model rather than in either the layers or the data alone.
+These strategies are not mutually exclusive and are frequently combined; we discuss the trade-offs between them, in particular the recurring question of whether the cost of exact equivariance is justified over a simpler model trained with augmentation.
+
+\subsection{Geometric deep learning}
+
+% Irreducible representation (seems to be particularly used for E(n) equivariance)
+% add citation to dehmamy2021anips: achieve equivariance through Lie algebra
+% scale: sosnovik2020 (scale equivariant convolutions), bekkers2021, sosnovik20212iwcacvw (application of scale equivariance in object tracking with Siamese architecture)
+% ravanbakhsh2017p3icml: weight-tying and equivariance
+% place G-equivariant convolution and G-steerable convolution more clearly as two emblematic methods to achieve equivariance
+% figure: draft/orbit-stability.png to reproduce or illustrate conceptually (equivariant models guarantee results don't change over an orbit)
+% figure: reproduce a toy example where equivariant models are more sample efficient ie they reach faster the best accuracy than vanilla models
+% romero2023tmlr: scale equivariance for audio signal
+% could add a warning about misspecification of symmetries: yang2023p4icml,finzi2021anips and the fact that approximate equivariance addresses the case where specification is slightly off due to real world fluctuations
+
+Geometric Deep Learning (GDL) \citep{bronstein2017ispm,bronstein2021} studies how to exploit the symmetry group and geometric structure of the data domain to design architectures that are sample-efficient, generalizable, and principled.
+It provides a unifying framework for deep learning architectures by viewing them through the lens of symmetry and group equi\slash invariance.
+Its central thesis, inspired by Felix Klein's Erlangen Program, is that the appropriate inductive bias for a learning problem is determined by the symmetries of its domain.
+This perspective simultaneously furnishes a common mathematical framework for existing architectures such as CNNs, RNNs, GNNs and Transformers, and a constructive blueprint for designing new ones on non-Euclidean domains such as graphs and manifolds.
+As a result, equivariant neural network architectures typically benefit from fewer learnable parameters, better interpretability (\textit{e.g.} CNNs filter), robustness guarantees (since the network behavior is dictated by symmetry groups, its response to some data manipulation is deterministic) and generalization properties (out-of-distribution data points can become in-distribution once a symmetry is imposed \textit{e.g.} an image with an upside down car).
+A treatment of the underlying mathematical foundations is given in \cite{borde2025,gerken2021,carlsson}, with \cite{borde2025} being the most accessible.
+While the scope of GDL includes a taxonomic point of view and geometry of the domain itself, we will focus on equivariant architecture design since it directly pertains to symmetries.
+
+\subsubsection{The role of convolution}
+\cite{cohen2016} showed how convolutional networks can be generalized into \textit{Group Convolutional neural networks} (G-CNNs) to exploit larger groups of symmetries, including discrete rotations and reflections.
+An important result of GDL is obtained by \cite{kondor2018p3icml} for compact groups.
+They provide general guidelines for constructing equivariant neural networks with respect to compact groups and show that the convolutional structure is not just sufficient but necessary for designing equivariant NN (under some hypotheses).
+Similar statements are obtained in the context of the $SE(3)$ group\cite{weiler2018anips} and for homogeneous spaces in \cite{cohen2019anips} by rephrasing G-CNNs in a general fiber bundle formalism.
+
+\subsubsection{Euclidean transformations}
+% Tess schmidt, Euclidean neural network, spherical harmonics, irreducible representations
+% thomas2018
+An important branch of GDL is concerned with Euclidean transformation since these are pertaining to the physical world.
+With the introduction of G-CNNs, \cite{cohen2016} demonstrate its principle on discrete rotations and reflections.
+\citet{worrall2017} achieve continuous rotation equivariance for CNN on 2D images by restricting the filters to the class of circular harmonics.
+Spherical CNNs \cite{cohen2018} uses a generalized Fast Fourier Transform to achieve $3$D rotation equivariance and the $SE(3)$ case is addressed in \cite{weiler2018anips}.
+For planar images, \cite{weiler2019anips} provides a general description of $E(2)$-equivariant convolutions in the Steerable CNN framework \cite{cohen2016a}, constraining convolution kernels via the irreducible representations of the group, yielding a kernel basis whose elements are combined by learnable weights and thus ensuring equivariance.
+A practical software implementing $E(3)$-equivariant operations including tensor products, spherical harmonics, and attention mechanisms is provided by \texttt{e3nn} \cite{geiger2022}.
+
+\subsubsection{Extensions: Lie groups and Gauges}
+% Lie groups
+\cite{finzi2020p3icml} proposes a general method to construct equivariant convolutional layers for any Lie group with a surjective exponential map.
+G-CNNs are further generalized to arbitrary Lie group in \cite{bekkers2021}.
+\cite{finzi2021p3icml} provides a general algorithm for constructing equivariant MLP for arbitrary matrix groups by collecting symmetry constraints and solving the system with an SVD decomposition, recovering known solutions as special cases.
+% Gauge
+A gauge-equivariance perspective is given by \cite{cohen2019p3icml,gerken2021,weiler2026,boyda2021prd}.
+% GATr and Clifford/geometric algebra approach: ruhe2023, brehmer2023
+
+\subsubsection{Permutations}
+
+\paragraph{Sets}
+% maron2020p3icml
+When data is unstructured (sets), spatially unorganized (point clouds), or defined on a graph, models must be invariant to the order of input elements.
+\cite{zaheer2018} characterizes permutation-invariant functions on sets and derives necessary and sufficient conditions for permutation equivariance in deep models, showing that any such function decomposes into a sum of per-element transformations followed by a global aggregation (universal approximation of set functions) and \cite{lee2019p3icml} extends the methods to allow for interaction between set elements with an attention-based architecture.
+PointNet \cite{qi2017a} pioneered deep learning directly on raw point clouds by applying a symmetric aggregation function to independently transformed elements, and PointNet++ \cite{qi2017} introduced hierarchical local grouping to capture multi-scale geometric structure.
+\cite{wang2019} bridges point clouds and graphs by dynamically computing a k-nearest-neighbor graph in feature space at each layer, enabling richer local context without a fixed input graph.
+
+\paragraph{Graphs}
+% huang2023: distinguishes active and passive graph symmetries in constrat to CNNs
+On graphs, permutation equivariance applies to the node indices.
+The message passing framework \cite{gilmer2017} unified earlier graph models \cite{duvenaud2015,kipf2017,bruna2014} into a single formalism involving a message function, an aggregation function (enforcing permutation invariance), and an update function.
+\cite{velickovic2018} incorporated an attention-like mechanism into this scheme while preserving permutation invariance.
+% TODO: morris2019pacai, xu2019, bouritsas2021, bodnar2021a, maron2020
+For geometric graphs, where nodes carry coordinates in $\mathbb{R}^3$, permutation equivariance must be combined with Euclidean symmetries.
+\cite{satorras2021p3icml} achieves joint $E(n)$-equivariance and permutation equivariance through invariant edge features based on interpoint distances, without requiring costly higher-order representations.
+\cite{fuchs2020} attains $SE(3)$-equivariance via self-attention on steerable features, at higher computational cost but with greater expressivity.
+
+\subsubsection{Applications}
+GDL principles have been successfully applied to a wide range of domains. In molecular science, \cite{satorras2021p3icml} demonstrates joint $E(n)$-equivariance and permutation equivariance for chemical property prediction and $n$-body dynamics, while \cite{cornet2024} extends this to equivariant diffusion models for 3D molecule generation.
+Atomic energy and force prediction benefit from equivariant graph transformers such as Equiformer \cite{liao2022} and its scaled variant EquiformerV2 \cite{liao2023}.
+In structural biology, AlphaFold \cite{jumper2021na} and RoseTTAFold \cite{baek2021s} leverage geometric inductive biases for highly accurate protein structure prediction, while \cite{townshend2021s} applies $SE(3)$-equivariant networks to RNA structure scoring, achieving state-of-the-art results in a limited data settings.
+In particle physics, \cite{bogatskiy2020p3icml} introduces Lorentz-group equivariant networks for jet classification, obtaining competitive performance with substantially fewer parameters than non-equivariant baselines.
+In medical imaging, \cite{winkels2019mia} shows that 3D G-CNNs significantly improve pulmonary nodule detection in CT scans over standard convolutional counterparts again in a low data regime.
+In natural language processing, \cite{gordon2020} exploits permutation equivariance to explore compositional generalisation.
+In computer vision, equivariant networks have been applied to omnidirectional images and global climate pattern recognition via spherical CNNs \cite{cohen2018,cohen2019p3icml}, and to 3D object detection \cite{yu2022}.
+For robotics and 3D scene understanding, equivariance to Euclidean transformations is a natural requirement, as surveyed in \cite{seo2025a,fei2024air}.
+
+\subsubsection{Expressivity}
+% Expressivity: do symmetry constraints impact the approximation power of GDL models ?
+% ravanbakhsh2020p3icml: universality of an MLP architecture
+Enforcing symmetry constraints raises the question of expressivity (or \textit{universality} \cite{maass2024}) \textit{i.e.} the ability to represent an arbitrary function within its symmetric hypothesis class.
+In that regard, distinguishing non-isomorphic graphs has been a central theoretical concern in the GNN community: \cite{xu2019} proved that message passing networks are at most as powerful as the Weisfeiler--Lehman (WL) graph isomorphism test, and \cite{maron2020} showed that higher-order tensor networks can match higher-order WL tests.
+Subsequent work sought to surpass the 1-WL barrier by incorporating structural features: \cite{bouritsas2021} counts subgraph isomorphisms, and \cite{bodnar2021a} lifts graphs to cell complexes, achieving provably greater expressivity while retaining efficient computation.
+Universality results remain scarce, for Euclidean equivariant networks \cite{yarotsky2018r} establishes universal approximation for invariant maps, and \cite{bogatskiy2020p3icml} proves universality for Lorentz-equivariant models, while \cite{kondor2018p3icml} shows that equivariant linear maps between feature spaces over homogeneous spaces are necessarily generalized convolutions and \cite{pacini2026} establishes that shallow equivariant models can fail to be universal, but that sufficient depth or the addition of appropriate readout layers restores universality within the entry-wise separable regime.
+
+\subsubsection{Topological domains}
+Message passing on graphs propagates information along edges, that is, between pairs of nodes.
+A parallel line of work lifts the same permutation-equivariant, symmetry-guided design to higher-order relational structures---simplicial and cell complexes, hypergraphs, and combinatorial complexes---where interactions are not restricted to pairs but may involve arbitrary collections of elements.
+This is the subject of \emph{topological deep learning}, surveyed in \cite{papillon2023}, which generalizes message passing to messages exchanged between cells of different dimensions while retaining equivariance to the relabelling of those cells.
+As already noted in the discussion of expressivity, lifting graphs to cell complexes provably strengthens the discriminative power of message passing beyond the 1-WL barrier \cite{bodnar2021a}.
+The two design axes can be combined: \cite{battiloro2024} constructs $E(n)$-equivariant topological neural networks, imposing Euclidean and permutation symmetries jointly on data supported on topological domains, in the same spirit as the geometric graph networks discussed above but on higher-order cells.
+
+\subsubsection{Challenges}
+
+\paragraph{Optimization}
+% Optimization of GDL models: does the symmetry constraint make optimization harder compared to a vanilla model ?
+Maintaining exact equivariance can introduce significant computational overhead.
+Models based on irreducible representations are computationally heavy even though recent work has optimized the tensor product decomposition \cite{passaro2023,luo2024a}.
+Equivariant architectures may require higher numerical precision, larger memory footprints, longer wall-clock training times relative to unconstrained counterparts and have a dependence to the input size which can limit their scalability to large systems \cite{bogatskiy2020p3icml}.
+Optimization difficulties for equivariant neural networks have been observed \citep{pertigkiozoglou2024,lawrence2026}.
+
+\paragraph{The ``symmetry bottleneck''}\label{par:sym-bottleneck}
+Equivariant neural network methods demand \textit{a priori} knowledge of the data's symmetries before they can be hard coded to the architecture.
+While not preventing adoption of these methods, this create a bottleneck because:
+\begin{enumerate}
+    \item \textbf{Unknown symmetries}: in real datasets symmetries are often unspecified or difficult to define analytically.
+    \item \textbf{Manual sophistication}: understanding which symmetry group acts on data or designing a novel architecture requires domain expertise and mathematical sophistication.
+    \item \textbf{Inflexibility}: once a symmetry is hard-coded into the architecture, the model cannot adapt if the assumptions are wrong.
+    Many real-world datasets only approximately satisfy a given symmetry, for instance due to sensor noise, occlusions, or genuine symmetry breaking in the underlying phenomenon and in that case strictly equivariant models may then be over-constrained
+\end{enumerate}
+Fortunately, these hurdles are being addressed: (1) by symmetry discovery (\Cref{sec:sym-disc-from-data}), (2) by theoretical work aiming to construct equivariant networks for arbitrary groups and (3) by approximate or soft-equivariance methods (\Cref{sec:soft-equivariance}).
+
+% Are there problems that remain unadressed: which groups have not been conquered
+
+\subsubsection{Equivariant or vanilla architectures ?}
+% Equivariant architecture vs vanilla
+% add: brehmer2025
+% tahmasebi2023: similar to elesedy2021p3icml, obtains theoretical sample complexity gains
+% vadgama2025 similar to lawrence2026
+% include distribution symmetry breaking as a paragraph here ?
+% abramson2024n: alphafold (jumper2021na) train equivariance by data augmentation. Similarly wang2024p4icmla argue for scale above equivariant design for molecular conformers prediction.
+% qu2024anips: scale compensates for lack of symmetry prior
+% olah: same features can be learned by vanilla and equivariant architecture, could lead to interactive design where vanilla model prototype quickly/discover then equivariant models are developed (see also krippendorf2020, hu2025nn on relying on nn to extract symmetries in symmetry as an unknown part)
+A practical question is whether the design costs, potential difficulties in optimization and hardware regret due to less mature technology of equivariant models is justified over a simpler model, possibly trained with data augmentation.
+\cite{nordenfors2024} compare stability of equivariant and vanilla counterpart with data augmentation and \cite{shen2026} provides empirical evidence that, for 3D-rotation equivariant tasks, unconstrained models trained with augmentation reduce their equivariance error rapidly to below 2\% of the total loss within thousands of steps
+However equivariant architectures are arguably preferable when data is scarce, when physical consistency of predictions is required, or when generalization to unseen orientations or configurations is critical.
+\citet{lawrence2026} propose a decision rule depending on the amount of symmetry bias in the dataset and its correlation with labels and \citet{rygiel2026} find similar conclusion by empirically comparing equivariant and vanilla models on datasets having a varying degree of alignement.
+On the theoretical side, \cite{elesedy2021p3icml} obtain a strict generalization benefit in favor of equivariance for linear models.
+
+\subsection{Data augmentation}
+% add adversarial training ? [Goodfellow, Explaining and harnessing adversarial examples] and [Madry, Towards deep learning models resistant to adversarial attacks]
+% shorten2019jbd and mumuni2022a: surveys on DA
+% miao2023p4icml: instance-dependent DA
+Data augmentation (DA) enriches a training set by applying transformations that are known, or assumed, to leave the target label unchanged.
+Formally letting $G$ act on input space $\mathcal X$, the augmented risk replaces the standard empirical risk by averaging over orbits:
+$$
+\hat R_{\text{aug}}(\theta)=\frac{1}{|G|}\sum_{g\in G}\hat R(\theta |g\cdot \mathcal D),
+$$
+with the hope of encouraging the learned function to be approximately invariant to those transformations (for a continuous group, an expectation is taken over a distribution on $G$).
+Compared to designing an equivariant architecture, DA is attractive in several practical scenarios: it can be applied on top of any pretrained model without architectural changes, making it well-suited to fine-tuning; it requires no group-theoretic implementation, lowering the barrier for rapid prototyping; it naturally accommodates complex or poorly characterized transformations (\textit{e.g.} variations in illumination, viewpoint, or background in images) not easily amenable to an algebraic description and it handles approximate or partial symmetries (see \Cref{sec:incomplete-symmetries}) without additional formalism.
+On the downside, covering a continuous symmetry group is impossible and materialized augmentation increase storage and compute requirements proportionally to the number of samples drawn per group orbit.
+
+\paragraph{Theoretical approaches}
+\citet{chen2020} propose a group theoretical framework for s and formally connects orbit averaging with lower generalization error.
+Variance reduction results can also be obtained \citep{chen2020,dao2019p3icml}.
+The notion of orbit averaging is declined and practically implemented in \citet{benton2020anips}.
+For infinite width and kernel classifier settings,  is shown to be equivalent to symmetrization of the model \citep{maass2024,dao2019p3icml}.
+\citet{lyle2020} extend PAC-Bayes bound to DA and obtain variance reduction for the empirical risk.
+The value of DA might be context dependent with relevant aspect being the learning regime (over- or underparametrized) and task (classification or regression).
+A spectral point of view is given in \citet{lin2024} while \citet{lawrence2026} further studies the role of the symmetry distribution.
+
+\paragraph{Automated  strategies}\label{par:auto-da}
+% automated DA vs sym discovery: automated DA has the goal of producing new augmentations, it can be transductive whereas sym discovery is more inductive and aims at recognizing the group and its actions (which can be an intermediate step before generating augmentations anyways)
+Rather than hand-crafting augmentation policies, several works have proposed to search for them automatically.
+\citet{cubuk20192iccvprc} introduce AutoAugment, which uses reinforcement learning to find a policy composed of image-processing operations such as rotations, translations, and shearing, optimized for validation accuracy.
+\citet{lim2019anips} reduced the search time by leveraging Bayesian optimization over policies and using \textit{density matching} as a criterion: a minimization of the divergence between the augmented and training distributions and a differentiable approach was proposed in \citet{hataya2020cv-e2} by training a generative adversarial network (GAN) to output augmentation parameters minimizing a similar density-matching objective, further accelerating the search.
+Another strategy is to transfer augmentations across domains: \citet{antoniou2018} learn a GAN on a data-rich source domain and replay the learned transformations on a data-scarce target domain.
+For this symmetry transfer to be effective, it requires that the symmetry group of the domain is a subgroup of the target. 
+Symmetry discovery can be operationalized by in a straightforward two-step pipeline, for instance by inferring a Lie algebra basis and using augmentation in a (soft) inductive bias \citep{escriche2025,yang2023p4icml} (see \Cref{sec:sym-disc-from-data} for more on symmetry discovery).
+A practical advantage shared by all these approaches is interpretability: learned augmentations produce concrete transformed examples that can be inspected directly.
+One limitation, however, is that materializing augmentations requires an explicit parametric form for the transformations.
+\citet{shoshan2021} partly circumvent this in the face-generation setting by showing that a scalar attribute predictor (\textit{e.g.} age) provides sufficient supervision for a GAN to learn to manipulate that attribute in a controllable way without a closed-form group action.
+
+\paragraph{DA in Relation to Other Symmetry-Aware Methods}
+Feature Averaging (FA) is another strategy for incorporating symmetries by averaging model outputs over a set of transformed inputs, effectively symmetrizing the model.
+Theoretically, \citet{dao2019p3icml} show that DA can be approximated in first-order by FA, while \citet{maass2024} establish, in the infinite-width limit, that DA and FA induce identical gradient flow dynamics when the activation functions respect the group action.
+Despite this asymptotic equivalence, \citet{lyle2020} prove, via PAC-Bayes bounds, that FA yields strictly lower generalization error than DA for convex losses, suggesting FA is preferable when applicable.
+Similarly to DA, FA can be applied beyond strict group-invariance settings, accommodating approximate or partial symmetries.
+Comparing DA to equivariant architectures, \citet{nordenfors2024} show that the relative advantage depends on a compatibility condition between the spaces of admissible and equivariant layers: when it holds, the two strategies share the same set of equivariant stationary points.
+Empirically, \citet{shen2026} find that DA rapidly learn 3D rotation equivariance with negligible efficiency gap attributable to lack of strict equivariance.
+
+\subsection{Symmetric framework: Siamese networks and self-supervised learning}
+A third way to build a symmetry into a learning system is neither to constrain the layers nor to augment the data, but to make the \emph{architecture and objective themselves symmetric}.
+The archetype is the \emph{Siamese network}, a pair of identical subnetworks with shared (tied) weights that process two inputs and are compared in the resulting feature space \cite{ilina2022sa}.
+Weight tying is a permutation symmetry between the two branches: exchanging the inputs leaves the model unchanged, so the learned similarity is invariant to the order of the pair.
+The idea traces back to early metric-learning work that trained such twinned networks with a \emph{contrastive loss}, pulling together the embeddings of matching pairs and pushing apart non-matching ones, first for signature and face verification \cite{chopra2005} and then as a general principle for learning invariant mappings \cite{hadsell2006}.
+This structural symmetry, together with triplet variants that add a third branch, has proven effective for metric learning, verification, and tracking tasks, as surveyed in \cite{ilina2022sa}.
+
+Siamese architectures are the backbone of much modern \emph{self-supervised learning} (SSL), where the supervisory signal is manufactured rather than annotated.
+The dominant recipe is to generate two augmented views of the same input and train the two branches to agree, which turns the invariances built into the augmentation pipeline (crops, colour jitter, rotations) into invariances of the learned representation---linking SSL directly to the data-augmentation view of \Cref{par:auto-da}.
+The central technical difficulty is avoiding \emph{representational collapse}, the trivial solution in which the network maps every input to the same point and so achieves perfect agreement.
+The landmark methods can be organized by the mechanism they use to prevent it.
+\emph{Contrastive} approaches supply negative pairs as a repulsive force: SimCLR \cite{chen2020simclr} does so within large batches, while MoCo \cite{he2020moco} maintains a queue of negatives encoded by a slowly-updated momentum encoder, decoupling the number of negatives from the batch size.
+\emph{Non-contrastive} approaches dispense with negatives and instead break the symmetry of the two branches architecturally: BYOL \cite{grill2020byol} predicts a momentum-averaged target branch from an online one, and SimSiam \cite{chen2020a} shows that a stop-gradient applied to one branch alone suffices to prevent collapse, even without negatives, large batches, or a momentum encoder.
+A third family prevents collapse through the loss by regularizing the statistics of the embeddings: Barlow Twins \cite{zbontar2021barlow} drives the cross-correlation matrix of the two views towards the identity, and VICReg \cite{bardes2022vicreg} combines variance, invariance, and covariance terms to the same end.
+These principles carry over to vision transformers, where DINO \cite{caron2021dino} casts SSL as self-distillation between a student and a momentum teacher.
+Across all three families, the shared augmentation-agreement objective is what makes the learned representation approximately invariant to the group generating the views.
+
+The connection between symmetry and SSL runs deeper than invariance alone.
+Rather than discarding the transformation applied to a view, \emph{equivariant} contrastive methods retain it as structure in the representation: \cite{gupta2023a} learns features that are equivariant to a chosen group action while remaining invariant to nuisance augmentations, shaping the geometry of the representation space according to the acting group.
+In the tracking setting, \cite{sosnovik20212iwcacvw} shows that endowing a Siamese tracker with scale equivariance improves robustness to object size changes, a concrete instance of coupling the symmetric framework with an equivariant one.
+More broadly, this places Siamese and self-supervised methods at the boundary between the prescriptive stance of this section---symmetry deliberately engineered into the objective---and the descriptive stance of the next: several works recast representation learning as a means of \emph{recovering} the symmetries latent in data \cite{perin2025}, which motivates the treatment of symmetry as an unknown.
+
+\section{Symmetry as an unknown}
+
+The previous section assumed the relevant symmetry was known and could be engineered into the model.
+Here we take the opposite stance, corresponding to the \emph{descriptive} branch of the taxonomy (\Cref{table:taxonomy}): the symmetry is treated as something to be inferred rather than imposed.
+Two complementary problems fall under this heading, and it is useful to see them as conceptual opposites.
+\emph{Symmetry discovery} is \emph{additive}: it starts from few or no assumptions and accumulates evidence \emph{for} the presence of a symmetry, letting the model learn which group acts on the data.
+\emph{Approximate} (or soft) \emph{equivariance} is \emph{retractive}: it starts from an assumed symmetry and gathers evidence \emph{against} it, letting the model learn \emph{when} to deviate from the posited invariance.
+A recurring difficulty ties the two together: a symmetry is a \emph{constraint} on the functions a model may represent, and such constraints are not rewarded by objectives that merely optimize data fit, so the unconstrained (asymmetric) solution is generically favoured unless the method actively nudges the model towards symmetry \citep{ouderaa2022,benton2020anips,ouderaa2024}.
+We first treat symmetry discovery---from data and from trained models---and then turn to incomplete and approximate symmetries.
+
+\subsection{Symmetry Discovery}
+
+Symmetry discovery refers to the problem of automatically learning or identifying symmetries present in data or learned by neural networks, without requiring (full) prior knowledge of what those symmetries are.
+The core motivation is twofold:
+\begin{enumerate}
+    \item \textbf{Practical}: Overcome partly the symmetry bottleneck (\Cref{par:sym-bottleneck}) or obtain performance improvements by leveraging previously unidentified symmetries in real-world dataset (data symmetries).
+    \item \textbf{Theoretical}: Understanding what symmetries a network implicitly learns provides insights into its behavior and learned inductive biases.
+\end{enumerate}
+
+In full generality, the object to identify is a triple $(G, \rho_X, \rho_Y)$, where the equivariance constraint is :
+\begin{equation}
+    f(\rho_X(g) x) = \rho_Y(g) f(x) \quad \forall g \in G.
+\end{equation}
+$\rho_X$ and $\rho_Y$ are representations of the same abstract group $G$, but they can be entirely different---same symmetry, different actions.
+$f$ is the predictor $f_\theta$ in the case of symmetry extraction from a trained network and the unknown ground truth function $y^*$ in the case of symmetry discovery from data.
+% works are not always explicit about finding \rho_X, \rho_Y in the triple $(G, \rho_X, \rho_Y)$
+
+In the first part of this section, we look at symmetry discovery in data, then proceed with learned symmetries.
+
+
+\subsubsection{Symmetry Discovery from Data}\label{sec:sym-disc-from-data}
+
+% hu2025nn seems similar to krippendorf2020
+% add: ko2024anips
+% non-linear SD: yang2024p4icml, shaw2024
+% add ouderaa2023
+% seems that some GAN objective assume distribution invariance
+
+% Introduction on symmetry discovery: what it is and why is it relevant.
+We review works aiming to identify the transformations under which a dataset is invariant or equivariant.
+The goal is therefore to infer a group $G$ and its action on data such that a target function $\phi$ satisfies \Cref{def:invariance} or \Cref{def:equivariance}, purely from a finite number of observations.
+
+% ---- Relation to automated DA and GDL ----
+Symmetry discovery is conceptually related to automated DA (\Cref{par:auto-da}), but with the distinction that automated augmentation policies produce new training examples while symmetry discovery methods place emphasis on the extraction of the symmetry itself as an interpretable, reusable object that can be injected into a model's inductive bias, used for augmentation or simply as a diagnostic.
+Similarly, the field is related to geometric deep learning and equivariant layer design as several works simultaneously discover and enforce symmetries so that the model becomes more equivariant as evidence for the symmetry accumulates \citep{benton2020anips,ouderaa2022,otto2025,escriche2025}.
+
+% A simple mathematical statement to formalize the problem.
+Formally, in the simpler case of invariance detection, given a dataset $\{x_i\}_{i=1}^n \subset \mathcal{X}$ drawn from a distribution $p$, symmetry discovery seeks a set of transformations $\mathcal{T} = \{T_g : \mathcal{X} \to \mathcal{X} \mid g \in G\}$ such that $p$ is invariant under $\mathcal{T}$, i.e.\ $T_g \# p = p$ for all $g \in G$, where $T_g \# p$ denotes the pushforward of $p$ under $T_g$.
+The discovered group should be non-trivial: the identity is always a valid solution leading some works to actively incorporate mechanisms such as volume-preservation constraints, or entropy maximizers to avoid this degenerate outcome \citep{benton2020anips,yang2023p4icml,escriche2025}.
+ 
+% Seminal works: highnam1985,wolter1985tvc (the problem is not new)
+\paragraph{Seminal works}
+The problem of detecting symmetries from finite data is not new; in the 1980s \citet{highnam1985} and \citet{wolter1985tvc} provided algorithms for finding all rotational and reflective symmetries of planar and three-dimensional point sets.
+An early machine learning approach appeared in \citet{rao1998anips}, who framed symmetry discovery in visual perception as learning Lie group operators from infinitesimally transformed image patches via an unsupervised Bayesian algorithm.
+
+\paragraph{Discrete vs continuous symmetry learning}
+Discrete symmetries, can be approached through combinatorial search over parameter-sharing schemes \citep{yeh2022p2icais,zhou2021} or Cayley table extraction~\citep{sanborn2022}.
+Continuous symmetries benefit from the smooth structure of Lie groups and are usually approached by parameterizing transformations through their Lie algebra and the matrix exponential map \citep{benton2020anips,ouderaa2022}.
+Estimation of the Lie algebra by learning a basis of infinitesimal generators from data is proposed by  \citet{dehmamy2021anips,yang2023p4icml}.
+Additionally, regularization terms can be put on Lie generators \citep{escriche2025} to prevent collapse.
+
+% ---- Compact Lie groups, representation theory, and GAN-based methods ----
+\paragraph{Generative approaches}
+\citet{desai2022prd} introduce a GAN-based framework, where the generator learns maps that preserve the data distribution relative to a reference, formalizing a statistical notion of symmetry.
+\citet{yang2023p4icml} propose \textit{LieGAN}, where a generator learns a Lie algebra basis $\{L_i\}$ such that transformations of the form $\exp(\sum_i w_i L_i)$ preserve the data distribution, with an additional discriminator forcing \textit{distribution-matching} while regularizers on the generators prevent both identity collapse and redundancy of learning basis elements.
+
+% ---- Disentangled and irreducible representations ----
+% goodfellow2009anips: extract distinct invariant subpopulations of neurons from a model allowing each to be invariant to different transformation (e.g. one subpopulation would be invariant to illumination, another to rotation etc...)
+\paragraph{Learning groups and their representations}
+A line of work frames symmetry discovery as learning not only the group but also its decomposition into independent factors or irreps \textit{i.e.} a form of disentangled representation learning \citep{higgins2018}.
+\citet{cohen2014} propose a probabilistic model that learns irreducible representations for compact commutative Lie groups, in particular the toroidal subgroups (\textit{i.e.}\ the commutative part) of $SO(D)$.
+In the context of dynamic environments where observations are paired with transformations, \citet{quessard2020anips} addresses disentanglement by a sparsity regularizer that encourages each symmetry generator to act on as few latent dimensions as possible, thereby identifying a block-diagonal structure in the representation.
+\citet{sanborn2022} introduce Bispectral Neural Networks, which learn a Fourier basis for compact groups and \citet{ennes2025fcm} tackle the problem from a geometric perspective: given a point cloud sampled from orbits of a compact Lie group, their \textit{LieDetect} algorithm estimates the Lie algebra via a PCA-like operator and projects onto the closest valid Lie algebra for a set of candidate groups ($SO(2)$, $T^d$, $SU(2)$, $SO(3)$), with theoretical stability guarantees given in terms of Wasserstein distances.
+
+% ---- Other methods: VAEs, GPs, info-theory, and conserved quantities ----
+\paragraph{Other estimation strategies}
+\citet{krippendorf2020} bet on the fact that a classifier trained on symmetric data will collapse symmetry-related inputs to nearby positions in the embedding layer and exploit this by performing linear regression on pairs of proximate embedding points to extract infinitesimal generators, effectively reading the symmetry off the network's representations.
+\citet{vanderwilk2018anips} incorporate invariance desiderata directly into the prior of a Gaussian Process by constructing an invariant kernel that averages over an orbit of transformations; the parameters of these transformations are then learned end-to-end by maximizing the marginal likelihood, which naturally penalizes complexity and avoids overfitting to spurious symmetries.
+\citet{wieser2020anips} employ an autoencoder framework in which the latent space is partitioned into a property-sensitive and a property-invariant subspace, with a mutual information regularizer enforcing that the invariant subspace carries no information about a target quantity.
+\citet{dehmamy2021anips} introduce Lie Algebra Convolutional Networks (L-conv), whose layers make the Lie algebra basis itself a learnable parameter allowing discovery at a non-negligible computational cost.
+\citet{ouderaa2024} take a physics-inspired approach via Noether's theorem: they parameterize symmetries as quadratic conserved quantities of a Hamiltonian system and learn them by maximizing a variational lower bound.
+
+% ---- Parameter sharing schemes ----
+\paragraph{Symmetry discovery through parameter-sharing schemes}
+A layer's equivariance can be determined by which weight entries are shared, so the problem of symmetry discovery can be framed as learning the partition of weights into equivalence classes; factorizing the weight space into a \textit{structural component} (the parameter-sharing scheme) and a \textit{value component} (the actual shared parameters).
+\citet{zhou2021} operationalize this idea via a reparameterization $\mathrm{vec}(W) = Uv$, where the sharing matrix $U$ is optimized in a meta-learning outer loop while $v$ (value) adapts per task.
+They prove that this factorization can represent equivariance to any finite group.
+\citet{yeh2022p2icais} directly optimize over partitions of weight indices.
+
+% ---- Caveat ----
+\paragraph{Caveats}
+Despite the appeal of symmetry discovery as a path around the symmetry bottleneck or as a diagnostic tool, it comes with important limitations.
+\citet{rath2024air} caution that, while discovery is valuable when prior knowledge is unavailable or hard to specify, automatically learned symmetries are generally unable to outperform models whose equivariance is correctly specified by design.
+Furthermore, \citet{yang2023p4icml} observe, and \citet{finzi2021anips} formalize, that enforcing the \emph{wrong} symmetry group (too large, small, or simply incorrect) can be harmful.
+% could add benton2020anips,miao2023p4icml as additional papers supporting that imposing a wrong symmetry can affect performance
+
+
+\subsubsection{Symmetry Extraction from Learned Models}
+
+In this part we report the main techniques used to detect, measure, and identify symmetries that a neural network has learned, as opposed to symmetries that were *enforced* by design: extraction refers to a post-hoc or diagnostic operation on a trained model.
+
+
+\paragraph{Capability}
+% add lenc2014a: if the linear map exists but only one transformation at a time
+Before measuring \emph{how much} symmetry a model has acquired, one can ask the more basic question: can a network whose architecture does \emph{not} hard-code a group $G$ incorporate, represent or learn symmetries at all, and under what conditions?
+\citet{olah2020d} give a \emph{mechanistic} demonstration: by inspecting circuits---human-interpretable subgraphs of a trained convolutional network---they find with a combination of activation maximization and visual intepretation, clusters of ``equivariant'' neurons that respond to transformed variants (rotation, hue, scale) of the same feature.
+They then show how downstream circuits combine them to synthesize invariant units at deeper layers, i.e.\ invariance can be built compositionally from equivariant parts.
+\citet{barenboim2021sp} give a \emph{decodability} argument: a network trained on a symmetry-agnostic decoy task nonetheless encodes the symmetry class of the data in its penultimate representations, which a secondary classifier recovers ($O(2)$, $\mathbb{Z}_2$, $T$, $T_n$ or $\emptyset$) largely above chance: symmetry is thus learned in the absence of any explicit symmetry label, since a structure that can be decoded must have been represented.\newline
+These existence results leave open \emph{when} learning succeeds, a question that can be envisioned through training regimes.
+In the lazy (NTK) regime, \citet{perin2025} prove a negative result: generalization to a held-out orbit point is governed entirely by \emph{local} kernel geometry through the spectral ratio $\varepsilon_s = \lambda_N^{-1}/\langle\lambda^{-1}\rangle$ (class separation versus orbit density), with no mechanism to transport a symmetry.
+Concretely, they illustrate that rotation poses seen only on some classes cannot be extrapolated to other classes with missing poses in the training set: if not hard-coded; the symmetry is not discovered.
+This places symmetry learning in the feature-learning regime.
+In the active (feature-learning) regime, \citet{jacot2025} establish a positive counterpart: depth lets a network learn \emph{compositions} $f^\ast = h \circ g$, and when the target is $G$-invariant the inner map $g$ can play the role of a quotient map $\mathbb{R}^{d_{\mathrm{in}}} \to \mathbb{R}^{d_{\mathrm{in}}}/G$.
+In summary representational mechanisms are directly shown \citep{olah2020d,barenboim2021sp} while precise feasibility depends on conditions such as depth-enabled compositionality or learning regime \citep{perin2025,jacot2025}.
+
+\paragraph{Identification}\label{par:identification-anchor}
+Beyond proving that neural networks can represent symmetries, another challenge is to identify the symmetry a trained model has internalised: to recover the group acting on the data, or for continuous groups the Lie-algebra generators.
+Two types of methods are (1) to read the symmetry off the network's \emph{representations} or more locally (2) off its \emph{gradients}.\newline
+The representational approach inspects what the trained model has stored.
+\citet{krippendorf2020} exploit the empirical observation that, when a classifier is trained on a label invariant under a group action---e.g.\ the discretised value of a rotation-invariant potential $V(\|x\|)$---points on the same orbit collapse into clusters in the embedding layer that are \emph{tighter} than generic same-class points.
+That is, if $(x_1, y_1)$, $(x_2, y_2)$, $(x_3, y_3)$ are three points with $y_1 = y_2 = y_3$ but only $x_1$ and $x_2$ are related by a group action $x_1\sim_g x_2$, then the embedding distance $d(\phi(x_1), \phi(x_2))$ is expected to be smaller than $d(\phi(x_1), \phi(x_3))$.
+This clustering is used as a probe: orbit point clouds detected in embedding space are pulled back to the input space, and infinitesimal generators $T^a$ are recovered by linear regression on nearest-neighbour pairs $(p,p')$ under the first-order relation $p' \approx p + \varepsilon_a T^a p$, yielding the $SO(n)$ and $SU(2)$ generators even from noisy, sparse point clouds.
+\citet{olah2020d} work one unit at a time: \emph{activation maximisation} generates inputs that strongly excites neurons, and direct visual interpretation of this preferred stimulus names the feature it encodes; a group of neurons whose preferred stimuli are rotated, hue-shifted or rescaled copies of one feature is then read as an ``equivariant'' family.
+Tracing a neuron's activation along an orbit, a \emph{tuning curve}, further confirms the symmetry: a flat curve signals invariance while shifted curves indicate equivariance.\newline
+The gradient approach achieves identification by a nullspace computation.
+Restricting to matrix Lie groups $G \leq \mathrm{GL}(n)$, \citet{moskalev2023} (LieGG) read the trained network as a discriminator $F$ and invoke the criterion that a generator $\mathfrak{h}$ is an infinitesimal symmetry iff $\sum_{i,j} \partial_{x_i} F(x)\,\mathfrak{h}_{ij}\, x_j = 0$ on the data.
+Stacking this constraint over the dataset $D$ yields the \emph{network polarization matrix} $\mathcal{E} \in \mathbb{R}^{|D| \times n^2}$, whose nullspace \emph{is} the learned Lie algebra.
+In practice the approximate nullspace is extracted from the right-singular vectors of $\mathcal{E}$ associated with near-zero singular values (SVD), the count of which gives the algebra's dimension.
+\citet{hu2025nn} (LieSD) follow the same SVD-nullspace philosophy but start from a characterisation of \emph{equivariance} requiring only inputs, outputs and gradients: $f$ is $G$-equivariant iff $\mathrm{d}\rho_Y(A_i)\,f(x) = \nabla f(x)\,\mathrm{d}\rho_X(A_i)\,x$ for every generator $A_i$, with invariance the special case $\rho_Y = \mathrm{id}$.
+Assembling these constraints into a coefficient matrix, the zero singular values again count the Lie-algebra dimension and singular vectors are the generators.\newline
+Notably, both \citet{krippendorf2020} and \citet{hu2025nn} rely on the assumption that a sufficiently trained network absorbs the symmetry present in its data, so identifying the model's symmetry doubles as \emph{discovery} of the data's symmetry, closing the loop with \Cref{sec:sym-disc-from-data}.
+
+\paragraph{Quantification}
+% mention sensitivity analysis as the broader field that studies how the variation in the output of a model can be apportioned to different sources of variation in its inputs - see storm2024prl for an example of local sensitivity analysis applied to deep networks. Symmetry quantification could be likened to sensitivity analysis to specific directions in input space.
+% petrache2023 3.2 equivariance error
+% yeh2022p2icais introduce the Partition Distance, a quantitative metric for comparing their learned sharing scheme against a known ground truth (an equivariance error)
+% leroy2025 invariance energy estimated in embedding space from discrete infinitesimal curves (to be added in the last paragraph on infinitesimal methods)
+% qu2024anips: sec 5.4 cosine similarity >0.99 for atom force prediction in a scaled non-equivariant model
+Once one knows \emph{which} symmetry a model carries, the natural follow-up is \emph{how much} of it the model has actually learned.
+The works below share a common template: a transformation (or its infinitesimal generator) is assumed to be given, and one measures a notion of sensitivity of the model under it, assessing how well invariance or equivariance is respected.\newline
+For seminal works, \citet{goodfellow2009anips} define a neuron-level \emph{invariance score} $S(i) = L(i)/G(i)$, where the \emph{local firing rate} $L(i)$ is the fraction of transformed versions of a maximally activating input $z$ that still excite neuron $i$, and the \emph{global firing rate} $G(i) = \mathbb{E}_{x\sim P}[f_i(x)]$ measures indiscriminate firing under a random sampling $P$.
+A neuron scores high only if it tracks transformations of its preferred stimulus while staying silent on generic inputs because the denominator enforces selectivity.
+A network-level score averages $S(i)$ over only the top-$p$ fraction of neurons in a layer, which permits a \emph{modular} detection in which one subpopulation specialises to rotation, another to translation or illumination.
+The score is parametrised by a \emph{type} $\tau$ (an action), a \emph{range} $\Gamma$ (a partial orbit, not necessarily the full one) and the sampling $P$: varying these parameters instantiates different tests under the same template e.g. on video $\tau$ can be forward time-translation and $\Gamma$ the maximal number of frames skipped.
+Rather than measuring invariance directly, \citet{lenc2014a} test whether a learned representation $\phi$ is compatible with equivariance by fitting a linear map $M_g$ such that $M_g\,\phi(\mathbf{x}) \approx \phi(g\mathbf{x})$, but only one transformation $g$ at a time.
+This map is estimated by sparse regression with structured-sparsity constraints respecting the convolutional locality of $\phi$, making the problem tractable.
+Two quantifications are used: (i) the reconstruction error $\mathbb E_x[\|\phi(gx)-M_g\phi(x)\|]$, evaluates the goodness-of-fit i.e. the degree of linear equivariance of a representation and (ii) invariance is assessed by measuring how close $M_g$ is from the identity; practically they look at off-diagonal weights of $M_g$ with a ratio $\frac{\|(M_g)_{i,:}\|_2}{\|(M_g)_{i,:}-(M_g)_{i,i}e_{ii}\|_2}$, where $e_{ii}$ is the $(i,i)$ element of the canonical basis of matrices.
+Applied layer-by-layer to AlexNet, it reveals that equivariance to geometric transformations (vertical flips, rotations) degrades with depth.
+
+For subsequent works, translation equivariance in CNNs is studied by \citet{zhang2019p3icml} who track an \emph{internal feature distance} $d\big(\mathrm{Shift}(\widetilde{\mathcal{F}}(x)),\,\widetilde{\mathcal{F}}(\mathrm{Shift}(x))\big)$ across layers, exposing how downsampling destroys shift-equivariance.
+A simple performance check is used by \citet{finzi2020p3icml} (App.~B.1): the prediction gap under a group transformation of the input which is expected to vanish up to stochasticity and numerical approximation for a truly equivariant model.
+Logit-based scores sharpen this input-output analysis: \citet{hutchinson2021p3icml} report an \emph{invariance error} $\lVert \Phi(g\cdot x) - \Phi(x)\rVert_\infty$, the worst-case logit deviation under $g$.
+\citet{moskalev2023p2awtagmlt} propose other invariance errors based on the consistency of logits and saliency maps along orbits.
+Crucially they distinguish \emph{genuine} invariance from a weaker \emph{learned} invariance, in which a network (e.g.\ trained by data augmentation) reaches correct predictions on an orbit while maintaining \emph{separate} internal representations per transformation.
+Under an MNIST $\to$ Fashion-MNIST interpolation their predictive-distribution invariance $DI_f = \sum_{x\sim D}\sum_{g\sim G} D_{\mathrm{KL}}\big(f(x)\,\Vert\,f(gx)\big)$ finds that learned invariance deteriorates rapidly with the domain shift, a direct empirical argument for the robustness that strictly equivariant architectures guarantee by construction.
+In the same vein, an equivariance error $\frac{1}{n} \sum_{i=1}^{n} \text{std}(L_{R_i} \Phi(f_i) - \Phi(L_{R_i} f_i)) / \text{std}(\Phi(f_i))$ is proposed by \citet{cohen2018}, measuring an average normalized difference between pre and post application of group actions $L_{R_i}$ on feature maps $f_i$.
+\citet{shen2026} instead define an \emph{equivariance error} as the share of the total loss attributable to non-equivariance, $L_{\mathrm{equiv}}(\theta)/L(\theta)$, and observe that for augmentation-trained non-equivariant models it drops quickly to low values ($\approx 2\%$ of the loss).\newline
+A final family quantifies sensitivity infinitesimally.
+\citet{gruver2024} use the \emph{Lie derivative} $\mathcal{L}_X f$, where the vector field $X$ along which $f$ is differentiated is precisely an infinitesimal symmetry generator, yielding a hyperparameter-free local equivariance error that quantifies local sensitivity in the symmetry direction.
+The nullspace methods of \Cref{par:identification-anchor} used for identification can serve as quantification: \citet{moskalev2023} (LieGG) read off a \emph{symmetry variance} $\mathcal{V}(\mathcal{E}) = \sigma_{\min}(\mathcal{E})^2/|D|$ characterizing how close the network is to admitting an invariant direction in data space, and, against a known generator, a \emph{symmetry bias} measuring how faithfully that symmetry is respected.
+\citet{hu2025nn} (LieSD) push the comparison to ground truth further with a \emph{space error} and an \emph{orthogonality error}.
+The proposed space error is $E_{\text{space}} = \min_{X} \|VX - V^*\|_F^2 + \min_{Y} \|V^*Y - V\|_F^2$ which encodes the mutual expressibility of the spans of the true ($V^\star$) and recovered ($V$) generators bases.
+The orthogonality error is $E_{\text{orth}} = \sum_{i=1}^{D-1} \sum_{j=i+1}^{D} |\langle v_i, v_j \rangle|$ and computes a notion of redundancy among recovered generators $v_i$.
+
+Taken together, these measures range from single-neuron firing ratios to loss-fraction and generator-level errors, but all instantiate the same idea: probe the trained model along an assumed transformation and quantify its residual variation making them a natural counterpart of the identification methods above.
+
+
+
+\subsection{Incomplete symmetries}\label{sec:incomplete-symmetries}
+% Incomplete symmetries: to what extent pure symmetries don't hold, therefore it is a sort of dual to symmetry discovery (to what extent a transformation is a symmetry)
+% Partial symmetries: the exact range is often unknown, for approximate symmetry the goal it is often to calibrate how much deviation from exact symmetry is tolerated
+% paragraph 1 of topic-reports/incomplete-symmetry-notions.md: table and unifying object epsilon stabilizer from petrache2023
+
+\subsubsection{Extent restriction: beyond groups}
+% $\pm 90^\circ$ example is doubly useful** precisely because it exposes the closure subtlety: $\{+90^\circ,-90^\circ\}$ is a non-closed subset (since $+90^\circ\!\circ\!+90^\circ=180^\circ\notin S$), whereas $\{0,90,180,270\}=C_4$ *is* a subgroup. Use it explicitly to mark the boundary between categories (1) and (2).
+
+We organize this section based on the \emph{algebraic structure} of the set $S$ of transformations i.e.\ by which of the group axioms (closure, identity, inverses) $S$ retains.
+\Cref{table:extent-restriction} classifies the main cases along this axis.
+
+\begin{table}[ht]
+    \centering
+    \begin{tabularx}{\textwidth}{|l|c|c|c|X|}
+        \hline
+        \textbf{Structure of $S$} & \textbf{Closure} & \textbf{Identity} & \textbf{Inverses} & \textbf{Canonical example / refs} \\
+        \hline
+        Subgroup $S \le G$ & \checkmark & \checkmark & \checkmark & restricted equivariance; \cite{goel2025} (mechanism), \cite{weiler2019anips} (choose $G$) \\
+        \hline
+        Non-closed subset $S \subsetneq G$ & $\times$ & \checkmark & \checkmark & partial equivariance, \cite{romero2023}; $\pm 90^\circ$ \\
+        \hline
+        Semigroup / monoid & \checkmark & (monoid) & $\times$ & scale / downsampling, \cite{worrall2019anips} \\
+        \hline
+        Groupoid & partial & \checkmark & \checkmark & \cite{sareen2026} \\
+        \hline
+    \end{tabularx}
+    \caption{Restricting the \emph{extent} of symmetry: each row relaxes a different group axiom of the transformation set $S\subseteq G$.
+    For the groupoid closure, \textit{partial} is meant is the sense that the binary operation is a partial function on $S\times S$ (not automatically defined for all pairs).}
+    \label{table:extent-restriction}
+\end{table}
+
+\subsubsection{Approximate symmetries: tolerance}\label{sec:soft-equivariance}
+
+Where the previous subsection restricted the \emph{extent} of a symmetry---which transformations belong to the set $S$---this one relaxes its \emph{exactness}: the group $G$ is retained in full, but equivariance is required to hold only approximately.
+Such situations are pervasive.
+A symmetry may hold only to first order or be broken by noise, and in physical systems an idealized invariance often drifts, for instance over the course of a simulation.
+The motivation is that hard-coding an exact symmetry can be actively detrimental when the data distribution does not perfectly reflect it \citep{zhou2021,finzi2021anips}.
+More strikingly, even when a symmetry \emph{is} exact, a strictly equivariant design need not be optimal: \citet{lawrence2026} and \citet{rygiel2026} observe that when data is presented canonically---so that the distribution is far from uniform over each orbit---an unconstrained model can outperform the correctly-equivariant one, either by exploiting ``spurious but useful'' correlations (a camel on sand, a penguin on ice) or by exploiting the canonicalization itself (an animal running rightwards to gauge its speed).
+This motivates architectures that are \emph{biased} towards a symmetry without being rigidly constrained by it.
+
+The dominant strategy is to \emph{soften} an equivariant construction so that deviations are permitted but penalized.
+\citet{wang2022p3icml} introduce approximately equivariant networks and show, on imperfectly symmetric dynamical systems, that this relaxation can outperform both strictly equivariant and fully unconstrained baselines.
+Related soft-constraint mechanisms include relaxing the group convolution through non-stationary filters \citep{ouderaa2022}, residual pathway priors that place a prior favouring the equivariant solution while leaving an unconstrained escape route \citep{finzi2021anips}, and, on graphs, approximately equivariant message passing \citep{huang2023}.
+A complementary, more implicit route learns the appropriate degree of invariance from data by treating it as a model-selection problem, for example by tuning invariance through the marginal likelihood of a Gaussian process \citep{vanderwilk2018anips}, where approximate invariance is termed \emph{insensitivity}.
+
+The trade-off underlying all these methods is theoretical as well as empirical.
+\citet{petrache2023} formalize an approximation--generalization tension under approximate group equivariance: imposing (even approximately) the correct symmetry reduces the hypothesis space and hence the generalization gap, but imposing the wrong or too-rigid a symmetry raises the approximation error.
+Soft equivariance can be read as an attempt to sit at the favourable point of this trade-off, retaining most of the statistical benefit of the symmetry while remaining able to represent the residual asymmetry that real data exhibit.
+
+
+
+\section{Analysis of symmetries}
+
+The preceding sections treated symmetry as something to be built into a model or inferred from data.
+This section adopts a third posture: symmetry as an \emph{analytical lens}.
+Rather than a property to enforce or discover, a symmetry becomes a tool for understanding a network's behaviour---its parameterization, the geometry of its loss landscape, the dynamics of its training, and the quantities those dynamics conserve.
+The symmetries at play here are largely \emph{parameter-space} symmetries: transformations of the weights that leave the function a network implements unchanged (\Cref{ex:equivalence_observational}), a viewpoint surveyed comprehensively by \citet{zhao2025}.
+
+\subsection{Parameter-space symmetries}
+
+A parameter-space symmetry is a transformation of the weights $\theta \mapsto g\cdot\theta$ that does not change the implemented function, so that $f_{\theta} = f_{g\cdot\theta}$.
+The two archetypes, both introduced earlier, are the neuron permutations of a hidden layer and, for homogeneous activations such as ReLU, the positive rescalings that trade magnitude between a unit's incoming and outgoing weights; jointly they generate the layerwise $S_n \ltimes \mathbb{R}_{>0}^n$ action of \Cref{ex:semidirect-products}.
+Because every such transformation moves through a set of weights that are indistinguishable at the level of the function, these symmetries induce redundancy in the parameterization, and much of the analytical payoff comes from understanding that redundancy: it shapes which parameters can be recovered, how the loss landscape is organized, and how training evolves.
+As a diagnostic, \citet{lenc2014a} repurpose the stitching-layer methodology they had used to test equivariance, now to test whether two independently trained networks are equivalent up to a linear map $E_{\phi\to\phi'}$ satisfying $E_{\phi\to\phi'}\phi(\mathbf{x}) \approx \phi'(\mathbf{x})$ (cf.\ \Cref{sec:sym-disc-from-data}).
+
+\subsubsection{Identifiability}
+
+Identifiability asks the converse of redundancy: setting aside the known symmetries, can a network's parameters be recovered from its function?
+For ReLU networks the answer is largely affirmative.
+\citet{phuong2019} show that, under mild conditions, functional equivalence of ReLU networks implies parametric equivalence up to permutation and rescaling---the known symmetries are essentially the \emph{only} source of non-identifiability---and \citet{grillo2026} strengthen this by establishing that most ReLU networks admit identifiable parameters.
+Constructively, \citet{rolnick2020p3icml} reverse-engineer the weights of a deep ReLU network from black-box queries by locating the boundaries where individual neurons switch sign, recovering the architecture and parameters up to symmetry.
+A finer picture is given by the \emph{functional dimension}: \citet{elisendagrigsby2025aim} show that the effective number of degrees of freedom a ReLU network realizes can be strictly smaller than its parameter count, because symmetries and other degeneracies collapse directions in parameter space---connecting identifiability to the singular structure studied in singular learning theory.
+
+\subsubsection{Effects on optimization landscape and learning dynamics}
+
+Parameter symmetries leave a distinctive imprint on the loss landscape.
+Because the loss is constant along each symmetry orbit, minima are never isolated points but come in continuous, equal-loss manifolds, and the same mechanism manufactures saddle points where orbits of different types meet.
+\citet{simsek2021} characterize the geometry of these symmetry-induced critical manifolds in overparameterized networks, and \citet{brea2019} show that permutation symmetry alone forces the existence of saddle points connected by equal-loss valleys, giving the landscape a predictable large-scale structure.
+The initialization interacts with this geometry: \citet{jacot2022} describe a saddle-to-saddle training dynamics in deep linear networks in which small initialization sends trajectories through a sequence of symmetry-related saddles, biasing the solution towards sparsity, while \citet{esmaeili2023} identify topological obstructions---initialization-dependent barriers---to encoding data into a latent space with a prescribed group structure.
+
+A second, highly active theme reads model \emph{merging} through the lens of permutation symmetry.
+Two networks trained independently land in different cells of the same symmetry quotient, so naively interpolating their weights crosses a high-loss barrier; aligning them first by an appropriate permutation removes it.
+\citet{entezari2022} conjecture that, accounting for permutation invariance, the solutions found by SGD are linearly mode-connected, and \citet{ainsworth2023} operationalize this with Git Re-Basin, a set of algorithms that permute one network into the other's basin before averaging.
+\citet{tatro2020} align neurons to improve mode connectivity, and \citet{jordan2023} show that a variance-collapse artefact of interpolation must be corrected---by renormalizing the merged activations---for the aligned barrier to genuinely vanish.
+
+The dynamics of training are likewise constrained by symmetry.
+\citet{ziyin2024} show that a parameter symmetry induces corresponding structure and constraints on the learned solution, and \citet{ziyin2025} argue that the successive breaking and restoration of parameter symmetries organizes learning into hierarchical stages, accounting for abrupt jumps, a bias towards simpler models, and feature-learning phenomena such as neural collapse.
+\citet{lim2024} probe the same question empirically by constructing networks that \emph{lack} the usual symmetries, isolating the impact these symmetries actually have on training.
+Symmetry also interacts with the optimizer itself: \citet{tanaka2021} derive, via a Noether-type argument, that for normalization-invariant layers the explicit symmetry breaking introduced by weight decay and momentum induces an implicit adaptive (RMSProp-like) dynamics, and \citet{arjevani2023} identify a principle of least symmetry breaking, whereby SGD is biased towards minima that break the teacher's symmetry as little as possible.
+For homogeneous (e.g.\ ReLU) networks, the rescaling symmetry produces an implicit regularization: \citet{du2018anips} prove that gradient descent automatically balances the incoming and outgoing weight norms across layers, and for infinitely wide two-layer networks \citet{hajjar2023} analyze how the gradient flow preserves the symmetries of the target and data.
+The role of gradient \emph{noise} is taken up by \citet{ziyin2024a}, who characterize a noise equilibrium that stochastic gradient descent reaches along symmetry directions.
+
+\paragraph{Flatness and sharpness}
+A prominent heuristic links the \emph{flatness} of a minimum---how slowly the loss rises around it---to good generalization, motivating optimizers that explicitly seek flat regions, most notably Sharpness-Aware Minimization (SAM), which minimizes the worst-case loss in a fixed-radius neighbourhood of the weights \citep{foret2021}.
+Parameter symmetry complicates this picture in a fundamental way.
+\citet{dinh2017} observe that for homogeneous networks the rescaling symmetry moves freely along orbits of constant loss while arbitrarily distorting the local curvature: any minimum can be made to look arbitrarily sharp or flat by an appropriate rescaling of the weights, without changing the function or its generalization.
+Sharpness measured in a rigid, fixed-radius region is therefore \emph{not} invariant under the very transformations that leave the model unchanged, weakening its correlation with generalization.
+This is a direct consequence of the parameter-space redundancy of \Cref{ex:equivalence_observational}: a meaningful flatness measure must be constant along symmetry orbits.
+\citet{kwon2021} address this with ASAM, an adaptive, scale-invariant notion of sharpness (and a corresponding optimizer) designed so that rescaling a network's weights no longer changes its measured sharpness, restoring the link to generalization.
+The episode is a clean illustration of the analytical value of symmetry: recognizing which transformations preserve the function tells one which quantities are meaningful to optimize over the weights.
+
+\paragraph{Conservation laws}
+Continuous parameter symmetries give rise, through a discrete analogue of Noether's theorem, to quantities that are conserved by the training dynamics.
+\citet{kunin2020} show that symmetries of the loss imply conservation laws of the gradient flow---and characterize how discretization and momentum \emph{break} them---while \citet{marcotte2023} give a systematic method for counting and computing the independent conservation laws of a gradient flow.
+\citet{gluch2021} develop the Noether-theorem correspondence for learning dynamics in a general form.
+These conserved quantities are not merely descriptive: \citet{tanaka2020anips} exploit a conserved ``synaptic flow'' to prune networks at initialization without any data, and \citet{nurisso2025} use the geometry and singularities of the ReLU learning space to guide pruning along training.
+
+\subsection{Learning theory}
+A distinct line of analysis quantifies the statistical benefit that a symmetry confers, asking how much invariance or equivariance improves sample efficiency and generalization.
+For linear models, \citet{elesedy2021p3icml} prove a strict generalization gain from equivariance, and the data-augmentation analyses discussed in \Cref{par:auto-da}---orbit averaging and its variance-reduction and PAC-Bayes bounds \citep{chen2020,lyle2020}---give complementary quantitative accounts of why averaging over a symmetry group reduces the effective complexity of the hypothesis class.
+The approximation--generalization trade-off of \citet{petrache2023} (\Cref{sec:soft-equivariance}) sits at the boundary of this theory and the approximate-symmetry regime, making explicit that the statistical benefit is contingent on the imposed symmetry being close to the true one.
+
+\section{Extensions}
+
+\subsection{Pipelines}
+% Works that bring all multiple parts together
+% otto2025
+% anselmi2019pr
+% escriche2025
+
+\subsection{Orbital position, pose}
+
+% Pose or canonical orientation, class-specific symmetries
+Class-pose methods factor data points into an \textit{invariant representation} and a \textit{pose}.
+\cite{urbano2026} proposes to extract a class-specific canonical representative pose which can be used as an independent layer to convert a non-invariant model into and invariant one.
+% wieser2020anips: similar to class pose
+
+% lawrence2026 discusses canonicalization
+
+% cohen2014 can be considered an early work that discusses the idea of separating in different subspaces the identity of an object from its ``factors of variations'' 
+
+
+
+\section{Discussion}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\authorcontributions{}
+
+\funding{}
+
+\acknowledgments{}
+
+\conflictsofinterest{The authors declare no conflicts of interest.} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Optional
+
+%% Only for journal Encyclopedia
+%\entrylink{The Link to this entry published on the encyclopedia platform.}
+
+\abbreviations{Abbreviations}{%
+The following abbreviations are used in this manuscript:\\
+\noindent
+\begin{tabular}{@{}ll}
+DA & Data Augmentation \\
+GDL & Geometric Deep Learning
+\end{tabular}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\appendixtitles{yes}
+\appendixstart
+\appendix
+\section[\appendixname~\thesection]{Group table}
+
+% The group table: a table listing [group, nature, papers]
+\begin{table}[ht]
+    \centering
+    \begin{tabularx}{\textwidth}{|l|l|X|}
+        \hline
+        \textbf{Group} & \textbf{Nature} & \textbf{References} \\
+        \hline
+        $O(1,3)$ / $SO^+(1,3)$ (Lorentz) & Non-compact, non-semisimple
+            & \cite{bogatskiy2020p3icml,spinner2024,ruhe2023,ali2024,yang2023p4icml} \\
+        \hline
+        $SE(n) = \mathbb{R}^n \rtimes SO(n)$ & Non-compact (translation factor)
+            & \cite{yarotsky2018r,finzi2020p3icml,finzi2021p3icml} \\
+        \hline
+        $Sp(n)$ (symplectic) & Non-compact (split real form)
+            & \cite{finzi2021p3icml,pearce-crump2023p4icml} \\
+        \hline
+        General matrix groups & Potentially non-compact
+            & \cite{finzi2021p3icml,desai2022prd} \\
+        \hline
+    \end{tabularx}
+    \caption{The group table \pnote{draft, to check}}
+    \label{tab:groups}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \input{unfinished-thoughts}
+
+\begin{adjustwidth}{-\extralength}{0cm}
+
+\reftitle{References}
+\bibliography{bibliography}
+
+\PublishersNote{}
+\end{adjustwidth}
+\end{document}
+

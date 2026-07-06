@@ -1,0 +1,101 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[
+% backend=biber,
+style=numeric, % alphabetic, numeric
+natbib=true,
+% maxnames=1,
+% sorting=ynt
+]{biblatex}
+\AtEveryBibitem{
+    \clearfield{urlyear}
+    \clearfield{urlmonth}
+}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{wrapfig}
+\usepackage{multirow}  % tables double entry
+\usepackage{geometry}
+\usepackage{bbm}  % makes mathbbm{1} vector 1
+\usepackage{cleveref}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{parskip}
+\usepackage{amsthm}
+% tables
+\usepackage{booktabs}
+\usepackage{tabularx} % For text wrapping in the last column
+\usepackage{multirow} % Required to span cells across rows
+\usepackage[title]{appendix} % Generates "Appendix A" instead of just "A"
+
+% for definitions
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}{Example}[section]
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\newtheoremstyle{resultstyle}% name of the style to be used
+  {10pt}% measure of space to leave above the theorem. E.g.: 3pt
+  {\topsep}% measure of space to leave below the theorem. E.g.: 3pt
+  {\itshape}% name of font to use in the body of the theorem
+  {0pt}% measure of space to indent
+  {\bfseries}% name of head font
+  {. ---}% punctuation between head and body
+  { }% space after theorem head; " " = normal interword space
+  {\thmname{#1}\thmnumber{ #2}\textnormal{\thmnote{ (#3)}}}
+\theoremstyle{resultstyle}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{conjecture}{Conjecture}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{lemma}{Lemma}[section]
+
+\geometry{margin=1in}
+% \setlength\parindent{10pt}  % Paragraph indentation
+\newcommand{\pnote}[1]{\textcolor{red}{PL: #1}}
+\newcommand{\myline}{%
+  \vspace{5mm}%
+  \hrule%
+  \vspace{5mm}%
+}
+
+\addbibresource{references.bib} %Import the bibliography file
+
+\title{Symmetries and Deep Learning: a Survey}
+\author{Pierrick Leroy}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+% Audience: reader curious to know about occurences of symmetries in a deep learning context
+
+\pnote{write at the end}
+
+\end{abstract}
+
+\section{Introduction}
+
+\pnote{write at the end}
+
+
+
+\newpage
+\begin{appendices}
+% Reset table numbering to A.1, A.2, etc. per section
+\counterwithin{table}{section}
+
+\section{Group table}
+
+\end{appendices}
+
+\printbibliography
+
+% \input{unfinished-thoughts}
+
+
+\end{document}
