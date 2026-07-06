@@ -275,8 +275,7 @@ case $G$ and $G'$ are structurally indistinguishable as groups.
 Groups become tools for organizing geometric or combinatorial structure once
 they are allowed to \emph{act} on a set.
 
-\begin{Definition}[Group action]
-\label{def:group-action}
+\begin{Definition}[Group action]\label{def:group-action}
 A (left) \emph{action} of a group $G$ on a set $X$ is a map
 $\alpha : G \times X \to X$, written $\alpha(g,x) = g \cdot x$, such that
 \begin{enumerate}[label=(A\arabic*), leftmargin=*, labelsep=0.5em]
@@ -1795,7 +1794,13 @@ cases it is measured by exactly the same orbit--stabilizer pair
 
 \section{Symmetry as a design principle}
 
-
+This section gathers the methods in which a symmetry is \emph{known in advance} and deliberately built into the learning system.
+This prescriptive stance (\Cref{table:taxonomy}) assumes prior knowledge of the group $G$ acting on the problem and treats it as an inductive bias to be enforced rather than a structure to be discovered.
+We distinguish three broad strategies, ordered by how tightly the symmetry is coupled to the model.
+At one extreme, \emph{equivariant architectures} encode the symmetry \emph{implicitly} in the hypothesis class, so that invariance or equivariance holds by construction for every parameter setting; geometric deep learning is the systematic development of this idea.
+At the other extreme, \emph{data augmentation} leaves the architecture untouched and instead enforces the symmetry \emph{explicitly} on the data, encouraging---but not guaranteeing---invariance through orbit-averaged training.
+In between sits the design of \emph{symmetric frameworks}, such as Siamese networks, where the symmetry is expressed in the training objective and the relational structure of the model rather than in either the layers or the data alone.
+These strategies are not mutually exclusive and are frequently combined; we discuss the trade-offs between them, in particular the recurring question of whether the cost of exact equivariance is justified over a simpler model trained with augmentation.
 
 \subsection{Geometric deep learning}
 
@@ -1809,7 +1814,7 @@ cases it is measured by exactly the same orbit--stabilizer pair
 % romero2023tmlr: scale equivariance for audio signal
 % could add a warning about misspecification of symmetries: yang2023p4icml,finzi2021anips and the fact that approximate equivariance addresses the case where specification is slightly off due to real world fluctuations
 
-Geometric Deep Learning (GDL) \cite{bronstein2017ispm,bronstein2021} studies how to exploit the symmetry group and geometric structure of the data domain to design architectures that are sample-efficient, generalizable, and principled.
+Geometric Deep Learning (GDL) \citep{bronstein2017ispm,bronstein2021} studies how to exploit the symmetry group and geometric structure of the data domain to design architectures that are sample-efficient, generalizable, and principled.
 It provides a unifying framework for deep learning architectures by viewing them through the lens of symmetry and group equi\slash invariance.
 Its central thesis, inspired by Felix Klein's Erlangen Program, is that the appropriate inductive bias for a learning problem is determined by the symmetries of its domain.
 This perspective simultaneously furnishes a common mathematical framework for existing architectures such as CNNs, RNNs, GNNs and Transformers, and a constructive blueprint for designing new ones on non-Euclidean domains such as graphs and manifolds.
@@ -1880,8 +1885,11 @@ Subsequent work sought to surpass the 1-WL barrier by incorporating structural f
 Universality results remain scarce, for Euclidean equivariant networks \cite{yarotsky2018r} establishes universal approximation for invariant maps, and \cite{bogatskiy2020p3icml} proves universality for Lorentz-equivariant models, while \cite{kondor2018p3icml} shows that equivariant linear maps between feature spaces over homogeneous spaces are necessarily generalized convolutions and \cite{pacini2026} establishes that shallow equivariant models can fail to be universal, but that sufficient depth or the addition of appropriate readout layers restores universality within the entry-wise separable regime.
 
 \subsubsection{Topological domains}
-% works that extend symmetry-guided desgin with message passing to higher order structures 
-% papillon2023, bodnar2021a, battiloro2024
+Message passing on graphs propagates information along edges, that is, between pairs of nodes.
+A parallel line of work lifts the same permutation-equivariant, symmetry-guided design to higher-order relational structures---simplicial and cell complexes, hypergraphs, and combinatorial complexes---where interactions are not restricted to pairs but may involve arbitrary collections of elements.
+This is the subject of \emph{topological deep learning}, surveyed in \cite{papillon2023}, which generalizes message passing to messages exchanged between cells of different dimensions while retaining equivariance to the relabelling of those cells.
+As already noted in the discussion of expressivity, lifting graphs to cell complexes provably strengthens the discriminative power of message passing beyond the 1-WL barrier \cite{bodnar2021a}.
+The two design axes can be combined: \cite{battiloro2024} constructs $E(n)$-equivariant topological neural networks, imposing Euclidean and permutation symmetries jointly on data supported on topological domains, in the same spirit as the geometric graph networks discussed above but on higher-order cells.
 
 \subsubsection{Challenges}
 
@@ -1966,8 +1974,26 @@ Empirically, \citet{shen2026} find that DA rapidly learn 3D rotation equivarianc
 % see perin2025 paragraph "Many methods have been proposed to learn symmetries from data"
 % ilina2022sa
 % video from Jia-Bin Huang on learning without labels https://youtu.be/gVEr2cnDE_8
+A third way to build a symmetry into a learning system is neither to constrain the layers nor to augment the data, but to make the \emph{architecture and objective themselves symmetric}.
+The archetype is the \emph{Siamese network}, a pair of identical subnetworks with shared (tied) weights that process two inputs and are compared in the resulting feature space \cite{ilina2022sa}.
+Weight tying is a permutation symmetry between the two branches: exchanging the inputs leaves the model unchanged, so the learned similarity is invariant to the order of the pair.
+The idea traces back to early metric-learning work that trained such twinned networks with a \emph{contrastive loss}, pulling together the embeddings of matching pairs and pushing apart non-matching ones, first for signature and face verification \cite{chopra20052icsccvprc} and then as a general principle for learning invariant mappings \cite{hadsell20062icsccvpr-v2c}.
+This structural symmetry, together with triplet variants that add a third branch, has proven effective for metric learning, verification, and tracking tasks, as surveyed in \cite{ilina2022sa}.
 
+Siamese architectures are the backbone of much modern \emph{self-supervised learning} (SSL), where the supervisory signal is manufactured rather than annotated.
+The dominant recipe is to generate two augmented views of the same input and train the two branches to agree, which turns the invariances built into the augmentation pipeline (crops, colour jitter, rotations) into invariances of the learned representation---linking SSL directly to the data-augmentation view of \Cref{par:auto-da}.
+The central technical difficulty is avoiding \emph{representational collapse}, the trivial solution in which the network maps every input to the same point and so achieves perfect agreement.
+The landmark methods can be organized by the mechanism they use to prevent it.
+\emph{Contrastive} approaches supply negative pairs as a repulsive force: SimCLR \cite{chen2020p3icml} does so within large batches, while MoCo \cite{he2020} maintains a queue of negatives encoded by a slowly-updated momentum encoder, decoupling the number of negatives from the batch size.
+\emph{Non-contrastive} approaches dispense with negatives and instead break the symmetry of the two branches architecturally: BYOL \cite{grill2020} predicts a momentum-averaged target branch from an online one, and SimSiam \cite{chen2020a} shows that a stop-gradient applied to one branch alone suffices to prevent collapse, even without negatives, large batches, or a momentum encoder.
+A third family prevents collapse through the loss by regularizing the statistics of the embeddings: Barlow Twins \cite{zbontar2021p3icml} drives the cross-correlation matrix of the two views towards the identity, and VICReg \cite{bardes2022} combines variance, invariance, and covariance terms to the same end.
+These principles carry over to vision transformers, where DINO \cite{caron2021} casts SSL as self-distillation between a student and a momentum teacher.
+Across all three families, the shared augmentation-agreement objective is what makes the learned representation approximately invariant to the group generating the views.
 
+The connection between symmetry and SSL runs deeper than invariance alone.
+Rather than discarding the transformation applied to a view, \emph{equivariant} contrastive methods retain it as structure in the representation: \cite{gupta2023a} learns features that are equivariant to a chosen group action while remaining invariant to nuisance augmentations, shaping the geometry of the representation space according to the acting group.
+In the tracking setting, \cite{sosnovik20212iwcacvw} shows that endowing a Siamese tracker with scale equivariance improves robustness to object size changes, a concrete instance of coupling the symmetric framework with an equivariant one.
+More broadly, this places Siamese and self-supervised methods at the boundary between the prescriptive stance of this section---symmetry deliberately engineered into the objective---and the descriptive stance of the next: several works recast representation learning as a means of \emph{recovering} the symmetries latent in data \cite{perin2025}, which motivates the treatment of symmetry as an unknown.
 
 \section{Symmetry as an unknown}
 
@@ -1975,6 +2001,13 @@ Empirically, \citet{shen2026} find that DA rapidly learn 3D rotation equivarianc
 % Approximate equivariance and discovery are in some sense conceptual opposites of one another.
 % Symmetry discovery makes few assumptions on the possible symmetries and let the model learn them, while approximate equivariance does the opposite: it makes too much assumptions and let the model disrespect or unlearn them if necessary \textit{i.e.} what the model learns is when to deviate from the posited symmetries.
 % A common theme that makes working with unknown symmetries difficult is that symmetries are constraints on the functions a model can represent and are therefore not encouraged by objectives that optimize data fit, thus methods need to be nudged towards symmetries otherwise the asymmetric version is always favored \citep{ouderaa2022,benton2020anips,ouderaa2024}.
+The previous section assumed the relevant symmetry was known and could be engineered into the model.
+Here we take the opposite stance, corresponding to the \emph{descriptive} branch of the taxonomy (\Cref{table:taxonomy}): the symmetry is treated as something to be inferred rather than imposed.
+Two complementary problems fall under this heading, and it is useful to see them as conceptual opposites.
+\emph{Symmetry discovery} is \emph{additive}: it starts from few or no assumptions and accumulates evidence \emph{for} the presence of a symmetry, letting the model learn which group acts on the data.
+\emph{Approximate} (or soft) \emph{equivariance} is \emph{retractive}: it starts from an assumed symmetry and gathers evidence \emph{against} it, letting the model learn \emph{when} to deviate from the posited invariance.
+A recurring difficulty ties the two together: a symmetry is a \emph{constraint} on the functions a model may represent, and such constraints are not rewarded by objectives that merely optimize data fit, so the unconstrained (asymmetric) solution is generically favoured unless the method actively nudges the model towards symmetry \citep{ouderaa2022,benton2020anips,ouderaa2024}.
+We first treat symmetry discovery---from data and from trained models---and then turn to incomplete and approximate symmetries.
 
 \subsection{Symmetry Discovery}
 
@@ -2180,12 +2213,31 @@ We organize this section based on the \emph{algebraic structure} of the set $S$ 
 % huang2023: approximate \textit{active} graph symmetries
 
 % \cite{wang2022p3icml} introduce approximately equivariant networks that are biased towards symmetry but not strictly constrained, and demonstrate that this relaxation can outperform both fully equivariant and non-equivariant baselines on imperfectly symmetric dynamical systems.
+Where the previous subsection restricted the \emph{extent} of a symmetry---which transformations belong to the set $S$---this one relaxes its \emph{exactness}: the group $G$ is retained in full, but equivariance is required to hold only approximately.
+Such situations are pervasive.
+A symmetry may hold only to first order or be broken by noise, and in physical systems an idealized invariance often drifts, for instance over the course of a simulation.
+The motivation is that hard-coding an exact symmetry can be actively detrimental when the data distribution does not perfectly reflect it \citep{zhou2021,finzi2021anips}.
+More strikingly, even when a symmetry \emph{is} exact, a strictly equivariant design need not be optimal: \citet{lawrence2026} and \citet{rygiel2026} observe that when data is presented canonically---so that the distribution is far from uniform over each orbit---an unconstrained model can outperform the correctly-equivariant one, either by exploiting ``spurious but useful'' correlations (a camel on sand, a penguin on ice) or by exploiting the canonicalization itself (an animal running rightwards to gauge its speed).
+This motivates architectures that are \emph{biased} towards a symmetry without being rigidly constrained by it.
+
+The dominant strategy is to \emph{soften} an equivariant construction so that deviations are permitted but penalized.
+\citet{wang2022p3icml} introduce approximately equivariant networks and show, on imperfectly symmetric dynamical systems, that this relaxation can outperform both strictly equivariant and fully unconstrained baselines.
+Related soft-constraint mechanisms include relaxing the group convolution through non-stationary filters \citep{ouderaa2022}, residual pathway priors that place a prior favouring the equivariant solution while leaving an unconstrained escape route \citep{finzi2021anips}, and, on graphs, approximately equivariant message passing \citep{huang2023}.
+A complementary, more implicit route learns the appropriate degree of invariance from data by treating it as a model-selection problem, for example by tuning invariance through the marginal likelihood of a Gaussian process \citep{vanderwilk2018anips}, where approximate invariance is termed \emph{insensitivity}.
+
+The trade-off underlying all these methods is theoretical as well as empirical.
+\citet{petrache2023} formalize an approximation--generalization tension under approximate group equivariance: imposing (even approximately) the correct symmetry reduces the hypothesis space and hence the generalization gap, but imposing the wrong or too-rigid a symmetry raises the approximation error.
+Soft equivariance can be read as an attempt to sit at the favourable point of this trade-off, retaining most of the statistical benefit of the symmetry while remaining able to represent the residual asymmetry that real data exhibit.
 
 
 
 \section{Analysis of symmetries}
 
 % Symmetry as an analytical lens — using symmetry to understand generalization, optimization, and representations
+The preceding sections treated symmetry as something to be built into a model or inferred from data.
+This section adopts a third posture: symmetry as an \emph{analytical lens}.
+Rather than a property to enforce or discover, a symmetry becomes a tool for understanding a network's behaviour---its parameterization, the geometry of its loss landscape, the dynamics of its training, and the quantities those dynamics conserve.
+The symmetries at play here are largely \emph{parameter-space} symmetries: transformations of the weights that leave the function a network implements unchanged (\Cref{ex:equivalence_observational}), a viewpoint surveyed comprehensively by \citet{zhao2025}.
 
 \subsection{Parameter-space symmetries}
 
@@ -2199,6 +2251,10 @@ We organize this section based on the \emph{algebraic structure} of the set $S$ 
 % lenc2014a: feature space mapping, stitching networks
 
 % ziyin2025: param space symmetries explain abrupt jumps in learning dynamics, simplicity bias (model complexity) and feature learning phenomenon such as neural collapse
+A parameter-space symmetry is a transformation of the weights $\theta \mapsto g\cdot\theta$ that does not change the implemented function, so that $f_{\theta} = f_{g\cdot\theta}$.
+The two archetypes, both introduced earlier, are the neuron permutations of a hidden layer and, for homogeneous activations such as ReLU, the positive rescalings that trade magnitude between a unit's incoming and outgoing weights; jointly they generate the layerwise $S_n \ltimes \mathbb{R}_{>0}^n$ action of \Cref{ex:semidirect-products}.
+Because every such transformation moves through a set of weights that are indistinguishable at the level of the function, these symmetries induce redundancy in the parameterization, and much of the analytical payoff comes from understanding that redundancy: it shapes which parameters can be recovered, how the loss landscape is organized, and how training evolves.
+As a diagnostic, \citet{lenc2014a} repurpose the stitching-layer methodology they had used to test equivariance, now to test whether two independently trained networks are equivalent up to a linear map $E_{\phi\to\phi'}$ satisfying $E_{\phi\to\phi'}\phi(\mathbf{x}) \approx \phi'(\mathbf{x})$ (cf.\ \Cref{sec:sym-disc-from-data}).
 
 \subsubsection{Identifiability}
 
@@ -2208,6 +2264,11 @@ We organize this section based on the \emph{algebraic structure} of the set $S$ 
 % paragraph on symmetry discovery in parameter space (® like zhao2024a, but who is a methodological reject)
 
 % global vs local vs data-dependent symmetries
+Identifiability asks the converse of redundancy: setting aside the known symmetries, can a network's parameters be recovered from its function?
+For ReLU networks the answer is largely affirmative.
+\citet{phuong2019} show that, under mild conditions, functional equivalence of ReLU networks implies parametric equivalence up to permutation and rescaling---the known symmetries are essentially the \emph{only} source of non-identifiability---and \citet{grillo2026} strengthen this by establishing that most ReLU networks admit identifiable parameters.
+Constructively, \citet{rolnick2020p3icml} reverse-engineer the weights of a deep ReLU network from black-box queries by locating the boundaries where individual neurons switch sign, recovering the architecture and parameters up to symmetry.
+A finer picture is given by the \emph{functional dimension}: \citet{elisendagrigsby2025aim} show that the effective number of degrees of freedom a ReLU network realizes can be strictly smaller than its parameter count, because symmetries and other degeneracies collapse directions in parameter space---connecting identifiability to the singular structure studied in singular learning theory.
 
 \subsubsection{Effects on optimization landscape and learning dynamics}
 
@@ -2232,13 +2293,45 @@ We organize this section based on the \emph{algebraic structure} of the set $S$ 
 % preservation of the target function/data symmetries by GF (infinitely wide two-layers ReLU networks): hajjar2023, maass2024
 
 % ziyin2024a: exponential symmetry, gradient noise
+Parameter symmetries leave a distinctive imprint on the loss landscape.
+Because the loss is constant along each symmetry orbit, minima are never isolated points but come in continuous, equal-loss manifolds, and the same mechanism manufactures saddle points where orbits of different types meet.
+\citet{simsek2021} characterize the geometry of these symmetry-induced critical manifolds in overparameterized networks, and \citet{brea2019} show that permutation symmetry alone forces the existence of saddle points connected by equal-loss valleys, giving the landscape a predictable large-scale structure.
+The initialization interacts with this geometry: \citet{jacot2022} describe a saddle-to-saddle training dynamics in deep linear networks in which small initialization sends trajectories through a sequence of symmetry-related saddles, biasing the solution towards sparsity, while \citet{esmaeili2023} identify topological obstructions---initialization-dependent barriers---to encoding data into a latent space with a prescribed group structure.
+
+A second, highly active theme reads model \emph{merging} through the lens of permutation symmetry.
+Two networks trained independently land in different cells of the same symmetry quotient, so naively interpolating their weights crosses a high-loss barrier; aligning them first by an appropriate permutation removes it.
+\citet{entezari2022} conjecture that, accounting for permutation invariance, the solutions found by SGD are linearly mode-connected, and \citet{ainsworth2023} operationalize this with Git Re-Basin, a set of algorithms that permute one network into the other's basin before averaging.
+\citet{tatro2020} align neurons to improve mode connectivity, and \citet{jordan2023} show that a variance-collapse artefact of interpolation must be corrected---by renormalizing the merged activations---for the aligned barrier to genuinely vanish.
+
+The dynamics of training are likewise constrained by symmetry.
+\citet{ziyin2024} show that a parameter symmetry induces corresponding structure and constraints on the learned solution, and \citet{ziyin2025} argue that the successive breaking and restoration of parameter symmetries organizes learning into hierarchical stages, accounting for abrupt jumps, a bias towards simpler models, and feature-learning phenomena such as neural collapse.
+\citet{lim2024} probe the same question empirically by constructing networks that \emph{lack} the usual symmetries, isolating the impact these symmetries actually have on training.
+Symmetry also interacts with the optimizer itself: \citet{tanaka2021} derive, via a Noether-type argument, that for normalization-invariant layers the explicit symmetry breaking introduced by weight decay and momentum induces an implicit adaptive (RMSProp-like) dynamics, and \citet{arjevani2023} identify a principle of least symmetry breaking, whereby SGD is biased towards minima that break the teacher's symmetry as little as possible.
+For homogeneous (e.g.\ ReLU) networks, the rescaling symmetry produces an implicit regularization: \citet{du2018anips} prove that gradient descent automatically balances the incoming and outgoing weight norms across layers, and for infinitely wide two-layer networks \citet{hajjar2023} analyze how the gradient flow preserves the symmetries of the target and data.
+The role of gradient \emph{noise} is taken up by \citet{ziyin2024a}, who characterize a noise equilibrium that stochastic gradient descent reaches along symmetry directions.
+
+\paragraph{Flatness and sharpness}
+A prominent heuristic links the \emph{flatness} of a minimum---how slowly the loss rises around it---to good generalization, motivating optimizers that explicitly seek flat regions, most notably Sharpness-Aware Minimization (SAM), which minimizes the worst-case loss in a fixed-radius neighbourhood of the weights \citep{foret2021}.
+Parameter symmetry complicates this picture in a fundamental way.
+\citet{dinh2017} observe that for homogeneous networks the rescaling symmetry moves freely along orbits of constant loss while arbitrarily distorting the local curvature: any minimum can be made to look arbitrarily sharp or flat by an appropriate rescaling of the weights, without changing the function or its generalization.
+Sharpness measured in a rigid, fixed-radius region is therefore \emph{not} invariant under the very transformations that leave the model unchanged, weakening its correlation with generalization.
+This is a direct consequence of the parameter-space redundancy of \Cref{ex:equivalence_observational}: a meaningful flatness measure must be constant along symmetry orbits.
+\citet{kwon2021p3icml} address this with ASAM, an adaptive, scale-invariant notion of sharpness (and a corresponding optimizer) designed so that rescaling a network's weights no longer changes its measured sharpness, restoring the link to generalization.
+The episode is a clean illustration of the analytical value of symmetry: recognizing which transformations preserve the function tells one which quantities are meaningful to optimize over the weights.
 
 \paragraph{Conservation laws}
 % CL of gradient flow kunin2020, marcotte2023, gluch2021
 % taking advantage of symmetries for pruning tanaka2020anips (at init), nurisso2025(along training)
+Continuous parameter symmetries give rise, through a discrete analogue of Noether's theorem, to quantities that are conserved by the training dynamics.
+\citet{kunin2020} show that symmetries of the loss imply conservation laws of the gradient flow---and characterize how discretization and momentum \emph{break} them---while \citet{marcotte2023} give a systematic method for counting and computing the independent conservation laws of a gradient flow.
+\citet{gluch2021} develop the Noether-theorem correspondence for learning dynamics in a general form.
+These conserved quantities are not merely descriptive: \citet{tanaka2020anips} exploit a conserved ``synaptic flow'' to prune networks at initialization without any data, and \citet{nurisso2025} use the geometry and singularities of the ReLU learning space to guide pruning along training.
 
 \subsection{Learning theory}
 % sample complexity, theoretical gains in data efficiency provided by symmetry
+A distinct line of analysis quantifies the statistical benefit that a symmetry confers, asking how much invariance or equivariance improves sample efficiency and generalization.
+For linear models, \citet{elesedy2021p3icml} prove a strict generalization gain from equivariance, and the data-augmentation analyses discussed in \Cref{par:auto-da}---orbit averaging and its variance-reduction and PAC-Bayes bounds \citep{chen2020,lyle2020}---give complementary quantitative accounts of why averaging over a symmetry group reduces the effective complexity of the hypothesis class.
+The approximation--generalization trade-off of \citet{petrache2023} (\Cref{sec:soft-equivariance}) sits at the boundary of this theory and the approximate-symmetry regime, making explicit that the statistical benefit is contingent on the imposed symmetry being close to the true one.
 
 \section{Extensions}
 

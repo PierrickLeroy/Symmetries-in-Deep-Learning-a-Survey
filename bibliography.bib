@@ -182,6 +182,23 @@
   file = {/home/pierrick/OneDrive/zotero-library/2003/Baker/baker2003.pdf}
 }
 
+@misc{bardes2022,
+  title = {{{VICReg}}: {{Variance-Invariance-Covariance Regularization}} for {{Self-Supervised Learning}}},
+  shorttitle = {{{VICReg}}},
+  author = {Bardes, Adrien and Ponce, Jean and LeCun, Yann},
+  year = 2022,
+  number = {arXiv:2105.04906},
+  eprint = {2105.04906},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2105.04906},
+  urldate = {2026-01-08},
+  abstract = {Recent self-supervised methods for image representation learning are based on maximizing the agreement between embedding vectors from different views of the same image. A trivial solution is obtained when the encoder outputs constant vectors. This collapse problem is often avoided through implicit biases in the learning architecture, that often lack a clear justification or interpretation. In this paper, we introduce VICReg (Variance-Invariance-Covariance Regularization), a method that explicitly avoids the collapse problem with a simple regularization term on the variance of the embeddings along each dimension individually. VICReg combines the variance term with a decorrelation mechanism based on redundancy reduction and covariance regularization, and achieves results on par with the state of the art on several downstream tasks. In addition, we show that incorporating our new variance term into other methods helps stabilize the training and leads to performance improvements.},
+  archiveprefix = {arXiv},
+  keywords = {/read,covariance,regularization,self supervised learning,variance},
+  file = {/home/pierrick/OneDrive/zotero-library/2022/Bardes/bardes2022.pdf}
+}
+
 @misc{bardou2025,
   title = {Symmetry-{{Aware Bayesian Optimization}} via {{Max Kernels}}},
   author = {Bardou, Anthony and Gonon, Antoine and Ahadinia, Aryan and Thiran, Patrick},
@@ -642,6 +659,17 @@
   file = {/home/pierrick/OneDrive/zotero-library/2025/Carlsson/carlsson.pdf}
 }
 
+@article{caron2021,
+  title = {Emerging {{Properties}} in {{Self-Supervised Vision Transformers}}},
+  author = {Caron, Mathilde and Touvron, Hugo and Misra, Ishan and Jegou, Herve and Mairal, Julien and Bojanowski, Piotr and Joulin, Armand},
+  year = 2021,
+  journal = {Proceedings of the IEEE/CVF international conference on computer vision},
+  abstract = {In this paper, we question if self-supervised learning provides new properties to Vision Transformer (ViT) [16] that stand out compared to convolutional networks (convnets). Beyond the fact that adapting self-supervised methods to this architecture works particularly well, we make the following observations: first, self-supervised ViT features contain explicit information about the semantic segmentation of an image, which does not emerge as clearly with supervised ViTs, nor with convnets. Second, these features are also excellent k-NN classifiers, reaching 78.3\% top-1 on ImageNet with a small ViT. Our study also underlines the importance of momentum encoder [26], multi-crop training [9], and the use of small patches with ViTs. We implement our findings into a simple self-supervised method, called DINO, which we interpret as a form of self-distillation with no labels. We show the synergy between DINO and ViTs by achieving 80.1\% top-1 on ImageNet in linear evaluation with ViT-Base.},
+  langid = {english},
+  keywords = {/unread},
+  file = {/home/pierrick/OneDrive/zotero-library/2021/Caron/caron2021.pdf}
+}
+
 @inproceedings{cesa2021,
   title = {A {{Program}} to {{Build E}}({{N}})-{{Equivariant Steerable CNNs}}},
   booktitle = {International {{Conference}} on {{Learning Representations}}},
@@ -697,6 +725,36 @@
   archiveprefix = {arXiv},
   keywords = {/unread,siamese network,stop gradient},
   file = {/home/pierrick/OneDrive/zotero-library/2020/Chen/chen2020a.pdf}
+}
+
+@inproceedings{chen2020p3icml,
+  title = {A {{Simple Framework}} for {{Contrastive Learning}} of {{Visual Representations}}},
+  booktitle = {Proceedings of the 37th {{International Conference}} on {{Machine Learning}}},
+  author = {Chen, Ting and Kornblith, Simon and Norouzi, Mohammad and Hinton, Geoffrey},
+  year = 2020,
+  pages = {1597--1607},
+  publisher = {PMLR},
+  issn = {2640-3498},
+  urldate = {2026-07-06},
+  abstract = {This paper presents SimCLR: a simple framework for contrastive learning of visual representations. We simplify recently proposed contrastive self-supervised learning algorithms without requiring specialized architectures or a memory bank. In order to understand what enables the contrastive prediction tasks to learn useful representations, we systematically study the major components of our framework. We show that (1) composition of data augmentations plays a critical role in defining effective predictive tasks, (2) introducing a learnable nonlinear transformation between the representation and the contrastive loss substantially improves the quality of the learned representations, and (3) contrastive learning benefits from larger batch sizes and more training steps compared to supervised learning. By combining these findings, we are able to considerably outperform previous methods for self-supervised and semi-supervised learning on ImageNet. A linear classifier trained on self-supervised representations learned by SimCLR achieves 76.5\% top-1 accuracy, which is a 7\% relative improvement over previous state-of-the-art, matching the performance of a supervised ResNet-50. When fine-tuned on only 1\% of the labels, we achieve 85.8\% top-5 accuracy, outperforming AlexNet with 100X fewer labels.},
+  langid = {english},
+  keywords = {/unread},
+  file = {/home/pierrick/OneDrive/zotero-library/2020/Chen/chen2020p3icml.pdf}
+}
+
+@inproceedings{chopra20052icsccvprc,
+  title = {Learning a Similarity Metric Discriminatively, with Application to Face Verification},
+  booktitle = {2005 {{IEEE Computer Society Conference}} on {{Computer Vision}} and {{Pattern Recognition}} ({{CVPR}}'05)},
+  author = {Chopra, S. and Hadsell, R. and LeCun, Y.},
+  year = 2005,
+  volume = {1},
+  pages = {539-546 vol. 1},
+  issn = {1063-6919},
+  doi = {10.1109/CVPR.2005.202},
+  urldate = {2024-12-06},
+  abstract = {We present a method for training a similarity metric from data. The method can be used for recognition or verification applications where the number of categories is very large and not known during training, and where the number of training samples for a single category is very small. The idea is to learn a function that maps input patterns into a target space such that the L/sub 1/ norm in the target space approximates the "semantic" distance in the input space. The method is applied to a face verification task. The learning process minimizes a discriminative loss function that drives the similarity metric to be small for pairs of faces from the same person, and large for pairs from different persons. The mapping from raw to the target space is a convolutional network whose architecture is designed for robustness to geometric distortions. The system is tested on the Purdue/AR face database which has a very high degree of variability in the pose, lighting, expression, position, and artificial occlusions such as dark glasses and obscuring scarves.},
+  keywords = {/on halt,contrastive loss},
+  file = {/home/pierrick/OneDrive/zotero-library/2005/Chopra/chopra20052icsccvprc.pdf}
 }
 
 @misc{ciprian2023m,
@@ -1034,6 +1092,7 @@
   title = {Sharp {{Minima Can Generalize For Deep Nets}}},
   author = {Dinh, Laurent and Pascanu, Razvan and Bengio, Samy and Bengio, Yoshua},
   year = 2017,
+  journal = {International Conference on Machine Learning},
   abstract = {Despite their overwhelming capacity to overfit, deep learning architectures tend to generalize relatively well to unseen data, allowing them to be deployed in practice. However, explaining why this is the case is still an open area of research. One standing hypothesis that is gaining popularity, e.g. Hochreiter \& Schmidhuber (1997); Keskar et al. (2017), is that the flatness of minima of the loss function found by stochastic gradient based methods results in good generalization. This paper argues that most notions of flatness are problematic for deep models and can not be directly applied to explain generalization. Specifically, when focusing on deep networks with rectifier units, we can exploit the particular geometry of parameter space induced by the inherent symmetries that these architectures exhibit to build equivalent models corresponding to arbitrarily sharper minima. Furthermore, if we allow to reparametrize a function, the geometry of its parameters can change drastically without affecting its generalization properties.},
   langid = {english},
   keywords = {/read,flatness,generalization,geometry,minimum,sharpness},
@@ -1204,6 +1263,7 @@ rate: 2},
   title = {Topological {{Obstructions}} and {{How}} to {{Avoid Them}}},
   author = {Esmaeili, Babak and Zimmermann, Heiko and Walters, Robin and {van de Meent}, Jan-Willem},
   year = 2023,
+  journal = {Advances in Neural Information Processing Systems},
   abstract = {Incorporating geometric inductive biases into models can aid interpretability and generalization, but encoding to a specific geometric structure can be challenging due to the imposed topological constraints. In this paper, we theoretically and empirically characterize obstructions to training encoders with geometric latent spaces. We show that local optima can arise due to singularities (e.g. self-intersection) or due to an incorrect degree or winding number. We then discuss how normalizing flows can potentially circumvent these obstructions by defining multimodal variational distributions. Inspired by this observation, we propose a new flow-based model that maps data points to multimodal distributions over geometric spaces and empirically evaluate our model on 2 domains. We observe improved stability during training and a higher chance of converging to a homeomorphic encoder.},
   langid = {english},
   keywords = {/unread,autoencoder,flow-based method,topological obstruction},
@@ -1305,6 +1365,23 @@ rate: 2},
   langid = {english},
   keywords = {/textbook},
   file = {/home/pierrick/OneDrive/zotero-library/2016/Folland/folland2016.pdf}
+}
+
+@misc{foret2021,
+  title = {Sharpness-{{Aware Minimization}} for {{Efficiently Improving Generalization}}},
+  author = {Foret, Pierre and Kleiner, Ariel and Mobahi, Hossein and Neyshabur, Behnam},
+  year = 2021,
+  number = {arXiv:2010.01412},
+  eprint = {2010.01412},
+  primaryclass = {cs, stat},
+  publisher = {arXiv},
+  urldate = {2024-04-10},
+  abstract = {In today's heavily overparameterized models, the value of the training loss provides few guarantees on model generalization ability. Indeed, optimizing only the training loss value, as is commonly done, can easily lead to suboptimal model quality. Motivated by prior work connecting the geometry of the loss landscape and generalization, we introduce a novel, effective procedure for instead simultaneously minimizing loss value and loss sharpness. In particular, our procedure, Sharpness-Aware Minimization (SAM), seeks parameters that lie in neighborhoods having uniformly low loss; this formulation results in a min-max optimization problem on which gradient descent can be performed efficiently. We present empirical results showing that SAM improves model generalization across a variety of benchmark datasets (e.g., CIFAR-10, CIFAR-100, ImageNet, finetuning tasks) and models, yielding novel state-of-the-art performance for several. Additionally, we find that SAM natively provides robustness to label noise on par with that provided by state-of-the-art procedures that specifically target learning with noisy labels. We open source our code at \textbackslash url\textbraceleft https://github.com/google-research/sam\textbraceright.},
+  archiveprefix = {arXiv},
+  keywords = {/read,Computer Science - Machine Learning,flatness,generalization,optimization,sharpness,sharpness aware minimization,Statistics - Machine Learning},
+  annotation = {GSCC: 0001743 \\
+847 citations (Semantic Scholar/arXiv) [2024-04-14]},
+  file = {/home/pierrick/OneDrive/zotero-library/2021/Foret/foret2021.pdf}
 }
 
 @misc{fuchs2020,
@@ -1559,6 +1636,23 @@ rate: 2},
   file = {/home/pierrick/OneDrive/zotero-library/2023/Grigsby/grigsby2023p4icml.pdf}
 }
 
+@misc{grill2020,
+  title = {Bootstrap Your Own Latent: {{A}} New Approach to Self-Supervised {{Learning}}},
+  shorttitle = {Bootstrap Your Own Latent},
+  author = {Grill, Jean-Bastien and Strub, Florian and Altch{\'e}, Florent and Tallec, Corentin and Richemond, Pierre H. and Buchatskaya, Elena and Doersch, Carl and Pires, Bernardo Avila and Guo, Zhaohan Daniel and Azar, Mohammad Gheshlaghi and Piot, Bilal and Kavukcuoglu, Koray and Munos, R{\'e}mi and Valko, Michal},
+  year = 2020,
+  number = {arXiv:2006.07733},
+  eprint = {2006.07733},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2006.07733},
+  urldate = {2026-04-18},
+  abstract = {We introduce Bootstrap Your Own Latent (BYOL), a new approach to self-supervised image representation learning. BYOL relies on two neural networks, referred to as online and target networks, that interact and learn from each other. From an augmented view of an image, we train the online network to predict the target network representation of the same image under a different augmented view. At the same time, we update the target network with a slow-moving average of the online network. While state-of-the art methods rely on negative pairs, BYOL achieves a new state of the art without them. BYOL reaches \$74.3\textbackslash\%\$ top-1 classification accuracy on ImageNet using a linear evaluation with a ResNet-50 architecture and \$79.6\textbackslash\%\$ with a larger ResNet. We show that BYOL performs on par or better than the current state of the art on both transfer and semi-supervised benchmarks. Our implementation and pretrained models are given on GitHub.},
+  archiveprefix = {arXiv},
+  keywords = {/unread,bootstrap,contrastive learning},
+  file = {/home/pierrick/OneDrive/zotero-library/2020/Grill/grill2020.pdf}
+}
+
 @misc{grillo2026,
   title = {Most {{ReLU Networks Admit Identifiable Parameters}}},
   author = {Grillo, Moritz and Mont{\'u}far, Guido},
@@ -1630,6 +1724,24 @@ rate: 2},
   file = {/home/pierrick/OneDrive/zotero-library/2023/Habte/habte2023.pdf}
 }
 
+@inproceedings{hadsell20062icsccvpr-v2c,
+  title = {Dimensionality {{Reduction}} by {{Learning}} an {{Invariant Mapping}}},
+  booktitle = {2006 {{IEEE Computer Society Conference}} on {{Computer Vision}} and {{Pattern Recognition}} - {{Volume}} 2 ({{CVPR}}'06)},
+  author = {Hadsell, R. and Chopra, S. and LeCun, Y.},
+  year = 2006,
+  volume = {2},
+  pages = {1735--1742},
+  publisher = {IEEE},
+  address = {New York, NY, USA},
+  doi = {10.1109/CVPR.2006.100},
+  urldate = {2024-12-06},
+  abstract = {Dimensionality reduction involves mapping a set of high dimensional input points onto a low dimensional manifold so that ``similar'' points in input space are mapped to nearby points on the manifold. Most existing techniques for solving the problem suffer from two drawbacks. First, most of them depend on a meaningful and computable distance metric in input space. Second, they do not compute a ``function'' that can accurately map new input samples whose relationship to the training data is unknown. We present a method - called Dimensionality Reduction by Learning an Invariant Mapping (DrLIM) - for learning a globally coherent non-linear function that maps the data evenly to the output manifold. The learning relies solely on neighborhood relationships and does not require any distance measure in the input space. The method can learn mappings that are invariant to certain transformations of the inputs, as is demonstrated with a number of experiments. Comparisons are made to other techniques, in particular LLE.},
+  isbn = {978-0-7695-2597-6},
+  langid = {english},
+  keywords = {/on halt,contrastive loss},
+  file = {/home/pierrick/OneDrive/zotero-library/2006/Hadsell/hadsell20062icsccvpr-v2c.pdf}
+}
+
 @misc{hajjar2023,
   title = {On the Symmetries in the Dynamics of Wide Two-Layer Neural Networks},
   author = {Hajjar, Karl and Chizat, Lenaic},
@@ -1676,6 +1788,17 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   langid = {english},
   keywords = {/unread},
   file = {/home/pierrick/OneDrive/zotero-library/2016/Hauberg/hauberg2016.pdf}
+}
+
+@article{he2020,
+  title = {Momentum {{Contrast}} for {{Unsupervised Visual Representation Learning}}},
+  author = {He, Kaiming and Fan, Haoqi and Wu, Yuxin and Xie, Saining and Girshick, Ross},
+  year = 2020,
+  journal = {Proceedings of the IEEE/CVF conference on computer vision and pattern recognition},
+  abstract = {We present Momentum Contrast (MoCo) for unsupervised visual representation learning. From a perspective on contrastive learning [29] as dictionary look-up, we build a dynamic dictionary with a queue and a moving-averaged encoder. This enables building a large and consistent dictionary on-the-fly that facilitates contrastive unsupervised learning. MoCo provides competitive results under the common linear protocol on ImageNet classification. More importantly, the representations learned by MoCo transfer well to downstream tasks. MoCo can outperform its supervised pre-training counterpart in 7 detection/segmentation tasks on PASCAL VOC, COCO, and other datasets, sometimes surpassing it by large margins. This suggests that the gap between unsupervised and supervised representation learning has been largely closed in many vision tasks.},
+  langid = {english},
+  keywords = {/unread},
+  file = {/home/pierrick/OneDrive/zotero-library/2020/He/he2020.pdf}
 }
 
 @misc{higgins2018,
@@ -1908,6 +2031,7 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   title = {{{REPAIR}}: {{RENORMALIZING PERMUTED ACTIVATIONS FOR INTERPOLATION REPAIR}}},
   author = {Jordan, Keller and Sedghi, Hanie and Saukh, Olga and Entezari, Rahim and Neyshabur, Behnam},
   year = 2023,
+  journal = {11th International Conference on Learning Representations: ICLR 2023},
   abstract = {In this paper we look into the conjecture of Entezari et al. (2021) which states that if the permutation invariance of neural networks is taken into account, then there is likely no loss barrier to the linear interpolation between SGD solutions. First, we observe that neuron alignment methods alone are insufficient to establish lowbarrier linear connectivity between SGD solutions due to a phenomenon we call variance collapse: interpolated deep networks suffer a collapse in the variance of their activations, causing poor performance. Next, we propose REPAIR (REnormalizing Permuted Activations for Interpolation Repair) which mitigates variance collapse by rescaling the preactivations of such interpolated networks. We explore the interaction between our method and the choice of normalization layer, network width, and depth, and demonstrate that using REPAIR on top of neuron alignment methods leads to 60\%-100\% relative barrier reduction across a wide variety of architecture families and tasks. In particular, we report a 74\% barrier reduction for ResNet50 on ImageNet and 90\% barrier reduction for ResNet18 on CIFAR10. Our code is available at https://github.com/KellerJordan/REPAIR.},
   langid = {english},
   keywords = {/read,mode connectivity/linear mode connectivity,permutation symmetry,variance/variance collapse},
@@ -2094,6 +2218,23 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   keywords = {/read,conservation law,gradient descent,parameter symmetry,rescale symmetry,scale symmetry,symmetry,training dynamics,translation symmetry},
   annotation = {rate: 1},
   file = {/home/pierrick/OneDrive/zotero-library/2020/Kunin/kunin2020.pdf}
+}
+
+@inproceedings{kwon2021p3icml,
+  title = {{{ASAM}}: {{Adaptive Sharpness-Aware Minimization}} for {{Scale-Invariant Learning}} of {{Deep Neural Networks}}},
+  shorttitle = {{{ASAM}}},
+  booktitle = {Proceedings of the 38th {{International Conference}} on {{Machine Learning}}},
+  author = {Kwon, Jungmin and Kim, Jeongseop and Park, Hyunseo and Choi, In Kwon},
+  year = 2021,
+  pages = {5905--5914},
+  publisher = {PMLR},
+  issn = {2640-3498},
+  urldate = {2025-06-10},
+  abstract = {Recently, learning algorithms motivated from sharpness of loss surface as an effective measure of generalization gap have shown state-of-the-art performances. Nevertheless, sharpness defined in a rigid region with a fixed radius, has a drawback in sensitivity to parameter re-scaling which leaves the loss unaffected, leading to weakening of the connection between sharpness and generalization gap. In this paper, we introduce the concept of adaptive sharpness which is scale-invariant and propose the corresponding generalization bound. We suggest a novel learning method, adaptive sharpness-aware minimization (ASAM), utilizing the proposed generalization bound. Experimental results in various benchmark datasets show that ASAM contributes to significant improvement of model generalization performance.},
+  langid = {english},
+  keywords = {/read,flatness,flatness measure/rescaling invariant,sharpness aware minimization},
+  annotation = {GSCC: 0000390},
+  file = {/home/pierrick/OneDrive/zotero-library/2021/Kwon/kwon2021p3icml.pdf}
 }
 
 @article{lafarge2021mia,
@@ -2910,6 +3051,7 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   title = {Approximation-{{Generalization Trade-offs}} under ({{Approximate}}) {{Group Equivariance}}},
   author = {Petrache, Mircea and Trivedi, Shubhendu},
   year = 2023,
+  journal = {Advances in Neural Information Processing Systems},
   abstract = {The explicit incorporation of task-specific inductive biases through symmetry has emerged as a general design precept in the development of high-performance machine learning models. For example, group equivariant neural networks have demonstrated impressive performance across various domains and applications such as protein and drug design. A prevalent intuition about such models is that the integration of relevant symmetry results in enhanced generalization. Moreover, it is posited that when the data and/or the model may only exhibit approximate or partial symmetry, the optimal or best-performing model is one where the model symmetry aligns with the data symmetry. In this paper, we conduct a formal unified investigation of these intuitions. To begin, we present general quantitative bounds that demonstrate how models capturing task-specific symmetries lead to improved generalization. In fact, our results do not require the transformations to be finite or even form a group and can work with partial or approximate equivariance. Utilizing this quantification, we examine the more general question of model mis-specification i.e. when the model symmetries don't align with the data symmetries. We establish, for a given symmetry group, a quantitative comparison between the approximate/partial equivariance of the model and that of the data distribution, precisely connecting model equivariance error and data equivariance error. Our result delineates conditions under which the model equivariance error is optimal, thereby yielding the best-performing model for the given task and data. Our results are the most general results of their type in the literature.},
   langid = {english},
   keywords = {/read,generalization bound},
@@ -3698,6 +3840,7 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   title = {Optimizing {{Mode Connectivity}} via {{Neuron Alignment}}},
   author = {Tatro, N Joseph and Chen, Pin-Yu and Das, Payel},
   year = 2020,
+  journal = {Advances in Neural Information Processing Systems},
   abstract = {The loss landscapes of deep neural networks are not well understood due to their high nonconvexity. Empirically, the local minima of these loss functions can be connected by a learned curve in model space, along which the loss remains nearly constant; a feature known as mode connectivity. Yet, current curve finding algorithms do not consider the influence of symmetry in the loss surface created by model weight permutations. We propose a more general framework to investigate the effect of symmetry on landscape connectivity by accounting for the weight permutations of the networks being connected. To approximate the optimal permutation, we introduce an inexpensive heuristic referred to as neuron alignment. Neuron alignment promotes similarity between the distribution of intermediate activations of models along the curve. We provide theoretical analysis establishing the benefit of alignment to mode connectivity based on this simple heuristic. We empirically verify that the permutation given by alignment is locally optimal via a proximal alternating minimization scheme. Empirically, optimizing the weight permutation is critical for efficiently learning a simple, planar, low-loss curve between networks that successfully generalizes. Our alignment method can significantly alleviate the recently identified robust loss barrier on the path connecting two adversarial robust models and find more robust and accurate models on the path. Code is available at https://github.com/IBM/NeuronAlignment.},
   langid = {english},
   keywords = {/read,mode connectivity/linear mode connectivity,permutation symmetry},
@@ -4474,6 +4617,22 @@ rate: 1},
   file = {/home/pierrick/OneDrive/zotero-library/2026/Zarzà/zarza2026.pdf}
 }
 
+@inproceedings{zbontar2021p3icml,
+  title = {Barlow {{Twins}}: {{Self-Supervised Learning}} via {{Redundancy Reduction}}},
+  shorttitle = {Barlow {{Twins}}},
+  booktitle = {Proceedings of the 38th {{International Conference}} on {{Machine Learning}}},
+  author = {Zbontar, Jure and Jing, Li and Misra, Ishan and LeCun, Yann and Deny, Stephane},
+  year = 2021,
+  pages = {12310--12320},
+  publisher = {PMLR},
+  issn = {2640-3498},
+  urldate = {2026-07-06},
+  abstract = {Self-supervised learning (SSL) is rapidly closing the gap with supervised methods on large computer vision benchmarks. A successful approach to SSL is to learn embeddings which are invariant to distortions of the input sample. However, a recurring issue with this approach is the existence of trivial constant solutions. Most current methods avoid such solutions by careful implementation details. We propose an objective function that naturally avoids collapse by measuring the cross-correlation matrix between the outputs of two identical networks fed with distorted versions of a sample, and making it as close to the identity matrix as possible. This causes the embedding vectors of distorted versions of a sample to be similar, while minimizing the redundancy between the components of these vectors. The method is called Barlow Twins, owing to neuroscientist H. Barlow's redundancy-reduction principle applied to a pair of identical networks. Barlow Twins does not require large batches nor asymmetry between the network twins such as a predictor network, gradient stopping, or a moving average on the weight updates. Intriguingly it benefits from very high-dimensional output vectors. Barlow Twins outperforms previous methods on ImageNet for semi-supervised classification in the low-data regime, and is on par with current state of the art for ImageNet classification with a linear classifier head, and for transfer tasks of classification and object detection.},
+  langid = {english},
+  keywords = {/unread},
+  file = {/home/pierrick/OneDrive/zotero-library/2021/Zbontar/zbontar2021p3icml.pdf}
+}
+
 @inproceedings{zhang2018a,
   title = {Mixup: {{Beyond Empirical Risk Minimization}}},
   shorttitle = {Mixup},
@@ -4653,6 +4812,7 @@ TLDR: This survey provides an overview of parameter space symmetry, summarize ex
   title = {Parameter {{Symmetry}} and {{Noise Equilibrium}} of {{Stochastic Gradient Descent}}},
   author = {Ziyin, Liu and Li, Hongchao and Wang, Mingze and Wu, Lei},
   year = 2024,
+  journal = {Advances in Neural Information Processing Systems},
   abstract = {Symmetries are prevalent in deep learning and can significantly influence the learning dynamics of neural networks. In this paper, we examine how exponential symmetries -- a broad subclass of continuous symmetries present in the model architecture or loss function -- interplay with stochastic gradient descent (SGD). We first prove that gradient noise creates a systematic motion (a ``Noether flow'') of the parameters \texttheta{} along the degenerate direction to a unique initializationindependent fixed point \texttheta{$\ast$}. These points are referred to as the noise equilibria because, at these points, noise contributions from different directions are balanced and aligned. Then, we show that the balance and alignment of gradient noise can serve as a novel alternative mechanism for explaining important phenomena such as progressive sharpening/flattening and representation formation within neural networks and have practical implications for understanding techniques like representation normalization and warmup.},
   langid = {english},
   keywords = {/unread,Lie group,symmetry/continuous symmetry},
