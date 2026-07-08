@@ -67,7 +67,7 @@
 % Starting point: initial stack of paper collected over 2 years along the way
 % Completion of the initial stack by keyword search on scopus, google scholar and by AI powered tools like research-rabbit or elicit
 % Criterion for retaining a reference: published in a peer-reviewed venue OR high impact (>100 citations on google scholar) OR recent (publication date<2 years)
-% 315 works were identified, out of which 120 are retained in the final version
+% 325 works were identified, out of which 150 are retained in the final version
 % AI statement: knowledge base
 
 \subsection{Related work}
@@ -2036,6 +2036,7 @@ In the first part of this section, we look at symmetry discovery in data, then p
 % non-linear SD: yang2024p4icml, shaw2024
 % add ouderaa2023
 % seems that some GAN objective assume distribution invariance
+% maybe cohen2014
 
 % Introduction on symmetry discovery: what it is and why is it relevant.
 We review works aiming to identify the transformations under which a dataset is invariant or equivariant.
@@ -2167,16 +2168,23 @@ Taken together, these measures range from single-neuron firing ratios to loss-fr
 
 
 
-\subsection{Incomplete symmetries}\label{sec:incomplete-symmetries}
+\section{Incomplete symmetries}\label{sec:incomplete-symmetries}
 % Incomplete symmetries: to what extent pure symmetries don't hold, therefore it is a sort of dual to symmetry discovery (to what extent a transformation is a symmetry)
 % Partial symmetries: the exact range is often unknown, for approximate symmetry the goal it is often to calibrate how much deviation from exact symmetry is tolerated
-% paragraph 1 of topic-reports/incomplete-symmetry-notions.md: table and unifying object epsilon stabilizer from petrache2023
+% paragraph 1 of topic-reports/incomplete-symmetry-notions.md: table and must introduce unifying object epsilon stabilizer from petrache2023
+% A single object subsumes this case together with the approximate symmetries of \Cref{sec:soft-equivariance}.
+% \citet{petrache2023} define the $\epsilon$-stabilizer of $f$,
+% $$\operatorname{Stab}_\epsilon(f)=\{g\in G:\ \mathrm{ee}(f,g)\leq\epsilon\},\qquad \mathrm{ee}(f,g):=\|\rho_Y(g)^{-1} f(\rho_X(g)\,\cdot)-f\|_\infty,\qquad \epsilon>0,$$
+% the transformations preserving $f$ up to the \emph{equivariance error} tolerance $\epsilon$.
+% Partial and approximate equivariance are then separated by a single algebraic criterion: \emph{partial} equivariance is the case where $\operatorname{Stab}_\epsilon(f)$ is \emph{not} a group, whereas \emph{approximate} equivariance (\Cref{sec:soft-equivariance}) is the case where it is a group.
 
-\subsubsection{Extent restriction: beyond groups}
-% $\pm 90^\circ$ example is doubly useful** precisely because it exposes the closure subtlety: $\{+90^\circ,-90^\circ\}$ is a non-closed subset (since $+90^\circ\!\circ\!+90^\circ=180^\circ\notin S$), whereas $\{0,90,180,270\}=C_4$ *is* a subgroup. Use it explicitly to mark the boundary between categories (1) and (2).
+
+
+\subsection{Extent restriction: beyond groups}\label{sec:extent-restriction}
 
 We organize this section based on the \emph{algebraic structure} of the set $S$ of transformations i.e.\ by which of the group axioms (closure, identity, inverses) $S$ retains.
 \Cref{table:extent-restriction} classifies the main cases along this axis.
+The $\pm 90^\circ$ case makes the boundary between the first two rows of \Cref{table:extent-restriction} (\Cref{sec:subgroups,sec:non-closed-subsets}): as an interval of rotations, $S=[-90^\circ,90^\circ]$ is non-closed since $90^\circ\!\circ\!90^\circ=180^\circ\notin S$, whereas $\{0^\circ,90^\circ,180^\circ,270^\circ\}=C_4$ \emph{is} a subgroup.
 
 \begin{table}[ht]
     \centering
@@ -2198,7 +2206,69 @@ We organize this section based on the \emph{algebraic structure} of the set $S$ 
     \label{table:extent-restriction}
 \end{table}
 
-\subsubsection{Approximate symmetries: tolerance}\label{sec:soft-equivariance}
+\subsubsection{Subgroups}\label{sec:subgroups}
+Among the rows of \Cref{table:extent-restriction}, a subgroup $H\le G$ is the only restriction that breaks no group axiom:.``incompleteness'' is here intended as a reduction in symmetry rather than a defect in the algebraic structure.
+Two questions organize the literature: how to obtain an $H$-equivariant model, and what the subgroup structure of $G$ itself buys.
+
+A direct construction proposed by \citet{goel2025} descends equivariance ($G\to H$): the input is augmented with an auxiliary feature $v$ whose stabilizer (automorphism group) is exactly $\mathrm{Aut}(v)=H$, so that a $G$-equivariant backbone $h_\theta(\cdot,v)$ becomes $H$-equivariant, and---if $h_\theta$ is injective in $v$---equivariant to no larger group; a single backbone thus serves any subgroup by swapping $v$.
+The descent can also unfold depthwise: \citet{weiler2019anips} keeps early layers equivariant to a large group and deeper layers only to a subgroup, along a chain $G=G_0\ge G_1\ge\cdots\ge G_L$, matching the intuition that low-level edges occur at all orientations whereas global structure is more canonical (however the chain is not subgroup specific, making it less a dedicated subgroup mechanism than \citep{goel2025}).
+Instead of re-deriving equivariant architectures for each subgroup: \citet{cesa2021} show that an $O(n)$-steerable kernel basis restricts to an $H$-steerable basis for any compact $H\le O(n)$, so equivariance goes from the general to the particular without additional cost.
+When the appropriate subgroup is unknown, one may instead \emph{promote} symmetry by enlarging it: \citet{otto2025} (Sec.~8.4) nudges the model towards the largest subgroup consistent with the data.
+For discrete groups, they use a relaxed penalty on the number of group element that break symmetry of the form $\sum_{g\in G} \sum_l \| g f^{(l)} - f^{(l)}\|^2$ where $f^{(l)}$ denotes the function implemented at layer $l$.
+For continuous groups, the nuclear norm of the Lie derivative operator as a soft penalization of the dimension of the Lie algebra.
+A pragmatic use of subgroups is \emph{discretization}: a finite $H\le G$ approximates a continuous $G$, trading exact continuous equivariance for tractability \citep{cohen2016,worrall2018cv-e21ecmgs82ppv,ali2026}.
+
+A second role of subgroups organizes the representation itself.
+Direct product of subgroup is used by \citet{higgins2018} to define a representation $f\colon W\to Z$ \emph{disentangled} with respect to a decomposition $G=G_1\times\cdots\times G_m$ if $Z$ splits as $Z=\bigoplus_{i=1}^m Z_i$ with $f$ equivariant and each factor $G_i$ acting nontrivially only on $Z_i$.
+Among methods proposed to learn disentangled representation (1) \citet{quessard2020anips} starts from trajectories $(o_1, g_1, o_2, g_2 \dots, )$ and maps observations $o_i$ to a vector space $V$ and actions $g_i$ to $GL(V)$ while regularizing the number of dimensions acted on by the representation of the $g_i$ (2)\citet{pfau2020anips} (GEOMANCER) geometrically factorize the global manifold into disentangled submanifolds: $M=M_1\times M_2$, guaranteed whenever there exists a subspace of the tangent space left invariant by the holonomy group of $M$M (under conditions on $M$) (3)\citet{shakerinava2022anips} formulate a disentangling loss, using a subgroup objective $L=\sum_{i=1}^{m} \left [L_{G_i}^{equiv} + \sum_{j\neq i} L_{G_j}^{inv}\right ]$; however it requires to have samples where subgroups act in isolation i.e. having datasets $D_i$ where only $G_i$ acts as $\tau (e, \dots, e, g_i, e, \dots, e)$.
+
+Finally, the loss landscape can be structured by isotropy groups;  \citet{arjevani2023} analyze isotropy groups in student-teacher frameworks of two layer ReLU networks with fixed output weights.
+They find that when the solution has isotropy group isomorphic to $S_d$, spurious local minima have smaller isotropy group $S_p\times S_q$ with $p+q=d$, but they are maximal proper subgroups--they break symmetry but the least possible.
+
+\subsubsection{Partial equivariance: non-closed subsets}\label{sec:non-closed-subsets}
+The second row of \Cref{table:extent-restriction} keeps the identity and inverses but drops \emph{closure}: $S$ is a non-closed subset of $G$.
+\citet{romero2023} define \emph{partial equivariance} to $S\subseteq G$ as
+$$f(\rho_X(g)\,x)=\rho_Y(g)\,f(x)\qquad \forall g\in S\subsetneq G,\ \forall x\in X,$$
+with $S$ not required to be a subgroup.
+Equivalently, in the formalism of \citet{petrache2023}, this correspond to the subset $Stab_\epsilon (f)$ with $\epsilon>0$.
+The distinguishing feature is that partial equivariance is \emph{not iterable}: because $S$ is not closed, composing two admissible transformations may leave $S$.
+This subtlety, noted by \citet{romero2023}, also means partial equivariance cannot be enforced exactly by stacking layers.
+The motivation is that symmetries can be only \emph{ranged}: equivariance to rotations in $[-90^\circ,90^\circ]$ avoids merging digits $6$ and $9$'s, or respects a preferred orientation such as a face aligned with the camera \citep{romero2023}.
+
+In the generalization bound of \citet{petrache2023}, partial equivariance contributes its own term $E_\epsilon$ separate from the approximate slack $2\epsilon$.
+Architecturally, \citet{romero2023} extend group convolution to cases for a subset $S^{(2)}$.
+The operation mapping a function $f:S^{(1)}\to\mathbb R$ to a function $h:S^{(2)}\to\mathbb R$ is defined for $u\in S^{(2)}$ as:$$h(u) = (\psi *_{partial} f)(u) = \int_{S^{(1)}} \psi(v^{-1}u)f(v) p(u) d\mu_{G}(v),$$ where $p(u)$ is a probability distribution supported exactly on $S^{(2)}$ i.e. it disregards non-equivariance happening outside of $S^{(2)}$.
+Their Partial G-CNN can stay fully equivariant on some layers while restricting to a subset on others, on the $6$-versus-$9$ task it recovers the $\pm 90^\circ$ range, and on natural images it shrinks $S$ where full rotation equivariance is unwarranted.
+
+A complementary line does not fix $S$ in advance but estimates the extent from data.
+\citet{benton2020anips} (Augerino) make the invariance range a learnable parameter, sampling augmentations from a Lie-algebra-parameterized distribution over a bounded interval $[-\theta,\theta]$ and learning $\theta$ jointly with the weights.
+\citet{vanderwilk2018anips} likewise learn a bounded transformation range by maximizing the marginal likelihood of a Gaussian process prior.
+\citet{urbano2026} recover the extent as the support of a per-class pose distribution: a class-pose decomposition factors an input into $G$-invariant and equivariant parts and the estimated density over the orbit is precisely the range of the partial symmetry---e.g.\ a digit $7$ is symmetric only over roughly $\pm 30^\circ$---while distinct natural poses keep $6$ and $9$ apart.
+An early example can be found in \citep{goodfellow2009anips} which measured neuron invariance over a bounded transformation range $\Gamma$ rather than a full orbit (e.g.\ $\pm 5$ frames of time translation in video).
+
+\subsubsection{Additional algebraic structures}
+The last rows of \Cref{table:extent-restriction} relax the remaining axioms.
+Semigroups keep associativity and closure but drop inverses, which is exactly the structure of irreversible operations such as blurring, downsampling, or cropping where information is destroyed and cannot be recovered.
+
+\citet{worrall2019anips} build scale equivariance using this structure: a Gaussian scale-space generates coarser scales from finer ones but not conversely.
+They extend group correlation by a \emph{semigroup correlation}
+$$[\psi *_{S} f](s)=\sum_{x\in X}\psi(x)\,L_{s}[f](x),$$
+with $\psi$ the filter, $f$ the signal and $L_s$ the (non-invertible) semigroup action, recovering group and ordinary convolutions as special cases. 
+They then adapt it for scale-spaces by setting the action $L_s=L_{(A,z)}$ as $[G_{A}^{\Sigma_{0}}*_{\mathbb{Z}^{d}}f_0](A^{-1}x+z)$, where $G_{A}^{\Sigma_{0}}$ is a blurring kernel and the group element $(A,z)$ control respectively dilation and translation.
+In self-supervised learning \citet{gupta2023a} model the set of augmentations $\mathcal A$ (crop, blur, colour jitter) as a semigroup.
+Their equivariant contrastive objective (CARE) encourages a representation $\rho:\mathcal A\to O(d)$ under which input augmentations act as rotations of the spherical embedding.
+On the theoretical side, some results obtained in \citep{chen2020} (Sec.~4, ``Beyond groups''), naturally extend to semigroups (e.g. variance reduction) but the lack of an \emph{orbit} notion ($\exists s \in S, y=sx \nRightarrow Sx=Sy$ unless $s$ is the identity) prevent their \textit{augmented loss} relying on orbit averaging to directly generalize.
+
+A groupoid weakens compositionality: it is a small category in which every morphism is invertible, yet the composite $g\circ h$ is defined only when the target of $h$ matches the source of $g$.
+\citet{sareen2026} show that some overparametrization symmetries of a neural network form precisely such a structure.
+Duplicating (splitting) a neuron is always possible, but merging is only a \emph{partial} inverse---available for weights that were tied by a prior split---and composing two such moves requires compatible widths, so global composition fails.
+The resulting \emph{overparametrization groupoid} is a partitioned parameter space $(\Theta_{n,n_f})_{1\le n_f\le n}$, where $\theta\in\Theta_{n,n_f}$ if it has $n$ neurons and implements a function realizable with only $n_f$ of them.
+Arrows defining the compositional structure of $\Theta_{n, n_f}$ reflect duplicating neurons symmetries.
+A simple example: duplicating a row $W^{(l)}_{i,.}$ into $W^{(l)}_{i',.}$  while setting $W^{(l+1)}_{.,i}+W^{(l+1)}_{.,i'}=\boldsymbol 1$ does not change the function.
+
+Finally, quivers and category theory have been used to reframe and extend geometric deep learning ideas \citep{gavranovic2024}, define message-passing GNNs equivariant to local isomorphisms \citep{dehaan2020} or study isomorphisms of the computational graphs of feedforward architectures \citep{armenta2021a}.
+
+\subsection{Approximate symmetries: tolerance}\label{sec:soft-equivariance}
 
 % Approximate symmetry: the symmetry group approximately holds (e.g. deviates with time in physics simulations)
 % learning near-equivariances, soft constraints, relaxed group convolutions, approximate invariants
@@ -2239,7 +2309,7 @@ This section adopts a third posture: symmetry as an \emph{analytical lens}.
 Rather than a property to enforce or discover, a symmetry becomes a tool for understanding a network's behaviour---its parameterization, the geometry of its loss landscape, the dynamics of its training, and the quantities those dynamics conserve.
 The symmetries at play here are largely \emph{parameter-space} symmetries: transformations of the weights that leave the function a network implements unchanged (\Cref{ex:equivalence_observational}), a viewpoint surveyed comprehensively by \citet{zhao2025}.
 
-\subsection{Parameter-space symmetries}
+\subsection{Parameter-space symmetries}\label{sec:parameter-space-symmetries}
 
 % seminal work on parameter-space symmetries testing: lenc2014a
 \citet{lenc2014a} use the same stitching-layer methodology that allowed them to test equivariance, repurposed to test whether two independently trained networks are equivalent i.e., whether a map $E_{\phi \to \phi'}$ exists such that $E_{\phi \to \phi'} \phi(\mathbf{x}) \approx \phi'(\mathbf{x})$---see \Cref{sec:sym-disc-from-data}.
