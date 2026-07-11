@@ -2037,6 +2037,7 @@ In the first part of this section, we look at symmetry discovery in data, then p
 % add ouderaa2023
 % seems that some GAN objective assume distribution invariance
 % maybe cohen2014
+% wang2024p4icml discovery by seeing how soft equivariance method reacts to the data 
 
 % Introduction on symmetry discovery: what it is and why is it relevant.
 We review works aiming to identify the transformations under which a dataset is invariant or equivariant.
@@ -2138,6 +2139,8 @@ Notably, both \citet{krippendorf2020} and \citet{hu2025nn} rely on the assumptio
 % yeh2022p2icais introduce the Partition Distance, a quantitative metric for comparing their learned sharing scheme against a known ground truth (an equivariance error)
 % leroy2025 invariance energy estimated in embedding space from discrete infinitesimal curves (to be added in the last paragraph on infinitesimal methods)
 % qu2024anips: sec 5.4 cosine similarity >0.99 for atom force prediction in a scaled non-equivariant model
+% wang2022p3icml: equivariance error (def 3.1)
+% elhag2026: equivariance metrics macro and micro averaging over group orbit (eq 8, eq 9)
 Once one knows \emph{which} symmetry a model carries, the natural follow-up is \emph{how much} of it the model has actually learned.
 The works below share a common template: a transformation (or its infinitesimal generator) is assumed to be given, and one measures a notion of sensitivity of the model under it, assessing how well invariance or equivariance is respected.\newline
 For seminal works, \citet{goodfellow2009anips} define a neuron-level \emph{invariance score} $S(i) = L(i)/G(i)$, where the \emph{local firing rate} $L(i)$ is the fraction of transformed versions of a maximally activating input $z$ that still excite neuron $i$, and the \emph{global firing rate} $G(i) = \mathbb{E}_{x\sim P}[f_i(x)]$ measures indiscriminate firing under a random sampling $P$.
@@ -2179,6 +2182,8 @@ Taken together, these measures range from single-neuron firing ratios to loss-fr
 % Partial and approximate equivariance are then separated by a single algebraic criterion: \emph{partial} equivariance is the case where $\operatorname{Stab}_\epsilon(f)$ is \emph{not} a group, whereas \emph{approximate} equivariance (\Cref{sec:soft-equivariance}) is the case where it is a group.
 
 
+\subsection{Symmetry breaking}
+
 
 \subsection{Extent restriction: beyond groups}\label{sec:extent-restriction}
 
@@ -2207,6 +2212,7 @@ The $\pm 90^\circ$ case makes the boundary between the first two rows of \Cref{t
 \end{table}
 
 \subsubsection{Subgroups}\label{sec:subgroups}
+% wang2024p4icml: relaxed equiv model initialized as G-equiv reduced to H-equiv while training due to symmetry breaking (H subgroup of G)
 Among the rows of \Cref{table:extent-restriction}, a subgroup $H\le G$ is the only restriction that breaks no group axiom:.``incompleteness'' is here intended as a reduction in symmetry rather than a defect in the algebraic structure.
 Two questions organize the literature: how to obtain an $H$-equivariant model, and what the subgroup structure of $G$ itself buys.
 
@@ -2270,36 +2276,79 @@ Finally, quivers and category theory have been used to reframe and extend geomet
 
 \subsection{Approximate symmetries: tolerance}\label{sec:soft-equivariance}
 
-% Approximate symmetry: the symmetry group approximately holds (e.g. deviates with time in physics simulations)
-% learning near-equivariances, soft constraints, relaxed group convolutions, approximate invariants
+Where the previous subsection restricted the \emph{extent} of a symmetry---which transformations belong to the set $S$ (\Cref{sec:extent-restriction})---this one relaxes its \emph{exactness}: the group $G$ is retained in full, but equivariance is only required to hold approximately.
+Indeed, a symmetry may hold only to first order or be blurred by noise, and an idealized invariance often drifts, for instance over the course of a simulation.
+This regime overlaps with symmetry discovery (\Cref{sec:sym-disc-from-data})---some works such as \citet{wang2024p4icml} use the relaxation of a group convolution as an indirect way to \emph{discover} which symmetry the data actually carries---and with data augmentation (\Cref{par:auto-da}), which can itself be read as a soft push towards equivariance.
 
-% hard-coding a specific symmetry can be detrimental to performance if the true data distribution does not perfectly reflect that exact symmetry: zhou2021, finzi2021anips
-% and, maybe surprisingly, even when the symmetry is exact, equivariant designs are not guaranteed to be the best performing models: \citet{lawrence2026, rygiel2026} observe that when the data is canonically presented (\textit{i.e.} the probability distribution is far from uniform on symmetry orbits) then non-equivariant can outperform equivariant models with the correct symmetry because (1) they can exploit ``spurious but useful'' correlations (ex: camel in the sand, penguin on ice) or (2) find a more efficient way to solve the dataset because of its canonicalization (ex: running right to compute speed)
+\subsubsection{Definitions of approximate symmetries}
+The canonical notion is quantitative. Following \citep{wang2022p3icml,sipiran202523scgpis,ali2026}, a map $f$ is \emph{$\epsilon$-approximately equivariant} if
+\begin{equation}\label{eq:equiv-error-approximate}
+    \sup_{g\in G,\,x\in X} d_Y\big(f(\rho_X(g)\,x),\ \rho_Y(g)\,f(x)\big)\le \epsilon,
+\end{equation}
+with $d_Y$ a distance on $Y$ and strict equivariance recovered at $\epsilon=0$; the supremum on the left is an equivariance error $\|f\|_{\mathrm{EE}}$ measuring the \emph{functional} symmetry breaking of $f$.
+Another formulation is given by \citet{petrache2023}: the approximate case is exactly when the $\epsilon$-stabilizer $\operatorname{Stab}_\epsilon(f)$ (\Cref{sec:non-closed-subsets}) consists of a \emph{group} despite $\epsilon>0$, which separates it from the \emph{partial} case where it is not.
+A probabilistic variant, the \emph{insensitivity} of \citet{vanderwilk2018anips}, bounds instead the probability of a large deviation, $\mathbb P_{g\sim p(g)}\big([f(x)-f(gx)]^2>L\big)<\epsilon$.
+A discrete definition is found in \citet{huang2023} for a fixed graph $G$: since real graphs have a trivial automorphism group $\operatorname{Aut}(G)$, they build an approximate symmetry group from a coarsening $G'$ chosen \textit{close} to $G$ (in graphon cut distance to be precise).
+The approximate symmetry group is then $\mathcal G_{G\to G'}=(S_1\times\cdots\times S_M)\rtimes\operatorname{Aut}(G')$, where each $S_i$ is a within cluster permutation group and $\operatorname{Aut}(G')$ captures the coarser global symmetry
+Note that these symmetries are to be distinguished from the passive permutation symmetry common in GNNs literature.
 
-% theoretical \cite{petrache2023}
+\begin{Remark}
+    The tolerance $\epsilon$ is usually independent of the magnitude of $g$, although a factor $\|g\|_{\mathrm{op}}$ is discussed by \citet{wang2022p3icml} and is implicit in the infinitesimal Lie-derivative formulation of \citet{pertigkiozoglou2024}.
+\end{Remark}
 
-% approximate invariance is called insensitivity in vanderwilk2018anips
+On the implementation side, two enforcement mechanisms recur and possibly co-occur.
+A \emph{relaxed architecture} loosens the weight-sharing constraint so the layer is no longer forced to $\epsilon=0$ while a \emph{soft penalty} instead leaves the model class unconstrained but adds a penalty (or a prior) that discourages large deviations.
+A relaxed architecture is rarely sufficient on its own, since ordinary training favours the less constrained model and must be nudged back towards symmetry \citep{ouderaa2022,wang2022p3icml}---in the Bayesian case this can be done directly through the prior \citep{vanderwilk2018anips,ouderaa2023}.
+In one sentence: \emph{a relaxed architecture trained with a soft penalty yields an approximately equivariant function}, where the two mechanisms need not co-occur.
 
-% huang2023: approximate \textit{active} graph symmetries
+\subsubsection{Why tolerate}
+The governing principle is that the model's symmetry should match the data's, so that hard-coding an exact symmetry is detrimental when the data does not reflect it exactly \citep{zhou2021,finzi2021anips,elsayed2020p3icml}.
 
-% \cite{wang2022p3icml} introduce approximately equivariant networks that are biased towards symmetry but not strictly constrained, and demonstrate that this relaxation can outperform both fully equivariant and non-equivariant baselines on imperfectly symmetric dynamical systems.
-Where the previous subsection restricted the \emph{extent} of a symmetry---which transformations belong to the set $S$---this one relaxes its \emph{exactness}: the group $G$ is retained in full, but equivariance is required to hold only approximately.
-Such situations are pervasive.
-A symmetry may hold only to first order or be broken by noise, and in physical systems an idealized invariance often drifts, for instance over the course of a simulation.
-The motivation is that hard-coding an exact symmetry can be actively detrimental when the data distribution does not perfectly reflect it \citep{zhou2021,finzi2021anips}.
-More strikingly, even when a symmetry \emph{is} exact, a strictly equivariant design need not be optimal: \citet{lawrence2026} and \citet{rygiel2026} observe that when data is presented canonically---so that the distribution is far from uniform over each orbit---an unconstrained model can outperform the correctly-equivariant one, either by exploiting ``spurious but useful'' correlations (a camel on sand, a penguin on ice) or by exploiting the canonicalization itself (an animal running rightwards to gauge its speed).
-This motivates architectures that are \emph{biased} towards a symmetry without being rigidly constrained by it.
+\citet{wang2022p3icml} make the cost precise: a strictly equivariant $f_\theta$ approximating an approximately equivariant target $f$ must commit an error $\exists x_0\in X,\ \|f(x_0)-f_\theta(x_0)\|\ge \tfrac12\|f\|_{\mathrm{EE}}$, lower-bounded by the target's own functional symmetry breaking measured in terms of the equivariance error (\Cref{eq:equiv-error-approximate}).
+The constraint also propagates to the latent space: \citet{ali2026} prove that a strictly equivariant real-analytic encoder cannot collapse orbits (under gradient descent) i.e. $\dim E_\theta(O_x)=|O_x|$ and that exact equivariance forces a copy of the regular representation into the latent space, $\exists (V,\tilde\rho),\ \rho_Z(g)|_V\simeq\tilde\rho(g)$; only geometric compression is possible, not true quotienting.
+Consequently the optimal level of equivariance has been framed as a trade-off, neither full nor absent.
+This is established for example as a bias--variance sweet spot over a lattice of groups \citep{huang2023} and as a unique optimum in the approximation--generalization analysis of \citet{petrache2023} (\Cref{sec:soft-equivariance}), with empirical support in \citep{wang2022p3icml,wang2024p4icml} and through methods that learn the level automatically \citep{ouderaa2022}.
 
-The dominant strategy is to \emph{soften} an equivariant construction so that deviations are permitted but penalized.
-\citet{wang2022p3icml} introduce approximately equivariant networks and show, on imperfectly symmetric dynamical systems, that this relaxation can outperform both strictly equivariant and fully unconstrained baselines.
-Related soft-constraint mechanisms include relaxing the group convolution through non-stationary filters \citep{ouderaa2022}, residual pathway priors that place a prior favouring the equivariant solution while leaving an unconstrained escape route \citep{finzi2021anips}, and, on graphs, approximately equivariant message passing \citep{huang2023}.
-A complementary, more implicit route learns the appropriate degree of invariance from data by treating it as a model-selection problem, for example by tuning invariance through the marginal likelihood of a Gaussian process \citep{vanderwilk2018anips}, where approximate invariance is termed \emph{insensitivity}.
+\begin{Remark}
+    The converse caveat is worth stating: even when the symmetry is exact, equivariant designs are not guaranteed to be the best-performing models \citep{lawrence2026,rygiel2026}.
+\end{Remark}
 
-The trade-off underlying all these methods is theoretical as well as empirical.
-\citet{petrache2023} formalize an approximation--generalization tension under approximate group equivariance: imposing (even approximately) the correct symmetry reduces the hypothesis space and hence the generalization gap, but imposing the wrong or too-rigid a symmetry raises the approximation error.
-Soft equivariance can be read as an attempt to sit at the favourable point of this trade-off, retaining most of the statistical benefit of the symmetry while remaining able to represent the residual asymmetry that real data exhibit.
+\subsubsection{Relaxed architectures}
+The most direct construction generalizes the group convolution by making its filter position-dependent, $k_\theta(v^{-1}u,v)$, so that the kernel depends on the absolute element $v$ and not only on the relative one $v^{-1}u$.
+\citet{ouderaa2022} implement this with a bivariate kernel $k_\theta:G\times G\to\mathbb R$ fed by random Fourier features of the Lie-algebra coordinates, modulated by frequency parameters $\omega,\omega'$ that control the equivariance strength ($\omega'=0$ is strict equivariance) and are themselves learnable.
+\citet{wang2022p3icml} relax both group and steerable convolution by replacing the single kernel with a weighted family, $\Psi_{\mathrm{relaxed}}(g,h)=\sum_{l=1}^{L}w_l(h)\,\Psi_l(g^{-1}h)$ for the group case and $\Phi_{\mathrm{relaxed}}(y)=\sum_{l=1}^{L}w_l(y)\odot\Phi_l(y)$ for the steerable basis.
+The layer is exactly equivariant when the $w_l$ are constant over $G$, which a soft penalty $\alpha\sum_{l}\sum_{g,h}\|w_l(h)-w_l(g)\|$ encourages.
+An optimal strength of this nudging is observed empirically.
 
+A second family uses an \emph{additive} relaxation, splitting a layer into an equivariant part and a free correction $f(x)=f_e(x)+\theta Wx$.
+This is the residual-pathway prior of \citet{finzi2021anips}, who write $W=A+B$ with $A=Q\beta$ the equivariant construction (from \citep{finzi2021p3icml}) and $B$ its relaxation.
+The trade-off is controlled through asymmetric regularization strengths $\lambda_A\|A\|$ and $\lambda_B\|B\|$.
+\citet{ouderaa2023} extend this to select the per-layer equivariance level automatically by Bayesian model selection and improve scalability through a rank-one spatial factorization and a further sparsification using (possibly learnable) anchor points.
+\citet{pertigkiozoglou2024} repurpose the same additive form as an \emph{optimization} device rather than a misspecification remedy: training a non-strict model that is projected back to an exactly equivariant one at test time ($\theta=0$), while keeping it close to equivariant throughout training by penalizing the Lie derivative of $W$ along each generator.
+The regularization is $\mathcal L_{A_i}(W)=-\,\mathrm d\rho_{\mathrm{out}}(A_i)\,W+W\,\mathrm d\rho_{\mathrm{in}}(A_i)$ where $d\rho$ is the representation of the Lie algebra, and the penalization is $\mathbb E_x[\sum_i\|\mathcal L_{A_i}(W)x\|]$.
+Finally, the projection-distance is also penalized, with a simple term $\|W\|$.
+ 
+The \emph{low-rank locally connected} (LLLC) layer is an architectural interpolation proposed by \citet{elsayed2020p3icml}, which sits between a convolution (full weight sharing) and a locally connected layer (none).
+The filter at position $(i,j)$ is $F^{(i,j)}=\sum_{k=1}^{K}w^{(k)}_{i,j}F^{(k)}$ over a learnable filter bank, with the combining weights themselves factorized to restrict the parameter count; \citet{zhou2021} reuse LLLC and \citet{ouderaa2023} adopt a similar factorization strategy along additional mechanisms. 
 
+For Bayesian methods the relaxation lives in the prior. \citet{vanderwilk2018anips} build an approximately invariant Gaussian-process kernel from a base kernel by summing over augmentations, $k(x,x')=\sum_{x_a\in\mathcal A(x)}\sum_{x'_a\in\mathcal A(x')}k_g(x_a,x'_a)$, where $\mathcal A$ encodes a group or the desired insensitivity, and selects the invariance by maximizing the marginal likelihood; \citet{finzi2021anips} place different prior strengths on the equivariant and flexible pathways, and \citet{ouderaa2023} make those strengths learnable hyperparameters selected the same way.
+
+\subsubsection{Soft penalties}
+An orthogonal, architecture-agnostic route imposes symmetry through the objective alone.
+
+One line performs ``symmetry regularization''\citep{shakerinava2022anips} via group invariants: \citet{shakerinava2022anips} note that equivariance is a weak condition as any injective $f:X\to Z$ is equivariant for a (generally nonlinear) induced action $\tau(g,z)=f(\tau(g,f^{-1}(z)))$ and therefore constrain the \emph{form} of that action by aiming to preserve a chosen invariant $Inv:Y^2\to\mathbb R$, using only pairs transformed by the same unknown element, $\sum_{x, x'} l\big(\mathrm{Inv}(f(x),f(x')),\,\mathrm{Inv}(f(gx),f(gx'))\big)$ (e.g.\ distances for $E(n)$).
+Here, we stress that the element $g$ is not known, it only matters that the same $g$ is applied to both $x$ and $x'$.
+\citet{gupta2023a} specialize this to orthogonal representations with an equivariance loss $L_{\mathrm{equiv}}(f,a)=\mathbb E_{x,x'}\big[(f(a(x))^\top f(a(x'))-f(x)^\top f(x'))^2\big]$, combined with InfoNCE terms: (1) an invariance term that keeps the induced rotations small and (2) a uniformity term preventing global collapse.
+They prove that a small $L_{\mathrm{equiv}}$ upper-bounds the approximate-equivariance error $\sup_x\|f(a(x))-R_a f(x)\|$, where $R_a$ is an orthogonal matrix corresponding to the group element $a$.
+
+A direct version couples an unconstrained network to an explicit equivariance loss $\mathcal L_{\mathrm{equiv}}(f_\theta,\mathcal X,\mathcal Y,G)=\frac1n\sum_i\mathbb E_{g\sim G}\big[l(f_\theta(\rho_X(g)x_i),\rho_Y(g)y_i)\big]$, used both to encode a \emph{discovered} symmetry into a free backbone \citep{escriche2025,elhag2026}.
+For encoder--decoder models \citet{ali2026} decompose this into three terms---input-to-latent $\mathrm{MSE}(\rho_Z(g)E(x),E(gx))$, latent-to-output $L_{\mathrm{task}}(D(\rho_Z(g)E(x)),gy)$ with $\rho_Z(g)$ a learnable per-generator matrix, and a presentation-based penalty encouraging $\rho_Z$ towards being a genuine representation, which would be for example \ $\mathrm{MSE}(\rho_Z(r)^3,I_d)$ for a $C_3$ group with rotation generator $r$.
+
+\subsubsection{Training and inference}
+Tolerance during training does not necessarily mean it should be retained at test time: some works treat the two regimes differently.
+\citet{escriche2025} pushes towards equivariance at test time by \emph{feature averaging} over the orbit (cf.\ \Cref{par:auto-da}) and \citet{pertigkiozoglou2024} project the trained model onto the exactly equivariant subspace.
+The latter also reframes the whole process as an optimization question, arguing that the equivariant hypothesis space, while not necessarily wrong, is harder to optimize.
+Relaxation is meant to smooth training while exactness can be restored at test time; \citet{elhag2026} make a compatible empirical observation that equivariant models have a rougher loss landscape.
 
 \section{Analysis of symmetries}
 
