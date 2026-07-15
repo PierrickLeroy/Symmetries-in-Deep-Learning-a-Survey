@@ -66,9 +66,11 @@
 \subsection{Methodology}
 % Starting point: initial stack of paper collected over 2 years along the way
 % Completion of the initial stack by keyword search on scopus, google scholar and by AI powered tools like research-rabbit or elicit
-% Criterion for retaining a reference: published in a peer-reviewed venue OR high impact (>100 citations on google scholar) OR recent (publication date<2 years)
+% Criterion for retaining a reference: (A) published in a peer-reviewed venue OR (B) high impact (>50 citations on google scholar) OR (C) recent (publication date<2 years). Criterion (C) exists because time might operate the conversion (C) \to (A\cup B).
 % 325 works were identified, out of which 150 are retained in the final version
-% AI statement: knowledge base
+% AI statement: knowledge base with standardized processing (including for each paper SUMMARY, KEY DEFINITIONS, BACKGROUND NOTIONS, RESULTS (theoretical if any, empirical if any), METHODOLOGY, LIMITATIONS
+% More emphasis has been put on less organized topics and less emphasis on well documented (a lot or recent covering materials) ones such as GDL or parameter-space symmetries.
+% Broadness has been chosen over exhausivity.
 
 \subsection{Related work}
 Previous work have collected or formalized literature on symmetries in a deep learning context.
@@ -1911,14 +1913,11 @@ While not preventing adoption of these methods, this create a bottleneck because
 \end{enumerate}
 Fortunately, these hurdles are being addressed: (1) by symmetry discovery (\Cref{sec:sym-disc-from-data}), (2) by theoretical work aiming to construct equivariant networks for arbitrary groups and (3) by approximate or soft-equivariance methods (\Cref{sec:soft-equivariance}).
 
-% Are there problems that remain unadressed: which groups have not been conquered
-
 \subsubsection{Equivariant or vanilla architectures ?}
-% Equivariant architecture vs vanilla
 % add: brehmer2025
 % tahmasebi2023: similar to elesedy2021p3icml, obtains theoretical sample complexity gains
 % vadgama2025 similar to lawrence2026
-% include distribution symmetry breaking as a paragraph here ?
+% ref to distributional SB
 % abramson2024n: alphafold (jumper2021na) train equivariance by data augmentation. Similarly wang2024p4icmla argue for scale above equivariant design for molecular conformers prediction.
 % qu2024anips: scale compensates for lack of symmetry prior
 % olah: same features can be learned by vanilla and equivariant architecture, could lead to interactive design where vanilla model prototype quickly/discover then equivariant models are developed (see also krippendorf2020, hu2025nn on relying on nn to extract symmetries in symmetry as an unknown part)
@@ -1995,12 +1994,8 @@ Rather than discarding the transformation applied to a view, \emph{equivariant} 
 In the tracking setting, \cite{sosnovik20212iwcacvw} shows that endowing a Siamese tracker with scale equivariance improves robustness to object size changes, a concrete instance of coupling the symmetric framework with an equivariant one.
 More broadly, this places Siamese and self-supervised methods at the boundary between the prescriptive stance of this section---symmetry deliberately engineered into the objective---and the descriptive stance of the next: several works recast representation learning as a means of \emph{recovering} the symmetries latent in data \cite{perin2025}, which motivates the treatment of symmetry as an unknown.
 
-\section{Symmetry as an unknown}
+\section{Symmetry as an unknown: Symmetry Discovery}
 
-% One way to look at symmetry discovery vs approximate (or soft) equivariance. Symmetry discovery is additive: it assumes less symmetry and gathers evidence for, while symmetry breaking is retractive: it assumes more and gathers evidence against.
-% Approximate equivariance and discovery are in some sense conceptual opposites of one another.
-% Symmetry discovery makes few assumptions on the possible symmetries and let the model learn them, while approximate equivariance does the opposite: it makes too much assumptions and let the model disrespect or unlearn them if necessary \textit{i.e.} what the model learns is when to deviate from the posited symmetries.
-% A common theme that makes working with unknown symmetries difficult is that symmetries are constraints on the functions a model can represent and are therefore not encouraged by objectives that optimize data fit, thus methods need to be nudged towards symmetries otherwise the asymmetric version is always favored \citep{ouderaa2022,benton2020anips,ouderaa2024}.
 The previous section assumed the relevant symmetry was known and could be engineered into the model.
 Here we take the opposite stance, corresponding to the \emph{descriptive} branch of the taxonomy (\Cref{table:taxonomy}): the symmetry is treated as something to be inferred rather than imposed.
 Two complementary problems fall under this heading, and it is useful to see them as conceptual opposites.
@@ -2008,8 +2003,6 @@ Two complementary problems fall under this heading, and it is useful to see them
 \emph{Approximate} (or soft) \emph{equivariance} is \emph{retractive}: it starts from an assumed symmetry and gathers evidence \emph{against} it, letting the model learn \emph{when} to deviate from the posited invariance.
 A recurring difficulty ties the two together: a symmetry is a \emph{constraint} on the functions a model may represent, and such constraints are not rewarded by objectives that merely optimize data fit, so the unconstrained (asymmetric) solution is generically favoured unless the method actively nudges the model towards symmetry \citep{ouderaa2022,benton2020anips,ouderaa2024}.
 We first treat symmetry discovery---from data and from trained models---and then turn to incomplete and approximate symmetries.
-
-\subsection{Symmetry Discovery}
 
 Symmetry discovery refers to the problem of automatically learning or identifying symmetries present in data or learned by neural networks, without requiring (full) prior knowledge of what those symmetries are.
 The core motivation is twofold:
@@ -2029,7 +2022,7 @@ $f$ is the predictor $f_\theta$ in the case of symmetry extraction from a traine
 In the first part of this section, we look at symmetry discovery in data, then proceed with learned symmetries.
 
 
-\subsubsection{Symmetry Discovery from Data}\label{sec:sym-disc-from-data}
+\subsection{Symmetry Discovery from Data}\label{sec:sym-disc-from-data}
 
 % hu2025nn seems similar to krippendorf2020
 % add: ko2024anips
@@ -2052,59 +2045,52 @@ Formally, in the simpler case of invariance detection, given a dataset $\{x_i\}_
 The discovered group should be non-trivial: the identity is always a valid solution leading some works to actively incorporate mechanisms such as volume-preservation constraints, or entropy maximizers to avoid this degenerate outcome \citep{benton2020anips,yang2023p4icml,escriche2025}.
  
 % Seminal works: highnam1985,wolter1985tvc (the problem is not new)
-\paragraph{Seminal works}
+\subsubsection{Seminal works}
 The problem of detecting symmetries from finite data is not new; in the 1980s \citet{highnam1985} and \citet{wolter1985tvc} provided algorithms for finding all rotational and reflective symmetries of planar and three-dimensional point sets.
 An early machine learning approach appeared in \citet{rao1998anips}, who framed symmetry discovery in visual perception as learning Lie group operators from infinitesimally transformed image patches via an unsupervised Bayesian algorithm.
 
-\paragraph{Discrete vs continuous symmetry learning}
+\subsubsection{Discrete vs continuous symmetry learning}
 Discrete symmetries, can be approached through combinatorial search over parameter-sharing schemes \citep{yeh2022p2icais,zhou2021} or Cayley table extraction~\citep{sanborn2022}.
 Continuous symmetries benefit from the smooth structure of Lie groups and are usually approached by parameterizing transformations through their Lie algebra and the matrix exponential map \citep{benton2020anips,ouderaa2022}.
 Estimation of the Lie algebra by learning a basis of infinitesimal generators from data is proposed by  \citet{dehmamy2021anips,yang2023p4icml}.
 Additionally, regularization terms can be put on Lie generators \citep{escriche2025} to prevent collapse.
 
-% ---- Compact Lie groups, representation theory, and GAN-based methods ----
-\paragraph{Generative approaches}
+\subsubsection{Generative approaches}
 \citet{desai2022prd} introduce a GAN-based framework, where the generator learns maps that preserve the data distribution relative to a reference, formalizing a statistical notion of symmetry.
 \citet{yang2023p4icml} propose \textit{LieGAN}, where a generator learns a Lie algebra basis $\{L_i\}$ such that transformations of the form $\exp(\sum_i w_i L_i)$ preserve the data distribution, with an additional discriminator forcing \textit{distribution-matching} while regularizers on the generators prevent both identity collapse and redundancy of learning basis elements.
 
-% ---- Disentangled and irreducible representations ----
-% goodfellow2009anips: extract distinct invariant subpopulations of neurons from a model allowing each to be invariant to different transformation (e.g. one subpopulation would be invariant to illumination, another to rotation etc...)
-\paragraph{Learning groups and their representations}
+\subsubsection{Learning groups and their representations}
 A line of work frames symmetry discovery as learning not only the group but also its decomposition into independent factors or irreps \textit{i.e.} a form of disentangled representation learning \citep{higgins2018}.
 \citet{cohen2014} propose a probabilistic model that learns irreducible representations for compact commutative Lie groups, in particular the toroidal subgroups (\textit{i.e.}\ the commutative part) of $SO(D)$.
 In the context of dynamic environments where observations are paired with transformations, \citet{quessard2020anips} addresses disentanglement by a sparsity regularizer that encourages each symmetry generator to act on as few latent dimensions as possible, thereby identifying a block-diagonal structure in the representation.
 \citet{sanborn2022} introduce Bispectral Neural Networks, which learn a Fourier basis for compact groups and \citet{ennes2025fcm} tackle the problem from a geometric perspective: given a point cloud sampled from orbits of a compact Lie group, their \textit{LieDetect} algorithm estimates the Lie algebra via a PCA-like operator and projects onto the closest valid Lie algebra for a set of candidate groups ($SO(2)$, $T^d$, $SU(2)$, $SO(3)$), with theoretical stability guarantees given in terms of Wasserstein distances.
 
-% ---- Other methods: VAEs, GPs, info-theory, and conserved quantities ----
-\paragraph{Other estimation strategies}
+\subsubsection{Other estimation strategies}
 \citet{krippendorf2020} bet on the fact that a classifier trained on symmetric data will collapse symmetry-related inputs to nearby positions in the embedding layer and exploit this by performing linear regression on pairs of proximate embedding points to extract infinitesimal generators, effectively reading the symmetry off the network's representations.
 \citet{vanderwilk2018anips} incorporate invariance desiderata directly into the prior of a Gaussian Process by constructing an invariant kernel that averages over an orbit of transformations; the parameters of these transformations are then learned end-to-end by maximizing the marginal likelihood, which naturally penalizes complexity and avoids overfitting to spurious symmetries.
 \citet{wieser2020anips} employ an autoencoder framework in which the latent space is partitioned into a property-sensitive and a property-invariant subspace, with a mutual information regularizer enforcing that the invariant subspace carries no information about a target quantity.
 \citet{dehmamy2021anips} introduce Lie Algebra Convolutional Networks (L-conv), whose layers make the Lie algebra basis itself a learnable parameter allowing discovery at a non-negligible computational cost.
 \citet{ouderaa2024} take a physics-inspired approach via Noether's theorem: they parameterize symmetries as quadratic conserved quantities of a Hamiltonian system and learn them by maximizing a variational lower bound.
 
-% ---- Parameter sharing schemes ----
-\paragraph{Symmetry discovery through parameter-sharing schemes}
+\subsubsection{Parameter-Sharing Schemes}
 A layer's equivariance can be determined by which weight entries are shared, so the problem of symmetry discovery can be framed as learning the partition of weights into equivalence classes; factorizing the weight space into a \textit{structural component} (the parameter-sharing scheme) and a \textit{value component} (the actual shared parameters).
 \citet{zhou2021} operationalize this idea via a reparameterization $\mathrm{vec}(W) = Uv$, where the sharing matrix $U$ is optimized in a meta-learning outer loop while $v$ (value) adapts per task.
 They prove that this factorization can represent equivariance to any finite group.
 \citet{yeh2022p2icais} directly optimize over partitions of weight indices.
 
-% ---- Caveat ----
-\paragraph{Caveats}
+\subsubsection{Caveats}
+% could add benton2020anips,miao2023p4icml as additional papers supporting that imposing a wrong symmetry can affect performance
 Despite the appeal of symmetry discovery as a path around the symmetry bottleneck or as a diagnostic tool, it comes with important limitations.
 \citet{rath2024air} caution that, while discovery is valuable when prior knowledge is unavailable or hard to specify, automatically learned symmetries are generally unable to outperform models whose equivariance is correctly specified by design.
 Furthermore, \citet{yang2023p4icml} observe, and \citet{finzi2021anips} formalize, that enforcing the \emph{wrong} symmetry group (too large, small, or simply incorrect) can be harmful.
-% could add benton2020anips,miao2023p4icml as additional papers supporting that imposing a wrong symmetry can affect performance
 
 
-\subsubsection{Symmetry Extraction from Learned Models}
-
+\subsection{Symmetry Extraction from Learned Models}
 In this part we report the main techniques used to detect, measure, and identify symmetries that a neural network has learned, as opposed to symmetries that were *enforced* by design: extraction refers to a post-hoc or diagnostic operation on a trained model.
 
 
-\paragraph{Capability}
-% add lenc2014a: if the linear map exists but only one transformation at a time
+\subsubsection{Capability}
+% lenc2014a: if the linear map exists but only one transformation at a time
 Before measuring \emph{how much} symmetry a model has acquired, one can ask the more basic question: can a network whose architecture does \emph{not} hard-code a group $G$ incorporate, represent or learn symmetries at all, and under what conditions?
 \citet{olah2020d} give a \emph{mechanistic} demonstration: by inspecting circuits---human-interpretable subgraphs of a trained convolutional network---they find with a combination of activation maximization and visual intepretation, clusters of ``equivariant'' neurons that respond to transformed variants (rotation, hue, scale) of the same feature.
 They then show how downstream circuits combine them to synthesize invariant units at deeper layers, i.e.\ invariance can be built compositionally from equivariant parts.
@@ -2116,7 +2102,7 @@ This places symmetry learning in the feature-learning regime.
 In the active (feature-learning) regime, \citet{jacot2025} establish a positive counterpart: depth lets a network learn \emph{compositions} $f^\ast = h \circ g$, and when the target is $G$-invariant the inner map $g$ can play the role of a quotient map $\mathbb{R}^{d_{\mathrm{in}}} \to \mathbb{R}^{d_{\mathrm{in}}}/G$.
 In summary representational mechanisms are directly shown \citep{olah2020d,barenboim2021sp} while precise feasibility depends on conditions such as depth-enabled compositionality or learning regime \citep{perin2025,jacot2025}.
 
-\paragraph{Identification}\label{par:identification-anchor}
+\subsubsection{Identification}\label{par:identification-anchor}
 Beyond proving that neural networks can represent symmetries, another challenge is to identify the symmetry a trained model has internalised: to recover the group acting on the data, or for continuous groups the Lie-algebra generators.
 Two types of methods are (1) to read the symmetry off the network's \emph{representations} or more locally (2) off its \emph{gradients}.\newline
 The representational approach inspects what the trained model has stored.
@@ -2133,7 +2119,7 @@ In practice the approximate nullspace is extracted from the right-singular vecto
 Assembling these constraints into a coefficient matrix, the zero singular values again count the Lie-algebra dimension and singular vectors are the generators.\newline
 Notably, both \citet{krippendorf2020} and \citet{hu2025nn} rely on the assumption that a sufficiently trained network absorbs the symmetry present in its data, so identifying the model's symmetry doubles as \emph{discovery} of the data's symmetry, closing the loop with \Cref{sec:sym-disc-from-data}.
 
-\paragraph{Quantification}
+\subsubsection{Quantification}
 % mention sensitivity analysis as the broader field that studies how the variation in the output of a model can be apportioned to different sources of variation in its inputs - see storm2024prl for an example of local sensitivity analysis applied to deep networks. Symmetry quantification could be likened to sensitivity analysis to specific directions in input space.
 % petrache2023 3.2 equivariance error
 % yeh2022p2icais introduce the Partition Distance, a quantitative metric for comparing their learned sharing scheme against a known ground truth (an equivariance error)
@@ -2172,18 +2158,168 @@ Taken together, these measures range from single-neuron firing ratios to loss-fr
 
 
 \section{Incomplete symmetries}\label{sec:incomplete-symmetries}
-% Incomplete symmetries: to what extent pure symmetries don't hold, therefore it is a sort of dual to symmetry discovery (to what extent a transformation is a symmetry)
-% Partial symmetries: the exact range is often unknown, for approximate symmetry the goal it is often to calibrate how much deviation from exact symmetry is tolerated
-% paragraph 1 of topic-reports/incomplete-symmetry-notions.md: table and must introduce unifying object epsilon stabilizer from petrache2023
-% A single object subsumes this case together with the approximate symmetries of \Cref{sec:soft-equivariance}.
-% \citet{petrache2023} define the $\epsilon$-stabilizer of $f$,
-% $$\operatorname{Stab}_\epsilon(f)=\{g\in G:\ \mathrm{ee}(f,g)\leq\epsilon\},\qquad \mathrm{ee}(f,g):=\|\rho_Y(g)^{-1} f(\rho_X(g)\,\cdot)-f\|_\infty,\qquad \epsilon>0,$$
-% the transformations preserving $f$ up to the \emph{equivariance error} tolerance $\epsilon$.
-% Partial and approximate equivariance are then separated by a single algebraic criterion: \emph{partial} equivariance is the case where $\operatorname{Stab}_\epsilon(f)$ is \emph{not} a group, whereas \emph{approximate} equivariance (\Cref{sec:soft-equivariance}) is the case where it is a group.
+
+The previous section treated the symmetry as an object to discover; here we treat it as one that is \emph{imperfect}, not exact or ephemeral.
+It may hold only on part of the group, only up to a tolerance, or only until the data distribution or the training dynamics erodes it.
+Two sets of questions organize the material.
+The firsts---\emph{why} and \emph{when} a symmetry breaks---are the subject of symmetry breaking (\Cref{sec:symmetry-breaking-dl}).
+The remaining two subsections ask \emph{how} the symmetry is weakened: \Cref{sec:extent-restriction} restricts its extent while \Cref{sec:soft-equivariance} relaxes its exactness.
+
+These last two relaxations, can be unified through the \emph{$\epsilon$-stabilizer} introduced by \citet{petrache2023} of a map $f$. Writing
+$$\operatorname{ee}\colon\mathcal F\times G\to[0,+\infty),\qquad \operatorname{ee}(f,g)=\big\|\rho_Y(g)^{-1}f(\rho_X(g)\,\cdot)-f\big\|_\infty$$
+for the equivariance error of $f$ under a single $g$, the $\epsilon$-stabilizer at tolerance $\epsilon>0$ gathers the transformations that preserve $f$ up to $\epsilon$,
+$$\operatorname{Stab}_\epsilon(f)=\{g\in G:\ \operatorname{ee}(f,g)\le\epsilon\},$$
+which can be analogously defined at the level of the hypothesis class $\mathcal F$ by $\operatorname{Stab}_\epsilon(\mathcal F)=\cap_{f\in \mathcal F}\operatorname{Stab}_\epsilon(f)$.
+Partial and approximate equivariance are then separated by an algebraic criterion: the symmetry is \emph{approximate} when $\operatorname{Stab}_\epsilon(f)$ is a group (\Cref{sec:soft-equivariance}) and \emph{partial} when it is not (\Cref{sec:non-closed-subsets}), with strictly positive tolerance $\epsilon$ in both cases.
+
+Incomplete symmetries are in this sense dual to symmetry discovery (\Cref{sec:sym-disc-from-data}): where discovery asks to what extent a transformation \emph{is} a symmetry, this section looks at how assumed symmetries \emph{fails}---a form of \emph{negative discovery}.
+These parts are further interconnected in that for partial equivariance the range $S\subseteq G$ on which the symmetry holds is itself to be found, while for approximate equivariance the transformations are fixed and the goal is to \emph{calibrate} how much deviation is tolerated.
 
 
-\subsection{Symmetry breaking}
+\subsection{Symmetry Breaking}\label{sec:symmetry-breaking-dl}
 
+Symmetry Breaking (SB) (def. \ref{def:symmetry-breaking}) names the situation in which an object carries \emph{less} symmetry than before, expected or possible: some object loses symmetry relative to a certain group of interest $G$.
+The term does not have a unique meaning and two questions can help disambiguate it.
+First, \emph{which} object breaks the symmetry---the ground-truth function, the data distribution, or the parameterization together with its learning dynamics.
+Second, \emph{whether} the breaking can be intentional (a modelling choice) or unintended (a by-product of design).
+\Cref{table:symmetry-breaking} organizes the literature along the first axis, which we adopt as the structure of this subsection: \emph{functional} SB is a mismatch between the symmetry of the target $f$ and that of the hypothesis class; \emph{distributional} SB is non-uniformity of the data density along orbits; and \emph{parameter-space} SB concerns symmetries of the loss and of the training dynamics.
+
+To precise these notions, let us consider two works providing a contrast.
+The pointwise taxonomy of \citet{wang2023a} contrasts functional and distributional meanings.
+For a point $x$ and a transformation $g$: writing $p$ for the data density, they call $g$ at $x$ \emph{correct} when $p(gx)>0$ and $f(gx)=gf(x)$ (the digit $0$ under a $180^\circ$ rotation), \emph{incorrect} when $p(gx)>0$ but $f(gx)\neq gf(x)$ (the digit $6$ sent to $9$), and \emph{extrinsic} when $p(gx)=0$, i.e.\ $g$ carries $x$ off the data manifold (a rotated $4$).
+Incorrect equivariance is a pointwise instance of functional breaking, whereas extrinsic equivariance is a localized occurence of distributional breaking.
+The functional meaning is itself composite.
+A useful example is the case of $SE(3)$-equivariant \emph{Rapidash} model of \citet{vadgama2025}.
+This models has typed inputs (scalars and vectors) and supports \emph{Equivariance breaking} by treating a vector input as a tuple of scalars, deliberately assimilating quantities that transform differently under $G$.
+It also supports \emph{pose-informed} breaking, achieved by supplying an extra token $Z$ encoding a reference frame while joint equivariance $f(gX,gZ)=g\,f(X,Z)$ is retained.
+
+\begin{table}[ht]
+    \centering
+    \begin{tabularx}{\textwidth}{|l|l|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|}
+        \hline
+        \textbf{Type} & \textbf{Broken object} & \textbf{Condition} & \textbf{Refs} \\
+        \hline
+        Functional & target $f$ vs.\ class $\mathcal H$ & $\operatorname{Sym}(f)\subsetneq\operatorname{Sym}(h)$ for $h\in \mathcal H$ & \cite{wang2023a,zhang2019p3icml,smidt2021prr,lawrence2024,goel2025} \\
+        \hline
+        Distributional & data density $p$ & $p(x)\neq p(\rho_X(g)x)$ & \cite{lawrence2026,rygiel2026,chen2020,urbano2026} \\
+        \hline
+        Parameter-space & loss / dynamics & $l(\theta)=l(g\cdot\theta)$ or $g\theta=\theta$ breaks & \cite{kunin2020,tanaka2021,ziyin2025,arjevani2023} \\
+        \hline
+    \end{tabularx}
+    \caption{Three meanings of symmetry breaking according to which object carries less symmetry than the group of interest for the considered problem.}
+    \label{table:symmetry-breaking}
+\end{table}
+
+\subsubsection{Functional Symmetry Breaking}
+Functional SB is a property of the pair $(f,\mathcal H)$: the target $f$ is \emph{less} equivariant than hypotheses in the model class,
+\begin{align}
+\operatorname{Sym}(f)\subsetneq\operatorname{Sym}(h)=G\quad&\text{for all }h\in\mathcal H,\\
+&\text{equivalently}\quad \exists\,x,g:\ f(\rho_X(g)x)\neq\rho_Y(g)f(x).
+\end{align}
+It is an \emph{overspecification} of equivariance and coincides pointwise with the \emph{incorrect equivariance} of \citet{wang2023a}, and its magnitude is measured by the equivariance error $\|f\|_{\mathrm{EE}}$ of \Cref{eq:equiv-error-approximate}.
+It appears in standard architectures: \citet{zhang2019p3icml} show that the subsampling hidden inside strided convolutions and max-pooling silently destroys shift-equivariance, since it violates the Nyquist--Shannon condition $f_s>f_{\max}$ for lossless sampling of a band-limited signal.
+\citet{zhang2019p3icml} propose a low-pass (blur) filtering before subsampling to partially restore it.
+Imposing an exact $G$ on a task that lacks it carries an unavoidable cost, which \citet{wang2023a} make precise through error lower bounds: for invariant classification the accuracy is capped by the best per-orbit choice, $\operatorname{err}(f_\theta)\ge\int_F k(Gx)\,dx$ with $k(Gx)$ representing the best choice on $Gx$ and $F$--so-called \emph{fundamental domain}--is used to decompose $X$ as $X=\cup_{x\in F}Gx$.
+With analogous bounds for invariant and equivariant regression, this motivates the partial and approximate relaxations of \Cref{sec:extent-restriction,sec:soft-equivariance}.
+The excess symmetry can also enter through specific blocks of an architecture for instance the readout layer of GNNs: \citet{talhi2026} show that any linear permutation-invariant graph readout (e.g.\ sum pooling) factors through the Reynolds operator $\rho_{\mathrm{avg}}(x)=\frac{1}{|G|}\sum_{g\in G}\rho(g)x$.
+This means that for every linear permutation-invariant $f$ there is an $f'$ with $f=f'\circ\rho_{\mathrm{avg}}$---which caps expressivity, and they propose readouts invariant only to $\operatorname{Aut}(G)$ rather than to the full $S_n$, deliberately breaking the symmetry.
+Reducing equivariance is a generic remedy, whether by input-injection (below) or by retyping inputs as in the vector-as-scalars trick of \citet{vadgama2025}.
+
+\paragraph{\textbf{Generative Ambiguity and Curie's Principle}}\label{sec:curie-principle}
+A sub-instance of functional breaking arises when a symmetric input must produce a less symmetric output.
+This is forbidden for a deterministic equivariant map by \emph{Curie's principle}: if $f$ is $G$-equivariant then $\operatorname{Stab}(x)\subseteq\operatorname{Stab}(f(x))$, since $g\in\operatorname{Stab}(x)\Rightarrow\rho_Y(g)f(x)=f(\rho_X(g)x)=f(x)$.
+Simply put, no equivariant $f$ can map a square to a rectangle.
+The obstruction occurs when the task demands $\operatorname{Stab}(f(x))\subsetneq\operatorname{Stab}(x)$.
+
+\citet{smidt2021prr} seeks to discovers the causes of the obstruction and uses equivariant model as a ``symmetry compiler''.
+Starting with an equivariant model, they augment the input $x\mapsto x\oplus x'$ with a learnable auxiliary $x'$ optimized by the same gradient $\partial L/\partial x'$ as the weights. 
+At convergence $x'$ recovers the ``missing data'', or \emph{order parameters}, whose absence prevented an equivariant $f_\theta$ from solving the task and which can be interpreted.
+Symmetry is broken at the pipeline level while $f_\theta$ itself stays equivariant.
+In a similar diagnostic-oriented approach, \citet{wang2024p4icml} fit a relaxed group convolution initialized at exact equivariance (constant filter weights $w_l$): training leaves the network equivariant only to $\operatorname{Stab}(x)\cap\operatorname{Stab}(y)$ (Prop.~3.1), and the non-constant $w_l$ then read off the symmetry-breaking factors at play.
+Third, \citet{lawrence2024} take a generative modelling stance and move from equivariant \emph{functions} to equivariant conditional \emph{distributions}, $\mathbb P(Y\mid X{=}gx)=g\cdot\mathbb P(Y\mid X{=}x)$: Curie's principle applies at the distribution level, while individual samples may break it, restoring the ability to implement asymmetric solutions.
+
+\paragraph{\textbf{Pose-Informed Symmetry Breaking, Input-Injection}}
+One generic technique to overcome functional SB (already used in \Cref{sec:curie-principle}) is to intentionally inject into the input a feature $v$ carrying a preferred frame, so that a $G$-equivariant backbone becomes equivariant to at most $\operatorname{Aut}(v)=\{g\in G:\rho(g)v=v\}$; it is the equivariant analogue of positional encoding.
+
+\citet{vadgama2025} realize it with the reference-frame token $Z$ mentioned above.
+\citet{lawrence2024} concatenate $x\mapsto x\oplus\tilde g\,v$ with $v$ learnable and $\tilde g$ a pose sampled uniformly over compatible ones.
+Because the function $(x,\tilde g)\mapsto x\oplus\tilde g\,v$ is equivariant, an equivariant model in $x$ can be extended to one in $(x,\tilde g)$.
+They stress the importance of this joint equivariance, proving the bound: $R(f)-R(\bar{f}) = \vert{}\vert{}f^{\perp}\vert{}\vert{}_{\mathbb{P}(X,Z)}^{2}$, where $\bar f$ and $f^\perp$ are respectively the equivariant and non-equivariant part of $f$.
+This bound is informative when the true map $f^\star$ *is* equivariant--it informs that non joint-equivariance leads to a risk excess.
+\citet{goel2025} turn the mechanism into a subgroup selector (cf.\ \Cref{sec:subgroups}): from a backbone $h_\theta:X\times V\to Y$ equivariant to a large group $\boldsymbol G$, concatenating a $v$ with $\operatorname{Aut}(v)=H$ yields $f_\theta(x)=h_\theta(x,v)$ that is exactly $H$-equivariant provided $h_\theta$ is injective in $v$.
+Here however, the ``pose'' is not interpretable, closer to the random node features of GNNs than to positional encoding.
+
+\subsubsection{Distributional Symmetry Breaking}
+Distributional SB is a property of the data distribution,
+$$p(x)\neq p(\rho_X(g)x)\quad\text{for some }g,$$
+that is, orbits do not carry constant density.
+Note that the ground-truth map may be perfectly equivariant.
+It can hurt performances because a model with the \emph{correct} equivariance is by construction blind to orbit-position cues---informally, the ice floe behind the penguin---that a non-equivariant model can exploit as a shortcut.
+Whenever they are consistent between train and test sets, these features become \emph{spurious but useful} correlations.
+Accordingly, it has been observed that on \emph{canonically presented} data (a density far from uniform on orbits) a plain model can outperform an equivariant one carrying the correct symmetry~\citep{lawrence2026,rygiel2026}.
+A second reason (not found in the literature) could be that some functions are simpler to express on canonicalized inputs.
+An example: the distance between $x,y\in\mathbb R^2$ needs a single hidden unit provided a canonical preprocessing composed of a translation moving $x$ to $0$ and a rotation until $y_2=0$ and $y_1\geq 0$.
+
+On the theoretical side, \citet{lawrence2026} prove for invariant ridge regression that the correctly-invariant model can generalize worse than an unconstrained one under distributional SB and \citet{chen2020} quantify the effect for data augmentation by relaxing exact to approximate distributional invariance $X\approx_d gX$, with the degree of non-invariance measured by an optimal-transport distance $\mathcal W_1$.
+The resulting risk bounds carry uncertainty terms $\pm\,\mathbb E_g\,\mathcal W_1(f(gx),f(x))$ compared to the distributionally invariant case that widen as the symmetry bias grows.
+\citet{vadgama2025} study the impact on expressivity: a \emph{pose-entropy} $\mathbb P(Z\mid X)$ interpolates between zero entropy (canonically aligned data, $\mathbb P(Z\mid X)=\delta(Z-Z_{\mathrm{true}})$) and the uniform distribution, which forces the model to be pose-agnostic and hence less expressive.
+They prove that the first case has higher expressivity (Cor.~3.1).
+Empirically, \citet{rygiel2026} find on computational fluid dynamics tasks that non-equivariant models overperform in highly aligned regimes (e.g. automotive aerodynamics) while equivariant models win in unaligned ones (e.g. hemodynamics), so the dataset's degree of alignment, not the symmetry alone, governs the comparison
+Likewise, an $\mathbb R^2$ model beats an $SE(2)$-equivariant one on CIFAR-10/100 \citep[Tab.~4]{romero2023} fitting the picture.
+
+\paragraph{\textbf{Measuring Distributional Symmetry Breaking}}
+\citet{lawrence2026} propose two model-based metrics.
+A \emph{symmetry-bias} metric compares $p_X$ to its symmetrization $\bar p_X(x)=\int_G p_X(gx)\,dg$ through the accuracy of a two-sample classifier trained to tell the two apart.
+The metric is defined as:
+$$m(p_X):=Acc_{NN}(p_X, \bar p_X)=\mathbb{E}_{x\sim \operatorname{Unif}(p_X, \bar p_X)}[Acc(NN(x))],$$
+where  $NN$  is a neural network.
+A second \emph{task-useful} metric then asks whether the bias is label-informative, as a ratio $L_G/L$ comparing a network that predicts the label from a random-but-equivariant canonical pose against a baseline.
+Given a canonicalization function  $c:X\to G$, the losses are defined as $L=\mathbb E_x\left [ \mathbb 1 \big (NN(c(x))=f(x)\big ) \right ]$ and $L_G=\mathbb E_x\left [ \mathbb 1 \big (NN(c(gx))=gf(x)\big ) \right ]$. Here  $NN:G\to Y$  is another model, trained to predict the label from the pose.
+They report that standard benchmarks (QM9, ModelNet40) are notably symmetry-biased.
+\citet{urbano2026} instead estimate the orbit density directly with a class--pose IE (invariant--equivariant) autoencoder.
+
+\paragraph{\textbf{Two extremes}}
+Canonicalization is the limit in which the orbit density collapses to a Dirac mass \citep{ciuclea2025,urbano2026}.
+\citet{urbano2026} take the canonical representative to be a \emph{natural pose} obtained from a robust Fréchet mean $\mathcal F(\mu)=\arg\min_{y}\sum_{g_i}d(y,g_i)^2$ and left-multiply each orbit so that the identity element is that pose, obtaining an orbit distribution centered around the natural pose.
+Extrinsic equivariance is the another extreme, in which $g$ sends $x$ entirely off-distribution, $p(gx)=0$; whether it helps is itself context-dependent, being beneficial in \citet{wang2022b} but harmful in the examples of \citet{wang2023a}.
+
+\paragraph{\textbf{A hierarchical caveat}}
+Distributional SB may act only at some levels of a feature hierarchy: on MNIST, local features (edges) can be $E(2)$-equivariant while global ones (digits) are not.
+A depth-limited equivariant model could exploit the low-level symmetry without paying for the high-level asymmetry \citep[Fig.~2c]{weiler2019anips}.
+This perspective is supported by \citet{elsayed2020p3icml} who report that breaking equivariance only in the later layers is best-performing on MNIST, CIFAR-10 and CelebA compared to breaking it in earlier layers and equivariant architectures.
+
+\subsubsection{Parameter-space, loss landscape and training dynamics}
+We now focus on parameter-spaces, where symmetries are typically naturally imposed by design choices whose ramified consequences are not fully understood.
+The term ``spontaneous'' is sometimes borrowed from physics to describe their breaking conveying the double lack of intent.
+Because \Cref{sec:parameter-space-symmetries} develops these symmetries, we record here only the specifically symmetry-breaking findings.
+
+\paragraph{\textbf{Gradient Flow and Practical Optimization}}
+Gradient Flow (GF) overstates how much symmetry survives training.
+\citet{kunin2020} derive a \emph{modified} gradient flow accounting for finite learning rate, momentum and weight decay, under which the conservation laws implied by parameter-space symmetries are broken.
+As a consequence, conservation laws are also broken.
+A simple given exmaple: a quantity conserved under GF instead decays as $\langle\theta(t),\mathbb I_{\mathcal A}\rangle=e^{-\lambda t}\langle\theta(0),\mathbb I_{\mathcal A}\rangle$, where $\lambda$ is the weight decay.
+\citet{tanaka2021} show, through a Lagrangian formulation with the loss as potential energy $V$ and the learning rule as kinetic energy $T$, that a symmetry of the loss need not be a symmetry of the \emph{dynamics}: parameter symmetries fix $V$ by definition.
+This can be seen from the Lagrangian $\mathcal L=T-V$ where $T=\frac{1}{2} m \dot q^2$ is the kinetic energy and $V$ the potential energy. Parameter-space symmetries leave $V$ invariant by definition, however $T$ is not necessarily invariant.
+They give the example of a scaling transformation where $\dot q^2$ transforms as $(1+s)\dot q^2$, thus the kinetic part is responsible for breaking the symmetry of $\mathcal L$, and alteration of the trajectory.
+This \emph{kinetic SB}, is surpinsigly show to turn normalization layers into an implicit RMSProp-like adaptive optimizer.
+\citet{ziyin2025a} reach similar conclusions from an entropic perspective: with stochastic minibatches and finite steps the descent follows $\dot\theta=-\eta(\nabla L+\gamma\theta+\nabla S)$, whose \emph{entropic} term $S(\theta)=-\tfrac14\mathbb E_B\|\sqrt{\Lambda}\,\mathbb E_{x\in B}\nabla l(x,\theta)\|^2$ can be invariant only to orthogonal symmetries.
+Additionally, when the learning rate $\Lambda$ is matrix-valued (common optimizers like Adam) with $\Lambda\neq\alpha I$, only to \emph{discrete} ones: stochasticity systematically breaks continuous symmetries.
+The inverse of SB is also studied and was coined \emph{symmetry restoration}\citep{ziyin2025}.
+\citet{ziyin2024} study mirror symmetries $l_0(w)=l_0(Rw)$ with $R=I-2OO^\top$ (subsuming rescaling, rotation and permutation symmetries), whose reflection surface $\{w:O^\top w=0\}$ is both gradient-stable ($O^\top\nabla_w l_0(w)=0$) and, under enough weight decay or a large enough learning rate, attractive, so training can move \emph{toward} more symmetric parameters.
+\citet{ziyin2025} synthesize the two directions: a $G$-symmetric state is the fixed set of the projector $P_G=\frac{1}{|G|}\sum_g\rho_\Theta(g)$, and a \emph{symmetry-breaking distance} $\Delta^G=\|\theta-P_G\theta\|_2^2$ tracks how learning alternates between symmetry-breaking \citep{ziyin2025a} and symmetry-restoration \citep{ziyin2024} phases across layers and iterations.
+For example, a symmetric state for the permutation symmetry occurs when two neurons $i$ and $j$ are isomorphic in the computational graph and have exactly the same input and output weights--being virtually indistinguishable.
+$\Delta^G$, specifically evaluated for the pair $(i,j)$ simply yields $\| \theta_i - \theta_j \|_2^2$.\
+The distance $\Delta^G$, in practice used with a threshold, unveils a non-trivial symmetry dynamics both through spaces (layers) and time (iteration).
+
+\paragraph{\textbf{Designed Symmetry Breaking in Parameter Space}}
+Since symmetries can slow optimization, cap effective capacity \citep{ziyin2025b}, or obscure landscape analysis \citep{lim2024}, works remove parameter-symmetries \emph{on purpose}, to study counterfactually or improve training.
+\citet{ziyin2025b} propose \emph{syre}, a model-agnostic scheme that anchors a random static bias at initialization, $l_r(\theta,x)=l(\theta+\theta_0)+\gamma\|\theta\|^2$, with the penalty upgraded to $\gamma\,\theta^\top D\theta$, $D_{ii}\sim\operatorname{Unif}(1-\epsilon,1+\epsilon)$, to also discard continuous symmetries.
+\citet{lim2024} instead build \emph{asymmetric} networks, either through an untrainability mask $W\mapsto M\odot W+(1-M)\odot W_{fixed}$ whose rows are nonzero and distinct (the networks remaining universal approximators) or through a non-elementwise activation.
+They observe that the resulting models enjoy direct linear mode connectivity, smoother loss landscapes and better weight-space learnability.
+
+\vspace{5mm}
+
+Finally, \citet{arjevani2023} identify a principle of \emph{least} SB: for a shallow ReLU network $f_\theta(x)=\mathbf 1^\top\operatorname{ReLU}(Wx)$ with a teacher of isotropy $S_d$, spurious minima have strictly smaller isotropy $S_p\times S_q$ with $p+q=d$, yet these are \emph{maximal} proper subgroups: they break the teacher's symmetry as little as possible.
 
 \subsection{Extent restriction: beyond groups}\label{sec:extent-restriction}
 
@@ -2453,25 +2589,15 @@ For linear models, \citet{elesedy2021p3icml} prove a strict generalization gain 
 The approximation--generalization trade-off of \citet{petrache2023} (\Cref{sec:soft-equivariance}) sits at the boundary of this theory and the approximate-symmetry regime, making explicit that the statistical benefit is contingent on the imposed symmetry being close to the true one.
 
 \section{Extensions}
+% Class-specific symmetries
+% wieser2020anips: similar to class pose
+% cohen2014 can be considered an early work that discusses the idea of separating in different subspaces the identity of an object from its ``factors of variations'' 
 
 \subsection{Pipelines}
 % Works that bring all multiple parts together
 % otto2025
 % anselmi2019pr
 % escriche2025
-
-\subsection{Orbital position, pose}
-
-% Pose or canonical orientation, class-specific symmetries
-Class-pose methods factor data points into an \textit{invariant representation} and a \textit{pose}.
-\cite{urbano2026} proposes to extract a class-specific canonical representative pose which can be used as an independent layer to convert a non-invariant model into and invariant one.
-% wieser2020anips: similar to class pose
-
-% lawrence2026 discusses canonicalization
-
-% cohen2014 can be considered an early work that discusses the idea of separating in different subspaces the identity of an object from its ``factors of variations'' 
-
-
 
 \section{Discussion}
 
@@ -2488,15 +2614,13 @@ Class-pose methods factor data points into an \textit{invariant representation} 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Optional
 
-%% Only for journal Encyclopedia
-%\entrylink{The Link to this entry published on the encyclopedia platform.}
-
 \abbreviations{Abbreviations}{%
 The following abbreviations are used in this manuscript:\\
 \noindent
 \begin{tabular}{@{}ll}
 DA & Data Augmentation \\
-GDL & Geometric Deep Learning
+GDL & Geometric Deep Learning \\
+SB & Symmetry Breaking
 \end{tabular}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2507,7 +2631,7 @@ GDL & Geometric Deep Learning
 \section[\appendixname~\thesection]{Group table}
 
 % The group table: a table listing [group, nature, papers]
-\begin{table}[ht]
+\begin{table}[h]
     \centering
     \begin{tabularx}{\textwidth}{|l|l|X|}
         \hline
