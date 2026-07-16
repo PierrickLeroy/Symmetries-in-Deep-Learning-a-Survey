@@ -1969,9 +1969,8 @@ Similarly to DA, FA can be applied beyond strict group-invariance settings, acco
 Comparing DA to equivariant architectures, \citet{nordenfors2024} show that the relative advantage depends on a compatibility condition between the spaces of admissible and equivariant layers: when it holds, the two strategies share the same set of equivariant stationary points.
 Empirically, \citet{shen2026} find that DA rapidly learn 3D rotation equivariance with negligible efficiency gap attributable to lack of strict equivariance.
 
-\subsection{Symmetric framework: Siamese networks and self-supervised learning}
+\subsection{Framework Symmetries}
 % see perin2025 paragraph "Many methods have been proposed to learn symmetries from data"
-% ilina2022sa
 % video from Jia-Bin Huang on learning without labels https://youtu.be/gVEr2cnDE_8
 A third way to build a symmetry into a learning system is neither to constrain the layers nor to augment the data, but to make the \emph{architecture and objective themselves symmetric}.
 The archetype is the \emph{Siamese network}, a pair of identical subnetworks with shared (tied) weights that process two inputs and are compared in the resulting feature space \cite{ilina2022sa}.
@@ -2500,11 +2499,8 @@ The symmetries at play here are largely \emph{parameter-space} symmetries: trans
 \citet{lenc2014a} use the same stitching-layer methodology that allowed them to test equivariance, repurposed to test whether two independently trained networks are equivalent i.e., whether a map $E_{\phi \to \phi'}$ exists such that $E_{\phi \to \phi'} \phi(\mathbf{x}) \approx \phi'(\mathbf{x})$---see \Cref{sec:sym-disc-from-data}.
 
 % Characterization: what transformations preserve the function?
-
 % Reference the survey by Bo Zhao et al.
-
 % lenc2014a: feature space mapping, stitching networks
-
 % ziyin2025: param space symmetries explain abrupt jumps in learning dynamics, simplicity bias (model complexity) and feature learning phenomenon such as neural collapse
 A parameter-space symmetry is a transformation of the weights $\theta \mapsto g\cdot\theta$ that does not change the implemented function, so that $f_{\theta} = f_{g\cdot\theta}$.
 The two archetypes, both introduced earlier, are the neuron permutations of a hidden layer and, for homogeneous activations such as ReLU, the positive rescalings that trade magnitude between a unit's incoming and outgoing weights; jointly they generate the layerwise $S_n \ltimes \mathbb{R}_{>0}^n$ action of \Cref{ex:semidirect-products}.
@@ -2512,12 +2508,9 @@ Because every such transformation moves through a set of weights that are indist
 As a diagnostic, \citet{lenc2014a} repurpose the stitching-layer methodology they had used to test equivariance, now to test whether two independently trained networks are equivalent up to a linear map $E_{\phi\to\phi'}$ satisfying $E_{\phi\to\phi'}\phi(\mathbf{x}) \approx \phi'(\mathbf{x})$ (cf.\ \Cref{sec:sym-disc-from-data}).
 
 \subsubsection{Identifiability}
-
 % Identifiability: when can parameters be recovered? (grillo2026,rolnick2020p3icml)
 % Functional dimension and redundancy: elisendagrigsby2025aim, phuong2019 - singular learning theory
-
 % paragraph on symmetry discovery in parameter space (® like zhao2024a, but who is a methodological reject)
-
 % global vs local vs data-dependent symmetries
 Identifiability asks the converse of redundancy: setting aside the known symmetries, can a network's parameters be recovered from its function?
 For ReLU networks the answer is largely affirmative.
@@ -2526,27 +2519,18 @@ Constructively, \citet{rolnick2020p3icml} reverse-engineer the weights of a deep
 A finer picture is given by the \emph{functional dimension}: \citet{elisendagrigsby2025aim} show that the effective number of degrees of freedom a ReLU network realizes can be strictly smaller than its parameter count, because symmetries and other degeneracies collapse directions in parameter space---connecting identifiability to the singular structure studied in singular learning theory.
 
 \subsubsection{Effects on optimization landscape and learning dynamics}
-
 % esmaeili2023: homeomorphic encoding to a latent space structured as a Lie is initialization dependent (sgd obstruction)
-
 % ziyin's papers on learning dynamics: ziyin2025a, ziyin2024
 % lim2024: making network asymmetric
-
 % Symmetry-induced saddle points and critical manifolds (brea2019, simsek2021, li2018)
 % jacot2022: phase transition depending on initialization variance that determines which is closest between a global minima and a saddle (saddle at origin)
-
 % Mode connectivity and permutation (entezari2022, ainsworth2023, jordan2023, tatro2020)
-
 % Flatness, SAM, invariant flatness measures: dinh2017 etc
-
 % learning algorithm modification
 % tanaka2021: for normalized layer, explicit SB by momentum and weight decay induces an implicit RMSProp optimization
 % arjevani2023: SGD biased to find minima that have least symmetry breaking wrt to teacher network
-
 % implicit regularization: du2018anips (homogeneity naturally induces layer balancing)
-
 % preservation of the target function/data symmetries by GF (infinitely wide two-layers ReLU networks): hajjar2023, maass2024
-
 % ziyin2024a: exponential symmetry, gradient noise
 Parameter symmetries leave a distinctive imprint on the loss landscape.
 Because the loss is constant along each symmetry orbit, minima are never isolated points but come in continuous, equal-loss manifolds, and the same mechanism manufactures saddle points where orbits of different types meet.
