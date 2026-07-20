@@ -212,7 +212,7 @@
   urldate = {2026-01-08},
   abstract = {Recent self-supervised methods for image representation learning are based on maximizing the agreement between embedding vectors from different views of the same image. A trivial solution is obtained when the encoder outputs constant vectors. This collapse problem is often avoided through implicit biases in the learning architecture, that often lack a clear justification or interpretation. In this paper, we introduce VICReg (Variance-Invariance-Covariance Regularization), a method that explicitly avoids the collapse problem with a simple regularization term on the variance of the embeddings along each dimension individually. VICReg combines the variance term with a decorrelation mechanism based on redundancy reduction and covariance regularization, and achieves results on par with the state of the art on several downstream tasks. In addition, we show that incorporating our new variance term into other methods helps stabilize the training and leads to performance improvements.},
   archiveprefix = {arXiv},
-  keywords = {/read,covariance,regularization,self supervised learning,variance},
+  keywords = {/read,covariance,regularization,self supervised learning,sym-survey/frameworks/joint-embedding,variance},
   file = {/home/pierrick/OneDrive/zotero-library/2022/Bardes/bardes2022.pdf}
 }
 
@@ -710,7 +710,7 @@
   journal = {Proceedings of the IEEE/CVF international conference on computer vision},
   abstract = {In this paper, we question if self-supervised learning provides new properties to Vision Transformer (ViT) [16] that stand out compared to convolutional networks (convnets). Beyond the fact that adapting self-supervised methods to this architecture works particularly well, we make the following observations: first, self-supervised ViT features contain explicit information about the semantic segmentation of an image, which does not emerge as clearly with supervised ViTs, nor with convnets. Second, these features are also excellent k-NN classifiers, reaching 78.3\% top-1 on ImageNet with a small ViT. Our study also underlines the importance of momentum encoder [26], multi-crop training [9], and the use of small patches with ViTs. We implement our findings into a simple self-supervised method, called DINO, which we interpret as a form of self-distillation with no labels. We show the synergy between DINO and ViTs by achieving 80.1\% top-1 on ImageNet in linear evaluation with ViT-Base.},
   langid = {english},
-  keywords = {/unread},
+  keywords = {/read,sym-survey/frameworks/joint-embedding},
   file = {/home/pierrick/OneDrive/zotero-library/2021/Caron/caron2021.pdf}
 }
 
@@ -767,7 +767,7 @@
   urldate = {2026-04-18},
   abstract = {Siamese networks have become a common structure in various recent models for unsupervised visual representation learning. These models maximize the similarity between two augmentations of one image, subject to certain conditions for avoiding collapsing solutions. In this paper, we report surprising empirical results that simple Siamese networks can learn meaningful representations even using none of the following: (i) negative sample pairs, (ii) large batches, (iii) momentum encoders. Our experiments show that collapsing solutions do exist for the loss and structure, but a stop-gradient operation plays an essential role in preventing collapsing. We provide a hypothesis on the implication of stop-gradient, and further show proof-of-concept experiments verifying it. Our "SimSiam" method achieves competitive results on ImageNet and downstream tasks. We hope this simple baseline will motivate people to rethink the roles of Siamese architectures for unsupervised representation learning. Code will be made available.},
   archiveprefix = {arXiv},
-  keywords = {/unread,siamese network,stop gradient},
+  keywords = {/read,siamese network,stop gradient,sym-survey/frameworks/joint-embedding},
   file = {/home/pierrick/OneDrive/zotero-library/2020/Chen/chen2020a.pdf}
 }
 
@@ -782,7 +782,7 @@
   urldate = {2026-07-06},
   abstract = {This paper presents SimCLR: a simple framework for contrastive learning of visual representations. We simplify recently proposed contrastive self-supervised learning algorithms without requiring specialized architectures or a memory bank. In order to understand what enables the contrastive prediction tasks to learn useful representations, we systematically study the major components of our framework. We show that (1) composition of data augmentations plays a critical role in defining effective predictive tasks, (2) introducing a learnable nonlinear transformation between the representation and the contrastive loss substantially improves the quality of the learned representations, and (3) contrastive learning benefits from larger batch sizes and more training steps compared to supervised learning. By combining these findings, we are able to considerably outperform previous methods for self-supervised and semi-supervised learning on ImageNet. A linear classifier trained on self-supervised representations learned by SimCLR achieves 76.5\% top-1 accuracy, which is a 7\% relative improvement over previous state-of-the-art, matching the performance of a supervised ResNet-50. When fine-tuned on only 1\% of the labels, we achieve 85.8\% top-5 accuracy, outperforming AlexNet with 100X fewer labels.},
   langid = {english},
-  keywords = {/unread},
+  keywords = {/read,sym-survey/frameworks/joint-embedding},
   file = {/home/pierrick/OneDrive/zotero-library/2020/Chen/chen2020p3icml.pdf}
 }
 
@@ -815,7 +815,7 @@
   doi = {10.1109/CVPR.2005.202},
   urldate = {2024-12-06},
   abstract = {We present a method for training a similarity metric from data. The method can be used for recognition or verification applications where the number of categories is very large and not known during training, and where the number of training samples for a single category is very small. The idea is to learn a function that maps input patterns into a target space such that the L/sub 1/ norm in the target space approximates the "semantic" distance in the input space. The method is applied to a face verification task. The learning process minimizes a discriminative loss function that drives the similarity metric to be small for pairs of faces from the same person, and large for pairs from different persons. The mapping from raw to the target space is a convolutional network whose architecture is designed for robustness to geometric distortions. The system is tested on the Purdue/AR face database which has a very high degree of variability in the pose, lighting, expression, position, and artificial occlusions such as dark glasses and obscuring scarves.},
-  keywords = {/on halt,contrastive loss},
+  keywords = {/on halt,contrastive loss,sym-survey/frameworks/joint-embedding},
   file = {/home/pierrick/OneDrive/zotero-library/2005/Chopra/chopra20052icsccvprc.pdf}
 }
 
@@ -969,7 +969,7 @@
   abstract = {Deep generative networks have been widely used for learning mappings from a low-dimensional latent space to a high-dimensional data space. In many cases, data transformations are defined by linear paths in this latent space. However, the Euclidean structure of the latent space may be a poor match for the underlying latent structure in the data. In this work, we incorporate a generative manifold model into the latent space of an autoencoder in order to learn the low-dimensional manifold structure from the data and adapt the latent space to accommodate this structure. In particular, we focus on applications in which the data has closed transformation paths which extend from a starting point and return to nearly the same point. Through experiments on data with natural closed transformation paths, we show that this model introduces the ability to learn the latent dynamics of complex systems, generate transformation paths, and classify samples that belong on the same transformation path.},
   copyright = {Copyright (c) 2020 Association for the Advancement of Artificial Intelligence},
   langid = {english},
-  keywords = {/unread,autoencoder},
+  keywords = {/unread,autoencoder,sym-survey/frameworks/generative models},
   file = {/home/pierrick/OneDrive/zotero-library/2020/Connor/connor2020pacai.pdf}
 }
 
@@ -985,7 +985,7 @@
   doi = {10.1162/neco_a_01695},
   urldate = {2026-07-17},
   abstract = {We describe a computational model for inferring 3D structure from the motion of projected 2D points in an image, with the aim of understanding how biological vision systems learn and internally represent 3D transformations from the statistics of their input. The model uses manifold transport operators to describe the action of 3D points in a scene as they undergo transformation. We show that the model can learn the generator of the Lie group for these transformations from purely 2D input, providing a proof-of-concept demonstration for how biological systems could adapt their internal representations based on sensory input. Focusing on a rotational model, we evaluate the ability of the model to infer depth from moving 2D projected points and to learn rotational transformations from 2D training stimuli. Finally, we compare the model performance to psychophysical performance on structure-from-motion tasks.},
-  keywords = {/unread,autoencoder}
+  keywords = {/unread,autoencoder,sym-survey/frameworks/generative models}
 }
 
 @article{cornet2024,
@@ -1011,7 +1011,7 @@
   urldate = {2026-06-24},
   abstract = {Interpretability methods are valuable only if their explanations faithfully describe the explained model. In this work, we consider neural networks whose predictions are invariant under a specific symmetry group. This includes popular architectures, ranging from convolutional to graph neural networks. Any explanation that faithfully explains this type of model needs to be in agreement with this invariance property. We formalize this intuition through the notion of explanation invariance and equivariance by leveraging the formalism from geometric deep learning. Through this rigorous formalism, we derive (1) two metrics to measure the robustness of any interpretability method with respect to the model symmetry group; (2) theoretical robustness guarantees for some popular interpretability methods and (3) a systematic approach to increase the invariance of any interpretability method with respect to a symmetry group. By empirically measuring our metrics for explanations of models associated with various modalities and symmetry groups, we derive a set of 5 guidelines to allow users and developers of interpretability methods to produce robust explanations.},
   archiveprefix = {arXiv},
-  keywords = {/unread,explanation,interpretability},
+  keywords = {/unread,explanation,interpretability,sym-survey/frameworks/explanation},
   file = {/home/pierrick/OneDrive/zotero-library/2023/Crabbé/crabbe2023.pdf}
 }
 
@@ -1167,7 +1167,7 @@
   urldate = {2026-07-16},
   abstract = {Visual and linguistic concepts naturally organize themselves in a hierarchy, where a textual concept "dog" entails all images that contain dogs. Despite being intuitive, current large-scale vision and language models such as CLIP do not explicitly capture such hierarchy. We propose MERU, a contrastive model that yields hyperbolic representations of images and text. Hyperbolic spaces have suitable geometric properties to embed tree-like data, so MERU can better capture the underlying hierarchy in image-text datasets. Our results show that MERU learns a highly interpretable and structured representation space while being competitive with CLIP's performance on standard multi-modal tasks like image classification and image-text retrieval.},
   langid = {english},
-  keywords = {/unread},
+  keywords = {/read,sym-survey/frameworks/joint-embedding},
   file = {/home/pierrick/OneDrive/zotero-library/2023/Desai/desai2023p4icml.pdf}
 }
 
@@ -1246,7 +1246,7 @@ rate: 2},
   urldate = {2026-07-17},
   abstract = {We propose a framework for learning neural scene representations directly from images, without 3D supervision. Our key insight is that 3D structure can be imposed by ensuring that the learned representation transforms like a real 3D scene. Specifically, we introduce a loss which enforces equivariance of the scene representation with respect to 3D transformations. Our formulation allows us to infer and render scenes in real time while achieving comparable results to models requiring minutes for inference. In addition, we introduce two challenging new datasets for scene representation and neural rendering, including scenes with complex lighting and backgrounds. Through experiments, we show that our model achieves compelling results on these datasets as well as on standard ShapeNet benchmarks.},
   langid = {english},
-  keywords = {/unread,autoencoder},
+  keywords = {/unread,autoencoder,sym-survey/frameworks/generative models},
   file = {/home/pierrick/OneDrive/zotero-library/2020/Dupont/dupont2020p3icml 1.pdf;/home/pierrick/OneDrive/zotero-library/2020/Dupont/dupont2020p3icml.pdf}
 }
 
@@ -1807,7 +1807,7 @@ rate: 2},
   urldate = {2026-04-18},
   abstract = {We introduce Bootstrap Your Own Latent (BYOL), a new approach to self-supervised image representation learning. BYOL relies on two neural networks, referred to as online and target networks, that interact and learn from each other. From an augmented view of an image, we train the online network to predict the target network representation of the same image under a different augmented view. At the same time, we update the target network with a slow-moving average of the online network. While state-of-the art methods rely on negative pairs, BYOL achieves a new state of the art without them. BYOL reaches \$74.3\textbackslash\%\$ top-1 classification accuracy on ImageNet using a linear evaluation with a ResNet-50 architecture and \$79.6\textbackslash\%\$ with a larger ResNet. We show that BYOL performs on par or better than the current state of the art on both transfer and semi-supervised benchmarks. Our implementation and pretrained models are given on GitHub.},
   archiveprefix = {arXiv},
-  keywords = {/unread,bootstrap,contrastive learning},
+  keywords = {/read,bootstrap,contrastive learning,sym-survey/frameworks/joint-embedding},
   file = {/home/pierrick/OneDrive/zotero-library/2020/Grill/grill2020.pdf}
 }
 
@@ -1852,7 +1852,7 @@ rate: 2},
   urldate = {2026-06-28},
   abstract = {Self-supervised learning converts raw perceptual data such as images to a compact space where simple Euclidean distances measure meaningful variations in data. In this paper, we extend this formulation by adding additional geometric structure to the embedding space by enforcing transformations of input space to correspond to simple (i.e., linear) transformations of embedding space. Specifically, in the contrastive learning setting, we introduce an equivariance objective and theoretically prove that its minima force augmentations on input space to correspond to rotations on the spherical embedding space. We show that merely combining our equivariant loss with a non-collapse term results in non-trivial representations, without requiring invariance to data augmentations. Optimal performance is achieved by also encouraging approximate invariance, where input augmentations correspond to small rotations. Our method, CARE: Contrastive Augmentation-induced Rotational Equivariance, leads to improved performance on downstream tasks and ensures sensitivity in embedding space to important variations in data (e.g., color) that standard contrastive methods do not achieve. Code is available at https://github.com/Sharut/CARE},
   langid = {english},
-  keywords = {/read,sym-survey/exotic-algstruct/semigroup},
+  keywords = {/read,sym-survey/exotic-algstruct/semigroup,sym-survey/frameworks/joint-embedding},
   file = {/home/pierrick/OneDrive/zotero-library/2023/Gupta/gupta2023a.pdf}
 }
 
@@ -1885,7 +1885,7 @@ rate: 2},
   abstract = {Dimensionality reduction involves mapping a set of high dimensional input points onto a low dimensional manifold so that ``similar'' points in input space are mapped to nearby points on the manifold. Most existing techniques for solving the problem suffer from two drawbacks. First, most of them depend on a meaningful and computable distance metric in input space. Second, they do not compute a ``function'' that can accurately map new input samples whose relationship to the training data is unknown. We present a method - called Dimensionality Reduction by Learning an Invariant Mapping (DrLIM) - for learning a globally coherent non-linear function that maps the data evenly to the output manifold. The learning relies solely on neighborhood relationships and does not require any distance measure in the input space. The method can learn mappings that are invariant to certain transformations of the inputs, as is demonstrated with a number of experiments. Comparisons are made to other techniques, in particular LLE.},
   isbn = {978-0-7695-2597-6},
   langid = {english},
-  keywords = {/on halt,contrastive loss},
+  keywords = {/on halt,contrastive loss,sym-survey/frameworks/joint-embedding},
   file = {/home/pierrick/OneDrive/zotero-library/2006/Hadsell/hadsell20062icsccvpr-v2c.pdf}
 }
 
@@ -1944,7 +1944,7 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   journal = {Proceedings of the IEEE/CVF conference on computer vision and pattern recognition},
   abstract = {We present Momentum Contrast (MoCo) for unsupervised visual representation learning. From a perspective on contrastive learning [29] as dictionary look-up, we build a dynamic dictionary with a queue and a moving-averaged encoder. This enables building a large and consistent dictionary on-the-fly that facilitates contrastive unsupervised learning. MoCo provides competitive results under the common linear protocol on ImageNet classification. More importantly, the representations learned by MoCo transfer well to downstream tasks. MoCo can outperform its supervised pre-training counterpart in 7 detection/segmentation tasks on PASCAL VOC, COCO, and other datasets, sometimes surpassing it by large margins. This suggests that the gap between unsupervised and supervised representation learning has been largely closed in many vision tasks.},
   langid = {english},
-  keywords = {/unread},
+  keywords = {/read,sym-survey/frameworks/joint-embedding},
   file = {/home/pierrick/OneDrive/zotero-library/2020/He/he2020.pdf}
 }
 
@@ -2112,7 +2112,7 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   abstract = {A number of modern techniques for neural network training and recognition enhancement are based on their structures' symmetry. Such approaches demonstrate impressive results, both for recognition practice, and for understanding of data transformation processes in various feature spaces. This survey examines symmetrical neural network architectures---Siamese and triplet. Among a wide range of tasks having various mathematical formulation areas, especially effective applications of symmetrical neural network architectures are revealed. We systematize and compare different architectures of symmetrical neural networks, identify genetic relationships between significant studies of different authors' groups, and discuss opportunities to improve the element base of such neural networks. Our survey builds bridges between a large number of isolated studies with significant practical results in the considered area of knowledge, so that the presented survey acquires additional relevance.},
   copyright = {http://creativecommons.org/licenses/by/3.0/},
   langid = {english},
-  keywords = {/unread,survey/mdpi/symmetry},
+  keywords = {/on halt,survey/mdpi/symmetry,sym-survey/frameworks/joint-embedding},
   file = {/home/pierrick/OneDrive/zotero-library/2022/Ilina/ilina2022sa.pdf}
 }
 
@@ -2180,7 +2180,7 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   year = 2026,
   urldate = {2026-07-19},
   abstract = {How does an AI learn how the world works --- without labels, and without predicting every pixel? In this video, we will trace 30+ years of self-supervised learning, from Becker \& Hinton's 1992 random-dot stereograms to JEPA and modern world models. We build up the key ideas one probl},
-  keywords = {/read}
+  keywords = {/read,sym-survey/frameworks/joint-embedding}
 }
 
 @article{jordan2023,
@@ -2224,7 +2224,7 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   urldate = {2026-07-16},
   abstract = {Symmetry-based neural networks often constrain the architecture in order to achieve invariance or equivariance to a group of transformations. In this paper, we propose an alternative that avoids this architectural constraint by learning to produce canonical representations of the data. These canonicalization functions can readily be plugged into non-equivariant backbone architectures. We offer explicit ways to implement them for some groups of interest. We show that this approach enjoys universality while providing interpretable insights. Our main hypothesis, supported by our empirical results, is that learning a small neural network to perform canonicalization is better than using predefined heuristics. Our experiments show that learning the canonicalization function is competitive with existing techniques for learning equivariant functions across many tasks, including image classification, {$N$}NN-body dynamics prediction, point cloud classification and part segmentation, while being faster across the board.},
   langid = {english},
-  keywords = {/unread},
+  keywords = {/unread,sym-survey/frameworks/post-hoc},
   file = {/home/pierrick/OneDrive/zotero-library/2023/Kaba/kaba2023p4icml.pdf}
 }
 
@@ -2267,7 +2267,7 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   urldate = {2026-02-20},
   abstract = {Although learned representations underlie neural networks' success, their fundamental properties remain poorly understood. A striking example is the emergence of simple geometric structures in LLM representations: for example, calendar months organize into a circle, years form a smooth one-dimensional manifold, and cities' latitudes and longitudes can be decoded by a linear probe. We show that the statistics of language exhibit a translation symmetry -- e.g., the co-occurrence probability of two months depends only on the time interval between them -- and we prove that the latter governs the aforementioned geometric structures in high-dimensional word embedding models. Moreover, we find that these structures persist even when the co-occurrence statistics are strongly perturbed (for example, by removing all sentences in which two months appear together) and at moderate embedding dimension. We show that this robustness naturally emerges if the co-occurrence statistics are collectively controlled by an underlying continuous latent variable. We empirically validate this theoretical framework in word embedding models, text embedding models, and large language models.},
   archiveprefix = {arXiv},
-  keywords = {,/read,geometry,language},
+  keywords = {,/read,geometry,language,sym-survey/frameworks/generative models},
   annotation = {GSCC: 0000007 2026-06-02T08:48:13.519Z 0.44},
   file = {/home/pierrick/OneDrive/zotero-library/2026/Karkada/karkada2026.pdf}
 }
@@ -2282,7 +2282,7 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   publisher = {Curran Associates, Inc.},
   urldate = {2026-07-17},
   abstract = {In this work we seek to bridge the concepts of topographic organization and equivariance in neural networks. To accomplish this, we introduce the Topographic VAE: a novel method for efficiently training deep generative models with topographically organized latent variables. We show that such a model indeed learns to organize its activations according to salient characteristics such as digit class, width, and style on MNIST. Furthermore, through topographic organization over time (i.e. temporal coherence), we demonstrate how predefined latent space transformation operators can be encouraged for observed transformed input sequences -- a primitive form of unsupervised learned equivariance. We demonstrate that this model successfully learns sets of approximately equivariant features (i.e. "capsules") directly from sequences and achieves higher likelihood on correspondingly transforming test sequences. Equivariance is verified quantitatively by measuring the approximate commutativity of the inference network and the sequence transformations. Finally, we demonstrate approximate equivariance to complex transformations, expanding upon the capabilities of existing group equivariant neural networks.},
-  keywords = {/unread,autoencoder},
+  keywords = {/unread,autoencoder,sym-survey/frameworks/generative models},
   file = {/home/pierrick/OneDrive/zotero-library/2021/Keller/keller2021anips.pdf}
 }
 
@@ -3127,7 +3127,7 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   urldate = {2026-07-16},
   abstract = {While supervised learning has enabled great progress in many applications, unsupervised learning has not seen such widespread adoption, and remains an important and challenging endeavor for artificial intelligence. In this work, we propose a universal unsupervised learning approach to extract useful representations from high-dimensional data, which we call Contrastive Predictive Coding. The key insight of our model is to learn such representations by predicting the future in latent space by using powerful autoregressive models. We use a probabilistic contrastive loss which induces the latent space to capture information that is maximally useful to predict future samples. It also makes the model tractable by using negative sampling. While most prior work has focused on evaluating representations for a particular modality, we demonstrate that our approach is able to learn useful representations achieving strong performance on four distinct domains: speech, images, text and reinforcement learning in 3D environments.},
   langid = {english},
-  keywords = {/read},
+  keywords = {/read,sym-survey/frameworks/joint-embedding},
   file = {/home/pierrick/OneDrive/zotero-library/2018/Oord/oord2018a.pdf}
 }
 
@@ -3416,7 +3416,7 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   urldate = {2026-07-16},
   abstract = {Many machine learning tasks involve learning functions that are known to be invariant or equivariant to certain symmetries of the input data. However, it is often challenging to design neural network architectures that respect these symmetries while being expressive and computationally efficient. For example, Euclidean motion invariant/equivariant graph or point cloud neural networks. We introduce Frame Averaging (FA), a highly general purpose and systematic framework for adapting known (backbone) architectures to become invariant or equivariant to new symmetry types. Our framework builds on the well known group averaging operator that guarantees invariance or equivariance but is intractable. In contrast, we observe that for many important classes of symmetries, this operator can be replaced with an averaging operator over a small subset of the group elements, called a frame. We show that averaging over a frame guarantees exact invariance or equivariance while often being much simpler to compute than averaging over the entire group. Furthermore, we prove that FA-based models have maximal expressive power in a broad setting and in general preserve the expressive power of their backbone architectures. Using frame averaging, we propose a new class of universal Graph Neural Networks (GNNs), universal Euclidean motion invariant point cloud networks, and Euclidean motion invariant Message Passing (MP) GNNs. We demonstrate the practical effectiveness of FA on several applications including point cloud normal estimation, beyond \$2\$-WL graph separation, and \$n\$-body dynamics prediction, achieving state-of-the-art results in all of these benchmarks.},
   langid = {english},
-  keywords = {/unread},
+  keywords = {/unread,sym-survey/frameworks/post-hoc},
   file = {/home/pierrick/OneDrive/zotero-library/2021/Puny/puny2021.pdf}
 }
 
@@ -3496,7 +3496,8 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   urldate = {2026-07-16},
   abstract = {State-of-the-art computer vision systems are trained to predict a fixed set of predetermined object categories. This restricted form of supervision limits their generality and usability since additional labeled data is needed to specify any other visual concept. Learning directly from raw text about images is a promising alternative which leverages a much broader source of supervision. We demonstrate that the simple pre-training task of predicting which caption goes with which image is an efficient and scalable way to learn SOTA image representations from scratch on a dataset of 400 million (image, text) pairs collected from the internet. After pre-training, natural language is used to reference learned visual concepts (or describe new ones) enabling zero-shot transfer of the model to downstream tasks. We study the performance of this approach by benchmarking on over 30 different existing computer vision datasets, spanning tasks such as OCR, action recognition in videos, geo-localization, and many types of fine-grained object classification. The model transfers non-trivially to most tasks and is often competitive with a fully supervised baseline without the need for any dataset specific training. For instance, we match the accuracy of the original ResNet-50 on ImageNet zero-shot without needing to use any of the 1.28 million training examples it was trained on.},
   langid = {english},
-  keywords = {/unread},
+  keywords = {/read,sym-survey/frameworks/joint-embedding},
+  annotation = {GSCC: 0067316 2026-07-20T16:11:15.537Z 0.01},
   file = {/home/pierrick/OneDrive/zotero-library/2021/Radford/radford2021p3icml 1.pdf;/home/pierrick/OneDrive/zotero-library/2021/Radford/radford2021p3icml.pdf}
 }
 
@@ -3610,7 +3611,7 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   doi = {10.18653/v1/2020.acl-main.442},
   urldate = {2026-07-16},
   abstract = {Although measuring held-out accuracy has been the primary approach to evaluate generalization, it often overestimates the performance of NLP models, while alternative approaches for evaluating models either focus on individual tasks or on specific behaviors. Inspired by principles of behavioral testing in software engineering, we introduce CheckList, a task-agnostic methodology for testing NLP models. CheckList includes a matrix of general linguistic capabilities and test types that facilitate comprehensive test ideation, as well as a software tool to generate a large and diverse number of test cases quickly. We illustrate the utility of CheckList with tests for three tasks, identifying critical failures in both commercial and state-of-art models. In a user study, a team responsible for a commercial sentiment analysis model found new and actionable bugs in an extensively tested model. In another user study, NLP practitioners with CheckList created twice as many tests, and found almost three times as many bugs as users without it.},
-  keywords = {/unread},
+  keywords = {/unread,sym-survey/frameworks/explanation},
   file = {/home/pierrick/OneDrive/zotero-library/2020/Ribeiro/ribeiro2020p5amacl.pdf}
 }
 
@@ -3792,7 +3793,7 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   urldate = {2024-02-20},
   abstract = {Despite significant recent advances in the field of face recognition, implementing face verification and recognition efficiently at scale presents serious challenges to current approaches. In this paper we present a system, called FaceNet, that directly learns a mapping from face images to a compact Euclidean space where distances directly correspond to a measure of face similarity. Once this space has been produced, tasks such as face recognition, verification and clustering can be easily implemented using standard techniques with FaceNet embeddings as feature vectors. Our method uses a deep convolutional network trained to directly optimize the embedding itself, rather than an intermediate bottleneck layer as in previous deep learning approaches. To train, we use triplets of roughly aligned matching / non-matching face patches generated using a novel online triplet mining method. The benefit of our approach is much greater representational efficiency: we achieve state-of-the-art face recognition performance using only 128-bytes per face. On the widely used Labeled Faces in the Wild (LFW) dataset, our system achieves a new record accuracy of 99.63\%. On YouTube Faces DB it achieves 95.12\%. Our system cuts the error rate in comparison to the best published result by 30\% on both datasets. We also introduce the concept of harmonic embeddings, and a harmonic triplet loss, which describe different versions of face embeddings (produced by different networks) that are compatible to each other and allow for direct comparison between each other.},
   archiveprefix = {arXiv},
-  keywords = {/on halt},
+  keywords = {/on halt,sym-survey/frameworks/joint-embedding},
   annotation = {9996 citations (Semantic Scholar/arXiv) [2024-02-21]\\
 9996 citations (Semantic Scholar/DOI) [2024-02-21]},
   file = {/home/pierrick/OneDrive/zotero-library/2015/Schroff/schroff20152iccvprc.pdf}
@@ -4975,7 +4976,7 @@ rate: 1},
   urldate = {2026-07-06},
   abstract = {Self-supervised learning (SSL) is rapidly closing the gap with supervised methods on large computer vision benchmarks. A successful approach to SSL is to learn embeddings which are invariant to distortions of the input sample. However, a recurring issue with this approach is the existence of trivial constant solutions. Most current methods avoid such solutions by careful implementation details. We propose an objective function that naturally avoids collapse by measuring the cross-correlation matrix between the outputs of two identical networks fed with distorted versions of a sample, and making it as close to the identity matrix as possible. This causes the embedding vectors of distorted versions of a sample to be similar, while minimizing the redundancy between the components of these vectors. The method is called Barlow Twins, owing to neuroscientist H. Barlow's redundancy-reduction principle applied to a pair of identical networks. Barlow Twins does not require large batches nor asymmetry between the network twins such as a predictor network, gradient stopping, or a moving average on the weight updates. Intriguingly it benefits from very high-dimensional output vectors. Barlow Twins outperforms previous methods on ImageNet for semi-supervised classification in the low-data regime, and is on par with current state of the art for ImageNet classification with a linear classifier head, and for transfer tasks of classification and object detection.},
   langid = {english},
-  keywords = {/unread},
+  keywords = {/read,sym-survey/frameworks/joint-embedding},
   file = {/home/pierrick/OneDrive/zotero-library/2021/Zbontar/zbontar2021p3icml.pdf}
 }
 
