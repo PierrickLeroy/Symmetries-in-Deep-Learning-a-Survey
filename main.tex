@@ -25,6 +25,10 @@
 
 %=================================================================
 % Add packages and commands here. The following packages are loaded in our class file: fontenc, inputenc, calc, indentfirst, fancyhdr, graphicx, epstopdf, lastpage, ifthen, float, amsmath, amssymb, lineno, setspace, enumitem, mathpazo, booktabs, titlesec, etoolbox, tabto, xcolor, colortbl, soul, multirow, microtype, tikz, totcount, changepage, attrib, upgreek, array, tabularx, pbox, ragged2e, tocloft, marginnote, marginfix, enotez, amsthm, natbib, hyperref, cleveref, scrextend, url, geometry, newfloat, caption, draftwatermark, seqsplit
+% Display paragraph titles in bold, with body text on the same line (overrides the non-bold block default of mdpi.cls)
+\titleformat{\paragraph}[runin]{\fontsize{10}{10}\selectfont\bfseries}{}{0pt}{}[.]
+\titlespacing{\paragraph}{0pt}{12pt}{1em}
+
 \newcommand{\pnote}[1]{\textcolor{red}{PL: #1}}
 \newcommand{\myline}{
   \vspace{5mm}
@@ -1794,7 +1798,7 @@ cases it is measured by exactly the same orbit--stabilizer pair
 
 
 
-\section{Symmetry as a design principle}
+\section{Symmetry as a Design Principle}
 
 This section gathers the methods in which a symmetry is \emph{known in advance} and deliberately built into the learning system.
 This prescriptive stance (\Cref{table:taxonomy}) assumes prior knowledge of the group $G$ acting on the problem and treats it as an inductive bias to be enforced rather than a structure to be discovered.
@@ -1804,7 +1808,7 @@ At the other extreme, \emph{data augmentation} leaves the architecture untouched
 In between sits the design of \emph{symmetric frameworks}, such as Siamese networks, where the symmetry is expressed in the training objective and the relational structure of the model rather than in either the layers or the data alone.
 These strategies are not mutually exclusive and are frequently combined; we discuss the trade-offs between them, in particular the recurring question of whether the cost of exact equivariance is justified over a simpler model trained with augmentation.
 
-\subsection{Geometric deep learning}
+\subsection{Geometric Deep Learning}
 
 % Irreducible representation (seems to be particularly used for E(n) equivariance)
 % add citation to dehmamy2021anips: achieve equivariance through Lie algebra
@@ -1970,8 +1974,70 @@ Comparing DA to equivariant architectures, \citet{nordenfors2024} show that the 
 Empirically, \citet{shen2026} find that DA rapidly learn 3D rotation equivariance with negligible efficiency gap attributable to lack of strict equivariance.
 
 \subsection{Framework Symmetries}
-% see perin2025 paragraph "Many methods have been proposed to learn symmetries from data"
-% video from Jia-Bin Huang on learning without labels https://youtu.be/gVEr2cnDE_8
+
+\subsubsection{Data Ordering}\label{sec:data-ordering}
+
+The strategies above engineer symmetry into the model or into the data; a complementary question is which symmetries the \emph{training procedure itself} possesses.
+Formally, view a learning algorithm as a map
+$$
+\mathcal{A} : (\mathcal{D},\, \theta_0,\, \xi) \longmapsto \theta_T,
+$$
+sending a dataset $\mathcal{D}=\{(x_i,y_i)\}_{i\in[n]}$, an initialization $\theta_0$, and algorithmic randomness $\xi$ (batching, augmentation draws, dropout masks, \ldots) to trained parameters $\theta_T$.
+Although $\mathcal{D}$ is semantically a \emph{set}, it is materialized as a sequence, so $S_n$ acts on it by permuting the samples, and one may ask whether $\mathcal{A}$ is invariant: $\mathcal{A}(\sigma\cdot\mathcal{D},\theta_0,\xi)=\mathcal{A}(\mathcal{D},\theta_0,\xi)$ for all $\sigma\in S_n$.
+The answer depends on the optimizer.
+Over one epoch, full-batch gradient descent (GD) sums the gradients of all $n$ samples before updating, and is therefore $S_n$-invariant.
+Mini-batch GD with a fixed partition into $k$ batches of size $B=n/k$ (assumed integer for simplicity) sums gradients within each batch but applies the $k$ updates sequentially, so it is invariant only under the subgroup $\prod_{i=1}^{k} S_B \leq S_n$ of within-batch permutations--the extreme case ($B=1$) retaining no invariance in general-- the gap between these symmetry groups is
+$$
+\frac{n!}{(B!)^{k}} \;\underset{n\to\infty}{\sim}\; (2\pi n)^{\frac{1-k}{2}}\, k^{\,n+\frac{k}{2}}
+$$
+by Stirling's formula.
+As $n$ grows, GD is invariant to a vastly larger set of data orderings than its mini-batch counterparts, and over multiple epochs the gap widens further when the data are reshuffled at each epoch (see below).
+
+\citet{zhuang2022pmls} distinguish \emph{algorithmic} sources of stochasticity (data augmentation, data shuffling) from \emph{implementation} ones (floating-point effects) and quantify their impact on training through three metrics: (i) the \emph{churn} $C(f_1,f_2)=\mathbb{E}_x\big[1_{\operatorname{pred}(f_1,x)\neq \operatorname{pred}(f_2,x)}\big]$, the fraction of test points on which two independently trained models disagree; (ii) the distance $\|w_1^\star-w_2^\star\|_2$ between trained weights---an imperfect metric because of parameter-space symmetries of \Cref{sec:parameter-space-symmetries} and (iii) the standard deviation of accuracy on subgroups of the data, quantifying local variability in input space.
+While global test accuracy is constant across runs, these three metrics fluctuate substantially---churn ranges from $5\%$ to over $20\%$.
+For data ordering specifically, SGD exhibits higher variability than GD, consistent with its smaller invariance group.
+
+\paragraph{Shuffling schemes and interaction with Batch Normalization}
+In practice, there are multiple ways to implement mini-batch training: \emph{stochastic sampling}, which draws each batch with replacement and thus involves no permutation; \emph{single shuffle} (SS), which samples one permutation $\pi\in S_n$ once and reuses it at every epoch; and \emph{random reshuffling} (RR), which resamples a new permutation at each epoch.
+Randomized ordering is not optional: mini-batch SGD requires it to converge well \citep{xu2024vj}, and, perhaps surprisingly, the permutation-based schemes SS and RR outperform with-replacement sampling \citep{koloskova2024p4icml}.
+The distinction between SS and RR is of practical importance because globally reshuffling a dataset can be a hardware bottleneck, which at scale makes RR impractical \citep{nguyen20222iipdpsi,koloskova2024p4icml,xu2024vj}.
+Batch normalization (BN) introduces an additional dependency to data ordering because of batch statistics batch composition---hence data ordering---determine batch statistics.
+\citet{wu2023p4icml} show that standard GD, SS and RR then optimize \emph{three different objectives}.
+They study linear models with BN applied to the input, which take the form $x \mapsto W\Gamma\operatorname{BN}(x)$ with $\Gamma$ a diagonal matrix carrying BN's learnable scaling parameters; writing $m$ for the number of batches and $(\pi X)_i$ for the $i$-th batch under the ordering $\pi$, the objectives read
+$$
+L_{\mathrm{GD}} = L\big(W\Gamma\operatorname{BN}(X),\, Y\big), \qquad
+L_{\pi} = \sum_{i=1}^{m} L\big(W\Gamma\operatorname{BN}((\pi X)_i),\, (\pi Y)_i\big), \qquad
+L_{\mathrm{RR}} = \frac{1}{n!}\sum_{\pi\in S_n} L_{\pi},
+$$
+where SS minimizes $L_\pi$ for a single fixed random $\pi$.
+Since $\pi$ affects the per-batch normalization statistics, $L_\pi \neq L_{\mathrm{GD}}$ in general.
+\citet{wu2023p4icml} further show that SS can suffer from training instabilities that RR avoids and, consistently, \citet{zhuang2022pmls} observe empirically that with BN, RR stabilizes training against data-ordering variability.
+
+\begin{Remark}[Non-invariance due to implementation.]
+    Floating-point addition is not associative, so even the gradient sum of full-batch GD is not permutation-invariant at the numerical level: \citet{zhuang2022pmls} measure non-zero churn for GD under data reordering alone.
+    The $S_n$-invariance of GD is thus a property of the idealized algorithm, not of its implementation.
+\end{Remark}
+
+\paragraph{Exchangeability: invariance in law}
+The pointwise invariance lost by SGD can be restored \emph{in distribution} when the data themselves carry a probabilistic symmetry.
+A sequence $\boldsymbol{X}_n=(X_1,\dots,X_n)$ is \emph{exchangeable} (a generalization of the i.i.d.\ assumption) if $\pi\boldsymbol{X}_n \overset{d}{=} \boldsymbol{X}_n$ for every $\pi\in S_n$
+\citep{bloem-reddy2020} relate this concept to distributional invariance through the \emph{empirical measure} $\mathbb{M}_{\boldsymbol{X}_n}(\cdot):=\sum_{i=1}^{n}\delta_{X_i}(\cdot)$, which represents the data but forgets its ordering.
+They show that a conditional distribution is permutation-invariant, $(Y \mid \boldsymbol{X}_n)\overset{d}{=}(Y \mid \pi\boldsymbol{X}_n)$, precisely when $Y$ factors through the empirical measure, $(\boldsymbol{X}_n, Y)\overset{a.s.}{=}\big(\boldsymbol{X}_n,\, f(\eta, \mathbb{M}_{\boldsymbol{X}_n})\big)$ for some measurable $f$ and independent noise $\eta$.
+This result can be reinterpreted as
+$$
+\operatorname{Law}\big(\mathcal{A}(\sigma\cdot\mathcal{D},\,\theta_0,\,\xi)\big) = \operatorname{Law}\big(\mathcal{A}(\mathcal{D},\,\theta_0,\,\xi)\big) \qquad \text{for all } \sigma\in S_n,
+$$
+even though each realization of $\mathcal{A}$ is not $S_n$-invariant.
+
+\begin{Remark}[Example of non-exchangeable data]
+    Not all tasks can be modeled with exchangeable data.
+    In \emph{curriculum learning} \citep{bengio2009p2aicml}, examples are deliberately ordered, often from easy to hard or progress from primitive to compositional tasks \citep{lee2024}.
+    % and show that a good ordering yields exponential speedups
+    Ordering biases can also be more fortuitous: data stored in database systems can be clustered by attribute producing a non-exchangeable stream \citep{xu2024vj}.
+\end{Remark}
+
+\subsubsection{Representation Learning}
+
 A third way to build a symmetry into a learning system is neither to constrain the layers nor to augment the data, but to make the \emph{architecture and objective themselves symmetric}.
 The archetype is the \emph{Siamese network}, a pair of identical subnetworks with shared (tied) weights that process two inputs and are compared in the resulting feature space \cite{ilina2022sa}.
 Weight tying is a permutation symmetry between the two branches: exchanging the inputs leaves the model unchanged, so the learned similarity is invariant to the order of the pair.
@@ -2224,7 +2290,7 @@ The excess symmetry can also enter through specific blocks of an architecture fo
 This means that for every linear permutation-invariant $f$ there is an $f'$ with $f=f'\circ\rho_{\mathrm{avg}}$---which caps expressivity, and they propose readouts invariant only to $\operatorname{Aut}(G)$ rather than to the full $S_n$, deliberately breaking the symmetry.
 Reducing equivariance is a generic remedy, whether by input-injection (below) or by retyping inputs as in the vector-as-scalars trick of \citet{vadgama2025}.
 
-\paragraph{\textbf{Generative Ambiguity and Curie's Principle}}\label{sec:curie-principle}
+\paragraph{Generative Ambiguity and Curie's Principle}\label{sec:curie-principle}
 A sub-instance of functional breaking arises when a symmetric input must produce a less symmetric output.
 This is forbidden for a deterministic equivariant map by \emph{Curie's principle}: if $f$ is $G$-equivariant then $\operatorname{Stab}(x)\subseteq\operatorname{Stab}(f(x))$, since $g\in\operatorname{Stab}(x)\Rightarrow\rho_Y(g)f(x)=f(\rho_X(g)x)=f(x)$.
 Simply put, no equivariant $f$ can map a square to a rectangle.
@@ -2237,7 +2303,7 @@ Symmetry is broken at the pipeline level while $f_\theta$ itself stays equivaria
 In a similar diagnostic-oriented approach, \citet{wang2024p4icml} fit a relaxed group convolution initialized at exact equivariance (constant filter weights $w_l$): training leaves the network equivariant only to $\operatorname{Stab}(x)\cap\operatorname{Stab}(y)$ (Prop.~3.1), and the non-constant $w_l$ then read off the symmetry-breaking factors at play.
 Third, \citet{lawrence2024} take a generative modelling stance and move from equivariant \emph{functions} to equivariant conditional \emph{distributions}, $\mathbb P(Y\mid X{=}gx)=g\cdot\mathbb P(Y\mid X{=}x)$: Curie's principle applies at the distribution level, while individual samples may break it, restoring the ability to implement asymmetric solutions.
 
-\paragraph{\textbf{Pose-Informed Symmetry Breaking, Input-Injection}}
+\paragraph{Pose-Informed Symmetry Breaking, Input-Injection}
 One generic technique to overcome functional SB (already used in \Cref{sec:curie-principle}) is to intentionally inject into the input a feature $v$ carrying a preferred frame, so that a $G$-equivariant backbone becomes equivariant to at most $\operatorname{Aut}(v)=\{g\in G:\rho(g)v=v\}$; it is the equivariant analogue of positional encoding.
 
 \citet{vadgama2025} realize it with the reference-frame token $Z$ mentioned above.
@@ -2266,7 +2332,7 @@ They prove that the first case has higher expressivity (Cor.~3.1).
 Empirically, \citet{rygiel2026} find on computational fluid dynamics tasks that non-equivariant models overperform in highly aligned regimes (e.g. automotive aerodynamics) while equivariant models win in unaligned ones (e.g. hemodynamics), so the dataset's degree of alignment, not the symmetry alone, governs the comparison
 Likewise, an $\mathbb R^2$ model beats an $SE(2)$-equivariant one on CIFAR-10/100 \citep[Tab.~4]{romero2023} fitting the picture.
 
-\paragraph{\textbf{Measuring Distributional Symmetry Breaking}}
+\paragraph{Measuring Distributional Symmetry Breaking}
 \citet{lawrence2026} propose two model-based metrics.
 A \emph{symmetry-bias} metric compares $p_X$ to its symmetrization $\bar p_X(x)=\int_G p_X(gx)\,dg$ through the accuracy of a two-sample classifier trained to tell the two apart.
 The metric is defined as:
@@ -2277,12 +2343,12 @@ Given a canonicalization function  $c:X\to G$, the losses are defined as $L=\mat
 They report that standard benchmarks (QM9, ModelNet40) are notably symmetry-biased.
 \citet{urbano2026} instead estimate the orbit density directly with a class--pose IE (invariant--equivariant) autoencoder.
 
-\paragraph{\textbf{Two extremes}}
+\paragraph{Two extremes}
 Canonicalization is the limit in which the orbit density collapses to a Dirac mass \citep{ciuclea2025,urbano2026}.
 \citet{urbano2026} take the canonical representative to be a \emph{natural pose} obtained from a robust Fréchet mean $\mathcal F(\mu)=\arg\min_{y}\sum_{g_i}d(y,g_i)^2$ and left-multiply each orbit so that the identity element is that pose, obtaining an orbit distribution centered around the natural pose.
 Extrinsic equivariance is the another extreme, in which $g$ sends $x$ entirely off-distribution, $p(gx)=0$; whether it helps is itself context-dependent, being beneficial in \citet{wang2022b} but harmful in the examples of \citet{wang2023a}.
 
-\paragraph{\textbf{A hierarchical caveat}}
+\paragraph{A hierarchical caveat}
 Distributional SB may act only at some levels of a feature hierarchy: on MNIST, local features (edges) can be $E(2)$-equivariant while global ones (digits) are not.
 A depth-limited equivariant model could exploit the low-level symmetry without paying for the high-level asymmetry \citep[Fig.~2c]{weiler2019anips}.
 This perspective is supported by \citet{elsayed2020p3icml} who report that breaking equivariance only in the later layers is best-performing on MNIST, CIFAR-10 and CelebA compared to breaking it in earlier layers and equivariant architectures.
@@ -2292,7 +2358,7 @@ We now focus on parameter-spaces, where symmetries are typically naturally impos
 The term ``spontaneous'' is sometimes borrowed from physics to describe their breaking conveying the double lack of intent.
 Because \Cref{sec:parameter-space-symmetries} develops these symmetries, we record here only the specifically symmetry-breaking findings.
 
-\paragraph{\textbf{Gradient Flow and Practical Optimization}}
+\paragraph{Gradient Flow and Practical Optimization}
 Gradient Flow (GF) overstates how much symmetry survives training.
 \citet{kunin2020} derive a \emph{modified} gradient flow accounting for finite learning rate, momentum and weight decay, under which the conservation laws implied by parameter-space symmetries are broken.
 As a consequence, conservation laws are also broken.
@@ -2310,7 +2376,7 @@ For example, a symmetric state for the permutation symmetry occurs when two neur
 $\Delta^G$, specifically evaluated for the pair $(i,j)$ simply yields $\| \theta_i - \theta_j \|_2^2$.\
 The distance $\Delta^G$, in practice used with a threshold, unveils a non-trivial symmetry dynamics both through spaces (layers) and time (iteration).
 
-\paragraph{\textbf{Designed Symmetry Breaking in Parameter Space}}
+\paragraph{Designed Symmetry Breaking in Parameter Space}
 Since symmetries can slow optimization, cap effective capacity \citep{ziyin2025b}, or obscure landscape analysis \citep{lim2024}, works remove parameter-symmetries \emph{on purpose}, to study counterfactually or improve training.
 \citet{ziyin2025b} propose \emph{syre}, a model-agnostic scheme that anchors a random static bias at initialization, $l_r(\theta,x)=l(\theta+\theta_0)+\gamma\|\theta\|^2$, with the penalty upgraded to $\gamma\,\theta^\top D\theta$, $D_{ii}\sim\operatorname{Unif}(1-\epsilon,1+\epsilon)$, to also discard continuous symmetries.
 \citet{lim2024} instead build \emph{asymmetric} networks, either through an untrainability mask $W\mapsto M\odot W+(1-M)\odot W_{fixed}$ whose rows are nonzero and distinct (the networks remaining universal approximators) or through a non-elementwise activation.
