@@ -1819,6 +1819,7 @@ These strategies are not mutually exclusive and are frequently combined; we disc
 % figure: reproduce a toy example where equivariant models are more sample efficient ie they reach faster the best accuracy than vanilla models
 % romero2023tmlr: scale equivariance for audio signal
 % could add a warning about misspecification of symmetries: yang2023p4icml,finzi2021anips and the fact that approximate equivariance addresses the case where specification is slightly off due to real world fluctuations
+% wang2025: permutation equivariant input in scene reconstruction
 
 Geometric Deep Learning (GDL) \citep{bronstein2017ispm,bronstein2021} studies how to exploit the symmetry group and geometric structure of the data domain to design architectures that are sample-efficient, generalizable, and principled.
 It provides a unifying framework for deep learning architectures by viewing them through the lens of symmetry and group equi\slash invariance.
@@ -2095,6 +2096,94 @@ treats both modalities identically, echoing SimSiam's\citep{chen2020a} symmetric
 Here however, the two encoders cannot share weights and the symmetry is only present at the block level and in the loss $\theta$.
 CLIP also uses comparatively little data augmentation, presumably because the image/text modality gap already supplies ample view diversity.
 Multimodal joint-embeddings highlight the question of a representational hierarchy: \citet{desai2023p4icml} replace the Euclidean embedding space with a hyperbolic one paired with an entailment loss, so that the difference in level of detail between an image and the text describing is represented geometrically.
+
+\subsubsection{Loss symmetries}
+
+The training objective is subject to symmetries.
+Write $L:\mathcal Y\times\mathcal Y\to\mathbb R$ for a loss comparing a prediction $\hat y$ to a target $y$.
+We say $L$ is \emph{invariant} under a group $G$ acting on $\mathcal Y$ when it depends on the target only through its orbit,
+$$
+L(\hat y,\, y) = L(\hat y,\, g\cdot y) \qquad \forall g\in G.
+$$
+\citet{kaba2025anips} formalize this as an \emph{invariant loss function}, additionally requiring symmetry between the two arguments,
+$$
+L(g\cdot\hat y,\, y) = L(\hat y,\, g\cdot y) = L(\hat y,\, y) \qquad \forall g\in G.
+$$
+
+The definition is relative to a group, as we illustrate with the mean-squared error.
+$L(\hat y,y)=\|\hat y-y\|_2^2$ is \emph{not} invariant under a translation $y\mapsto y+t$, since $\|\hat y-(y+t)\|_2^2\neq\|\hat y-y\|_2^2$ in general.
+It does, however, carry a \emph{prediction-dependent} orthogonal symmetry: for $O\in O(d)$ and the action $g\cdot y:=O(y-\hat y)+\hat y$,
+$$
+\|g\cdot y-\hat y\|_2^2 = \|O(y-\hat y)\|_2^2 = \|y-\hat y\|_2^2,
+$$
+so MSE is an invariant loss for this particular (being $\hat y$-dependent) action.
+This has concrete implications: when the loss is not invariant but the task is, several targets $\{g\cdot y:g\in G\}$ are equally valid, and training against a fixed representative can be harmful.
+
+\paragraph{Orbit and quotient losses}
+A sensible approach is to evaluate the loss on the quotient $\mathcal Y/G$ by minimizing over the group, the canonical form being the \emph{orbit loss}
+$$
+L_{\text{orbit}}(\hat y,\, y) = \inf_{g\in G}\, L_(\hat y,\, g\cdot y).
+$$
+Such a loss is invariant by construction but raise an optimization problem which can be non-trivial (see alignment problems below).
+\citet{mehr20182iccvpr} instantiate this for an autoencoder on point clouds in $\mathbb R^3$ with $G=SO(3)$.
+Given an input $x$, they sample its orbit $(g_1 x,\dots,g_M x)$, encode each element, and max-pool across the orbit---an \emph{orbit-pooling} layer producing an (approximately) invariant latent vector $z(x)\approx z(g\cdot x)$---then decode back to input space.
+The optimization is conducted with a \emph{quotient loss} $$L(\theta, \eta)=\inf_{g\in G} d\big(g\cdot x,\,\operatorname{dec}_\eta(\operatorname{enc}_\theta(x))\big),$$ whose infimum is found either by discretizing $SO(3)$ or numerically.
+
+\paragraph{Permutation losses for unordered outputs}
+A pervasive case is $G=S_n$ acting on an unordered collection of outputs, the \emph{label-ambiguity} or \emph{permutation problem}.
+In source separation---the ``cocktail-party'' task of recovering $K$ speakers $x_s(t)$ from their mixture $\sum_{k=1}^K x_k(t)$---the speakers are unordered.
+\citet{yu20172iicasspi} fold the assignment into the objective through \emph{permutation-invariant training} (PIT),
+$$
+L^\star = \min_{\sigma\in S_K} L_\sigma, \qquad L_\sigma \propto \sum_{k=1}^K \big\|\hat X_k - X_{\sigma(k)}\big\|_2^2,
+$$
+over predicted and ground-truth short-time Fourier transforms $\hat X_k, X_{\sigma(k)}$.
+The same symmetry drives deep clustering for self-supervised learning, where arbitrary cluster indices are defined only up to a permutation and serve as pseudo-labels to learn representations.
+\citet{caron2018,caron2019} recompute the clustering offline every few epochs, which tolerates a relabelling between rounds but incurs stale gradients; \citet{caron2020anips} move to online, batch-level pseudo-labels.
+In these settings, gradients stay fresh but labels are possibly permuted at every step, rendering optimization impossible with the previous approaches \citep{caron2018,caron2019}.
+The issue is bypassed without leveraging group theory by maintaining a jointly-learned set of prototypes $(c_1,\dots,c_K)$ that act as persistent centroids; only the initial ordering of prototypes remains arbitrary which does not prevent optimization.
+
+In object-centric tasks, the output is a set of unordered objects and permutation invariance can only be enforced in the downstream loss, typically by optimal assignment.
+\citet{locatello2020anips} (\emph{Slot Attention}) map CNN features $X\in\mathbb R^{N\times D_{\text{in}}}$ to $K$ object slots $\{s_1,\dots,s_K\}$ through a recurrent module $S^{(t+1)}=\operatorname{SlotAttention}(X,S^{(t)})$ that is permutation-equivariant in the slots and permutation-invariant in the features,
+$$
+\operatorname{SlotAttention}(\pi_i X,\, \pi_s S) = \pi_s \operatorname{SlotAttention}(X,\, S),
+$$
+the slot symmetry stemming from the set nature of the output, not from the input.
+Because the output order is genuinely random---so that a consistent labelling in the manner of \citet{caron2020anips} is here impossible---targets and predictions are matched by the Hungarian algorithm before the loss is evaluated.
+\citet{carion2020cv-e2} (DETR) and \citet{zhu2021} (Deformable DETR) apply the same device to bounding-box object detection.
+For ground-truth objects $y=(y_1,\dots,y_M)$ with $y_i=(c_i,b_i)$ (class and bounding box), the model emits $N>M$ predictions $\hat y_j=(\hat p_j,\hat b_j)$, where $\hat p_j$ is a distribution over classes, and a \emph{Hungarian loss} matches them by minimizing
+$$
+L_{\text{match}}(y_i,\hat y_j) = -\hat p_j(c_i) + L_{\text{box}}(b_i,\hat b_j),
+$$
+trading classification confidence against a bounding-box overlap term $L_{\text{box}}$ (e.g. IoU).
+
+\paragraph{Set-distance losses for point clouds}
+Principled comparison of point clouds can be done via a permutation-invariant set distance.
+For 3D reconstruction, \citet{fan2017} predict a point cloud $\hat S_i = NN_\theta(I_i, r)$ from an image $I_i$ and noise $r$, and train with a set distance $d$ summed over examples, $L(\{\hat S_i\},\{S_i^{\text{gt}}\})=\sum_i d(\hat S_i, S_i^{\text{gt}})$, proposing two choices:
+$$
+d_{\text{CD}}(S_1,S_2) = \sum_{x\in S_1}\min_{y\in S_2}\|x-y\|_2^2 + \sum_{y\in S_2}\min_{x\in S_1}\|x-y\|_2^2,
+$$
+the \emph{Chamfer distance}, invariant due to the nearest-neighbour correspondence, whereas the \emph{Earth Mover's distance} is a matching loss minimizing over bijections $\phi$:
+$$
+d_{\text{EMD}}(S_1,S_2) = \min_{\phi:S_1\to S_2}\sum_{x\in S_1}\|x-\phi(x)\|_2 ,
+$$
+\citet{lin2023} likewise adopt the Chamfer distance for \emph{point-cloud completion}, the task of inferring a full cloud from a partial one (as arises under occlusion or limited sensor resolution).
+
+\paragraph{Alignment}
+In the above examples, minimization problems are only a means to an end: the loss is evaluated on the best-aligned pair of outputs and targets.
+Recovering the minimizing group element can be a challenge in itself.
+\citet{alvarez-melis2018p2cemnlp} align point clouds living in \emph{distinct} metric spaces (e.g.\ word embeddings of two languages) via the Gromov--Wasserstein distance: from within-domain similarity matrices $C_{ij}=d(i,j)$ and $C'_{kl}=d'(k,l)$ they solve
+$$
+\min_{\Gamma}\ \sum_{ijkl} L\big(C_{ij}, C'_{kl}\big)\,\Gamma_{ik}\Gamma_{jl}
+$$
+over transport plans $\Gamma$, transporting and comparing \emph{distances} rather than points.
+The two clouds may differ in size, making the setup more general.
+\citet{even2024} study a \emph{planted} version: given a point cloud $X=(x_1,\dots,x_n)$ and a noisy transformed copy $y_i=Q^\star x_{\pi^\star(i)}+\sigma z_i$ with $Q^\star\in O(d)$ and $z_i\sim\mathcal N(0,I_d)$, the goal is to recover the pair $(Q^\star,\pi^\star)$.
+Their \emph{Ping-Pong} algorithm alternates between solving for $Q$ with $\pi$ fixed and for $\pi$ with $Q$ fixed, two tractable subproblems.
+
+\begin{Remark}[A transparent permutation symmetry]
+Not every permutation symmetry in a loss calls for special treatment.
+Passing from a triplet loss to the InfoNCE / multi-negative losses \citep{oord2018a} introduces a permutation symmetry over the negative samples, but the loss is manifestly symmetric in them (a plain sum over negatives) and hence requires no alignment or assignment step.
+\end{Remark}
 
 \section{Symmetry as an unknown: Symmetry Discovery}
 
