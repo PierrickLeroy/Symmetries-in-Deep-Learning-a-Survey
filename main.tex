@@ -29,6 +29,22 @@
 \titleformat{\paragraph}[runin]{\fontsize{10}{10}\selectfont\bfseries}{}{0pt}{}[.]
 \titlespacing{\paragraph}{0pt}{12pt}{1em}
 
+% --- Section color-coding (visual overview of section balance) -----------
+% Toggle: set to \seccolorsfalse to disable all section coloring in one line.
+\newif\ifseccolors\seccolorsfalse
+\definecolor{col-crimson}{RGB}{196,30,58}      % crimson
+\definecolor{col-orange}{RGB}{214,120,10}       % orange
+\definecolor{col-forestgreen}{RGB}{34,139,34}         % forest green
+\definecolor{col-blue}{RGB}{30,90,200}     % blue
+\definecolor{col-purple}{RGB}{140,40,170} % purple
+\definecolor{col-teal}{RGB}{0,150,160} % teal
+\definecolor{col-gold}{RGB}{170,110,0}   % gold/brown
+\definecolor{col-magenta}{RGB}{200,20,140}       % magenta
+\definecolor{col-slate}{RGB}{70,90,120} % slate
+\definecolor{col-gray}{RGB}{110,110,110} % gray
+\newcommand{\seccol}[1]{\ifseccolors\color{#1}\fi}
+% -------------------------------------------------------------------------
+
 \newcommand{\pnote}[1]{\textcolor{red}{PL: #1}}
 \newcommand{\myline}{
   \vspace{5mm}
@@ -58,13 +74,13 @@
 \setlength{\headheight}{20pt}
 \begin{document}
 
-\section{Introduction}
+\section{Introduction}\seccol{col-crimson}
 % ennes2025fcm: first paragraph of the introduction
 % makse2025: book on symmetries in living systems, chap 26 about deep learning
 
 \pnote{write at the end}
 
-\section{Materials and Methods}
+\section{Materials and Methods}\seccol{col-orange}
 % The different sections have some degree of overlap and the positioning of branches in the taxonomy is indicative of main tendencies but not capturing all the diversity or granularity (many works combine different technique, or could be classified in two different ways depending on what is put forward). It is a simplifying picture.
 
 \subsection{Methodology}
@@ -134,7 +150,7 @@ We propose a few criterion to categorize occurrences of symmetries in a deep lea
 
 
 
-\section{Background: Mathematical Foundations of Symmetry}
+\section{Background: Mathematical Foundations of Symmetry}\seccol{col-forestgreen}
 % Conservation laws ?
 % Core notions
 % \cite{borde2025,carlsson,chen2020,2023tg,bronstein2021}
@@ -1798,7 +1814,7 @@ cases it is measured by exactly the same orbit--stabilizer pair
 
 
 
-\section{Symmetry as a Design Principle}
+\section{Symmetry as a Design Principle}\seccol{col-blue}
 
 This section gathers the methods in which a symmetry is \emph{known in advance} and deliberately built into the learning system.
 This prescriptive stance (\Cref{table:taxonomy}) assumes prior knowledge of the group $G$ acting on the problem and treats it as an inductive bias to be enforced rather than a structure to be discovered.
@@ -2185,7 +2201,7 @@ Not every permutation symmetry in a loss calls for special treatment.
 Passing from a triplet loss to the InfoNCE / multi-negative losses \citep{oord2018a} introduces a permutation symmetry over the negative samples, but the loss is manifestly symmetric in them (a plain sum over negatives) and hence requires no alignment or assignment step.
 \end{Remark}
 
-\section{Symmetry as an unknown: Symmetry Discovery}
+\section{Symmetry as an unknown: Symmetry Discovery}\seccol{col-purple}
 
 The previous section assumed the relevant symmetry was known and could be engineered into the model.
 Here we take the opposite stance, corresponding to the \emph{descriptive} branch of the taxonomy (\Cref{table:taxonomy}): the symmetry is treated as something to be inferred rather than imposed.
@@ -2348,7 +2364,7 @@ Taken together, these measures range from single-neuron firing ratios to loss-fr
 
 
 
-\section{Incomplete symmetries}\label{sec:incomplete-symmetries}
+\section{Incomplete symmetries}\label{sec:incomplete-symmetries}\seccol{col-teal}
 
 The previous section treated the symmetry as an object to discover; here we treat it as one that is \emph{imperfect}, not exact or ephemeral.
 It may hold only on part of the group, only up to a tolerance, or only until the data distribution or the training dynamics erodes it.
@@ -2677,7 +2693,7 @@ Tolerance during training does not necessarily mean it should be retained at tes
 The latter also reframes the whole process as an optimization question, arguing that the equivariant hypothesis space, while not necessarily wrong, is harder to optimize.
 Relaxation is meant to smooth training while exactness can be restored at test time; \citet{elhag2026} make a compatible empirical observation that equivariant models have a rougher loss landscape.
 
-\section{Analysis of symmetries}
+\section{Analysis of symmetries}\seccol{col-gold}
 
 % Symmetry as an analytical lens — using symmetry to understand generalization, optimization, and representations
 The preceding sections treated symmetry as something to be built into a model or inferred from data.
@@ -2764,7 +2780,7 @@ A distinct line of analysis quantifies the statistical benefit that a symmetry c
 For linear models, \citet{elesedy2021p3icml} prove a strict generalization gain from equivariance, and the data-augmentation analyses discussed in \Cref{par:auto-da}---orbit averaging and its variance-reduction and PAC-Bayes bounds \citep{chen2020,lyle2020}---give complementary quantitative accounts of why averaging over a symmetry group reduces the effective complexity of the hypothesis class.
 The approximation--generalization trade-off of \citet{petrache2023} (\Cref{sec:soft-equivariance}) sits at the boundary of this theory and the approximate-symmetry regime, making explicit that the statistical benefit is contingent on the imposed symmetry being close to the true one.
 
-\section{Extensions}
+\section{Extensions}\seccol{col-magenta}
 % Class-specific symmetries
 % wieser2020anips: similar to class pose
 % cohen2014 can be considered an early work that discusses the idea of separating in different subspaces the identity of an object from its ``factors of variations'' 
@@ -2775,7 +2791,7 @@ The approximation--generalization trade-off of \citet{petrache2023} (\Cref{sec:s
 % anselmi2019pr
 % escriche2025
 
-\section{Discussion}
+\section{Discussion}\seccol{col-slate}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2804,7 +2820,7 @@ SB & Symmetry Breaking
 \appendixtitles{yes}
 \appendixstart
 \appendix
-\section[\appendixname~\thesection]{Group table}
+\section[\appendixname~\thesection]{Group table}\seccol{col-gray}
 
 % The group table: a table listing [group, nature, papers]
 \begin{table}[h]
