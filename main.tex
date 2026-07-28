@@ -2076,16 +2076,26 @@ The training objective then carries a double symmetry potential:
 Early metric learning methods proposed a symmetric loss $L_\theta(x_1,x_2)$ trained on matched/mismatched pairs \citep{chopra20052icsccvprc,hadsell20062icsccvpr-v2c}; \citet{schroff20152iccvprc} extend it to a triplet loss $L_\theta(x,x_p,x_n)$ contrasting one positive against one negative, and \citet{oord2018a} generalize further to an arbitrary number of negatives with the InfoNCE loss.
 
 \citet{chen2020p3icml} (SimCLR) apply strong compositional data augmentation and a projection head $g$, still shared between branches, on top of which the loss is computed:
-$$
-\mathcal L=-\log\frac{\exp\big(\operatorname{Sim}(g(f(t\cdot x)),g(f(t'\cdot x)))/\tau\big)}{\sum_{k=1}^{2N} 1_{[k\neq i]}\exp\big(\operatorname{Sim}(g(f(t\cdot x)),g(f(t'\cdot x_k)))/\tau\big)},
-$$
+\begin{equation}
+    \mathcal L=-\log\frac{\exp\big(\operatorname{Sim}(g(f(t\cdot x)),g(f(t'\cdot x)))/\tau\big)}{\sum_{k=1}^{2N} 1_{[k\neq i]}\exp\big(\operatorname{Sim}(g(f(t\cdot x)),g(f(t'\cdot x_k)))/\tau\big)},
+\end{equation}
 where $\operatorname{Sim}$ is a similarity function and $\tau$ a temperature.
-An ablation shows that the representation $f(x)$ \emph{before} the projector is better than $g(f(x))$: $g$ is trained to be augmentation-invariant and this is achieved by discarding useful representational information---confirmed empirically by the authors who measured how much augmentation-related information (\textit{e.g.}\ colour) is decodable at each stage.
+An ablation shows that the representation $f(x)$ before the projector is better than $g(f(x))$ after it: $g$ is trained to be augmentation-invariant and this is achieved by discarding useful representational information, confirmed empirically by the authors who measured how much augmentation-related information (\textit{e.g.}\ colour) is decodable at each stage.
 \citet{he2020} (MoCo) relax branch-swap symmetry itself: the second branch (the ``momentum encoder'') tracks the first through an Exponential Moving Average (EMA) $\theta_t\leftarrow m\theta_t+(1-m)\theta_s$ rather than sharing its weights outright---a weak decoupling of the branches that the non-contrastive methods below push further.
 
 \emph{Non-contrastive methods} dispense with negative pairs altogether and instead prevent collapse either by decoupling the branches more strongly or by regularizing the embedding statistics directly.
 Among the former, \citet{grill2020} (BYOL) equip only the ``student'' branch with an extra prediction head $q_\theta$, computing $q_\theta(g_\theta(f_\theta(t\cdot x)))$ against the ``teacher'' target $g_\xi(f_\xi(t'\cdot x))$, where $\xi$ is an EMA of $\theta$: the student must \emph{predict} rather than match the teacher, turning the symmetric matching objective into an asymmetric one.
-\citet{caron2021} (DINO) instead keeps a single set of weights (EMA aside) but breaks symmetry in the output distribution with centering and temperature: the student computes $\operatorname{Softmax}_{\tau_s}(g_{\theta_s}(t\cdot x))$ while the teacher computes $\operatorname{Softmax}_{\tau_t}(\operatorname{Center}(g_{\theta_t}(t'\cdot x)))$ with $\tau_t<\tau_s$; the lower temperature artificially sharpening the teacher's target.
+\citet{caron2021} (DINO) instead keeps a single set of weights (EMA aside) but breaks symmetry in the output distribution with centering and temperature.
+The student computes
+\[
+    \operatorname{Softmax}_{\tau_s}(g_{\theta_s}(t\cdot x)),
+\]
+while the teacher computes
+\[
+    \operatorname{Softmax}_{\tau_t}
+    \bigl(\operatorname{Center}(g_{\theta_t}(t'\cdot x))\bigr),
+\]
+with $\tau_t<\tau_s$; the lower temperature artificially sharpening the teacher's target.
 \citet{chen2020a} (SimSiam) pulls back toward full symmetry: weights are entirely shared and the two branches alternate between student and teacher roles within a single symmetrized loss,
 $$
 \mathcal L=\mathcal D\big((h\circ f)(t\cdot x),\,\operatorname{sg}(f(t'\cdot x))\big)+\mathcal D\big((h\circ f)(t'\cdot x),\,\operatorname{sg}(f(t\cdot x))\big),
@@ -2384,6 +2394,7 @@ These parts are further interconnected in that for partial equivariance the rang
 
 
 \subsection{Symmetry Breaking}\label{sec:symmetry-breaking-dl}
+% bamler2018p3icml
 
 Symmetry Breaking (SB) (def. \ref{def:symmetry-breaking}) names the situation in which an object carries \emph{less} symmetry than before, expected or possible: some object loses symmetry relative to a certain group of interest $G$.
 The term does not have a unique meaning and two questions can help disambiguate it.
@@ -2536,21 +2547,21 @@ The $\pm 90^\circ$ case makes the boundary between the first two rows of \Cref{t
 
 \begin{table}[ht]
     \centering
-    \begin{tabularx}{\textwidth}{|l|c|c|c|X|}
+    \begin{tabularx}{\textwidth}{|l|c|c|c|>{\RaggedRight\arraybackslash}X|}
         \hline
-        \textbf{Structure of $S$} & \textbf{Closure} & \textbf{Identity} & \textbf{Inverses} & \textbf{Canonical example / refs} \\
+        \textbf{Structure of $S$} & \textbf{Closure} & \textbf{Identity} & \textbf{Inverses} & \textbf{Example / refs} \\
         \hline
-        Subgroup $S \le G$ & \checkmark & \checkmark & \checkmark & restricted equivariance; \cite{goel2025} (mechanism), \cite{weiler2019anips} (choose $G$) \\
+        Subgroup $S \le G$ & \checkmark & \checkmark & \checkmark & restricted equivariance \cite{goel2025} (mechanism), \cite{weiler2019anips} (choose $G$) \\
         \hline
-        Non-closed subset $S \subsetneq G$ & $\times$ & \checkmark & \checkmark & partial equivariance, \cite{romero2023}; $\pm 90^\circ$ \\
+        Non-closed subset $S \subsetneq G$ & $\times$ & \checkmark & \checkmark & partial equivariance \cite{romero2023}; $\pm 90^\circ$ \\
         \hline
-        Semigroup / monoid & \checkmark & (monoid) & $\times$ & scale / downsampling, \cite{worrall2019anips} \\
+        Semigroup / monoid & \checkmark & (monoid) & $\times$ & downsampling \cite{worrall2019anips} \\
         \hline
         Groupoid & partial & \checkmark & \checkmark & \cite{sareen2026} \\
         \hline
     \end{tabularx}
     \caption{Restricting the \emph{extent} of symmetry: each row relaxes a different group axiom of the transformation set $S\subseteq G$.
-    For the groupoid closure, \textit{partial} is meant is the sense that the binary operation is a partial function on $S\times S$ (not automatically defined for all pairs).}
+    For the groupoid closure, \textit{partial} is meant in the sense that the binary operation is a partial function on $S\times S$ (not automatically defined for all pairs).}
     \label{table:extent-restriction}
 \end{table}
 
@@ -2590,7 +2601,7 @@ The operation mapping a function $f:S^{(1)}\to\mathbb R$ to a function $h:S^{(2)
 Their Partial G-CNN can stay fully equivariant on some layers while restricting to a subset on others, on the $6$-versus-$9$ task it recovers the $\pm 90^\circ$ range, and on natural images it shrinks $S$ where full rotation equivariance is unwarranted.
 
 A complementary line does not fix $S$ in advance but estimates the extent from data.
-\citet{benton2020anips} (Augerino) make the invariance range a learnable parameter, sampling augmentations from a Lie-algebra-parameterized distribution over a bounded interval $[-\theta,\theta]$ and learning $\theta$ jointly with the weights.
+Augerino, introduced by \citet{benton2020anips}, makes the invariance range a learnable parameter, sampling augmentations from a Lie-algebra-parameterized distribution over a bounded interval $[-\theta,\theta]$ and learning $\theta$ jointly with the weights.
 \citet{vanderwilk2018anips} likewise learn a bounded transformation range by maximizing the marginal likelihood of a Gaussian process prior.
 \citet{urbano2026} recover the extent as the support of a per-class pose distribution: a class-pose decomposition factors an input into $G$-invariant and equivariant parts and the estimated density over the orbit is precisely the range of the partial symmetry---e.g.\ a digit $7$ is symmetric only over roughly $\pm 30^\circ$---while distinct natural poses keep $6$ and $9$ apart.
 An early example can be found in \citep{goodfellow2009anips} which measured neuron invariance over a bounded transformation range $\Gamma$ rather than a full orbit (e.g.\ $\pm 5$ frames of time translation in video).
@@ -2694,7 +2705,7 @@ The latter also reframes the whole process as an optimization question, arguing 
 Relaxation is meant to smooth training while exactness can be restored at test time; \citet{elhag2026} make a compatible empirical observation that equivariant models have a rougher loss landscape.
 
 \section{Analysis of symmetries}\seccol{col-gold}
-
+% Double entry table (block x symmetry)
 % Symmetry as an analytical lens — using symmetry to understand generalization, optimization, and representations
 The preceding sections treated symmetry as something to be built into a model or inferred from data.
 This section adopts a third posture: symmetry as an \emph{analytical lens}.
