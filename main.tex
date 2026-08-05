@@ -89,15 +89,15 @@
 % Criterion for retaining a reference: (A) published in a peer-reviewed venue OR (B) high impact (>50 citations on google scholar) OR (C) recent (publication date<2 years). Criterion (C) exists because time might operate the conversion (C) \to (A\cup B).
 % 325 works were identified, out of which 150 are retained in the final version
 % AI statement: knowledge base with standardized processing (including for each paper SUMMARY, KEY DEFINITIONS, BACKGROUND NOTIONS, RESULTS (theoretical if any, empirical if any), METHODOLOGY, LIMITATIONS
-% More emphasis has been put on less organized topics and less emphasis on well documented (a lot or recent covering materials) ones such as GDL or parameter-space symmetries.
+% More emphasis has been put on less organized topics and less emphasis on well documented (a lot or recent covering materials) ones such as GDL, data augmentation or parameter-space symmetries.
 % Broadness has been chosen over exhausivity.
 
 \subsection{Related work}
+% shorten2019jbd and mumuni2022a: surveys on DA
 Previous work have collected or formalized literature on symmetries in a deep learning context.
 Symmetric architecture (such as Siamese networks) are surveyed in \cite{ilina2022sa}.
 \cite{zhao2025} focuses on parameter-space symmetries: transformation that change the representation of a neural network but do not modify the implemented function.
 \cite{sipiran202523scgpis} references symmetry discovery methods in 3D shapes.
-% geometric deep learning
 \cite{bronstein2021} is the reference textbook on geometric deep learning,  \cite{gerken2021,carlsson} study the mathematical formalism of this field and \cite{basheer2025ijdsa,habte2023} focus more specifically on equivariant convolutions, \cite{fei2024air} on 3D rotations and \cite{seo2025a} on robotics.
 \cite{rath2024air} gathers methods that integrate geometric prior knowledge to neural network such that their representations are invariant or equivariant.
 Compared to these works, we work in a reverse and go broad, starting from the concept of symmetry listing its occurrences and trying to delineate a conceptual understanding, adopting a high level point of view.
@@ -2375,6 +2375,7 @@ Taken together, these measures range from single-neuron firing ratios to loss-fr
 
 
 \section{Incomplete symmetries}\label{sec:incomplete-symmetries}\seccol{col-teal}
+% ha2017: hypernetworks in RNN break weight-sharing through time
 
 The previous section treated the symmetry as an object to discover; here we treat it as one that is \emph{imperfect}, not exact or ephemeral.
 It may hold only on part of the group, only up to a tolerance, or only until the data distribution or the training dynamics erodes it.
@@ -2507,6 +2508,7 @@ A depth-limited equivariant model could exploit the low-level symmetry without p
 This perspective is supported by \citet{elsayed2020p3icml} who report that breaking equivariance only in the later layers is best-performing on MNIST, CIFAR-10 and CelebA compared to breaking it in earlier layers and equivariant architectures.
 
 \subsubsection{Parameter-space, loss landscape and training dynamics}
+% Regularizers break the implication that functional symmetry implies loss symmetry -> compare with the section on parameter-space symmetries to avoid redundancies
 We now focus on parameter-spaces, where symmetries are typically naturally imposed by design choices whose ramified consequences are not fully understood.
 The term ``spontaneous'' is sometimes borrowed from physics to describe their breaking conveying the double lack of intent.
 Because \Cref{sec:parameter-space-symmetries} develops these symmetries, we record here only the specifically symmetry-breaking findings.
@@ -2514,8 +2516,7 @@ Because \Cref{sec:parameter-space-symmetries} develops these symmetries, we reco
 \paragraph{Gradient Flow and Practical Optimization}
 Gradient Flow (GF) overstates how much symmetry survives training.
 \citet{kunin2020} derive a \emph{modified} gradient flow accounting for finite learning rate, momentum and weight decay, under which the conservation laws implied by parameter-space symmetries are broken.
-As a consequence, conservation laws are also broken.
-A simple given exmaple: a quantity conserved under GF instead decays as $\langle\theta(t),\mathbb I_{\mathcal A}\rangle=e^{-\lambda t}\langle\theta(0),\mathbb I_{\mathcal A}\rangle$, where $\lambda$ is the weight decay.
+As a consequence, conservation laws are also broken e.g. a quantity conserved under GF instead decays as $\langle\theta(t),\mathbb I_{\mathcal A}\rangle=e^{-\lambda t}\langle\theta(0),\mathbb I_{\mathcal A}\rangle$, where $\lambda$ is the weight decay.
 \citet{tanaka2021} show, through a Lagrangian formulation with the loss as potential energy $V$ and the learning rule as kinetic energy $T$, that a symmetry of the loss need not be a symmetry of the \emph{dynamics}: parameter symmetries fix $V$ by definition.
 This can be seen from the Lagrangian $\mathcal L=T-V$ where $T=\frac{1}{2} m \dot q^2$ is the kinetic energy and $V$ the potential energy. Parameter-space symmetries leave $V$ invariant by definition, however $T$ is not necessarily invariant.
 They give the example of a scaling transformation where $\dot q^2$ transforms as $(1+s)\dot q^2$, thus the kinetic part is responsible for breaking the symmetry of $\mathcal L$, and alteration of the trajectory.
@@ -2629,6 +2630,7 @@ A simple example: duplicating a row $W^{(l)}_{i,.}$ into $W^{(l)}_{i',.}$  whil
 Finally, quivers and category theory have been used to reframe and extend geometric deep learning ideas \citep{gavranovic2024}, define message-passing GNNs equivariant to local isomorphisms \citep{dehaan2020} or study isomorphisms of the computational graphs of feedforward architectures \citep{armenta2021a}.
 
 \subsection{Approximate symmetries: tolerance}\label{sec:soft-equivariance}
+% bamler2018p3icml: almost symmetric subspace from weak symmetry breaking by regularizer \psi(Z)
 
 Where the previous subsection restricted the \emph{extent} of a symmetry---which transformations belong to the set $S$ (\Cref{sec:extent-restriction})---this one relaxes its \emph{exactness}: the group $G$ is retained in full, but equivariance is only required to hold approximately.
 Indeed, a symmetry may hold only to first order or be blurred by noise, and an idealized invariance often drifts, for instance over the course of a simulation.
