@@ -2509,6 +2509,7 @@ They report that standard benchmarks (QM9, ModelNet40) are notably symmetry-bias
 \citet{urbano2026} instead estimate the orbit density directly with a class--pose IE (invariant--equivariant) autoencoder.
 
 \paragraph{Two extremes}
+% kalogeropoulos2024: use canonicalization to design ScaleInv
 Canonicalization is the limit in which the orbit density collapses to a Dirac mass \citep{ciuclea2025,urbano2026}.
 \citet{urbano2026} take the canonical representative to be a \emph{natural pose} obtained from a robust Fréchet mean $\mathcal{F}(\mu)=\arg\min_{y}\sum_{g_i}d(y,g_i)^2$ and left-multiply each orbit so that the identity element is that pose, obtaining an orbit distribution centered around the natural pose.
 Extrinsic equivariance is the another extreme, in which $g$ sends $x$ entirely off-distribution, $p(gx)=0$; whether it helps is itself context-dependent, being beneficial in \citet{wang2022b} but harmful in the examples of \citet{wang2023a}.
@@ -2519,6 +2520,7 @@ A depth-limited equivariant model could exploit the low-level symmetry without p
 This perspective is supported by \citet{elsayed2020p3icml} who report that breaking equivariance only in the later layers is best-performing on MNIST, CIFAR-10 and CelebA compared to breaking it in earlier layers and equivariant architectures.
 
 \subsubsection{Parameter-space, loss landscape and training dynamics}\label{sec:param-space-sb}
+% kobayashi2024anips: The L_2 penalty breaks \mathrm{GL}_r\downarrow O(r).
 % Regularizers break the implication that functional symmetry implies loss symmetry -> compare with the section on parameter-space symmetries to avoid redundancies
 We now focus on parameter-spaces, where symmetries are typically naturally imposed by design choices whose ramified consequences are not fully understood.
 The term ``spontaneous'' is sometimes borrowed from physics to describe their breaking conveying the double lack of intent.
@@ -2543,8 +2545,8 @@ $\Delta^G$, specifically evaluated for the pair $(i,j)$ simply yields $\| \theta
 The distance $\Delta^G$, in practice used with a threshold, unveils a non-trivial symmetry dynamics both through spaces (layers) and time (iteration).
 
 \paragraph{Designed Symmetry Breaking in Parameter Space}
-Since symmetries can slow optimization, cap effective capacity \citep{ziyin2025b}, or obscure landscape analysis \citep{lim2024}, works remove parameter-symmetries \emph{on purpose}, to study counterfactually or improve training.
-\citet{ziyin2025b} propose \emph{syre}, a model-agnostic scheme that anchors a random static bias at initialization, $l_r(\theta,x)=l(\theta+\theta_0)+\gamma\|\theta\|^2$, with the penalty upgraded to $\gamma\,\theta^\top D\theta$, $D_{ii}\sim\operatorname{Unif}(1-\epsilon,1+\epsilon)$, to also discard continuous symmetries.
+Since symmetries can slow optimization, cap effective capacity \citep{ziyin2024b}, or obscure landscape analysis \citep{lim2024}, works remove parameter-symmetries \emph{on purpose}, to study counterfactually or improve training.
+\citet{ziyin2024b} propose \emph{syre}, a model-agnostic scheme that anchors a random static bias at initialization, $l_r(\theta,x)=l(\theta+\theta_0)+\gamma\|\theta\|^2$, with the penalty upgraded to $\gamma\,\theta^\top D\theta$, $D_{ii}\sim\operatorname{Unif}(1-\epsilon,1+\epsilon)$, to also discard continuous symmetries.
 \citet{lim2024} instead build \emph{asymmetric} networks, either through an untrainability mask $W\mapsto M\odot W+(1-M)\odot W_{fixed}$ whose rows are nonzero and distinct (the networks remaining universal approximators) or through a non-elementwise activation.
 They observe that the resulting models enjoy direct linear mode connectivity, smoother loss landscapes and better weight-space learnability.
 
@@ -2643,6 +2645,7 @@ Finally, quivers and category theory have been used to reframe and extend geomet
 
 \subsection{Approximate symmetries: tolerance}\label{sec:soft-equivariance}
 % bamler2018p3icml: almost symmetric subspace from weak symmetry breaking by regularizer \psi(Z)
+% chen2024jsm: approximately Q-symmetric loss function
 
 Where the previous subsection restricted the \emph{extent} of a symmetry---which transformations belong to the set $S$ (\Cref{sec:extent-restriction})---this one relaxes its \emph{exactness}: the group $G$ is retained in full, but equivariance is only required to hold approximately.
 Indeed, a symmetry may hold only to first order or be blurred by noise, and an idealized invariance often drifts, for instance over the course of a simulation.

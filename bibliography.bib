@@ -40,8 +40,19 @@
   abstract = {The success of deep learning is due in large part to our ability to solve certain massive non-convex optimization problems with relative ease. Though non-convex optimization is NP-hard, simple algorithms -- often variants of stochastic gradient descent -- exhibit surprising effectiveness in fitting large neural networks in practice. We argue that neural network loss landscapes often contain (nearly) a single basin after accounting for all possible permutation symmetries of hidden units a la Entezari et al. 2021. We introduce three algorithms to permute the units of one model to bring them into alignment with a reference model in order to merge the two models in weight space. This transformation produces a functionally equivalent set of weights that lie in an approximately convex basin near the reference model. Experimentally, we demonstrate the single basin phenomenon across a variety of model architectures and datasets, including the first (to our knowledge) demonstration of zero-barrier linear mode connectivity between independently trained ResNet models on CIFAR-10. Additionally, we identify intriguing phenomena relating model width and training time to mode connectivity. Finally, we discuss shortcomings of the linear mode connectivity hypothesis, including a counterexample to the single basin theory.},
   archiveprefix = {arXiv},
   keywords = {/read,mode connectivity/linear mode connectivity,sgd,symmetry/neural network symmetry,symmetry/permutation symmetry},
-  annotation = {rate: 1},
   file = {/home/pierrick/OneDrive/zotero-library/2023/Ainsworth/ainsworth2023.pdf}
+}
+
+@article{albertini1993,
+  title = {{{FOR NEURAL NETWORKS}}, {{FUNCTION DETERMINES FORM}}},
+  author = {Albertini, Francesca and Sontag, E. D.},
+  year = 1993,
+  urldate = {2026-07-31},
+  abstract = {This article shows that the weights of continuous-time feedback neural networks are uniquely identifiable from input/output measurements. Under weak genericity assumptions, the following is true: Assume given two nets, whose neurons all have the same nonlinear activation function sigma; if the two nets have equal behaviors as ''black boxes'' then necessarily they must have the same number of neurons and-except at most for sign reversals at each node-the same weights. Moreover, even if the activations are not a priori known to coincide, they are shown to be also essentially determined from the external measurements.},
+  langid = {english},
+  keywords = {/on halt},
+  annotation = {Accepted: 2015-06-05T07:02:08Z},
+  file = {/home/pierrick/OneDrive/zotero-library/1993/Albertini/albertini1993.pdf}
 }
 
 @inproceedings{ali2024,
@@ -83,6 +94,22 @@
   abstract = {Cross-lingual or cross-domain correspondences play key roles in tasks ranging from machine translation to transfer learning. Recently, purely unsupervised methods operating on monolingual embeddings have become effective alignment tools. Current state-of-the-art methods, however, involve multiple steps, including heuristic post-hoc refinement strategies. In this paper, we cast the correspondence problem directly as an optimal transport (OT) problem, building on the idea that word embeddings arise from metric recovery algorithms. Indeed, we exploit the Gromov-Wasserstein distance that measures how similarities between pairs of words relate across languages. We show that our OT objective can be estimated efficiently, requires little or no tuning, and results in performance comparable with the state-of-the-art in various unsupervised word translation tasks.},
   keywords = {/read,sym-survey/frameworks/loss-function},
   file = {/home/pierrick/OneDrive/zotero-library/2018/Alvarez-Melis/alvarez-melis2018p2cemnlp.pdf}
+}
+
+@article{amari1998nc,
+  title = {Natural {{Gradient Works Efficiently}} in {{Learning}}},
+  author = {Amari, Shun-ichi},
+  year = 1998,
+  journal = {Neural Computation},
+  volume = {10},
+  number = {2},
+  pages = {251--276},
+  issn = {0899-7667},
+  doi = {10.1162/089976698300017746},
+  urldate = {2026-07-27},
+  abstract = {When a parameter space has a certain underlying structure, the ordinary gradient of a function does not represent its steepest direction, but the natural gradient does. Information geometry is used for calculating the natural gradients in the parameter space of perceptrons, the space of matrices (for blind source separation), and the space of linear dynamical systems (for blind source deconvolution). The dynamical behavior of natural gradient online learning is analyzed and is proved to be Fisher efficient, implying that it has asymptotically the same performance as the optimal batch estimation of parameters. This suggests that the plateau phenomenon, which appears in the backpropagation learning algorithm of multilayer perceptrons, might disappear or might not be so serious when the natural gradient is used. An adaptive method of updating the learning rate is proposed and analyzed.},
+  keywords = {/on halt},
+  file = {/home/pierrick/OneDrive/zotero-library/1998/Amari/amari1998nc.pdf}
 }
 
 @article{anselmi2019pr,
@@ -134,21 +161,76 @@
   file = {/home/pierrick/OneDrive/zotero-library/2023/Arjevani/arjevani2023.pdf}
 }
 
-@misc{armenta2021a,
+@article{armenta2021a,
   title = {The {{Representation Theory}} of {{Neural Networks}}},
   author = {Armenta, Marco Antonio and Jodoin, Pierre-Marc},
   year = 2021,
-  number = {arXiv:2007.12213},
+  journal = {Mathematics},
+  volume = {9},
+  number = {24},
   eprint = {2007.12213},
   primaryclass = {cs, math, stat},
-  publisher = {arXiv},
+  pages = {3216},
+  publisher = {Multidisciplinary Digital Publishing Institute},
+  issn = {2227-7390},
+  doi = {10.3390/math9243216},
   urldate = {2024-09-24},
   abstract = {In this work, we show that neural networks can be represented via the mathematical theory of quiver representations. More specifically, we prove that a neural network is a quiver representation with activation functions, a mathematical object that we represent using a network quiver. Also, we show that network quivers gently adapt to common neural network concepts such as fully-connected layers, convolution operations, residual connections, batch normalization, pooling operations and even randomly wired neural networks. We show that this mathematical representation is by no means an approximation of what neural networks are as it exactly matches reality. This interpretation is algebraic and can be studied with algebraic methods.},
   archiveprefix = {arXiv},
+  copyright = {http://creativecommons.org/licenses/by/3.0/},
   langid = {english},
   keywords = {/read,neural network,quiver/quiver representation,sym-survey/exotic-algstruct/cat-theory},
   annotation = {GSCC: 0000041 2026-05-30T14:26:59.959Z 0.15},
   file = {/home/pierrick/OneDrive/zotero-library/2021/Armenta/armenta2021a.pdf}
+}
+
+@article{armenta2021b,
+  title = {Neural {{Teleportation}}},
+  author = {Armenta, Marco and Judge, Thierry and Painchaud, Nathan and Skandarani, Youssef and Lemaire, Carl and Sanchez, Gabriel Gibeau and Spino, Philippe and Jodoin, Pierre-Marc},
+  year = 2023,
+  journal = {Mathematics},
+  volume = {11},
+  number = {2},
+  eprint = {2012.01118},
+  primaryclass = {cs},
+  pages = {480},
+  publisher = {Multidisciplinary Digital Publishing Institute},
+  issn = {2227-7390},
+  doi = {10.3390/math11020480},
+  urldate = {2024-09-24},
+  abstract = {In this paper, we explore a process called neural teleportation, a mathematical consequence of applying quiver representation theory to neural networks. Neural teleportation ``teleports'' a network to a new position in the weight space and preserves its function. This phenomenon comes directly from the definitions of representation theory applied to neural networks and it turns out to be a very simple operation that has remarkable properties.},
+  archiveprefix = {arXiv},
+  langid = {english},
+  keywords = {/read,loss landscape,neural network,quiver/quiver representation},
+  annotation = {GSCC: 0000027 2026-02-16T13:30:39.305Z 0.11},
+  file = {/home/pierrick/OneDrive/zotero-library/2021/Armenta/armenta2021b.pdf}
+}
+
+@inproceedings{arora2018p3icml,
+  title = {On the {{Optimization}} of {{Deep Networks}}: {{Implicit Acceleration}} by {{Overparameterization}}},
+  shorttitle = {On the {{Optimization}} of {{Deep Networks}}},
+  booktitle = {Proceedings of the 35th {{International Conference}} on {{Machine Learning}}},
+  author = {Arora, Sanjeev and Cohen, Nadav and Hazan, Elad},
+  year = 2018,
+  pages = {244--253},
+  publisher = {PMLR},
+  issn = {2640-3498},
+  urldate = {2024-05-21},
+  abstract = {Conventional wisdom in deep learning states that increasing depth improves expressiveness but complicates optimization. This paper suggests that, sometimes, increasing depth can speed up optimization. The effect of depth on optimization is decoupled from expressiveness by focusing on settings where additional layers amount to overparameterization -- linear neural networks, a well-studied model. Theoretical analysis, as well as experiments, show that here depth acts as a preconditioner which may accelerate convergence. Even on simple convex problems such as linear regression with \$\textbackslash ell\_p\$ loss, \$p{$>$}2\$, gradient descent can benefit from transitioning to a non-convex overparameterized objective, more than it would from some common acceleration schemes. We also prove that it is mathematically impossible to obtain the acceleration effect of overparametrization via gradients of any regularizer.},
+  langid = {english},
+  keywords = {/read},
+  file = {/home/pierrick/OneDrive/zotero-library/2018/Arora/arora2018p3icml.pdf}
+}
+
+@article{ba2016,
+  title = {Layer {{Normalization}}},
+  author = {Ba, Jimmy Lei and Kiros, Jamie Ryan and Hinton, Geoffrey E.},
+  year = 2016,
+  urldate = {2026-07-27},
+  abstract = {Training state-of-the-art, deep neural networks is computationally expensive. One way to reduce the training time is to normalize the activities of the neurons. A recently introduced technique called batch normalization uses the distribution of the summed input to a neuron over a mini-batch of training cases to compute a mean and variance which are then used to normalize the summed input to that neuron on each training case. This significantly reduces the training time in feed-forward neural networks. However, the effect of batch normalization is dependent on the mini-batch size and it is not obvious how to apply it to recurrent neural networks. In this paper, we transpose batch normalization into layer normalization by computing the mean and variance used for normalization from all of the summed inputs to the neurons in a layer on a single training case. Like batch normalization, we also give each neuron its own adaptive bias and gain which are applied after the normalization but before the non-linearity. Unlike batch normalization, layer normalization performs exactly the same computation at training and test times. It is also straightforward to apply to recurrent neural networks by computing the normalization statistics separately at each time step. Layer normalization is very effective at stabilizing the hidden state dynamics in recurrent networks. Empirically, we show that layer normalization can substantially reduce the training time compared with previously published techniques.},
+  langid = {english},
+  keywords = {/on halt},
+  file = {/home/pierrick/OneDrive/zotero-library/2016/Ba/ba2016.pdf}
 }
 
 @misc{badrinarayanan2015,
@@ -213,6 +295,21 @@
   archiveprefix = {arXiv},
   keywords = {/unread},
   file = {/home/pierrick/OneDrive/zotero-library/2023/Balestriero/balestriero2023.pdf}
+}
+
+@inproceedings{bamler2018p3icml,
+  title = {Improving {{Optimization}} for {{Models With Continuous Symmetry Breaking}}},
+  booktitle = {Proceedings of the 35th {{International Conference}} on {{Machine Learning}}},
+  author = {Bamler, Robert and Mandt, Stephan},
+  year = 2018,
+  pages = {423--432},
+  publisher = {PMLR},
+  issn = {2640-3498},
+  urldate = {2026-07-27},
+  abstract = {Many loss functions in representation learning are invariant under a continuous symmetry transformation. For example, the loss function of word embeddings (Mikolov et al., 2013) remains unchanged if we simultaneously rotate all word and context embedding vectors. We show that representation learning models for time series possess an approximate continuous symmetry that leads to slow convergence of gradient descent. We propose a new optimization algorithm that speeds up convergence using ideas from gauge theory in physics. Our algorithm leads to orders of magnitude faster convergence and to more interpretable representations, as we show for dynamic extensions of matrix factorization and word embedding models. We further present an example application of our proposed algorithm that translates modern words into their historic equivalents.},
+  langid = {english},
+  keywords = {,/read},
+  file = {/home/pierrick/OneDrive/zotero-library/2018/Bamler/bamler2018p3icml.pdf}
 }
 
 @misc{bardes2022,
@@ -467,7 +564,6 @@
   abstract = {Graph Neural Networks (GNNs) are limited in their expressive power, struggle with long-range interactions and lack a principled way to model higher-order structures. These problems can be attributed to the strong coupling between the computational graph and the input graph structure. The recently proposed Message Passing Simplicial Networks naturally decouple these elements by performing message passing on the clique complex of the graph. Nevertheless, these models can be severely constrained by the rigid combinatorial structure of Simplicial Complexes (SCs). In this work, we extend recent theoretical results on SCs to regular Cell Complexes, topological objects that flexibly subsume SCs and graphs. We show that this generalisation provides a powerful set of graph "lifting" transformations, each leading to a unique hierarchical message passing procedure. The resulting methods, which we collectively call CW Networks (CWNs), are strictly more powerful than the WL test and not less powerful than the 3-WL test. In particular, we demonstrate the effectiveness of one such scheme, based on rings, when applied to molecular graph problems. The proposed architecture benefits from provably larger expressivity than commonly used GNNs, principled modelling of higher-order signals and from compressing the distances between nodes. We demonstrate that our model achieves state-of-the-art results on a variety of molecular datasets.},
   langid = {english},
   keywords = {/read,cell complex,message passing,Weisfeiler Lehman},
-  annotation = {rate: 1},
   file = {/home/pierrick/OneDrive/zotero-library/2021/Bodnar/bodnar2021a.pdf}
 }
 
@@ -502,15 +598,17 @@
   file = {/home/pierrick/OneDrive/zotero-library/2022/Bogatskiy/bogatskiy2022.pdf}
 }
 
-@misc{bona-pellissier2023,
+@article{bona-pellissier2023,
   title = {Parameter Identifiability of a Deep Feedforward {{ReLU}} Neural Network},
   author = {{Bona-Pellissier}, Joachim and Bachoc, Fran{\c c}ois and Malgouyres, Fran{\c c}ois},
   year = 2023,
-  number = {arXiv:2112.12982},
+  journal = {Machine Learning},
+  volume = {112},
   eprint = {2112.12982},
   primaryclass = {math},
-  publisher = {arXiv},
-  doi = {10.48550/arXiv.2112.12982},
+  pages = {4431--4493},
+  publisher = {Springer Verlag},
+  doi = {10.1007/s10994-023-06355-4},
   urldate = {2025-10-13},
   abstract = {The possibility for one to recover the parameters-weights and biases-of a neural network thanks to the knowledge of its function on a subset of the input space can be, depending on the situation, a curse or a blessing. On one hand, recovering the parameters allows for better adversarial attacks and could also disclose sensitive information from the dataset used to construct the network. On the other hand, if the parameters of a network can be recovered, it guarantees the user that the features in the latent spaces can be interpreted. It also provides foundations to obtain formal guarantees on the performances of the network. It is therefore important to characterize the networks whose parameters can be identified and those whose parameters cannot. In this article, we provide a set of conditions on a deep fully-connected feedforward ReLU neural network under which the parameters of the network are uniquely identified-modulo permutation and positive rescaling-from the function it implements on a subset of the input space.},
   archiveprefix = {arXiv},
@@ -606,7 +704,7 @@
   urldate = {2025-10-13},
   abstract = {The permutation symmetry of neurons in each layer of a deep neural network gives rise not only to multiple equivalent global minima of the loss function, but also to first-order saddle points located on the path between the global minima. In a network of \$d-1\$ hidden layers with \$n\_k\$ neurons in layers \$k = 1, \textbackslash ldots, d\$, we construct smooth paths between equivalent global minima that lead through a `permutation point' where the input and output weight vectors of two neurons in the same hidden layer \$k\$ collide and interchange. We show that such permutation points are critical points with at least \$n\_\textbraceleft k+1\textbraceright\$ vanishing eigenvalues of the Hessian matrix of second derivatives indicating a local plateau of the loss function. We find that a permutation point for the exchange of neurons \$i\$ and \$j\$ transits into a flat valley (or generally, an extended plateau of \$n\_\textbraceleft k+1\textbraceright\$ flat dimensions) that enables all \$n\_k!\$ permutations of neurons in a given layer \$k\$ at the same loss value. Moreover, we introduce high-order permutation points by exploiting the recursive structure in neural network functions, and find that the number of \$K\textasciicircum\textbraceleft\textbackslash text\textbraceleft th\textbraceright\textbraceright\$-order permutation points is at least by a factor \$\textbackslash sum\_\textbraceleft k=1\textbraceright\textasciicircum\textbraceleft d-1\textbraceright\textbackslash frac\textbraceleft 1\textbraceright\textbraceleft 2!\textasciicircum K\textbraceright\textbraceleft n\_k-K \textbackslash choose K\textbraceright\$ larger than the (already huge) number of equivalent global minima. In two tasks, we illustrate numerically that some of the permutation points correspond to first-order saddles (`permutation saddles'): first, in a toy network with a single hidden layer on a function approximation task and, second, in a multilayer network on the MNIST task. Our geometric approach yields a lower bound on the number of critical points generated by weight-space symmetries and provides a simple intuitive link between previous mathematical results and numerical observations.},
   archiveprefix = {arXiv},
-  keywords = {/unread},
+  keywords = {,/read},
   annotation = {GSCC: 0000093 2026-05-31T22:26:50.535Z 0.26},
   file = {/home/pierrick/OneDrive/zotero-library/2019/Brea/brea2019.pdf}
 }
@@ -673,8 +771,7 @@
   urldate = {2023-03-29},
   abstract = {The last decade has witnessed an experimental revolution in data science and machine learning, epitomised by deep learning methods. Indeed, many high-dimensional learning tasks previously thought to be beyond reach -- such as computer vision, playing Go, or protein folding -- are in fact feasible with appropriate computational scale. Remarkably, the essence of deep learning is built from two simple algorithmic principles: first, the notion of representation or feature learning, whereby adapted, often hierarchical, features capture the appropriate notion of regularity for each task, and second, learning by local gradient-descent type methods, typically implemented as backpropagation. While learning generic functions in high dimensions is a cursed estimation problem, most tasks of interest are not generic, and come with essential pre-defined regularities arising from the underlying low-dimensionality and structure of the physical world. This text is concerned with exposing these regularities through unified geometric principles that can be applied throughout a wide spectrum of applications. Such a 'geometric unification' endeavour, in the spirit of Felix Klein's Erlangen Program, serves a dual purpose: on one hand, it provides a common mathematical framework to study the most successful neural network architectures, such as CNNs, RNNs, GNNs, and Transformers. On the other hand, it gives a constructive procedure to incorporate prior physical knowledge into neural architectures and provide principled way to build future architectures yet to be invented.},
   archiveprefix = {arXiv},
-  keywords = {/textbook,bundle,cnn,convolution,convolution/convolutional neural network,curse of dimensionality,EPFL-statement,equivariance,equivariance/equivariant neural network,gauge,geodesic,geometric deep learning,gnn,intrinsic representation,invariance,manifold,representation theory,rnn,symmetry,transfomer},
-  annotation = {rate: 4},
+  keywords = {,/textbook,bundle,cnn,convolution,convolution/convolutional neural network,curse of dimensionality,EPFL-statement,equivariance,equivariance/equivariant neural network,gauge,geodesic,geometric deep learning,gnn,intrinsic representation,invariance,manifold,representation theory,rnn,symmetry,transfomer},
   file = {/home/pierrick/OneDrive/zotero-library/2021/Bronstein/bronstein2021.pdf}
 }
 
@@ -1275,10 +1372,25 @@
   journal = {International Conference on Machine Learning},
   abstract = {Despite their overwhelming capacity to overfit, deep learning architectures tend to generalize relatively well to unseen data, allowing them to be deployed in practice. However, explaining why this is the case is still an open area of research. One standing hypothesis that is gaining popularity, e.g. Hochreiter \& Schmidhuber (1997); Keskar et al. (2017), is that the flatness of minima of the loss function found by stochastic gradient based methods results in good generalization. This paper argues that most notions of flatness are problematic for deep models and can not be directly applied to explain generalization. Specifically, when focusing on deep networks with rectifier units, we can exploit the particular geometry of parameter space induced by the inherent symmetries that these architectures exhibit to build equivalent models corresponding to arbitrarily sharper minima. Furthermore, if we allow to reparametrize a function, the geometry of its parameters can change drastically without affecting its generalization properties.},
   langid = {english},
-  keywords = {/read,flatness,generalization,geometry,minimum,sharpness},
-  annotation = {GSCC: 0000897 \\
-rate: 2},
+  keywords = {,/read,flatness,generalization,geometry,minimum,sharpness},
+  annotation = {GSCC: 0000897},
   file = {/home/pierrick/OneDrive/zotero-library/2017/Dinh/dinh2017 1.pdf;/home/pierrick/OneDrive/zotero-library/2017/Dinh/dinh2017.pdf}
+}
+
+@inproceedings{draxler2018p3icml,
+  title = {Essentially {{No Barriers}} in {{Neural Network Energy Landscape}}},
+  booktitle = {Proceedings of the 35th {{International Conference}} on {{Machine Learning}}},
+  author = {Draxler, Felix and Veschgini, Kambis and Salmhofer, Manfred and Hamprecht, Fred},
+  year = 2018,
+  pages = {1309--1318},
+  publisher = {PMLR},
+  issn = {2640-3498},
+  urldate = {2024-04-16},
+  abstract = {Training neural networks involves finding minima of a high-dimensional non-convex loss function. Relaxing from linear interpolations, we construct continuous paths between minima of recent neural network architectures on CIFAR10 and CIFAR100. Surprisingly, the paths are essentially flat in both the training and test landscapes. This implies that minima are perhaps best seen as points on a single connected manifold of low loss, rather than as the bottoms of distinct valleys.},
+  langid = {english},
+  keywords = {/on halt,flatness measure,mode connectivity},
+  annotation = {GSCC: 0000509},
+  file = {/home/pierrick/OneDrive/zotero-library/2018/Draxler/Draxler et al. - 2018 - Essentially No Barriers in Neural Network Energy Landscape 1.pdf;/home/pierrick/OneDrive/zotero-library/2018/Draxler/draxler2018p3icml 1.pdf}
 }
 
 @inproceedings{du2018anips,
@@ -1403,7 +1515,7 @@ rate: 2},
   doi = {10.1016/j.aim.2025.110636},
   urldate = {2025-11-10},
   langid = {english},
-  keywords = {/unread,functional dimension,parameter symmetry},
+  keywords = {/read,functional dimension,parameter symmetry},
   annotation = {GSCC: 0000030 2026-05-31T22:22:34.726Z 0},
   file = {/home/pierrick/OneDrive/zotero-library/2025/Elisenda Grigsby/elisendagrigsby2025aim.pdf}
 }
@@ -1541,6 +1653,19 @@ rate: 2},
   file = {/home/pierrick/OneDrive/zotero-library/2017/Fan/fan2017.pdf}
 }
 
+@inproceedings{fefferman1993anips,
+  title = {Recovering a {{Feed-Forward Net From Its Output}}},
+  booktitle = {Advances in {{Neural Information Processing Systems}}},
+  author = {Fefferman, Charles and Markel, Scott},
+  year = 1993,
+  volume = {6},
+  publisher = {Morgan-Kaufmann},
+  urldate = {2026-07-31},
+  abstract = {We study feed-forward  nets with arbitrarily many layers,  using the stan(cid:173) dard  sigmoid,  tanh  x.  Aside  from  technicalities,  our  theorems  are:  1.  Complete knowledge of the output of a neural net for  arbitrary inputs  uniquely specifies  the architecture,  weights and thresholds;  and 2.  There  are  only  finitely  many  critical  points  on  the  error  surface  for  a  generic  training problem.},
+  keywords = {/on halt},
+  file = {/home/pierrick/OneDrive/zotero-library/1993/Fefferman/fefferman1993anips.pdf}
+}
+
 @article{fei2024air,
   title = {Rotation Invariance and Equivariance in {{3D}} Deep Learning: A Survey},
   shorttitle = {Rotation Invariance and Equivariance in {{3D}} Deep Learning},
@@ -1629,6 +1754,33 @@ rate: 2},
   file = {/home/pierrick/OneDrive/zotero-library/2021/Foret/foret2021.pdf}
 }
 
+@inproceedings{frankle2020p3icml,
+  title = {Linear {{Mode Connectivity}} and the {{Lottery Ticket Hypothesis}}},
+  booktitle = {Proceedings of the 37th {{International Conference}} on {{Machine Learning}}},
+  author = {Frankle, Jonathan and Dziugaite, Gintare Karolina and Roy, Daniel and Carbin, Michael},
+  year = 2020,
+  pages = {3259--3269},
+  publisher = {PMLR},
+  issn = {2640-3498},
+  urldate = {2025-10-27},
+  abstract = {We study whether a neural network optimizes to the same, linearly connected minimum under different samples of SGD noise (e.g., random data order and augmentation). We find that standard vision models become stable to SGD noise in this way early in training. From then on, the outcome of optimization is determined to a linearly connected region. We use this technique to study iterative magnitude pruning (IMP), the procedure used by work on the lottery ticket hypothesis to identify subnetworks that could have trained in isolation to full accuracy. We find that these subnetworks only reach full accuracy when they are stable to SGD noise, which either occurs at initialization for small-scale settings (MNIST) or early in training for large-scale settings (ResNet-50 and Inception-v3 on ImageNet).},
+  langid = {english},
+  keywords = {/read,mode connectivity/linear mode connectivity},
+  file = {/home/pierrick/OneDrive/zotero-library/2020/Frankle/frankle2020p3icml.pdf}
+}
+
+@inproceedings{freeman2017,
+  title = {Topology and {{Geometry}} of {{Half-Rectified Network Optimization}}},
+  booktitle = {International {{Conference}} on {{Learning Representations}}},
+  author = {Freeman, C. Daniel and Bruna, Joan},
+  year = 2017,
+  urldate = {2026-08-01},
+  abstract = {The loss surface of deep neural networks has recently attracted interest in the optimization and machine learning communities as a prime example of high-dimensional non-convex problem. Some insights were recently gained using spin glass models and mean-field approximations, but at the expense of strongly simplifying the nonlinear nature of the model. In this work, we do not make any such approximation and study conditions on the data distribution and model architecture that prevent the existence of bad local minima. Our theoretical work quantifies and formalizes two important folklore facts: (i) the landscape of deep linear networks has a radically different topology from that of deep half-rectified ones, and (ii) that the energy landscape in the non-linear case is fundamentally controlled by the interplay between the smoothness of the data distribution and model over-parametrization. Our main theoretical contribution is to prove that half-rectified single layer networks are asymptotically connected, and we provide explicit bounds that reveal the aforementioned interplay. The conditioning of gradient descent is the next challenge we address. We study this question through the geometry of the level sets, and we introduce an algorithm to efficiently estimate the regularity of such sets on large-scale networks. Our empirical results show that these level sets remain connected throughout all the learning phase, suggesting a near convex behavior, but they become exponentially more curvy as the energy level decays, in accordance to what is observed in practice with very low curvature attractors.},
+  langid = {english},
+  keywords = {/read},
+  file = {/home/pierrick/OneDrive/zotero-library/2017/Freeman/freeman2017.pdf}
+}
+
 @misc{fuchs2020,
   title = {{{SE}}(3)-{{Transformers}}: {{3D Roto-Translation Equivariant Attention Networks}}},
   shorttitle = {{{SE}}(3)-{{Transformers}}},
@@ -1659,7 +1811,7 @@ rate: 2},
   abstract = {The Fisher information matrix of a multi-layer perceptron network can be singular at certain parameters, and in such cases many statistical techniques based on asymptotic theory cannot be applied properly. In this paper, we prove rigorously that the Fisher information matrix of a three-layer perceptron network is positive definite if and only if the network is irreducible; that is, if there is no hidden unit that makes no contribution to the output and there is no pair of hidden units that could be collapsed to a single unit without altering the input-output map. This implies that a network that has a singular Fisher information matrix can be reduced to a network with a positive definite Fisher information matrix by eliminating redundant hidden units. Copyright 1996 Elsevier Science Ltd},
   langid = {english},
   pmid = {12662569},
-  keywords = {/unread},
+  keywords = {/read},
   file = {/home/pierrick/OneDrive/zotero-library/1996/Fukumizu/fukumizu1996nn.pdf}
 }
 
@@ -1677,6 +1829,22 @@ rate: 2},
   archiveprefix = {arXiv},
   keywords = {/unread},
   file = {/home/pierrick/OneDrive/zotero-library/2026/Galley/galley2026.pdf}
+}
+
+@misc{garipov2018,
+  title = {Loss {{Surfaces}}, {{Mode Connectivity}}, and {{Fast Ensembling}} of {{DNNs}}},
+  author = {Garipov, Timur and Izmailov, Pavel and Podoprikhin, Dmitrii and Vetrov, Dmitry and Wilson, Andrew Gordon},
+  year = 2018,
+  number = {arXiv:1802.10026},
+  eprint = {1802.10026},
+  primaryclass = {stat},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.1802.10026},
+  urldate = {2025-03-07},
+  abstract = {The loss functions of deep neural networks are complex and their geometric properties are not well understood. We show that the optima of these complex loss functions are in fact connected by simple curves over which training and test accuracy are nearly constant. We introduce a training procedure to discover these high-accuracy pathways between modes. Inspired by this new geometric insight, we also propose a new ensembling method entitled Fast Geometric Ensembling (FGE). Using FGE we can train high-performing ensembles in the time required to train a single model. We achieve improved performance compared to the recent state-of-the-art Snapshot Ensembles, on CIFAR-10, CIFAR-100, and ImageNet.},
+  archiveprefix = {arXiv},
+  keywords = {/on halt,mode connectivity},
+  file = {/home/pierrick/OneDrive/zotero-library/2018/Garipov/garipov2018.pdf}
 }
 
 @misc{gasteiger2022,
@@ -1723,7 +1891,7 @@ rate: 2},
   urldate = {2026-05-28},
   abstract = {We develop a framework for analyzing parameter symmetries in deep ReLU networks and obtain a complete characterization of the generic parameter fibers for three-layer bottleneck architectures. Our approach provides explicit semi-algebraic descriptions of these fibers and yields a polynomial time algorithm for deciding functional equivalence of two parameters. The symmetries include discrete and continuous transformations arising from layer composition, and depend on whether deeper layers hide or preserve geometric structure from preceding layers. Finally, we show that some of these symmetries induce local conservation laws along gradient flow, while others do not.},
   archiveprefix = {arXiv},
-  keywords = {/unread,local symmetry,parameter space symmetry},
+  keywords = {/read,local symmetry,parameter space symmetry},
   file = {/home/pierrick/OneDrive/zotero-library/2026/Gegenfurtner/gegenfurtner2026.pdf}
 }
 
@@ -1841,7 +2009,7 @@ rate: 2},
   year = 2022,
   abstract = {Symmetry has been a fundamental tool in the exploration of a broad range of complex systems. In machine learning, symmetry has been explored in both models and data. In this paper we seek to connect the symmetries arising from the architecture of a family of models with the symmetries of that family's internal representation of data. We do this by calculating a set of fundamental symmetry groups, which we call the intertwiner groups of the model. Each of these arises from a particular nonlinear layer of the model and different nonlinearities result in different symmetry groups. These groups change the weights of a model in such a way that the underlying function that the model represents remains constant but the internal representations of data inside the model may change. We connect intertwiner groups to a model's internal representations of data through a range of experiments that probe similarities between hidden states across models with the same architecture. Our work suggests that the symmetries of a network are propagated into the symmetries in that network's representation of data, providing us with a better understanding of how architecture affects the learning and prediction process. Finally, we speculate that for ReLU networks, the intertwiner groups may provide a justification for the common practice of concentrating model interpretability exploration on the activation basis in hidden layers rather than arbitrary linear combinations thereof.},
   langid = {english},
-  keywords = {/unread},
+  keywords = {/read},
   file = {/home/pierrick/OneDrive/zotero-library/2022/Godfrey/godfrey2022.pdf}
 }
 
@@ -1927,7 +2095,7 @@ rate: 2},
   urldate = {2026-05-06},
   abstract = {We study the realization map of deep ReLU networks, focusing on when a function determines its parameters up to scaling and permutation. To analyze hidden redundancies beyond these standard symmetries, we introduce a framework based on weighted polyhedral complexes. Our main result shows that for every architecture whose input and hidden layers have width at least two, there exists an open set of identifiable parameters. This implies that the functional dimension of every such architecture is exactly the number of parameters minus the number of hidden neurons. We further show that minimal functional representations can still have non-trivial parameter redundancies. Finally, we establish a generic depth hierarchy, whereby for an open set of parameters the realized function cannot be represented generically by any shallower network.},
   archiveprefix = {arXiv},
-  keywords = {/unread},
+  keywords = {/read},
   file = {/home/pierrick/OneDrive/zotero-library/2026/Grillo/grillo2026.pdf}
 }
 
@@ -1958,6 +2126,18 @@ rate: 2},
   langid = {english},
   keywords = {/read,sym-survey/exotic-algstruct/semigroup,sym-survey/frameworks/joint-embedding},
   file = {/home/pierrick/OneDrive/zotero-library/2023/Gupta/gupta2023a.pdf}
+}
+
+@inproceedings{ha2017,
+  title = {{{HyperNetworks}}},
+  booktitle = {International {{Conference}} on {{Learning Representations}}},
+  author = {Ha, David and Dai, Andrew M. and Le, Quoc V.},
+  year = 2017,
+  urldate = {2026-08-01},
+  abstract = {This work explores hypernetworks: an approach of using one network, also known as a hypernetwork, to generate the weights for another network. We apply hypernetworks to generate adaptive weights for recurrent networks. In this case, hypernetworks can be viewed as a relaxed form of weight-sharing across layers. In our implementation, hypernetworks are are trained jointly with the main network in an end-to-end fashion. Our main result is that hypernetworks can generate non-shared weights for LSTM and achieve state-of-the-art results on a variety of sequence modelling tasks including character-level language modelling, handwriting generation and neural machine translation, challenging the weight-sharing paradigm for recurrent networks.},
+  langid = {english},
+  keywords = {/read,hypernetwork},
+  file = {/home/pierrick/OneDrive/zotero-library/2017/Ha/ha2017.pdf}
 }
 
 @incollection{habte2023,
@@ -2052,6 +2232,40 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   file = {/home/pierrick/OneDrive/zotero-library/2020/He/he2020.pdf}
 }
 
+@inproceedings{hecht-nielsen1990anc,
+  title = {{{ON THE ALGEBRAIC STRUCTURE OF FEEDFORWARD NETWORK WEIGHT SPACES}}},
+  booktitle = {Advanced {{Neural Computers}}},
+  author = {{Hecht-Nielsen}, Robert},
+  year = 1990,
+  pages = {129--135},
+  publisher = {Elsevier},
+  doi = {10.1016/B978-0-444-88400-8.50019-4},
+  urldate = {2026-07-27},
+  abstract = {Many feedforward neural network architectures (such as backpropagation) have the property that the weights of two units on a hidden layer can be interchanged without altering the input/output function of the network, given appropriate rearrangements of the weights on the next layer. Networks of this type are termed permutable. The existence of this property implies that the weight space of such a network has symmetries which could reduce the difficulty of finding a suitable set of weights for a particular application. In this paper it is shown that the set of invertible linear weight transformations that leave the input/output transfer function of the entire network unchanged form a subgroup of the group of invertible linear mappings from the weight space to itself. Further, it is shown that there exists a cone in weight space in which each weight equivalence class generated by this subgroup has an element. Thus, in searching for a suitable set of weights, only weights in this cone need to be considered. The fraction of weight space occupied by the cone is much larger than the inverse of the order of the subgroup. It is shown that much smaller weight search sets can be constructed.},
+  copyright = {https://www.elsevier.com/tdm/userlicense/1.0/},
+  isbn = {978-0-444-88400-8},
+  langid = {english},
+  keywords = {/read,permutation},
+  file = {/home/pierrick/OneDrive/zotero-library/1990/Hecht-Nielsen/hecht-nielsen1990anc.pdf}
+}
+
+@misc{henry2025,
+  title = {Geometry of {{Lightning Self-Attention}}: {{Identifiability}} and {{Dimension}}},
+  shorttitle = {Geometry of {{Lightning Self-Attention}}},
+  author = {Henry, Nathan W. and Marchetti, Giovanni Luca and Kohn, Kathl{\'e}n},
+  year = 2025,
+  number = {arXiv:2408.17221},
+  eprint = {2408.17221},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2408.17221},
+  urldate = {2025-04-09},
+  abstract = {We consider function spaces defined by self-attention networks without normalization, and theoretically analyze their geometry. Since these networks are polynomial, we rely on tools from algebraic geometry. In particular, we study the identifiability of deep attention by providing a description of the generic fibers of the parametrization for an arbitrary number of layers and, as a consequence, compute the dimension of the function space. Additionally, for a single-layer model, we characterize the singular and boundary points. Finally, we formulate a conjectural extension of our results to normalized self-attention networks, prove it for a single layer, and numerically verify it in the deep case.},
+  archiveprefix = {arXiv},
+  keywords = {/unread},
+  file = {/home/pierrick/OneDrive/zotero-library/2025/Henry/henry2025.pdf}
+}
+
 @misc{higgins2018,
   title = {Towards a {{Definition}} of {{Disentangled Representations}}},
   author = {Higgins, Irina and Amos, David and Pfau, David and Racaniere, Sebastien and Matthey, Loic and Rezende, Danilo and Lerchner, Alexander},
@@ -2121,6 +2335,22 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   abstract = {Equivariant neural networks incorporate symmetries into their architecture, achieving higher generalization performance. However, constructing equivariant neural networks typically requires prior knowledge of data types and symmetries, which is difficult to achieve in most tasks. In this paper, we propose LieSD, a method for discovering symmetries via trained neural networks which approximate the input--output mappings of the tasks. It characterizes equivariance and invariance (a special case of equivariance) of continuous groups using Lie algebra and directly solves the Lie algebra space through the inputs, outputs, and gradients of the trained neural network. Then, we extend the method to make it applicable to multi-channel data and tensor data, respectively. We validate the performance of LieSD on tasks with symmetries such as the two-body problem, the moment of inertia matrix prediction, top quark tagging, and rotated MNIST. Compared with the baseline, LieSD can accurately determine the number of Lie algebra bases without the need for expensive group sampling. Furthermore, LieSD can perform well on non-uniform datasets, whereas methods based on GANs fail. Code and data are available at https://github.com/hulx2002/LieSD.},
   keywords = {/read},
   file = {/home/pierrick/OneDrive/zotero-library/2025/Hu/hu2025nn.pdf}
+}
+
+@misc{huang2017,
+  title = {Projection {{Based Weight Normalization}} for {{Deep Neural Networks}}},
+  author = {Huang, Lei and Liu, Xianglong and Lang, Bo and Li, Bo},
+  year = 2017,
+  number = {arXiv:1710.02338},
+  eprint = {1710.02338},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.1710.02338},
+  urldate = {2026-01-11},
+  abstract = {Optimizing deep neural networks (DNNs) often suffers from the ill-conditioned problem. We observe that the scaling-based weight space symmetry property in rectified nonlinear network will cause this negative effect. Therefore, we propose to constrain the incoming weights of each neuron to be unit-norm, which is formulated as an optimization problem over Oblique manifold. A simple yet efficient method referred to as projection based weight normalization (PBWN) is also developed to solve this problem. PBWN executes standard gradient updates, followed by projecting the updated weight back to Oblique manifold. This proposed method has the property of regularization and collaborates well with the commonly used batch normalization technique. We conduct comprehensive experiments on several widely-used image datasets including CIFAR-10, CIFAR-100, SVHN and ImageNet for supervised learning over the state-of-the-art convolutional neural networks, such as Inception, VGG and residual networks. The results show that our method is able to improve the performance of DNNs with different architectures consistently. We also apply our method to Ladder network for semi-supervised learning on permutation invariant MNIST dataset, and our method outperforms the state-of-the-art methods: we obtain test errors as 2.52\%, 1.06\%, and 0.91\% with only 20, 50, and 100 labeled samples, respectively.},
+  archiveprefix = {arXiv},
+  keywords = {/read,representative/unit input,Riemannian optimization},
+  file = {/home/pierrick/OneDrive/zotero-library/2017/Huang/huang2017.pdf}
 }
 
 @article{huang2019s,
@@ -2235,8 +2465,23 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   urldate = {2024-05-06},
   abstract = {Recorded 26 January 2023. Tess Smidt of the Massachusetts Institute of Technology presents "Symmetry's made to be broken: Learning how to break symmetry with symmetry-preserving neural networks" at IPAM's Learning and Emergence in Molecular Systems Workshop. Abstract: Symmetry-preserving (equivariant) neural networks are extremely data-efficient and generalize well when applied to diverse domains (e.g. computer vision and atomic systems). But, are there circumstances where equivariance is too strict or otherwise undesirable? In this talk, I'll discuss how symmetry-preserving neural networks can learn symmetry-breaking information in order to fit a dataset that may have missing information unbeknownst to the researcher. Furthermore, due to the mathematical guarantees of equivariant neural networks, these learned parameters are guaranteed to be minimally symmetry breaking. I'll describe network architectures that can learn these symmetry-breaking parameters in two distinct settings: 1) symmetry-breaking parameters are learned for an entire dataset to capture global asymmetries in the data and 2) symmetry-breaking parameters are predicted in an equivariant manner for individual examples. Finally, I'll demonstrate these networks on several prototypical examples and apply them to predicting structural distortions of crystalline materials. Learn more online at: http://www.ipam.ucla.edu/programs/wor...},
   collaborator = {{Institute for Pure \& Applied Mathematics (IPAM)}},
-  keywords = {/read,symmetry breaking},
-  annotation = {rate: 1}
+  keywords = {/read,symmetry breaking}
+}
+
+@inproceedings{ioffe2015p3icml,
+  title = {Batch {{Normalization}}: {{Accelerating Deep Network Training}} by {{Reducing Internal Covariate Shift}}},
+  shorttitle = {Batch {{Normalization}}},
+  booktitle = {Proceedings of the 32nd {{International Conference}} on {{Machine Learning}}},
+  author = {Ioffe, Sergey and Szegedy, Christian},
+  year = 2015,
+  pages = {448--456},
+  publisher = {PMLR},
+  issn = {1938-7228},
+  urldate = {2024-05-21},
+  abstract = {Training Deep Neural Networks is complicated by the fact that the distribution of each layer's inputs changes during training, as the parameters of the previous layers change. This slows down the training by requiring lower learning rates and careful parameter initialization, and makes it notoriously hard to train models with saturating nonlinearities. We refer to this phenomenon as internal covariate shift, and address the problem by normalizing layer inputs. Our method draws its strength from making normalization a part of the model architecture and performing the normalization for each training mini-batch. Batch Normalization allows us to use much higher learning rates and be less careful about initialization, and in some cases eliminates the need for Dropout. Applied to a stateof-the-art image classification model, Batch Normalization achieves the same accuracy with 14 times fewer training steps, and beats the original model by a significant margin. Using an ensemble of batch-normalized networks, we improve upon the best published result on ImageNet classification: reaching 4.82\% top-5 test error, exceeding the accuracy of human raters.},
+  langid = {english},
+  keywords = {/on halt},
+  file = {/home/pierrick/OneDrive/zotero-library/2015/Ioffe/ioffe2015p3icml.pdf}
 }
 
 @misc{jacot2022,
@@ -2352,7 +2597,7 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   year = 2024,
   abstract = {This paper pertains to an emerging machine learning paradigm: learning higherorder functions, i.e. functions whose inputs are functions themselves, particularly when these inputs are Neural Networks (NNs). With the growing interest in architectures that process NNs, a recurring design principle has permeated the field: adhering to the permutation symmetries arising from the connectionist structure of NNs. However, are these the sole symmetries present in NN parameterizations? Zooming into most practical activation functions (e.g. sine, ReLU, tanh) answers this question negatively and gives rise to intriguing new symmetries, which we collectively refer to as scaling symmetries, that is, non-zero scalar multiplications and divisions of weights and biases. In this work, we propose Scale Equivariant Graph MetaNetworks - ScaleGMNs, a framework that adapts the Graph Metanetwork (message-passing) paradigm by incorporating scaling symmetries and thus rendering neuron and edge representations equivariant to valid scalings. We introduce novel building blocks, of independent technical interest, that allow for equivariance or invariance with respect to individual scalar multipliers or their product and use them in all components of ScaleGMN. Furthermore, we prove that, under certain expressivity conditions, ScaleGMN can simulate the forward and backward pass of any input feedforward neural network. Experimental results demonstrate that our method advances the state-of-the-art performance for several datasets and activation functions, highlighting the power of scaling symmetries as an inductive bias for NN processing. The source code is publicly available at https://github.com/jkalogero/scalegmn.},
   langid = {english},
-  keywords = {/unread,ReLU network,weight space learning},
+  keywords = {/read,ReLU network,weight space learning},
   file = {/home/pierrick/OneDrive/zotero-library/2024/Kalogeropoulos/kalogeropoulos2024.pdf}
 }
 
@@ -2453,8 +2698,21 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   publisher = {Curran Associates, Inc.},
   doi = {10.52202/079017-0146},
   urldate = {2026-07-14},
-  keywords = {/unread},
+  keywords = {/read},
   file = {/home/pierrick/OneDrive/zotero-library/2024/Kobayashi/kobayashi2024anips.pdf}
+}
+
+@article{kofinas2024iclr,
+  title = {Graph {{Neural Networks}} for {{Learning Equivariant Representations}} of {{Neural Networks}}},
+  author = {Kofinas, Miltiadis (Miltos) and Knyazev, Boris and Zhang, Yan and Chen, Yunlu and Burghouts, Gertjan J. and Gavves, Efstratios and Snoek, Cees G. and Zhang, David},
+  year = 2024,
+  journal = {International Conference on Learning Representations},
+  volume = {2024},
+  pages = {45363--45381},
+  urldate = {2026-08-08},
+  langid = {english},
+  keywords = {/on halt},
+  file = {/home/pierrick/OneDrive/zotero-library/2024/Kofinas/kofinas2024iclr.pdf}
 }
 
 @inproceedings{koloskova2024p4icml,
@@ -2501,7 +2759,6 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   abstract = {Convolutional neural networks have been extremely successful in the image recognition domain because they ensure equivariance with respect to translations. There have been many recent attempts to generalize this framework to other domains, including graphs and data lying on manifolds. In this paper we give a rigorous, theoretical treatment of convolution and equivariance in neural networks with respect to not just translations, but the action of any compact group. Our main result is to prove that (given some natural constraints) convolutional structure is not just a sufficient, but also a necessary condition for equivariance to the action of a compact group. Our exposition makes use of concepts from representation theory and noncommutative harmonic analysis and derives new generalized convolution formulae.},
   langid = {english},
   keywords = {/read,compact group,convolution,convolution/convolutional neural network,equivariance,quotient space},
-  annotation = {rate: 2},
   file = {/home/pierrick/OneDrive/zotero-library/2018/Kondor/kondor2018p3icml 1.pdf;/home/pierrick/OneDrive/zotero-library/2018/Kondor/kondor2018p3icml.pdf}
 }
 
@@ -2536,6 +2793,35 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   langid = {english},
   keywords = {/unread,NLP,symmetry/semantic symmetry},
   file = {/home/pierrick/OneDrive/zotero-library/2020/Krishna/krishna2020p2cemnlpe.pdf}
+}
+
+@article{kristiadi2023anips,
+  title = {The {{Geometry}} of {{Neural Nets}}' {{Parameter Spaces Under Reparametrization}}},
+  author = {Kristiadi, Agustinus and Dangel, Felix and Hennig, Philipp},
+  year = 2023,
+  journal = {Advances in Neural Information Processing Systems},
+  volume = {36},
+  pages = {17669--17688},
+  urldate = {2025-06-10},
+  langid = {english},
+  keywords = {,/read,differential geometry,flatness,Hessian,Riemannian geometry},
+  annotation = {GSCC: 0000014 2025-11-09T20:01:06.827Z 0.14},
+  file = {/home/pierrick/OneDrive/zotero-library/2023/Kristiadi/kristiadi2023anips.pdf}
+}
+
+@inproceedings{kunin2019p3icml,
+  title = {Loss {{Landscapes}} of {{Regularized Linear Autoencoders}}},
+  booktitle = {Proceedings of the 36th {{International Conference}} on {{Machine Learning}}},
+  author = {Kunin, Daniel and Bloom, Jonathan and Goeva, Aleksandrina and Seed, Cotton},
+  year = 2019,
+  pages = {3560--3569},
+  publisher = {PMLR},
+  issn = {2640-3498},
+  urldate = {2026-07-28},
+  abstract = {Autoencoders are a deep learning model for representation learning. When trained to minimize the distance between the data and its reconstruction, linear autoencoders (LAEs) learn the subspace spanned by the top principal directions but cannot learn the principal directions themselves. In this paper, we prove that {$L$}2L2L\_2-regularized LAEs are symmetric at all critical points and learn the principal directions as the left singular vectors of the decoder. We smoothly parameterize the critical manifold and relate the minima to the MAP estimate of probabilistic PCA. We illustrate these results empirically and consider implications for PCA algorithms, computational neuroscience, and the algebraic topology of learning.},
+  langid = {english},
+  keywords = {/read},
+  file = {/home/pierrick/OneDrive/zotero-library/2019/Kunin/kunin2019p3icml 1.pdf;/home/pierrick/OneDrive/zotero-library/2019/Kunin/kunin2019p3icml.pdf}
 }
 
 @inproceedings{kunin2020,
@@ -2604,6 +2890,22 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   langid = {english},
   keywords = {/on halt,face recognition},
   file = {/home/pierrick/OneDrive/zotero-library/2018/Lal/lal2018ijacsa.pdf}
+}
+
+@inproceedings{lau2025p2icais,
+  title = {The {{Local Learning Coefficient}}: {{A Singularity-Aware Complexity Measure}}},
+  shorttitle = {The {{Local Learning Coefficient}}},
+  booktitle = {Proceedings of {{The}} 28th {{International Conference}} on {{Artificial Intelligence}} and {{Statistics}}},
+  author = {Lau, Edmund and Furman, Zach and Wang, George and Murfet, Daniel and Wei, Susan},
+  year = 2025,
+  pages = {244--252},
+  publisher = {PMLR},
+  issn = {2640-3498},
+  urldate = {2026-08-01},
+  abstract = {The Local Learning Coefficient (LLC) is introduced as a novel complexity measure for deep neural networks (DNNs). Recognizing the limitations of traditional complexity measures, the LLC leverages Singular Learning Theory (SLT), which has long recognized the significance of singularities in the loss landscape geometry. This paper provides an extensive exploration of the LLC's theoretical underpinnings, offering both a clear definition and intuitive insights into its application. Moreover, we propose a new scalable estimator for the LLC, which is then effectively applied across diverse architectures including deep linear networks up to 100M parameters, ResNet image models, and transformer language models. Empirical evidence suggests that the LLC provides valuable insights into how training heuristics might influence the effective complexity of DNNs. Ultimately, the LLC emerges as a crucial tool for reconciling the apparent contradiction between deep learning's complexity and the principle of parsimony.},
+  langid = {english},
+  keywords = {/unread},
+  file = {/home/pierrick/OneDrive/zotero-library/2025/Lau/lau2025p2icais.pdf}
 }
 
 @inproceedings{lawrence2024,
@@ -2819,6 +3121,19 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   file = {/home/pierrick/OneDrive/zotero-library/2024/Lim/lim2024.pdf}
 }
 
+@article{lim2024iclr,
+  title = {Graph {{Metanetworks}} for {{Processing Diverse Neural Architectures}}},
+  author = {Lim, Derek and Maron, Haggai and Law, Marc T. and Lorraine, Jonathan and Lucas, James},
+  year = 2024,
+  journal = {International Conference on Learning Representations},
+  volume = {2024},
+  pages = {11430--11458},
+  urldate = {2026-08-08},
+  langid = {english},
+  keywords = {/on halt},
+  file = {/home/pierrick/OneDrive/zotero-library/2024/Lim/lim2024iclr.pdf}
+}
+
 @inproceedings{lin2023,
   title = {Hyperbolic {{Chamfer Distance}} for {{Point Cloud Completion}}},
   booktitle = {Proceedings of the {{IEEE}}/{{CVF International Conference}} on {{Computer Vision}}},
@@ -2900,6 +3215,24 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   file = {/home/pierrick/OneDrive/zotero-library/2020/Lyle/lyle2020.pdf}
 }
 
+@misc{lyu2023,
+  title = {Understanding the {{Generalization Benefit}} of {{Normalization Layers}}: {{Sharpness Reduction}}},
+  shorttitle = {Understanding the {{Generalization Benefit}} of {{Normalization Layers}}},
+  author = {Lyu, Kaifeng and Li, Zhiyuan and Arora, Sanjeev},
+  year = 2023,
+  number = {arXiv:2206.07085},
+  eprint = {2206.07085},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2206.07085},
+  urldate = {2025-05-29},
+  abstract = {Normalization layers (e.g., Batch Normalization, Layer Normalization) were introduced to help with optimization difficulties in very deep nets, but they clearly also help generalization, even in not-so-deep nets. Motivated by the long-held belief that flatter minima lead to better generalization, this paper gives mathematical analysis and supporting experiments suggesting that normalization (together with accompanying weight-decay) encourages GD to reduce the sharpness of loss surface. Here "sharpness" is carefully defined given that the loss is scale-invariant, a known consequence of normalization. Specifically, for a fairly broad class of neural nets with normalization, our theory explains how GD with a finite learning rate enters the so-called Edge of Stability (EoS) regime, and characterizes the trajectory of GD in this regime via a continuous sharpness-reduction flow.},
+  archiveprefix = {arXiv},
+  keywords = {/read,edge of stability,flatness,flatness measure/normalization invariant},
+  annotation = {GSCC: 0000094},
+  file = {/home/pierrick/OneDrive/zotero-library/2023/Lyu/lyu2023.pdf}
+}
+
 @misc{maass2024,
   title = {Symmetries in {{Overparametrized Neural Networks}}: {{A Mean-Field View}}},
   shorttitle = {Symmetries in {{Overparametrized Neural Networks}}},
@@ -2916,6 +3249,15 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   keywords = {/read,data augmentation/theory,neurips 2024},
   annotation = {GSCC: 0000005 2026-05-13T14:23:49.636Z 0.05},
   file = {/home/pierrick/OneDrive/zotero-library/2024/Maass/maass2024.pdf}
+}
+
+@article{maclagan2009,
+  title = {Introduction to {{Tropical Geometry}}},
+  author = {Maclagan, Diane and Sturmfels, Bernd},
+  year = 2009,
+  langid = {english},
+  keywords = {/textbook},
+  file = {/home/pierrick/OneDrive/zotero-library/2009/Maclagan/maclagan2009.pdf}
 }
 
 @misc{makse2025,
@@ -2950,6 +3292,22 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   file = {/home/pierrick/OneDrive/zotero-library/2023/Marchetti/marchetti2023p2icais.pdf}
 }
 
+@misc{marchetti2025a,
+  title = {An {{Invitation}} to {{Neuroalgebraic Geometry}}},
+  author = {Marchetti, Giovanni Luca and Shahverdi, Vahid and Mereta, Stefano and Trager, Matthew and Kohn, Kathl{\'e}n},
+  year = 2025,
+  number = {arXiv:2501.18915},
+  eprint = {2501.18915},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2501.18915},
+  urldate = {2025-04-07},
+  abstract = {In this expository work, we promote the study of function spaces parameterized by machine learning models through the lens of algebraic geometry. To this end, we focus on algebraic models, such as neural networks with polynomial activations, whose associated function spaces are semi-algebraic varieties. We outline a dictionary between algebro-geometric invariants of these varieties, such as dimension, degree, and singularities, and fundamental aspects of machine learning, such as sample complexity, expressivity, training dynamics, and implicit bias. Along the way, we review the literature and discuss ideas beyond the algebraic domain. This work lays the foundations of a research direction bridging algebraic geometry and deep learning, that we refer to as neuroalgebraic geometry.},
+  archiveprefix = {arXiv},
+  keywords = {/unread,algebraic geometry,critical points,Morse theory,neuroalgebraic geometry,neuromanifold},
+  file = {/home/pierrick/OneDrive/zotero-library/2025/Marchetti/marchetti2025a.pdf}
+}
+
 @inproceedings{marcotte2023,
   title = {Abide by the Law and Follow the Flow: Conservation Laws for Gradient Flows},
   shorttitle = {Abide by the Law and Follow the Flow},
@@ -2959,8 +3317,40 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   urldate = {2025-11-10},
   abstract = {Understanding the geometric properties of gradient descent dynamics is a key ingredient in deciphering the recent success of very large machine learning models. A striking observation is that trained over-parameterized models retain some properties of the optimization initialization. This "implicit bias" is believed to be responsible for some favorable properties of the trained models and could explain their good generalization properties. The purpose of this article is threefold. First, we rigorously expose the definition and basic properties of "conservation laws", that define quantities conserved during gradient flows of a given model (e.g. of a ReLU network with a given architecture) with any training data and any loss. Then we explain how to find the maximal number of independent conservation laws by performing finite-dimensional algebraic manipulations on the Lie algebra generated by the Jacobian of the model. Finally, we provide algorithms to: a) compute a family of polynomial laws; b) compute the maximal number of (not necessarily polynomial) independent conservation laws. We provide showcase examples that we fully work out theoretically. Besides, applying the two algorithms confirms for a number of ReLU network architectures that all known laws are recovered by the algorithm, and that there are no other independent laws. Such computational tools pave the way to understanding desirable properties of optimization initialization in large machine learning models.},
   langid = {english},
-  keywords = {/unread},
+  keywords = {/read},
   file = {/home/pierrick/OneDrive/zotero-library/2023/Marcotte/marcotte2023.pdf}
+}
+
+@inproceedings{marcotte2025p4icml,
+  title = {Transformative or {{Conservative}}? {{Conservation}} Laws for {{ResNets}} and {{Transformers}}},
+  shorttitle = {Transformative or {{Conservative}}?},
+  booktitle = {Proceedings of the 42nd {{International Conference}} on {{Machine Learning}}},
+  author = {Marcotte, Sibylle and Gribonval, R{\'e}mi and Peyr{\'e}, Gabriel},
+  year = 2025,
+  pages = {43140--43176},
+  publisher = {PMLR},
+  issn = {2640-3498},
+  urldate = {2026-07-27},
+  abstract = {While conservation laws in gradient flow training dynamics are well understood for (mostly shallow) ReLU and linear networks, their study remains largely unexplored for more practical architectures. For this, we first show that basic building blocks such as ReLU (or linear) shallow networks, with or without convolution, have easily expressed conservation laws, and no more than the known ones. In the case of a single attention layer, we also completely describe all conservation laws, and we show that residual blocks have the same conservation laws as the same block without a skip connection. We then introduce the notion of conservation laws that depend only on a subset of parameters (corresponding e.g. to a pair of consecutive layers, to a residual block, or to an attention layer). We demonstrate that the characterization of such laws can be reduced to the analysis of the corresponding building block in isolation. Finally, we examine how these newly discovered conservation principles, initially established in the continuous gradient flow regime, persist under discrete optimization dynamics, particularly in the context of Stochastic Gradient Descent (SGD).},
+  langid = {english},
+  keywords = {/unread},
+  file = {/home/pierrick/OneDrive/zotero-library/2025/Marcotte/marcotte2025p4icml.pdf}
+}
+
+@misc{marcotte2026,
+  title = {Intrinsic Training Dynamics of Deep Neural Networks},
+  author = {Marcotte, Sibylle and Peyr{\'e}, Gabriel and Gribonval, R{\'e}mi},
+  year = 2026,
+  number = {arXiv:2508.07370},
+  eprint = {2508.07370},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2508.07370},
+  urldate = {2026-04-13},
+  abstract = {A fundamental challenge in the theory of deep learning is to understand whether gradient-based training can promote parameters belonging to certain lower-dimensional structures (e.g., sparse or low-rank sets), leading to so-called implicit bias. As a stepping stone, motivated by the proof structure of existing implicit bias analyses, we study when a gradient flow on a parameter \$\texttheta\$ implies an intrinsic gradient flow on a ``lifted'' variable \$z = {$\varphi$}(\texttheta )\$, for an architecture-related function \${$\varphi\$$}. We express a so-called intrinsic dynamic property and show how it is related to the study of conservation laws associated with the factorization \${$\varphi\$$}. This leads to a simple criterion based on the inclusion of kernels of linear maps, which yields a necessary condition for this property to hold. We then apply our theory to general ReLU networks of arbitrary depth and show that, for a dense set of initializations, it is possible to rewrite the flow as an intrinsic dynamic in a lower dimension that depends only on \$z\$ and the initialization, when \${$\varphi\$$} is the so-called path-lifting. In the case of linear networks with \${$\varphi\$$}, the product of weight matrices, the intrinsic dynamic is known to hold under so-called balanced initializations; we generalize this to a broader class of \textbraceleft\textbackslash em relaxed balanced\textbraceright{} initializations, showing that, in certain configurations, these are the \textbackslash emph\textbraceleft only\textbraceright{} initializations that ensure the intrinsic metric property. Finally, for the linear neural ODE associated with the limit of infinitely deep linear networks, with relaxed balanced initialization, we make explicit the corresponding intrinsic dynamics.},
+  archiveprefix = {arXiv},
+  keywords = {/unread,Paris,ReLU network},
+  file = {/home/pierrick/OneDrive/zotero-library/2026/Marcotte/marcotte2026.pdf}
 }
 
 @inproceedings{maron2018,
@@ -3022,6 +3412,23 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   langid = {english},
   keywords = {/read,sym-survey/frameworks/loss-function},
   file = {/home/pierrick/OneDrive/zotero-library/2018/Mehr/mehr20182iccvpr.pdf}
+}
+
+@misc{meng2019,
+  title = {\$\textbackslash mathcal\textbraceleft{{G}}\textbraceright\$-{{SGD}}: {{Optimizing ReLU Neural Networks}} in Its {{Positively Scale-Invariant Space}}},
+  shorttitle = {\$\textbackslash mathcal\textbraceleft{{G}}\textbraceright\$-{{SGD}}},
+  author = {Meng, Qi and Zheng, Shuxin and Zhang, Huishuai and Chen, Wei and Ma, Zhi-Ming and Liu, Tie-Yan},
+  year = 2019,
+  number = {arXiv:1802.03713},
+  eprint = {1802.03713},
+  primaryclass = {stat},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.1802.03713},
+  urldate = {2025-06-27},
+  abstract = {It is well known that neural networks with rectified linear units (ReLU) activation functions are positively scale-invariant. Conventional algorithms like stochastic gradient descent optimize the neural networks in the vector space of weights, which is, however, not positively scale-invariant. This mismatch may lead to problems during the optimization process. Then, a natural question is: \textbackslash emph\textbraceleft can we construct a new vector space that is positively scale-invariant and sufficient to represent ReLU neural networks so as to better facilitate the optimization process \textbraceright? In this paper, we provide our positive answer to this question. First, we conduct a formal study on the positive scaling operators which forms a transformation group, denoted as \$\textbackslash mathcal\textbraceleft G\textbraceright\$. We show that the value of a path (i.e. the product of the weights along the path) in the neural network is invariant to positive scaling and prove that the value vector of all the paths is sufficient to represent the neural networks under mild conditions. Second, we show that one can identify some basis paths out of all the paths and prove that the linear span of their value vectors (denoted as \$\textbackslash mathcal\textbraceleft G\textbraceright\$-space) is an invariant space with lower dimension under the positive scaling group. Finally, we design stochastic gradient descent algorithm in \$\textbackslash mathcal\textbraceleft G\textbraceright\$-space (abbreviated as \$\textbackslash mathcal\textbraceleft G\textbraceright\$-SGD) to optimize the value vector of the basis paths of neural networks with little extra cost by leveraging back-propagation. Our experiments show that \$\textbackslash mathcal\textbraceleft G\textbraceright\$-SGD significantly outperforms the conventional SGD algorithm in optimizing ReLU networks on benchmark datasets.},
+  archiveprefix = {arXiv},
+  keywords = {/read},
+  file = {/home/pierrick/OneDrive/zotero-library/2019/Meng/meng2019.pdf}
 }
 
 @inproceedings{miao2023p4icml,
@@ -3187,7 +3594,7 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   urldate = {2024-05-14},
   abstract = {Designing machine learning architectures for processing neural networks in their raw weight matrix form is a newly introduced research direction. Unfortunately, the unique symmetry structure of deep weight spaces makes this design very challenging. If successful, such architectures would be capable of performing a wide range of intriguing tasks, from adapting a pre-trained network to a new domain to editing objects represented as functions (INRs or NeRFs). As a first step towards this goal, we present here a novel network architecture for learning in deep weight spaces. It takes as input a concatenation of weights and biases of a pre-trained MLP and processes it using a composition of layers that are equivariant to the natural permutation symmetry of the MLP's weights: Changing the order of neurons in intermediate layers of the MLP does not affect the function it represents. We provide a full characterization of all affine equivariant and invariant layers for these symmetries and show how these layers can be implemented using three basic operations: pooling, broadcasting, and fully connected layers applied to the input in an appropriate manner. We demonstrate the effectiveness of our architecture and its advantages over natural baselines in a variety of learning tasks.},
   langid = {english},
-  keywords = {/unread,neural functional networks},
+  keywords = {/read,neural functional networks},
   file = {/home/pierrick/OneDrive/zotero-library/2023/Navon/navon2023p4icml.pdf}
 }
 
@@ -3198,6 +3605,22 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   abstract = {Licence de paternit\'e Creative Commons (r\'eutilisation autoris\'ee)},
   collaborator = {{NERSC}},
   keywords = {/read,deep learning,e3nn,equivariance,invariance,symmetry}
+}
+
+@inproceedings{neyshabur2015anips,
+  title = {Path-{{SGD}}: {{Path-Normalized Optimization}} in {{Deep Neural Networks}}},
+  shorttitle = {Path-{{SGD}}},
+  booktitle = {Advances in {{Neural Information Processing Systems}}},
+  author = {Neyshabur, Behnam and Salakhutdinov, Russ R and Srebro, Nati},
+  year = 2015,
+  volume = {28},
+  publisher = {Curran Associates, Inc.},
+  urldate = {2024-04-14},
+  abstract = {We revisit the choice of SGD for training deep neural networks by reconsidering the appropriate geometry in which to optimize the weights.  We argue for a geometry invariant to rescaling of weights that does not affect the output of the network, and suggest Path-SGD, which is an approximate steepest descent method with respect to a path-wise regularizer related to max-norm regularization.  Path-SGD is easy and efficient to implement and leads to empirical gains over SGD and AdaGrad.},
+  keywords = {/read,path,regularization,ReLU network,rescale symmetry},
+  annotation = {GSCC: 0000356 \\
+317 citations},
+  file = {/home/pierrick/OneDrive/zotero-library/2015/Neyshabur/neyshabur2015anips 1.pdf;/home/pierrick/OneDrive/zotero-library/2015/Neyshabur/neyshabur2015anips.pdf}
 }
 
 @inproceedings{nguyen20222iipdpsi,
@@ -3239,7 +3662,7 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   urldate = {2024-12-13},
   abstract = {Studying the interplay between the geometry of the loss landscape and the optimization trajectories of simple neural networks is a fundamental step for understanding their behavior in more complex settings. This paper reveals the presence of topological obstruction in the loss landscape of shallow ReLU neural networks trained using gradient flow. We discuss how the homogeneous nature of the ReLU activation function constrains the training trajectories to lie on a product of quadric hypersurfaces whose shape depends on the particular initialization of the network's parameters. When the neural network's output is a single scalar, we prove that these quadrics can have multiple connected components, limiting the set of reachable parameters during training. We analytically compute the number of these components and discuss the possibility of mapping one to the other through neuron rescaling and permutation. In this simple setting, we find that the non-connectedness results in a topological obstruction, which, depending on the initialization, can make the global optimum unreachable. We validate this result with numerical experiments.},
   langid = {english},
-  keywords = {/on halt,neurips 2024,Pierrick},
+  keywords = {/read,neurips 2024,Pierrick},
   file = {/home/pierrick/OneDrive/zotero-library/2024/Nurisso/nurisso2024a 1.pdf;/home/pierrick/OneDrive/zotero-library/2024/Nurisso/nurisso2024a.pdf}
 }
 
@@ -3252,7 +3675,7 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   urldate = {2026-02-19},
   abstract = {Understanding the properties of the parameter space in feed-forward ReLU networks is critical for effectively analyzing and guiding training dynamics. After initialization, training under gradient flow decisively restricts the parameter space to an algebraic variety that emerges from the homogeneous nature of the ReLU activation function. In this study, we examine two key challenges associated with feed-forward ReLU networks built on general directed acyclic graph (DAG) architectures: the (dis)connectedness of the parameter space and the existence of singularities within it. We extend previous results by providing a thorough characterization of connectedness, highlighting the roles of bottleneck nodes and balance conditions associated with specific subsets of the network. Our findings clearly demonstrate that singularities are intricately connected to the topology of the underlying DAG and its induced sub-networks. We discuss the reachability of these singularities and establish a principled connection with differentiable pruning. We validate our theory with simple numerical experiments.},
   langid = {english},
-  keywords = {/on halt},
+  keywords = {/unread},
   file = {/home/pierrick/OneDrive/zotero-library/2025/Nurisso/nurisso2025.pdf}
 }
 
@@ -3269,7 +3692,8 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   urldate = {2026-05-28},
   abstract = {Neural networks naturally learn many transformed copies of the same feature, connected by symmetric weights.},
   langid = {english},
-  keywords = {/read,capability}
+  keywords = {/read,capability},
+  file = {/home/pierrick/OneDrive/zotero-library/2020/Olah/olah2020d 1.pdf}
 }
 
 @misc{oneworldtheoreticalmachinelearning2022,
@@ -3500,8 +3924,23 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   archiveprefix = {arXiv},
   langid = {english},
   keywords = {/read,capacity,graph theory,information processing,superposition},
-  annotation = {rate: 1},
   file = {/home/pierrick/OneDrive/zotero-library/2020/Petri/petri2020.pdf}
+}
+
+@misc{petzka2019,
+  title = {A {{Reparameterization-Invariant Flatness Measure}} for {{Deep Neural Networks}}},
+  author = {Petzka, Henning and Adilova, Linara and Kamp, Michael and Sminchisescu, Cristian},
+  year = 2019,
+  number = {arXiv:1912.00058},
+  eprint = {1912.00058},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.1912.00058},
+  urldate = {2025-06-10},
+  abstract = {The performance of deep neural networks is often attributed to their automated, task-related feature construction. It remains an open question, though, why this leads to solutions with good generalization, even in cases where the number of parameters is larger than the number of samples. Back in the 90s, Hochreiter and Schmidhuber observed that flatness of the loss surface around a local minimum correlates with low generalization error. For several flatness measures, this correlation has been empirically validated. However, it has recently been shown that existing measures of flatness cannot theoretically be related to generalization due to a lack of invariance with respect to reparameterizations. We propose a natural modification of existing flatness measures that results in invariance to reparameterization.},
+  archiveprefix = {arXiv},
+  keywords = {/read,flatness,flatness measure/normalization invariant},
+  file = {/home/pierrick/OneDrive/zotero-library/2019/Petzka/petzka2019.pdf}
 }
 
 @article{petzka2020pnldlw,
@@ -3520,6 +3959,21 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   keywords = {/read,ReLU network,symmetry/ReLU,two layers},
   annotation = {TLDR: This work presents a non-degenerate situation for deep neural networks leading to new transformations leaving the network function intact and gives a complete characterization for fully-connected networks with two layers.},
   file = {/home/pierrick/OneDrive/zotero-library/2020/Petzka/petzka2020pnldlw.pdf}
+}
+
+@inproceedings{petzka2021anips,
+  title = {Relative {{Flatness}} and {{Generalization}}},
+  booktitle = {Advances in {{Neural Information Processing Systems}}},
+  author = {Petzka, Henning and Kamp, Michael and Adilova, Linara and Sminchisescu, Cristian and Boley, Mario},
+  year = 2021,
+  volume = {34},
+  pages = {18420--18432},
+  publisher = {Curran Associates, Inc.},
+  urldate = {2024-04-15},
+  abstract = {Flatness of the loss curve is conjectured to be connected to the generalization ability of machine learning models, in particular neural networks. While it has been empirically observed that flatness measures consistently correlate strongly with generalization, it is still an open theoretical problem why and under which circumstances flatness is connected to generalization, in particular in light of reparameterizations that change certain flatness measures but leave generalization unchanged. We investigate the connection between flatness and generalization by relating it to the interpolation from representative data, deriving notions of representativeness, and feature robustness. The notions allow us to rigorously connect flatness and generalization and to identify conditions under which the connection holds. Moreover, they give rise to a novel, but natural relative flatness measure that correlates strongly with generalization, simplifies to ridge regression for ordinary least squares, and solves the reparameterization issue.},
+  keywords = {/read,flat minimum,flatness,flatness measure/rescaling invariant,generalization,reparametrization},
+  annotation = {GSCC: 0000093},
+  file = {/home/pierrick/OneDrive/zotero-library/2021/Petzka/petzka2021anips.pdf}
 }
 
 @inproceedings{pfau2020anips,
@@ -3550,7 +4004,7 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
 }
 
 @article{pittorino2022jsm,
-  title = {Deep Networks on Toroids: Removing Symmetries Reveals the Structure of Flat Regions in the Landscape Geometry*},
+  title = {Deep Networks on Toroids: Removing Symmetries Reveals the Structure of Flat Regions in the Landscape Geometry},
   shorttitle = {Deep Networks on Toroids},
   author = {Pittorino, Fabrizio and Ferraro, Antonio and Perugini, Gabriele and Feinauer, Christoph and Baldassi, Carlo and Zecchina, Riccardo},
   year = 2022,
@@ -3686,6 +4140,23 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   langid = {english},
   keywords = {/on halt},
   file = {/home/pierrick/OneDrive/zotero-library/2019/Raissi/raissi2019jocp.pdf}
+}
+
+@misc{rangamani2019,
+  title = {A {{Scale Invariant Flatness Measure}} for {{Deep Network Minima}}},
+  author = {Rangamani, Akshay and Nguyen, Nam H. and Kumar, Abhishek and Phan, Dzung and Chin, Sang H. and Tran, Trac D.},
+  year = 2019,
+  number = {arXiv:1902.02434},
+  eprint = {1902.02434},
+  primaryclass = {stat},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.1902.02434},
+  urldate = {2025-05-29},
+  abstract = {It has been empirically observed that the flatness of minima obtained from training deep networks seems to correlate with better generalization. However, for deep networks with positively homogeneous activations, most measures of sharpness/flatness are not invariant to rescaling of the network parameters, corresponding to the same function. This means that the measure of flatness/sharpness can be made as small or as large as possible through rescaling, rendering the quantitative measures meaningless. In this paper we show that for deep networks with positively homogenous activations, these rescalings constitute equivalence relations, and that these equivalence relations induce a quotient manifold structure in the parameter space. Using this manifold structure and an appropriate metric, we propose a Hessian-based measure for flatness that is invariant to rescaling. We use this new measure to confirm the proposition that Large-Batch SGD minima are indeed sharper than Small-Batch SGD minima.},
+  archiveprefix = {arXiv},
+  keywords = {/on halt,flatness,flatness measure/rescaling invariant,manifold/quotient  manifold},
+  annotation = {GSCC: 0000031},
+  file = {/home/pierrick/OneDrive/zotero-library/2019/Rangamani/rangamani2019.pdf}
 }
 
 @inproceedings{rao1998anips,
@@ -3866,6 +4337,21 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   file = {/home/pierrick/OneDrive/zotero-library/2026/Rygiel/rygiel2026.pdf}
 }
 
+@inproceedings{salimans2016anips,
+  title = {Weight {{Normalization}}: {{A Simple Reparameterization}} to {{Accelerate Training}} of {{Deep Neural Networks}}},
+  shorttitle = {Weight {{Normalization}}},
+  booktitle = {Advances in {{Neural Information Processing Systems}}},
+  author = {Salimans, Tim and Kingma, Durk P},
+  year = 2016,
+  volume = {29},
+  publisher = {Curran Associates, Inc.},
+  urldate = {2026-07-26},
+  abstract = {We present weight normalization: a reparameterization of the weight vectors in a neural network that decouples the length of those weight vectors from their direction. By reparameterizing the weights in this way we improve the conditioning of the optimization problem and we speed up convergence of stochastic gradient descent. Our reparameterization is inspired by batch normalization but does not introduce any dependencies between the examples in a minibatch. This means that our method can also be applied successfully to recurrent models such as LSTMs and to noise-sensitive applications such as deep reinforcement learning or generative models, for which batch normalization is less well suited. Although our method is much simpler, it still provides much of the speed-up of full batch normalization. In addition, the computational overhead of our method is lower, permitting more optimization steps to be taken in the same amount of time. We demonstrate the usefulness of our method on applications in supervised image recognition, generative modelling, and deep reinforcement learning.},
+  keywords = {/read},
+  annotation = {GSCC: 0000062 2026-08-01T19:58:27.200Z 0.11},
+  file = {/home/pierrick/OneDrive/zotero-library/2016/Salimans/salimans2016anips.pdf}
+}
+
 @article{sanborn2022,
   title = {Bispectral {{Neural Networks}}},
   author = {Sanborn, Sophia and Shewmake, Christian and Olshausen, Bruno and Hillar, Christopher},
@@ -3893,7 +4379,7 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   urldate = {2026-05-03},
   abstract = {Overparameterization is central to the success of deep learning, yet the mechanisms by which it improves optimization remain incompletely understood. We analyze weight-space symmetries in neural networks and show that overparameterization introduces additional symmetries that benefit optimization in two distinct ways. First, we prove that these symmetries act as a form of diagonal preconditioning on the Hessian, enabling the existence of better-conditioned minima within each equivalence class of functionally identical solutions. Second, we show that overparameterization increases the probability mass of global minima near typical initializations, making these favorable solutions more reachable. Teacher-student network experiments validate our theoretical predictions: as width increases, the Hessian trace decreases, condition numbers improve, and convergence accelerates. Our analysis provides a unified framework for understanding overparameterization and width growth as a geometric transformation of the loss landscape.},
   archiveprefix = {arXiv},
-  keywords = {/read,sym-survey/exotic-algstruct},
+  keywords = {/unread,sym-survey/exotic-algstruct},
   annotation = {GSCC: 0000000 2026-06-27T14:14:12.457Z 0.00},
   file = {/home/pierrick/OneDrive/zotero-library/2026/Sareen/sareen2026.pdf}
 }
@@ -3913,6 +4399,17 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   file = {/home/pierrick/OneDrive/zotero-library/2021/Satorras/satorras2021p3icml 1.pdf;/home/pierrick/OneDrive/zotero-library/2021/Satorras/satorras2021p3icml.pdf}
 }
 
+@article{saul2023,
+  title = {Weight-{{Balancing Fixes}} and {{Flows}} for {{Deep Learning}}},
+  author = {Saul, Lawrence K},
+  year = 2023,
+  abstract = {Feedforward neural networks with homogeneous activation functions possess an internal symmetry: the functions they compute do not change when the incoming and outgoing weights at any hidden unit are rescaled by reciprocal positive values. This paper makes two contributions to our understanding of these networks. The first is to describe a simple procedure, or fix, for balancing the weights in these networks: this procedure computes multiplicative rescaling factors---one at each hidden unit---that rebalance the weights of these networks without changing the end-to-end functions that they compute. Specifically, given an initial network with arbitrary weights, the procedure determines the functionally equivalent network whose weight matrix is of minimal {$\ell$}p,q-norm; the weights at each hidden unit are said to be balanced when this norm is stationary with respect to rescaling transformations. The optimal rescaling factors are computed in an iterative fashion via simple multiplicative updates, and the updates are notable in that (a) they do not require the tuning of learning rates, (b) they operate in parallel on the rescaling factors at all hidden units, and (c) they converge monotonically to a global minimizer of the {$\ell$}p,q-norm. The paper's second contribution is to analyze the optimization landscape for learning in these networks. We suppose that the network's loss function consists of two terms---one that is invariant to rescaling transformations, measuring predictive accuracy, and another (a regularizer) that breaks this invariance, penalizing large weights. We show how to derive a weight-balancing flow such that the regularizer remains minimal with respect to rescaling transformations as the weights descend in the loss function. These dynamics reduce to an ordinary gradient flow for {$\ell$}2-norm regularization, but not otherwise. In this way our analysis suggests a canonical pairing of alternative flows and regularizers.},
+  langid = {english},
+  keywords = {/read,minimal parameter norm,ReLU,ReLU network,rescale symmetry},
+  annotation = {GSCC: 0000012 2026-04-04T10:51:05.948Z 0.07},
+  file = {/home/pierrick/OneDrive/zotero-library/2023/Saul/saul2023.pdf}
+}
+
 @article{saxe2014piclr2,
   title = {Exact Solutions to the Nonlinear Dynamics of Learning in Deep Linear Neural Networks},
   author = {Saxe, A. and McClelland, J. and Ganguli, S.},
@@ -3922,7 +4419,7 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   urldate = {2026-06-27},
   abstract = {Despite the widespread practical success of deep learning methods, our theoretical understanding of the dynamics of learning in deep neural networks remains quite sparse. We attempt to bridge the gap between the theory and practice of deep learning by systematically analyzing learning dynamics for the restricted case of deep linear neural networks. Despite the linearity of their input-output map, such networks have nonlinear gradient descent dynamics on weights that change with the addition of each new hidden layer. We show that deep linear networks exhibit nonlinear learning phenomena similar to those seen in simulations of nonlinear networks, including long plateaus followed by rapid transitions to lower error solutions, and faster convergence from greedy unsupervised pretraining initial conditions than from random initial conditions. We provide an analytical description of these phenomena by finding new exact solutions to the nonlinear dynamics of deep learning. Our theoretical analysis also reveals the surprising finding that as the depth of a network approaches infinity, learning speed can nevertheless remain finite: for a special class of initial conditions on the weights, very deep networks incur only a finite, depth independent, delay in learning speed relative to shallow networks. We show that, under certain conditions on the training data, unsupervised pretraining can find this special class of initial conditions, while scaled random Gaussian initializations cannot. We further exhibit a new class of random orthogonal initial conditions on weights that, like unsupervised pre-training, enjoys depth independent learning times. We further show that these initial conditions also lead to faithful propagation of gradients even in deep nonlinear networks, as long as they operate in a special regime known as the edge of chaos.},
   langid = {english},
-  keywords = {/unread},
+  keywords = {/read},
   file = {/home/pierrick/OneDrive/zotero-library/2014/Saxe/saxe2014piclr2.pdf}
 }
 
@@ -3960,6 +4457,19 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   file = {/home/pierrick/OneDrive/zotero-library/2015/Schroff/schroff20152iccvprc.pdf}
 }
 
+@misc{schurholt2025i2wowsl,
+  title = {{{ICLR}} 2025 {{Workshop}} on {{Weight Space Learning}}},
+  author = {Sch{\"u}rholt, Konstantin},
+  year = 2025,
+  journal = {ICLR 2025 Workshop on Weight Space Learning},
+  urldate = {2025-11-10},
+  abstract = {Neural Network Weights as a New Data Modality},
+  howpublished = {https://weight-space-learning.github.io/},
+  langid = {american},
+  keywords = {/textbook,weight space learning,workshop},
+  file = {/home/pierrick/OneDrive/zotero-library/2025/Schürholt/schurholt2025i2wowsl.pdf}
+}
+
 @inproceedings{schutt2017anips,
   title = {{{SchNet}}: {{A}} Continuous-Filter Convolutional Neural Network for Modeling Quantum Interactions},
   shorttitle = {{{SchNet}}},
@@ -3984,6 +4494,23 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   keywords = {/unread,survey},
   annotation = {GSCC: 0000017 2026-05-19T16:05:29.540Z 0.27},
   file = {/home/pierrick/OneDrive/zotero-library/2025/Seo/seo2025a.pdf}
+}
+
+@misc{shahverdi2026,
+  title = {Learning on a {{Razor}}'s {{Edge}}: {{Identifiability}} and {{Singularity}} of {{Polynomial Neural Networks}}},
+  shorttitle = {Learning on a {{Razor}}'s {{Edge}}},
+  author = {Shahverdi, Vahid and Marchetti, Giovanni Luca and Kohn, Kathl{\'e}n},
+  year = 2026,
+  number = {arXiv:2505.11846},
+  eprint = {2505.11846},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2505.11846},
+  urldate = {2026-02-20},
+  abstract = {We study function spaces parametrized by neural networks, referred to as neuromanifolds. Specifically, we focus on deep Multi-Layer Perceptrons (MLPs) and Convolutional Neural Networks (CNNs) with an activation function that is a sufficiently generic polynomial. First, we address the identifiability problem, showing that, for almost all functions in the neuromanifold of an MLP, there exist only finitely many parameter choices yielding that function. For CNNs, the parametrization is generically one-to-one. As a consequence, we compute the dimension of the neuromanifold. Second, we describe singular points of neuromanifolds. We characterize singularities completely for CNNs, and partially for MLPs. In both cases, they arise from sparse subnetworks. For MLPs, we prove that these singularities often correspond to critical points of the mean-squared error loss, which does not hold for CNNs. This provides a geometric explanation of the sparsity bias of MLPs. All of our results leverage tools from algebraic geometry.},
+  archiveprefix = {arXiv},
+  keywords = {/unread},
+  file = {/home/pierrick/OneDrive/zotero-library/2026/Shahverdi/shahverdi2026.pdf}
 }
 
 @article{shakerinava2022anips,
@@ -4031,7 +4558,8 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   urldate = {2026-07-21},
   abstract = {The capacity of a neural network to absorb information is limited by its number of parameters. Conditional computation, where parts of the network are active on a per-example basis, has been proposed in theory as a way of dramatically increasing model capacity without a proportional increase in computation. In practice, however, there are significant algorithmic and performance challenges. In this work, we address these challenges and finally realize the promise of conditional computation, achieving greater than 1000x improvements in model capacity with only minor losses in computational efficiency on modern GPU clusters. We introduce a Sparsely-Gated Mixture-of-Experts layer (MoE), consisting of up to thousands of feed-forward sub-networks. A trainable gating network determines a sparse combination of these experts to use for each example. We apply the MoE to the tasks of language modeling and machine translation, where model capacity is critical for absorbing the vast quantities of knowledge available in the training corpora. We present model architectures in which a MoE with up to 137 billion parameters is applied convolutionally between stacked LSTM layers. On large language modeling and machine translation benchmarks, these models achieve significantly better results than state-of-the-art at lower computational cost.},
   langid = {english},
-  keywords = {/unread},
+  keywords = {/read},
+  annotation = {GSCC: 0000031 2026-08-02T17:52:05.749Z 0.06},
   file = {/home/pierrick/OneDrive/zotero-library/2017/Shazeer/shazeer2017.pdf}
 }
 
@@ -4093,7 +4621,7 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   urldate = {2025-03-05},
   abstract = {We study how permutation symmetries in overparameterized multi-layer neural networks generate `symmetry-induced' critical points. Assuming a network with \$ L \$ layers of minimal widths \$ r\_1\textasciicircum *, \textbackslash ldots, r\_\textbraceleft L-1\textbraceright\textasciicircum * \$ reaches a zero-loss minimum at \$ r\_1\textasciicircum *! \textbackslash cdots r\_\textbraceleft L-1\textbraceright\textasciicircum *! \$ isolated points that are permutations of one another, we show that adding one extra neuron to each layer is sufficient to connect all these previously discrete minima into a single manifold. For a two-layer overparameterized network of width \$ r\textasciicircum *+ h =: m \$ we explicitly describe the manifold of global minima: it consists of \$ T(r\textasciicircum *, m) \$ affine subspaces of dimension at least \$ h \$ that are connected to one another. For a network of width \$m\$, we identify the number \$G(r,m)\$ of affine subspaces containing only symmetry-induced critical points that are related to the critical points of a smaller network of width \$r},
   archiveprefix = {arXiv},
-  keywords = {/unread,local minimum,minima manifold,mode connectivity,network embedding principle,overparametrization,permutation symmetry},
+  keywords = {/read,local minimum,minima manifold,mode connectivity,network embedding principle,overparametrization,permutation symmetry},
   annotation = {GSCC: 0000184 2026-06-27T14:46:28.148Z 0.74},
   file = {/home/pierrick/OneDrive/zotero-library/2021/Şimşek/simsek2021.pdf}
 }
@@ -4110,6 +4638,20 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   abstract = {Symmetry is a fundamental and pervasive property found in both natural and man-made objects, playing a key role in aesthetics, structure, and function. In computational domains, symmetry serves as a powerful cue for data compression, structure inference, and shape understanding. This work presents a comprehensive overview of symmetry analysis in 3D shapes, with a particular focus on computational methods for symmetry detection and their applications in diverse fields such as CAD, computer vision, medicine, archaeology, and 3D modeling. We provide formal definitions of exact, approximate, and partial symmetries in the context of rigid transformations, and we survey five major categories of detection approaches: transformation-based, correspondence-based, voting-based, optimization-based, and learning-based methods. Special emphasis is placed on recent deep learning techniques, which have significantly advanced the state of the art yet face challenges in generalization and robustness. Finally, we identify key open problems and future directions, including the need for richer and more varied datasets, better generalization of learning-based models, effective formulations for symmetry detection in incomplete data, and the integration of symmetry priors in generative modeling. Our analysis highlights both the progress and the limitations of current methods and aims to guide future research toward more principled and capable symmetry-aware systems.},
   keywords = {/read,approximate symmetry,symmetry discovery},
   file = {/home/pierrick/OneDrive/zotero-library/2025/Sipiran/sipiran202523scgpis.pdf}
+}
+
+@inproceedings{sitzmann2020anips,
+  title = {Implicit {{Neural Representations}} with {{Periodic Activation Functions}}},
+  booktitle = {Advances in {{Neural Information Processing Systems}}},
+  author = {Sitzmann, Vincent and Martel, Julien and Bergman, Alexander and Lindell, David and Wetzstein, Gordon},
+  year = 2020,
+  volume = {33},
+  pages = {7462--7473},
+  publisher = {Curran Associates, Inc.},
+  urldate = {2026-08-08},
+  abstract = {Implicitly defined, continuous, differentiable signal representations parameterized by neural networks have emerged as a powerful paradigm, offering many possible benefits over conventional representations. However, current network architectures for such implicit neural representations are incapable of modeling signals with fine detail, and fail to represent a signal's spatial and temporal derivatives, despite the fact that these are essential to many physical signals defined implicitly as the solution to partial differential equations. We propose to leverage periodic activation functions for implicit neural representations and demonstrate that these networks, dubbed sinusoidal representation networks or SIRENs, are ideally suited for representing complex natural signals and their derivatives. We analyze SIREN activation statistics to propose a principled initialization scheme and demonstrate the representation of images, wavefields, video, sound, and their derivatives. Further, we show how SIRENs can be leveraged to solve challenging boundary value problems, such as particular Eikonal equations (yielding signed distance functions), the Poisson equation, and the Helmholtz and wave equations. Lastly, we combine SIRENs with hypernetworks to learn priors over the space of SIREN functions.},
+  keywords = {/on halt,implicit neural representation},
+  file = {/home/pierrick/OneDrive/zotero-library/2020/Sitzmann/sitzmann2020anips.pdf}
 }
 
 @article{sixt2018fra,
@@ -4213,6 +4755,18 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   file = {/home/pierrick/OneDrive/zotero-library/2026/Spyra/spyra2026.pdf}
 }
 
+@inproceedings{stock2018,
+  title = {Equi-Normalization of {{Neural Networks}}},
+  booktitle = {International {{Conference}} on {{Learning Representations}}},
+  author = {Stock, Pierre and Graham, Benjamin and Gribonval, R{\'e}mi and J{\'e}gou, Herv{\'e}},
+  year = 2018,
+  urldate = {2026-07-27},
+  abstract = {Modern neural networks are over-parametrized. In particular, each rectified linear hidden unit can be modified by a multiplicative factor by adjusting input and out- put weights, without changing the rest of the network. Inspired by the Sinkhorn-Knopp algorithm, we introduce a fast iterative method for minimizing the l2 norm of the weights, equivalently the weight decay regularizer. It provably converges to a unique solution. Interleaving our algorithm with SGD during training improves the test accuracy. For small batches, our approach offers an alternative to batch- and group- normalization on CIFAR-10 and ImageNet with a ResNet-18.},
+  langid = {english},
+  keywords = {/read},
+  file = {/home/pierrick/OneDrive/zotero-library/2018/Stock/stock2018.pdf}
+}
+
 @article{storm2024prl,
   title = {Finite-{{Time Lyapunov Exponents}} of {{Deep Neural Networks}}},
   author = {Storm, L. and Linander, H. and Bec, J. and Gustavsson, K. and Mehlig, B.},
@@ -4230,6 +4784,24 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   file = {/home/pierrick/OneDrive/zotero-library/2024/Storm/storm2024prl.pdf}
 }
 
+@inproceedings{stutz2021,
+  title = {Relating {{Adversarially Robust Generalization}} to {{Flat Minima}}},
+  booktitle = {2021 {{IEEE}}/{{CVF International Conference}} on {{Computer Vision}} ({{ICCV}})},
+  author = {Stutz, David and Hein, Matthias and Schiele, Bernt},
+  year = 2021,
+  eprint = {2104.04448},
+  primaryclass = {cs},
+  pages = {7787--7797},
+  issn = {2380-7504},
+  doi = {10.1109/ICCV48922.2021.00771},
+  urldate = {2025-05-29},
+  abstract = {Adversarial training (AT) has become the de-facto standard to obtain models robust against adversarial examples. However, AT exhibits severe robust overfitting: cross-entropy loss on adversarial examples, so-called robust loss, decreases continuously on training examples, while eventually increasing on test examples. In practice, this leads to poor robust generalization, i.e., adversarial robustness does not generalize well to new examples. In this paper, we study the relationship between robust generalization and flatness of the robust loss landscape in weight space, i.e., whether robust loss changes significantly when perturbing weights. To this end, we propose average- and worst-case metrics to measure flatness in the robust loss landscape and show a correlation between good robust generalization and flatness. For example, throughout training, flatness reduces significantly during overfitting such that early stopping effectively finds flatter minima in the robust loss landscape. Similarly, AT variants achieving higher adversarial robustness also correspond to flatter minima. This holds for many popular choices, e.g., AT-AWP, TRADES, MART, AT with self-supervision or additional unlabeled examples, as well as simple regularization techniques, e.g., AutoAugment, weight decay or label noise. For fair comparison across these approaches, our flatness measures are specifically designed to be scale-invariant and we conduct extensive experiments to validate our findings.},
+  archiveprefix = {arXiv},
+  keywords = {/read,adversarial example,adversarial robustness,flatness,flatness measure/rescaling invariant,robust loss},
+  annotation = {GSCC: 0000074},
+  file = {/home/pierrick/OneDrive/zotero-library/2021/Stutz/stutz2021.pdf}
+}
+
 @misc{sun2023,
   title = {Probabilistic {{Symmetry}} for {{Multi-Agent Dynamics}}},
   author = {Sun, Sophia and Walters, Robin and Li, Jinxi and Yu, Rose},
@@ -4244,6 +4816,21 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   keywords = {/unread},
   annotation = {1 citations (Semantic Scholar/arXiv) [2024-04-25]},
   file = {/home/pierrick/OneDrive/zotero-library/2023/Sun/sun2023.pdf}
+}
+
+@article{sussmann1992nn,
+  title = {Uniqueness of the Weights for Minimal Feedforward Nets with a given Input-Output Map},
+  author = {Sussmann, H{\'e}ctor J.},
+  year = 1992,
+  journal = {Neural Networks},
+  volume = {5},
+  number = {4},
+  pages = {589--593},
+  issn = {0893-6080},
+  doi = {10.1016/S0893-6080(05)80037-1},
+  urldate = {2026-08-05},
+  abstract = {We show that, for feedforward nets with a single hidden layer, a single output node, and a ``transfer function'' Tanh s, the net is uniquely determined by its input-output map, up to an obvious finite group of symmetries (permutations of the hidden nodes, and changing the sign of all the weights associated to a particular hidden node), provided that the net is irreducible (i.e., that there does not exist an inner node that makes a zero contribution to the output, and there is no pair of hidden nodes that could be collapsed to a single node without altering the inputoutput map).},
+  keywords = {/on halt}
 }
 
 @misc{szegedy2014,
@@ -4341,6 +4928,22 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   file = {/home/pierrick/OneDrive/zotero-library/2021/Tanaka/tanaka2021.pdf}
 }
 
+@inproceedings{tarmoun2021p3icml,
+  title = {Understanding the {{Dynamics}} of {{Gradient Flow}} in {{Overparameterized Linear}} Models},
+  booktitle = {Proceedings of the 38th {{International Conference}} on {{Machine Learning}}},
+  author = {Tarmoun, Salma and Franca, Guilherme and Haeffele, Benjamin D. and Vidal, Rene},
+  year = 2021,
+  pages = {10153--10161},
+  publisher = {PMLR},
+  issn = {2640-3498},
+  urldate = {2026-03-09},
+  abstract = {We provide a detailed analysis of the dynamics ofthe gradient flow in overparameterized two-layerlinear models. A particularly interesting featureof this model is that its nonlinear dynamics can beexactly solved as a consequence of a large num-ber of conservation laws that constrain the systemto follow particular trajectories. More precisely,the gradient flow preserves the difference of theGramian matrices of the input and output weights,and its convergence to equilibrium depends onboth the magnitude of that difference (which isfixed at initialization) and the spectrum of the data.In addition, and generalizing prior work, we proveour results without assuming small, balanced orspectral initialization for the weights. Moreover,we establish interesting mathematical connectionsbetween matrix factorization problems and differ-ential equations of the Riccati type.},
+  langid = {english},
+  keywords = {/read},
+  annotation = {GSCC: 0000100 2026-03-17T15:01:25.010Z 0.41},
+  file = {/home/pierrick/OneDrive/zotero-library/2021/Tarmoun/tarmoun2021p3icml.pdf;/home/pierrick/OneDrive/zotero-library/2021/Tarmoun/tarmoun2021p3icml.pdf}
+}
+
 @article{tatro2020,
   title = {Optimizing {{Mode Connectivity}} via {{Neuron Alignment}}},
   author = {Tatro, N Joseph and Chen, Pin-Yu and Das, Payel},
@@ -4396,6 +4999,20 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   file = {/home/pierrick/OneDrive/zotero-library/2017/Tran/tran2017anips.pdf}
 }
 
+@inproceedings{tran2025anips,
+  title = {On {{Linear Mode Connectivity}} of {{Mixture-of-Experts Architectures}}},
+  booktitle = {Advances in {{Neural Information Processing Systems}}},
+  author = {Tran, Viet-Hoang and Trinh, Van Hoan and Bui, Khanh-Vinh and Nguyen, Tan},
+  year = 2025,
+  volume = {38},
+  pages = {171929--172014},
+  publisher = {Curran Associates, Inc.},
+  urldate = {2026-07-27},
+  abstract = {Linear Mode Connectivity (LMC) is a notable phenomenon in the loss landscapes of neural networks, wherein independently trained models have been observed to be connected---up to permutation symmetries---by linear paths in parameter space along which the loss remains consistently low. This observation challenges classical views of non-convex optimization and has implications for model ensembling, generalization, and our understanding of neural loss geometry. Inspired by recent studies on LMC in standard neural networks, we systematically investigate this phenomenon within Mixture-of-Experts (MoE) architectures---a class of models known for their scalability and computational efficiency, which combine traditional neural networks---referred to as experts---through a learnable gating mechanism. We begin by conducting a comprehensive analysis of both dense and sparse gating regimes, demonstrating that the symmetries inherent to MoE architectures are fully characterized by permutations acting on both the expert components and the gating function. Building on these foundational findings, we propose a matching algorithm that enables alignment between independently trained MoEs, thereby facilitating the discovery of LMC. Finally, we empirically validate the presence of LMC using our proposed algorithm across diverse MoE configurations---including dense, sparse, and shared-expert variants---under a wide range of model settings and datasets of varying scales and modalities. Our results confirm the existence of LMC in MoE architectures and offer fundamental insights into the functional landscape and optimization dynamics of deep learning models.},
+  keywords = {/unread,mixture-of-experts},
+  file = {/home/pierrick/OneDrive/zotero-library/2025/Tran/tran2025anips.pdf}
+}
+
 @article{tricco2018aim,
   title = {{{PRISMA Extension}} for {{Scoping Reviews}} ({{PRISMA-ScR}}): {{Checklist}} and {{Explanation}}},
   shorttitle = {{{PRISMA Extension}} for {{Scoping Reviews}} ({{PRISMA-ScR}})},
@@ -4414,6 +5031,41 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   file = {/home/pierrick/OneDrive/zotero-library/2018/Tricco/tricco2018aim.pdf}
 }
 
+@misc{tsuzuku2019,
+  title = {Normalized {{Flat Minima}}: {{Exploring Scale Invariant Definition}} of {{Flat Minima}} for {{Neural Networks}} Using {{PAC-Bayesian Analysis}}},
+  shorttitle = {Normalized {{Flat Minima}}},
+  author = {Tsuzuku, Yusuke and Sato, Issei and Sugiyama, Masashi},
+  year = 2019,
+  number = {arXiv:1901.04653},
+  eprint = {1901.04653},
+  primaryclass = {stat},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.1901.04653},
+  urldate = {2025-05-29},
+  abstract = {The notion of flat minima has played a key role in the generalization studies of deep learning models. However, existing definitions of the flatness are known to be sensitive to the rescaling of parameters. The issue suggests that the previous definitions of the flatness might not be a good measure of generalization, because generalization is invariant to such rescalings. In this paper, from the PAC-Bayesian perspective, we scrutinize the discussion concerning the flat minima and introduce the notion of normalized flat minima, which is free from the known scale dependence issues. Additionally, we highlight the scale dependence of existing matrix-norm based generalization error bounds similar to the existing flat minima definitions. Our modified notion of the flatness does not suffer from the insufficiency, either, suggesting it might provide better hierarchy in the hypothesis class.},
+  archiveprefix = {arXiv},
+  keywords = {/read,flatness,flatness measure/rescaling invariant},
+  annotation = {GSCC: 0000081},
+  file = {/home/pierrick/OneDrive/zotero-library/2019/Tsuzuku/tsuzuku2019.pdf}
+}
+
+@misc{ulyanov2017,
+  title = {Instance {{Normalization}}: {{The Missing Ingredient}} for {{Fast Stylization}}},
+  shorttitle = {Instance {{Normalization}}},
+  author = {Ulyanov, Dmitry and Vedaldi, Andrea and Lempitsky, Victor},
+  year = 2017,
+  number = {arXiv:1607.08022},
+  eprint = {1607.08022},
+  primaryclass = {cs.CV},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.1607.08022},
+  urldate = {2026-08-03},
+  abstract = {It this paper we revisit the fast stylization method introduced in Ulyanov et. al. (2016). We show how a small change in the stylization architecture results in a significant qualitative improvement in the generated images. The change is limited to swapping batch normalization with instance normalization, and to apply the latter both at training and testing times. The resulting method can be used to train high-performance architectures for real-time image generation. The code will is made available on github at https://github.com/DmitryUlyanov/texture\_nets. Full paper can be found at arXiv:1701.02096.},
+  archiveprefix = {arXiv},
+  keywords = {/on halt},
+  file = {/home/pierrick/OneDrive/zotero-library/2017/Ulyanov/ulyanov2017.pdf}
+}
+
 @article{urbano2026,
   title = {{{RECON}}: {{ROBUST SYMMETRY DISCOVERY VIA EXPLICIT CANONICAL ORIENTATION NORMALIZATION}}},
   author = {Urbano, Alonso and Romero, David W and Zimmer, Max and Pokutta, Sebastian},
@@ -4423,6 +5075,18 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   langid = {english},
   keywords = {,/read,instance symmetry,sym-survey/partial equivariance,symmetry discovery},
   file = {/home/pierrick/OneDrive/zotero-library/2026/Urbano/urbano2026.pdf}
+}
+
+@inproceedings{usevich2025,
+  title = {Identifiability of {{Deep Polynomial Neural Networks}}},
+  booktitle = {The {{Thirty-ninth Annual Conference}} on {{Neural Information Processing Systems}}},
+  author = {Usevich, Konstantin and Borsoi, Ricardo Augusto and D{\'e}rand, Clara and Clausel, Marianne},
+  year = 2025,
+  urldate = {2026-04-28},
+  abstract = {Polynomial Neural Networks (PNNs) possess a rich algebraic and geometric structure. However, their identifiability-a key property for ensuring interpretability-remains poorly understood. In this work, we present a comprehensive analysis of the identifiability of deep PNNs, including architectures with and without bias terms. Our results reveal an intricate interplay between activation degrees and layer widths in achieving identifiability. As special cases, we show that architectures with non-increasing layer widths are generically identifiable under mild conditions, while encoder-decoder networks are identifiable when the decoder widths do not grow too rapidly compared to the activation degrees. Our proofs are constructive and center on a connection between deep PNNs and low-rank tensor decompositions, and Kruskal-type uniqueness theorems. We also settle an open conjecture on the dimension of PNN's neurovarieties, and provide new bounds on the activation degrees required for it to reach the expected dimension.},
+  langid = {english},
+  keywords = {/unread},
+  file = {/home/pierrick/OneDrive/zotero-library/2025/Usevich/usevich2025.pdf}
 }
 
 @inproceedings{vadgama2025,
@@ -4435,6 +5099,15 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   langid = {english},
   keywords = {/read},
   file = {/home/pierrick/OneDrive/zotero-library/2025/Vadgama/vadgama2025.pdf}
+}
+
+@article{vandegeijn,
+  title = {A {{Circular Argument}}: {{Does RoPE}} Need to Be {{Equivariant}} for {{Vision}}?},
+  author = {{van de Geijn}, Chase and L{\"u}ddecke, Timo and Turishcheva, Polina and Ecker, Alexander S},
+  abstract = {Rotary Positional Encodings (RoPE) have emerged as a highly effective technique for one-dimensional sequences in Natural Language Processing spurring recent progress towards generalizing RoPE to higher-dimensional data such as images and videos. The success of RoPE has been thought to be due to its positional equivariance, i.e. its status as a relative positional encoding. In this paper, we mathematically show RoPE to be one of the most general solutions for equivariant positional embedding in one-dimensional data. Moreover, we show Mixed RoPE to be the analogously general solution for M -dimensional data, if we require commutative generators -- a property necessary for RoPE's equivariance. However, we question whether strict equivariance plays a large role in RoPE's performance. We propose Spherical RoPE, a method analogous to Mixed RoPE, but assumes non-commutative generators. Empirically, we find Spherical RoPE to have the equivalent or better learning behavior compared to its equivariant analogues. This suggests that relative positional embeddings are not as important as is commonly believed, at least within computer vision. We expect this discovery to facilitate future work in positional encodings for vision that can be faster and generalize better by removing the preconception that they must be relative.},
+  langid = {english},
+  keywords = {/unread},
+  file = {/home/pierrick/OneDrive/zotero-library/van de Geijn/vandegeijn.pdf}
 }
 
 @inproceedings{vanderpol2020anips,
@@ -4700,6 +5373,15 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   file = {/home/pierrick/OneDrive/zotero-library/2025/Wang/wang2025.pdf}
 }
 
+@book{watanabe2009,
+  title = {Algebraic {{Geometry}} and {{Statistical Learning Theory}}},
+  author = {Watanabe, Sumio},
+  year = 2009,
+  langid = {english},
+  keywords = {/textbook,algebraic geometry,bayesianism,learning theory,singular learning theory,singularity},
+  file = {/home/pierrick/OneDrive/zotero-library/2009/Watanabe/watanabe2009.pdf}
+}
+
 @inproceedings{weiler20182iccvpr,
   title = {Learning {{Steerable Filters}} for {{Rotation Equivariant CNNs}}},
   booktitle = {2018 {{IEEE}}/{{CVF Conference}} on {{Computer Vision}} and {{Pattern Recognition}}},
@@ -4920,6 +5602,17 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   file = {/home/pierrick/OneDrive/zotero-library/2019/Worrall/worrall2019anips.pdf}
 }
 
+@inproceedings{wu2018a,
+  title = {Group {{Normalization}}},
+  booktitle = {Proceedings of the {{European Conference}} on {{Computer Vision}} ({{ECCV}})},
+  author = {Wu, Yuxin and He, Kaiming},
+  year = 2018,
+  pages = {3--19},
+  urldate = {2026-07-26},
+  keywords = {/on halt},
+  file = {/home/pierrick/OneDrive/zotero-library/2018/Wu/wu2018a.pdf}
+}
+
 @inproceedings{wu2023p4icml,
   title = {On the {{Training Instability}} of {{Shuffling SGD}} with {{Batch Normalization}}},
   booktitle = {Proceedings of the 40th {{International Conference}} on {{Machine Learning}}},
@@ -4990,7 +5683,7 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   year = 2026,
   abstract = {Diffusion-based generative models have reformed generative AI, and have enabled new capabilities in the science domain, for example, generating 3D structures of molecules. Due to the intrinsic problem structure of certain tasks, there is often a symmetry in the system, which identifies objects that can be converted by a group action as equivalent, hence the target distribution is essentially defined on the quotient space with respect to the group. In this work, we establish a formal framework for diffusion modeling on a general quotient space, and apply it to molecular structure generation which follows the special Euclidean group SE(3) symmetry. The framework reduces the necessity of learning the component corresponding to the group action, hence simplifies learning difficulty over conventional groupequivariant diffusion models, and the sampler guarantees recovering the target distribution, while heuristic alignment strategies lack proper samplers. The arguments are empirically validated on structure generation for small molecules and proteins, indicating that the principled quotient-space diffusion model provides a new framework that outperforms previous symmetry treatments.},
   langid = {english},
-  keywords = {/read,equivariance,quotient space},
+  keywords = {/unread,equivariance,quotient space},
   file = {/home/pierrick/OneDrive/zotero-library/2026/Xu/xu2026a.pdf}
 }
 
@@ -5006,8 +5699,7 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   abstract = {Despite the success of equivariant neural networks in scientific applications, they require knowing the symmetry group a priori. However, it may be difficult to know which symmetry to use as an inductive bias in practice. Enforcing the wrong symmetry could even hurt the performance. In this paper, we propose a framework, LieGAN, to automatically discover equivariances from a dataset using a paradigm akin to generative adversarial training. Specifically, a generator learns a group of transformations applied to the data, which preserve the original distribution and fool the discriminator. LieGAN represents symmetry as interpretable Lie algebra basis and can discover various symmetries such as the rotation group \$\textbackslash mathrm\textbraceleft SO\textbraceright (n)\$, restricted Lorentz group \$\textbackslash mathrm\textbraceleft SO\textbraceright (1,3)\textasciicircum +\$ in trajectory prediction and top-quark tagging tasks. The learned symmetry can also be readily used in several existing equivariant neural networks to improve accuracy and generalization in prediction.},
   langid = {english},
   keywords = {/read,generative adversarial network,group representation theory,Lie algebra,Lie algebra/Lie algebra basis,Lie group,LieGAN,symmetry discovery},
-  annotation = {GSCC: 0000073 2026-05-15T12:37:31.167Z 0.49 \\
-rate: 1},
+  annotation = {GSCC: 0000073 2026-05-15T12:37:31.167Z 0.49},
   file = {/home/pierrick/OneDrive/zotero-library/2023/Yang/yang2023p4icml.pdf}
 }
 
@@ -5087,6 +5779,39 @@ rate: 1},
   langid = {english},
   keywords = {/read,equivariance,evaluation metric,symmetry discovery/equivariance discovery},
   file = {/home/pierrick/OneDrive/zotero-library/2022/Yeh/yeh2022p2icais.pdf}
+}
+
+@misc{yi2019,
+  title = {Positively {{Scale-Invariant Flatness}} of {{ReLU Neural Networks}}},
+  author = {Yi, Mingyang and Meng, Qi and Chen, Wei and Ma, Zhi-ming and Liu, Tie-Yan},
+  year = 2019,
+  number = {arXiv:1903.02237},
+  eprint = {1903.02237},
+  primaryclass = {cs, stat},
+  publisher = {arXiv},
+  urldate = {2024-04-15},
+  abstract = {It was empirically confirmed by Keskar et al.\textbackslash cite\textbraceleft SharpMinima\textbraceright{} that flatter minima generalize better. However, for the popular ReLU network, sharp minimum can also generalize well \textbackslash cite\textbraceleft SharpMinimacan\textbraceright. The conclusion demonstrates that the existing definitions of flatness fail to account for the complex geometry of ReLU neural networks because they can't cover the Positively Scale-Invariant (PSI) property of ReLU network. In this paper, we formalize the PSI causes problem of existing definitions of flatness and propose a new description of flatness - \textbackslash emph\textbraceleft PSI-flatness\textbraceright. PSI-flatness is defined on the values of basis paths \textbackslash cite\textbraceleft GSGD\textbraceright{} instead of weights. Values of basis paths have been shown to be the PSI-variables and can sufficiently represent the ReLU neural networks which ensure the PSI property of PSI-flatness. Then we study the relation between PSI-flatness and generalization theoretically and empirically. First, we formulate a generalization bound based on PSI-flatness which shows generalization error decreasing with the ratio between the largest basis path value and the smallest basis path value. That is to say, the minimum with balanced values of basis paths will more likely to be flatter and generalize better. Finally. we visualize the PSI-flatness of loss surface around two learned models which indicates the minimum with smaller PSI-flatness can indeed generalize better.},
+  archiveprefix = {arXiv},
+  keywords = {/read,batch size,complexity,Computer Science - Machine Learning,flatness,flatness measure/rescaling invariant,generalization,path,sgd,Statistics - Machine Learning},
+  annotation = {GSCC: 0000025 \\
+17 citations (Semantic Scholar/arXiv) [2024-04-22]},
+  file = {/home/pierrick/OneDrive/zotero-library/2019/Yi/yi2019.pdf}
+}
+
+@inproceedings{yi2022ptcuai,
+  title = {Accelerating Training of Batch Normalization: {{A}} Manifold Perspective},
+  shorttitle = {Accelerating Training of Batch Normalization},
+  booktitle = {Proceedings of the {{Thirty-Eighth Conference}} on {{Uncertainty}} in {{Artificial Intelligence}}},
+  author = {Yi, Mingyang},
+  year = 2022,
+  pages = {1128--1137},
+  publisher = {PMLR},
+  issn = {2640-3498},
+  urldate = {2026-07-27},
+  abstract = {Batch normalization (BN) has become a critical component across diverse deep neural networks. The network with BN is invariant to positively linear re-scale transformation, which makes there exist infinite functionally equivalent networks with different scales of weights. However, optimizing these equivalent networks with the first-order method such as stochastic gradient descent will obtain a series of iterates converging to different local optima owing to their different gradients across training. To obviate this, we propose a quotient manifold PSI manifold, in which all the equivalent weights of the network with BN are regarded as the same element. Next, we construct gradient descent and stochastic gradient descent on the proposed PSI manifold to train the network with BN. The two algorithms guarantee that every group of equivalent weights (caused by positively re-scaling) converge to the equivalent optima. Besides that, we give convergence rates of the proposed algorithms on the PSI manifold. The results show that our methods accelerate training compared with the algorithms on the Euclidean weight space. Finally, empirical results verify that our algorithms consistently improve the existing methods in both convergence rate and generalization ability under various experimental settings.},
+  langid = {english},
+  keywords = {/read},
+  file = {/home/pierrick/OneDrive/zotero-library/2022/Yi/yi2022ptcuai 1.pdf;/home/pierrick/OneDrive/zotero-library/2022/Yi/yi2022ptcuai.pdf}
 }
 
 @inproceedings{yu20172iicasspi,
@@ -5197,14 +5922,33 @@ rate: 1},
   file = {/home/pierrick/OneDrive/zotero-library/2019/Zhang/zhang2019p3icml.pdf}
 }
 
-@misc{zhao2023,
+@inproceedings{zhang2025p4icml,
+  title = {Beyond the {{Permutation Symmetry}} of {{Transformers}}: {{The Role}} of {{Rotation}} for {{Model Fusion}}},
+  shorttitle = {Beyond the {{Permutation Symmetry}} of {{Transformers}}},
+  booktitle = {Proceedings of the 42nd {{International Conference}} on {{Machine Learning}}},
+  author = {Zhang, Binchi and Zheng, Zaiyi and Chen, Zhengzhang and Li, Jundong},
+  year = 2025,
+  pages = {77090--77106},
+  publisher = {PMLR},
+  issn = {2640-3498},
+  urldate = {2026-07-26},
+  abstract = {Symmetry in the parameter space of deep neural networks (DNNs) has proven beneficial for various deep learning applications. A well-known example is the permutation symmetry in Multi-Layer Perceptrons (MLPs), where permuting the rows of weight matrices in one layer and applying the inverse permutation to adjacent layers yields a functionally equivalent model. While permutation symmetry fully characterizes the equivalence set for MLPs, its discrete nature limits its utility for transformers. In this paper, we introduce rotation symmetry, a novel form of parameter space symmetry for transformers that generalizes permutation symmetry by rotating parameter matrices in self-attention layers. Unlike permutation symmetry, rotation symmetry operates in a continuous domain, thereby significantly expanding the equivalence set for transformers. Based on this property, we propose a theoretically optimal parameter matching algorithm as a plug-and-play module to enhance model fusion. We evaluate our approach using pre-trained transformers across diverse natural language and vision tasks. Experimental results demonstrate that our rotation symmetry-based matching algorithm substantially improves model fusion, highlighting the potential of parameter space symmetry to facilitate model fusion. Our code is available on https://github.com/zhengzaiyi/RotationSymmetry},
+  langid = {english},
+  keywords = {/unread},
+  file = {/home/pierrick/OneDrive/zotero-library/2025/Zhang/zhang2025p4icml.pdf}
+}
+
+@inproceedings{zhao2023,
   title = {Symmetry {{Teleportation}} for {{Accelerated Optimization}}},
+  booktitle = {Advances in {{Neural Information Processing Systems}}},
   author = {Zhao, Bo and Dehmamy, Nima and Walters, Robin and Yu, Rose},
-  year = 2023,
-  number = {arXiv:2205.10637},
+  year = 2022,
+  volume = {35},
   eprint = {2205.10637},
   primaryclass = {cs},
-  publisher = {arXiv},
+  pages = {16679--16690},
+  publisher = {Curran Associates, Inc.},
+  doi = {10.52202/068431-1213},
   urldate = {2024-04-19},
   abstract = {Existing gradient-based optimization methods update parameters locally, in a direction that minimizes the loss function. We study a different approach, symmetry teleportation, that allows parameters to travel a large distance on the loss level set, in order to improve the convergence speed in subsequent steps. Teleportation exploits symmetries in the loss landscape of optimization problems. We derive loss-invariant group actions for test functions in optimization and multi-layer neural networks, and prove a necessary condition for teleportation to improve convergence rate. We also show that our algorithm is closely related to second order methods. Experimentally, we show that teleportation improves the convergence speed of gradient descent and AdaGrad for several optimization problems including test functions, multi-layer regressions, and MNIST classification.},
   archiveprefix = {arXiv},
@@ -5238,7 +5982,7 @@ TLDR: It is shown that conserved quantities associated with linear symmetries ca
   year = 2024,
   abstract = {In many neural networks, different values of the parameters may result in the same loss value. Parameter space symmetries are loss-invariant transformations that change the model parameters. Teleportation applies such transformations to accelerate optimization. However, the exact mechanism behind this algorithm's success is not well understood. In this paper, we show that teleportation not only speeds up optimization in the short-term, but gives overall faster time to convergence. Additionally, teleporting to minima with different curvatures improves generalization, which suggests a connection between the curvature of the minimum and generalization ability. Finally, we show that integrating teleportation into a wide range of optimization algorithms and optimization-based meta-learning improves convergence. Our results showcase the versatility of teleportation and demonstrate the potential of incorporating symmetry in optimization.},
   langid = {english},
-  keywords = {/unread,generalization,object of study/parameter space,optimization},
+  keywords = {/read,generalization,object of study/parameter space,optimization},
   annotation = {GSCC: 0000034 2026-05-31T22:32:35.511Z 0.27},
   file = {/home/pierrick/OneDrive/zotero-library/2024/Zhao/zhao2024.pdf}
 }
@@ -5282,14 +6026,14 @@ TLDR: This survey provides an overview of parameter space symmetry, summarize ex
   urldate = {2025-10-31},
   abstract = {Neural network minima are often connected by curves along which train and test loss remain nearly constant, a phenomenon known as mode connectivity. While this property has enabled applications such as model merging and fine-tuning, its theoretical explanation remains unclear. We propose a new approach to exploring the connectedness of minima using parameter space symmetry. By linking the topology of symmetry groups to that of the minima, we derive the number of connected components of the minima of linear networks and show that skip connections reduce this number. We then examine when mode connectivity and linear mode connectivity hold or fail, using parameter symmetries which account for a significant part of the minimum. Finally, we provide explicit expressions for connecting curves in the minima induced by symmetry. Using the curvature of these curves, we derive conditions under which linear mode connectivity approximately holds. Our findings highlight the role of continuous symmetries in understanding the neural network loss landscape.},
   langid = {english},
-  keywords = {/read,approximate symmetry,mode connectivity/linear mode connectivity,parameter space symmetry,topology},
+  keywords = {/unread,approximate symmetry,mode connectivity/linear mode connectivity,parameter space symmetry,topology},
   annotation = {GSCC: 0000008 2025-11-03T18:27:00.536Z 0.40},
   file = {/home/pierrick/OneDrive/zotero-library/2025/Zhao/zhao2025a.pdf}
 }
 
-@article{zhongzh.2020pacai,
+@article{zhong2020pacai,
   title = {{Random Erasing Data Augmentation}},
-  author = {{Zhong Zh.} and Zheng, L. and Kang, G. and {Li Sh.} and {Yang Yi.}},
+  author = {{Zhong} and Zheng, L. and Kang, G. and {Li Sh.} and {Yang Yi.}},
   year = 2020,
   journal = {Proceedings of the Aaai Conference on Artificial Intelligence},
   volume = {34},
@@ -5300,7 +6044,7 @@ TLDR: This survey provides an overview of parameter space symmetry, summarize ex
   urldate = {2026-06-25},
   langid = {\cyrchar\cyrn\cyrchar\cyre{} \cyrchar\cyro\cyrchar\cyrp\cyrchar\cyrr\cyrchar\cyre\cyrchar\cyrd\cyrchar\cyre\cyrchar\cyrl\cyrchar\cyre\cyrchar\cyrn},
   keywords = {/unread},
-  file = {/home/pierrick/OneDrive/zotero-library/2020/Zhong Zh_/zhongzh.2020pacai.pdf}
+  file = {/home/pierrick/OneDrive/zotero-library/2020/Zhong/zhong2020pacai.pdf}
 }
 
 @article{zhou2021,
@@ -5322,7 +6066,7 @@ TLDR: This survey provides an overview of parameter space symmetry, summarize ex
   urldate = {2024-05-14},
   abstract = {This work studies the design of neural networks that can process the weights or gradients of other neural networks, which we refer to as *neural functional networks* (NFNs). Despite a wide range of potential applications, including learned optimization, processing implicit neural representations, network editing, and policy evaluation, there are few unifying principles for designing effective architectures that process the weights of other networks. We approach the design of neural functionals through the lens of symmetry, in particular by focusing on the permutation symmetries that arise in the weights of deep feedforward networks because hidden layer neurons have no inherent order. We introduce a framework for building *permutation equivariant* neural functionals, whose architectures encode these symmetries as an inductive bias. The key building blocks of this framework are *NF-Layers* (neural functional layers) that we constrain to be permutation equivariant through an appropriate parameter sharing scheme. In our experiments, we find that permutation equivariant neural functionals are effective on a diverse set of tasks that require processing the weights of MLPs and CNNs, such as predicting classifier generalization, producing "winning ticket" sparsity masks for initializations, and classifying or editing implicit neural representations (INRs). In addition, we provide code for our models and experiments at https://github.com/AllanYangZhou/nfn.},
   langid = {english},
-  keywords = {/unread,neural functional networks},
+  keywords = {/read,neural functional networks},
   file = {/home/pierrick/OneDrive/zotero-library/2023/Zhou/zhou2023.pdf}
 }
 
@@ -5356,6 +6100,19 @@ TLDR: This survey provides an overview of parameter space symmetry, summarize ex
   file = {/home/pierrick/OneDrive/zotero-library/2022/Zhuang/zhuang2022pmls.pdf}
 }
 
+@article{zhuang2022tmlr,
+  title = {Understanding {{AdamW}} through {{Proximal Methods}} and {{Scale-Freeness}}},
+  author = {Zhuang, Zhenxun and Liu, Mingrui and Cutkosky, Ashok and Orabona, Francesco},
+  year = 2022,
+  journal = {Transactions on Machine Learning Research},
+  issn = {2835-8856},
+  urldate = {2026-07-27},
+  abstract = {Adam has been widely adopted for training deep neural networks due to less hyperparameter tuning and remarkable performance. To improve generalization, Adam is typically used in tandem with a squared \$\textbackslash ell\_2\$ regularizer (referred to as Adam-\$\textbackslash ell\_2\$). However, even better performance can be obtained with AdamW, which decouples the gradient of the regularizer from the update rule of Adam-\$\textbackslash ell\_2\$. Yet, we are still lacking a complete explanation of the advantages of AdamW. In this paper, we tackle this question from both an optimization and an empirical point of view. First, we show how to re-interpret AdamW as an approximation of a proximal gradient method, which takes advantage of the closed-form proximal mapping of the regularizer instead of only utilizing its gradient information as in Adam-\$\textbackslash ell\_2\$. Next, we consider the property of "scale-freeness" enjoyed by AdamW and by its proximal counterpart: their updates are invariant to component-wise rescaling of the gradients. We provide empirical evidence across a wide range of deep learning experiments showing a correlation between the problems in which AdamW exhibits an advantage over Adam-\$\textbackslash ell\_2\$ and the degree to which we expect the gradients of the network to exhibit multiple scales, thus motivating the hypothesis that the advantage of AdamW could be due to the scale-free updates.},
+  langid = {english},
+  keywords = {/read},
+  file = {/home/pierrick/OneDrive/zotero-library/2022/Zhuang/zhuang2022tmlr.pdf}
+}
+
 @inproceedings{ziyin2024,
   title = {Symmetry {{Induces Structure}} and {{Constraint}} of {{Learning}}},
   booktitle = {Proceedings of the 41st {{International Conference}} on {{Machine Learning}}},
@@ -5382,8 +6139,20 @@ TLDR: This work proves that every mirror symmetry of the loss function leads to 
   journal = {Advances in Neural Information Processing Systems},
   abstract = {Symmetries are prevalent in deep learning and can significantly influence the learning dynamics of neural networks. In this paper, we examine how exponential symmetries -- a broad subclass of continuous symmetries present in the model architecture or loss function -- interplay with stochastic gradient descent (SGD). We first prove that gradient noise creates a systematic motion (a ``Noether flow'') of the parameters \texttheta{} along the degenerate direction to a unique initializationindependent fixed point \texttheta{$\ast$}. These points are referred to as the noise equilibria because, at these points, noise contributions from different directions are balanced and aligned. Then, we show that the balance and alignment of gradient noise can serve as a novel alternative mechanism for explaining important phenomena such as progressive sharpening/flattening and representation formation within neural networks and have practical implications for understanding techniques like representation normalization and warmup.},
   langid = {english},
-  keywords = {/unread,Lie group,symmetry/continuous symmetry},
+  keywords = {/read,Lie group,symmetry/continuous symmetry},
   file = {/home/pierrick/OneDrive/zotero-library/2024/Ziyin/ziyin2024a.pdf}
+}
+
+@inproceedings{ziyin2024b,
+  title = {Remove {{Symmetries}} to {{Control Model Expressivity}} and {{Improve Optimization}}},
+  booktitle = {The {{Thirteenth International Conference}} on {{Learning Representations}}},
+  author = {Ziyin, Liu and Xu, Yizhou and Chuang, Isaac L.},
+  year = 2024,
+  urldate = {2026-07-28},
+  abstract = {When symmetry is present in the loss function, the model is likely to be trapped in a low-capacity state that is sometimes known as a ``collapse." Being trapped in these low-capacity states can be a major obstacle to training across many scenarios where deep learning technology is applied. We first prove two concrete mechanisms through which symmetries lead to reduced capacities and ignored features during training and inference. We then propose a simple and theoretically justified algorithm, \textbackslash textit\textbraceleft syre\textbraceright, to remove almost all symmetry-induced low-capacity states in neural networks. When this type of entrapment is especially a concern, removing symmetries with the proposed method is shown to correlate well with improved optimization or performance. A remarkable merit of the proposed method is that it is model-agnostic and does not require any knowledge of the symmetry.},
+  langid = {english},
+  keywords = {/unread},
+  file = {/home/pierrick/OneDrive/zotero-library/2024/Ziyin/ziyin2024b.pdf}
 }
 
 @misc{ziyin2025,
@@ -5398,7 +6167,7 @@ TLDR: This work proves that every mirror symmetry of the loss function leads to 
   urldate = {2025-02-11},
   abstract = {The dynamics of learning in modern large AI systems is hierarchical, often characterized by abrupt, qualitative shifts akin to phase transitions observed in physical systems. While these phenomena hold promise for uncovering the mechanisms behind neural networks and language models, existing theories remain fragmented, addressing specific cases. In this paper, we posit that parameter symmetry breaking and restoration serve as a unifying mechanism underlying these behaviors. We synthesize prior observations and show how this mechanism explains three distinct hierarchies in neural networks: learning dynamics, model complexity, and representation formation. By connecting these hierarchies, we highlight symmetry -- a cornerstone of theoretical physics -- as a potential fundamental principle in modern AI.},
   archiveprefix = {arXiv},
-  keywords = {,/read},
+  keywords = {/unread},
   file = {/home/pierrick/OneDrive/zotero-library/2025/Ziyin/ziyin2025.pdf}
 }
 
@@ -5414,16 +6183,6 @@ TLDR: This work proves that every mirror symmetry of the loss function leads to 
   urldate = {2025-07-08},
   abstract = {With the rapid discovery of emergent phenomena in deep learning and large language models, explaining and understanding their cause has become an urgent need. Here, we propose a rigorous entropic-force theory for understanding the learning dynamics of neural networks trained with stochastic gradient descent (SGD) and its variants. Building on the theory of parameter symmetries and an entropic loss landscape, we show that representation learning is crucially governed by emergent entropic forces arising from stochasticity and discrete-time updates. These forces systematically break continuous parameter symmetries and preserve discrete ones, leading to a series of gradient balance phenomena that resemble the equipartition property of thermal systems. These phenomena, in turn, (a) explain the universal alignment of neural representations between AI models and lead to a proof of the Platonic Representation Hypothesis, and (b) reconcile the seemingly contradictory observations of sharpness- and flatness-seeking behavior of deep learning optimization. Our theory and experiments demonstrate that a combination of entropic forces and symmetry breaking is key to understanding emergent phenomena in deep learning.},
   archiveprefix = {arXiv},
-  keywords = {,/read,Computer Science - Machine Learning,Condensed Matter - Disordered Systems and Neural Networks,Condensed Matter - Statistical Mechanics,discrete steps,entropic forces,Mathematical Physics,Mathematics - Mathematical Physics,Quantitative Biology - Neurons and Cognition,Statistics - Machine Learning},
+  keywords = {,/unread,Computer Science - Machine Learning,Condensed Matter - Disordered Systems and Neural Networks,Condensed Matter - Statistical Mechanics,discrete steps,entropic forces,Mathematical Physics,Mathematics - Mathematical Physics,Quantitative Biology - Neurons and Cognition,Statistics - Machine Learning},
   file = {/home/pierrick/OneDrive/zotero-library/2025/Ziyin/ziyin2025a.pdf}
-}
-
-@article{ziyin2025b,
-  title = {{{REMOVE SYMMETRIES TO CONTROL MODEL EXPRES- SIVITY AND IMPROVE OPTIMIZATION}}},
-  author = {Ziyin, Liu and Xu, Yizhou and Chuang, Isaac},
-  year = 2025,
-  abstract = {When symmetry is present in the loss function, the model is likely to be trapped in a low-capacity state that is sometimes known as a ``collapse.'' Being trapped in these low-capacity states can be a major obstacle to training across many scenarios where deep learning technology is applied. We first prove two concrete mechanisms through which symmetries lead to reduced capacities and ignored features during training and inference. We then propose a simple and theoretically justified algorithm, syre, to remove almost all symmetry-induced low-capacity states in neural networks. When this type of entrapment is especially a concern, removing symmetries with the proposed method is shown to correlate well with improved optimization or performance. A remarkable merit of the proposed method is that it is model-agnostic and does not require any knowledge of the symmetry.},
-  langid = {english},
-  keywords = {/read},
-  file = {/home/pierrick/OneDrive/zotero-library/2025/Ziyin/ziyin2025b.pdf}
 }
