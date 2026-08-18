@@ -3,7 +3,7 @@
 % MDPI internal commands - do not modify
 \firstpage{1} 
 \makeatletter 
-\setcounter{page}{\@firstpage} 
+\setcounter{page}{\@firstpage}
 \makeatother
 \pubvolume{1}
 \issuenum{1}
@@ -2826,22 +2826,30 @@ Neuron splitting is the prototype: duplicating a neuron and sharing its outgoing
 We propose in \Cref{fig:param-space-symmetries} a unifying schematic description of the two axes, as transformations leaving invariant: (1) the parameter $\theta$ itself, (2) the function $f_\theta$, (3) a loss depending on $\theta$ only through $f_\theta$, (4) a loss with regularizer $\ell(f_\theta,\theta)$, (5) the restriction $f_\theta|_S$ for a subset $S\subsetneq\mathcal{X}$ of the data, and (6) $f_\theta$ for $\theta$ in a subset $U\subsetneq\Theta$.
 
 \paragraph{Extensions}
-A transformation may act on more than the weights: the quiver-representation formalism of \citet{armenta2021a}, includes both weights and activation functions $(W,f)$.
-This allows them to extend symmetries to activation functions; for example rescaling with a negative number $\tau_v<0$ is a symmetry of a ReLU layer if the activation changes: $\max(0,x)=\tau_v\min(0, 1/\tau_v x)$.
+A transformation may act on more than the weights: the quiver representation formalism $(W,f)$ of \citet{armenta2021a} includes both weights and activation functions.
+This allows them to extend symmetries to activation functions; for example rescaling with a negative number $\tau_v<0$ is a symmetry of a ReLU layer if the activation $\max (0, x)$ becomes $\tau_v\min(0, 1/\tau_v x)$.
 Moreover in the hierarchical axis, the classification error could be argued as a further level below the loss.
 Since the prediction is an argmax over the outputs of $f_\theta$, any transformation preserving the top class at each input preserves the error while altering the loss.
 The error landscape studied by \citet{pittorino2022jsm} possesses more symmetries than the loss landscape.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=\textwidth]{images/draft/param-space-symmetries.png}
+    \includegraphics[width=0.9\textwidth]{images/draft/param-space-symmetries.png}
     \caption{\textbf{Left.} \textbf{Right.}}
     \label{fig:param-space-symmetries}
 \end{figure}
 
+
+
 \subsection{Description of Parameter-Space Symmetries}\label{sec:descr-param-space-symmetries}
+We start by a describing the main parameter space symmetries in \Cref{sec:catalog-param-space-symmetries}, then investigate their consequences in \Cref{sec:consequences-param-space-symmetries}.
+This part focuses on understanding the symmetries themselves, while \Cref{sec:bug-or-feature} will discuss how to account for or leverage them.
+\Cref{tab:param-double-entry} provides a double-entry table of the main symmetries and the components they act on, with references to the literature.
 
 \subsubsection{Catalog}\label{sec:catalog-param-space-symmetries}
+We list the main parameter-space symmetries starting with discrete, then continuous ones, and finally report approaches that have a unifying flavor.
+
+% CLAUDE WRITE FROM HERE
 
 \paragraph{Permutation}
 
@@ -2860,6 +2868,12 @@ The error landscape studied by \citet{pittorino2022jsm} possesses more symmetrie
 \paragraph{Overparametrization}
 
 \paragraph{Unification works}
+
+
+% placeholder for a listing of papers placing them in a double entry table (symmetry, component) 
+\begin{table}\label{tab:param-double-entry}
+    
+\end{table}
 
 
 
@@ -2927,7 +2941,7 @@ SB & Symmetry Breaking
 \section[\appendixname~\thesection]{Group table}\seccol{col-gray}
 
 % The group table: a table listing [group, nature, papers]
-\begin{table}[h]
+\begin{table}[ht]
     \centering
     \begin{tabularx}{\textwidth}{|l|l|X|}
         \hline
