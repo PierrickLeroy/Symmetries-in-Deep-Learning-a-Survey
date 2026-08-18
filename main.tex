@@ -2844,28 +2844,102 @@ The error landscape studied by \citet{pittorino2022jsm} possesses more symmetrie
 \subsection{Description of Parameter-Space Symmetries}\label{sec:descr-param-space-symmetries}
 We start by a describing the main parameter space symmetries in \Cref{sec:catalog-param-space-symmetries}, then investigate their consequences in \Cref{sec:consequences-param-space-symmetries}.
 This part focuses on understanding the symmetries themselves, while \Cref{sec:bug-or-feature} will discuss how to account for or leverage them.
-\Cref{tab:param-double-entry} provides a double-entry table of the main symmetries and the components they act on, with references to the literature.
 
 \subsubsection{Catalog}\label{sec:catalog-param-space-symmetries}
 We list the main parameter-space symmetries starting with discrete, then continuous ones, and finally report approaches that have a unifying flavor.
-
-% CLAUDE WRITE FROM HERE
+A single architecture can carry multiple symmetries, and the same symmetry can appear in different architectures. 
+\Cref{tab:param-double-entry} provides a double-entry table of the main symmetries and the components they act on, with references to the literature.
 
 \paragraph{Permutation}
+The permutation of units within a layer is a ubiquitous parameter-space symmetry.
+For a layer $x\mapsto U\sigma(Vx)$ with pointwise nonlinearity $\sigma$,
+\begin{equation*}
+    U\sigma(Vx)=UP^{\top}\sigma(PVx)
+\end{equation*}
+for any permutation matrix $P$: relabeling the hidden neurons i.e. permuting the rows of $V$ (with their biases) and the columns of $U$ accordingly, leaves $f_\theta$ unchanged.
+The same principle applies to filters in CNNs and to heads in multi-head attention.
+\citet{hecht-nielsen1990anc} gave an early group-theoretic account: for an MLP with hidden widths $d_1,\dots,d_L$ the permutation group has order $\prod_{l=1}^{L}d_l!$.
+
+The symmetry also appears one level up.
+In Mixture-of-Experts \citep{shazeer2017}, a gating score $s$ with components $s_i(x)=w_i^{\top}x+b_i$ estimates the contribution of expert $\mathcal{E}_i:\mathbb{R}^d\to\mathcal{Y}$.
+The output is the weighted sum $\mathcal{D}(x)=\operatorname{Softmax}(s(x))^{\top}\mathcal{E}(x)$ is invariant to the simultaneous permutation of the $n$ experts and their gating rows.
+Combined with the translation symmetry of the softmax (see below), \citet{tran2025anips} prove that the resulting group $G(n)=\mathbb{R}^{d+1}\times S_n$ is \emph{complete} in the sense of \Cref{sec:hierarchy-param-space-symmetries}
 
 \paragraph{Sign Flip}
+Odd activations, $\sigma(-z)=-\sigma(z)$ such as $\tanh$, admit a discrete flip symmetry,
+\begin{equation*}
+    W_2\tanh(W_1x)=(-W_2)\tanh(-W_1x),
+\end{equation*}
+which holds neuron-wise: negating the incoming weights, bias, and outgoing weights of any single hidden unit preserves the function.
+Each hidden layer thus carries a group $\{\pm 1\}^{d_l}$, which combines with the permutations above giving a discrete symmetry group of order $\prod_{l=1}^{L}2^{d_l}d_l!$ for a $\tanh$ MLP \citep{hecht-nielsen1990anc}.
 
 \paragraph{Translation}
+Following \citet{kunin2020}, a subset $\mathcal{A}$ of the parameters, with indicator vector $\mathbb{1}_{\mathcal{A}}$, possesses a translation symmetry if
+\begin{equation*}
+    \mathcal{L}(\theta)=\mathcal{L}(\theta+\alpha\mathbb{1}_{\mathcal{A}}) \qquad \forall\alpha\in\mathbb{R},
+\end{equation*}
+a one-parameter action of the noncompact additive group $(\mathbb{R},+)$.
+The prototype is the softmax.
+Since $\operatorname{Softmax}(z+\alpha\boldsymbol{1})=\operatorname{Softmax}(z)$, any parameter subset that shifts all logits equally (biases or single column of the weight matrix in the final-layer) can be translated freely.
+The gating translation of Mixture-of-Experts encountered above is the same phenomenon.
 
 \paragraph{Scale}
+A subset $\mathcal{A}$ possesses a scale symmetry if \citep{kunin2020}
+\begin{equation*}
+    \mathcal{L}(\theta)=\mathcal{L}(\alpha_{\mathcal{A}}\odot\theta) \quad \forall\alpha>0, \qquad \text{where}\quad \alpha_{\mathcal{A}}:=\alpha\mathbb{1}_{\mathcal{A}}+\mathbb{1}_{\mathcal{A}^{c}}.
+\end{equation*}
+Normalization layers are a main source.
+Batch normalization \citep{ioffe2015p3icml} standardizes each preactivation with batch statistics, $\operatorname{BN}_{\gamma,\beta}(x_i)=\gamma\odot\frac{x_i-\mu_B}{\sqrt{\sigma_B^2+\epsilon}}+\beta$ with $\mu_B=\frac{1}{m}\sum_{i=1}^{m}x_i$ and $\sigma_B^2=\frac{1}{m}\sum_{i=1}^{m}(x_i-\mu_B)^2$, hence $\operatorname{BN}(\lambda Wx)=\operatorname{BN}(Wx)$ for $\lambda>0$.
+Variants differ by the index set $\mathcal{S}_i$ over which the statistics are computed, and the granularity of $\mathcal{S}_i$ dictates the granularity of the symmetry: instance normalization \citep{ulyanov2017} normalizes per channel and per sample, yielding per-unit rescalings as in BN; layer normalization \citep{ba2016} pools all channels, leaving only the coarsest per-layer scalar rescaling; group normalization \citep{wu2018a} interpolates by splitting the $C$ channels into $M$ groups, $\mathcal{S}_i=\big\{k \mid k_N=i_N,\ \lfloor k_C/(C/M)\rfloor=\lfloor i_C/(C/M)\rfloor\big\}$ for indices $(i_N,i_C,i_H,i_W)$, giving one rescaling per group.
+Weight normalization \citep{salimans2016anips} uses a radial-spherical reparametrization $w=r\frac{v}{\lVert v\rVert}$ of each unit's input weights, trained in the new variables $(r,v)$ with claimed benefits such as gradient magnitude stabilization; since $v$ and $\lambda v$ implement the same $w$ for $\lambda>0$, this reparametrization introduces a scale symmetry.
 
 \paragraph{Rescale}
+Two subsets $\mathcal{A}_1,\mathcal{A}_2$ possess a rescale symmetry if \citep{kunin2020}
+\begin{equation*}
+    \mathcal{L}(\theta)=\mathcal{L}\big(\alpha_{\mathcal{A}_1}\odot\alpha_{\mathcal{A}_2}^{-1}\odot\theta\big) \qquad \forall\alpha>0.
+\end{equation*}
+It occurs at every hidden neuron with a positively homogeneous activation ($\mathrm{ReLU}$, leaky $\mathrm{ReLU}$, identity): $(w_{\mathrm{in}},w_{\mathrm{out}})\mapsto(\lambda w_{\mathrm{in}},w_{\mathrm{out}}/\lambda)$ (the classical example of \Cref{sec:scope-param-space-symmetries}).
+It gives a group $(\mathbb{R}_{>0})^{d_l}$ per layer.
+Degree-$r$ homogeneity skews the pairing: for a monomial activation $z^r$ the symmetry becomes $\mathcal{L}(\theta)=\mathcal{L}(\alpha_{\mathcal{A}_1}^{r}\odot\alpha_{\mathcal{A}_2}^{-1}\odot\theta)$.
+The symmetry is also found in lightning self-attention which satisfies $(K^{\top}Q,V)\mapsto(\lambda K^{\top}Q,\lambda^{-1}V)$ in addition to its other symmetries \citep{henry2025}.
+
+Although rescaling preserves $f_\theta$, it alters internal quantities---feature maps, gradients, and measures of flatness \citep{armenta2021b}---a point we return to in \Cref{sec:consequences-param-space-symmetries,sec:fix-symmetry-bug}.
+
+\paragraph{General Linear Group}
+Whenever linear maps compose without an intervening nonlinearity, the factorization is defined only up to $AB=(AM^{-1})(MB)$ for $M$ invertible.
+In deep linear networks $f_\theta(x)=W_L\cdots W_2W_1x$ \citep{saxe2014piclr2}, every intermediate width carries this symmetry,
+\begin{equation*}
+    (W_L,\dots,W_{l+1}M^{-1},\,MW_l,\dots,W_1), \qquad M\in GL(d_l,\mathbb{R}).
+\end{equation*}
+Transformers contain the same structure inside each attention layer: the products $W_K^{\top}W_Q$ and $PW_V$ are invariant under a $GL(d_k,\mathbb{R})$ action on the factors \citep{kobayashi2024anips}.
+Low-rank adapters \citep[LoRA,][]{hu2021} inherit it as well: the update $\Delta W=AB^T$ with $A\in \mathbb R^{m\times r}, B\in \mathbb R^{n\times r}$ is invariant under $(A, B)\mapsto(AM, BM^{-T})$ for $M\in GL(r,\mathbb{R})$ \citep{yen2025iclr}.
 
 \paragraph{Orthogonal and Rotation}
+Orthogonal symmetries often arise as the residue of a broken $GL$ symmetry: an $L_2$ penalty is not invariant under the full factorization group, but its subgroup preserving norms survives.
+\citet{kunin2019p3icml} work this out for linear autoencoders, with encoder $W_1\in\mathbb{R}^{k\times d}$ and decoder $W_2\in\mathbb{R}^{d\times k}$ trained on $\mathcal{L}(W_1,W_2)=\lVert X-W_2W_1X\rVert_F^2$: the unregularized problem has symmetry group $GL(k,\mathbb{R})$, but adding $\lambda(\lVert W_1\rVert_F^2+\lVert W_2\rVert_F^2)$ breaks the scaling part and reduces the group to $O(k)$; \citet{kobayashi2024anips} observe the same reduction $GL(d_k,\mathbb{R})\downarrow O(d_k)$ for weight-decayed attention layers.
+\citet{bamler2018p3icml} exhibit the phenomenon in dynamic word embeddings: a per-time-step objective satisfies $l(X_t;R_tZ_t)=l(X_t;Z_t)$ for rotations $R_t$ of the embeddings $Z_t$, but a coupling regularizer $\psi(Z)=\frac{\lambda}{2}\sum_{i=1}^{N}\sum_{t=1}^{T-1}\lVert z_{t+1,i}-z_{t,i}\rVert_2^2$ in the total loss $\mathcal{L}(Z)=\sum_{t=1}^{T}l(X_t;Z_t)+\psi(Z)$ breaks the independent tuple $(R_1,\dots,R_T)$ down to a single global rotation $R_1=\dots=R_T$.
 
-\paragraph{General linear Group}
+Rotations also index dynamics: the saddle-to-saddle trajectory of deep linear networks is characterized up to rotation \citep{jacot2022}.
+Finally, an orthogonal symmetry can hold exactly, without regularization, for non-pointwise activations: the radial rescaling activation $\sigma(z)=f(\lVert z\rVert)z$ satisfies $\sigma(gz)=g\sigma(z)$, so $W_2g^{-1}\sigma(gW_1x)=W_2\sigma(W_1x)$ for all $g\in O(h)$ \citep{zhao2023a}.
 
 \paragraph{Overparametrization}
+A last family of symmetries appears when a group of neurons can be emulated by a smaller subset.
+The classical notion is \emph{minimality} \citep{sussmann1992nn,fukumizu1996nn,brea2019,simsek2021,grillo2026,gegenfurtner2026}: a network $f_\theta$ with $H$ hidden units is minimal if for any $g_\eta$ with $\tilde{H}<H$ hidden units there exists $x$ with $f_\theta(x)\neq g_\eta(x)$; \citet{fukumizu1996nn} showed that the Fisher information matrix is positive definite if and only if the network is minimal, tying overparametrization to degenerate local geometry.
+At non-minimal parameters the fiber grows beyond the orbit of the general symmetry group.
+\citet{sareen2026} describe an overparametrization mechanism as a width-changing transformations: in linear networks the factorization symmetry extends to $(W_L,\dots,W_{l+1}M^{\dagger},MW_l,\dots,W_1)$ for a full-column-rank $M\in\mathbb{R}^{r\times d_l}$ with $r>d_l$.
+For general activations possible width-changing transformations are \emph{duplication} (post-activation splitting), where $M$ duplicates rows of the identity and $M^{\dagger}$ recombines them with coefficients summing to $1$, and \emph{0-type neurons}, groups of neurons implementing the zero function.
+Homogeneous activations additionally allow \emph{pre-activation splitting}.
+These are architectural symmetries in the sense of \Cref{sec:scope-param-space-symmetries}: expansion is always possible but merging is only defined on duplicated configurations, so they compose as a groupoid (\Cref{sec:extent-restriction}) rather than a group.
+
+\begin{Remark}
+    Depth alone cannot cause overparametrization: generically, the function of an $L$-layer ReLU network cannot be realized by any $(L-1)$-layer network, so additional layers keep increasing expressivity \citep{grillo2026}.
+\end{Remark}
+
+\begin{Remark}[Symmetric states, minimality, and overparametrization]
+    Overparametrized configurations connect to the symmetric states of \Cref{sec:hierarchy-param-space-symmetries}.
+    At a permutation-symmetric state of layer $k$ i.e. when two neurons have identical incoming and outgoing weights, an $n_{k+1}$-dimensional additive group acts freely: the paired outgoing weights can be varied arbitrarily as long as their sums stay constant \citep{brea2019}.
+    Similarly, at a rescale-symmetric state ($\theta_v=0$ for a neuron $v$), additive groups of dimensions $n_{k+1}$ and $n_{k-1}$ act freely.
+\end{Remark}
 
 \paragraph{Unification works}
 
