@@ -2825,7 +2825,7 @@ Neuron splitting is the prototype: duplicating a neuron and sharing its outgoing
 
 We propose in \Cref{fig:param-space-symmetries} a unifying schematic description of the two axes, as transformations leaving invariant: (1) the parameter $\theta$ itself, (2) the function $f_\theta$, (3) a loss depending on $\theta$ only through $f_\theta$, (4) a loss with regularizer $\ell(f_\theta,\theta)$, (5) the restriction $f_\theta|_S$ for a subset $S\subsetneq\mathcal{X}$ of the data, and (6) $f_\theta$ for $\theta$ in a subset $U\subsetneq\Theta$.
 
-\paragraph{Extensions}
+\paragraph{Extensions}\label{sec:param-catalog-extension}
 A transformation may act on more than the weights: the quiver representation formalism $(W,f)$ of \citet{armenta2021a} includes both weights and activation functions.
 This allows them to extend symmetries to activation functions; for example rescaling with a negative number $\tau_v<0$ is a symmetry of a ReLU layer if the activation $\max (0, x)$ becomes $\tau_v\min(0, 1/\tau_v x)$.
 Moreover in the hierarchical axis, the classification error could be argued as a further level below the loss.
@@ -2941,15 +2941,29 @@ These are architectural symmetries in the sense of \Cref{sec:scope-param-space-s
     Similarly, at a rescale-symmetric state ($\theta_v=0$ for a neuron $v$), additive groups of dimensions $n_{k+1}$ and $n_{k-1}$ act freely.
 \end{Remark}
 
-\paragraph{Unification works}
-
-
 % placeholder for a listing of papers placing them in a double entry table (symmetry, component) 
 \begin{table}\label{tab:param-double-entry}
     
 \end{table}
 
+\paragraph{Unifying Works}
+Rather than treating the symmetries above as a list of unrelated case studies, several works view them as instances of a single formalism.
 
+Unification at the level of the network is proposed by \citet{armenta2021a}, with the quiver formalism already mentioned in \Cref{sec:extent-restriction,sec:param-catalog-extension} and in which thin quiver isomorphisms $\tau: (W,f)\to (V,g)$ define isomorphisms of neural networks.
+\citet{godfrey2022} works at the level of a single nonlinear layer, through the \emph{intertwiner group} of an activation $\sigma_n:\mathbb{R}^n\to\mathbb{R}^n$,
+\begin{equation*}
+    G_{\sigma_n}=\big\{A\in GL(n,\mathbb{R}) : \exists B\in GL(n,\mathbb{R}),\ \sigma_n\circ A=B\circ\sigma_n\big\},
+\end{equation*}
+the largest group of linear transformations that can be undone after the nonlinearity.
+They report $6$ intertwiner groups (identity, sigmoid, ReLu, LeakyReLU, RBF and monomial) and their $B$ matrix commuter.
+
+At the level of the loss, \citet{kunin2020} frames differentiable symmetries under the form $\mathcal{L}(\theta)=\mathcal{L}(\psi(\theta,\alpha))$ for a one-parameter transformation $\psi$ with $\psi(\theta,0)=\theta$.
+Translation, scale, and rescale are recovered by taking $\psi$ additive, multiplicative, or paired multiplicative-inverse on a subset $\mathcal{A}\subset \Theta$.
+For $O$ with orthonormal columns and reflection $R=I-2OO^{\top}$, \citet{ziyin2024} define the \emph{O-mirror symmetry} if $l_0(w)=l_0(Rw)$ for all $w$.
+Rotation, permutation, and sign flip are all O-mirror symmetries for a suitable choice of $O$.
+\citet{ziyin2024a} formalize a general notion (reused in \citep{ziyin2025a}) of \emph{Q-symmetry} as the case $\ell(\theta,z)=\ell(Q_\rho(\theta),z)$ for a one-parameter family $Q_\rho$ with $Q_0=\operatorname{id}$.
+Within this class, the \emph{exponential symmetries} are those with a linear infinitesimal generator $Q_\rho=I+\rho A+o(\rho)$ for symmetric $A$, the group element is given by exponentiation to $e^{\lambda A}:=\lim_{\rho\to0}(I+\rho A+o(\rho))^{\lambda/\rho}$ and acts on $\theta$ by matrix-vector multiplication.
+Rescale, scale, and double rotation are all exponential symmetries for a suitable $A$.
 
 \subsubsection{Consequences}\label{sec:consequences-param-space-symmetries}
 
