@@ -2724,6 +2724,8 @@ Relaxation is meant to smooth training while exactness can be restored at test t
 
 
 \section{Loss Landscape and Parameter-Space Symmetries}\seccol{col-gold}\label{sec:loss-landscape-parameter-space-symmetries}\label{sec:parameter-space-symmetries}
+% zhao2025: indicate overlaps
+
 
 \subsection{Classifications}\label{sec:classifications-param-space-symmetries}
 
@@ -2842,7 +2844,7 @@ The error landscape studied by \citet{pittorino2022jsm} possesses more symmetrie
 
 
 \subsection{Description of Parameter-Space Symmetries}\label{sec:descr-param-space-symmetries}
-We start by a describing the main parameter space symmetries in \Cref{sec:catalog-param-space-symmetries}, then investigate their consequences in \Cref{sec:consequences-param-space-symmetries}.
+We start by a describing the main parameter space symmetries in \Cref{sec:catalog-param-space-symmetries}, then investigate their consequences in the rest of this subsection.
 This part focuses on understanding the symmetries themselves, while \Cref{sec:bug-or-feature} will discuss how to account for or leverage them.
 
 \subsubsection{Catalog}\label{sec:catalog-param-space-symmetries}
@@ -2903,7 +2905,7 @@ It gives a group $(\mathbb{R}_{>0})^{d_l}$ per layer.
 Degree-$r$ homogeneity skews the pairing: for a monomial activation $z^r$ the symmetry becomes $\mathcal{L}(\theta)=\mathcal{L}(\alpha_{\mathcal{A}_1}^{r}\odot\alpha_{\mathcal{A}_2}^{-1}\odot\theta)$.
 The symmetry is also found in lightning self-attention which satisfies $(K^{\top}Q,V)\mapsto(\lambda K^{\top}Q,\lambda^{-1}V)$ in addition to its other symmetries \citep{henry2025}.
 
-Although rescaling preserves $f_\theta$, it alters internal quantities---feature maps, gradients, and measures of flatness \citep{armenta2021b}---a point we return to in \Cref{sec:consequences-param-space-symmetries,sec:fix-symmetry-bug}.
+Although rescaling preserves $f_\theta$, it alters internal quantities---feature maps, gradients, and measures of flatness \citep{armenta2021b}---a point we return to in \Cref{sec:learning-dynamics,sec:fix-symmetry-bug}.
 
 \paragraph{General Linear Group}
 Whenever linear maps compose without an intervening nonlinearity, the factorization is defined only up to $AB=(AM^{-1})(MB)$ for $M$ invertible.
@@ -2946,7 +2948,7 @@ These are architectural symmetries in the sense of \Cref{sec:scope-param-space-s
     
 \end{table}
 
-\paragraph{Unifying Works}
+\paragraph{Unifying Works}\label{sec:unifying-works-param-space-symmetries}
 Rather than treating the symmetries above as a list of unrelated case studies, several works view them as instances of a single formalism.
 
 Unification at the level of the network is proposed by \citet{armenta2021a}, with the quiver formalism already mentioned in \Cref{sec:extent-restriction,sec:param-catalog-extension} and in which thin quiver isomorphisms $\tau: (W,f)\to (V,g)$ define isomorphisms of neural networks.
@@ -2965,8 +2967,13 @@ Rotation, permutation, and sign flip are all O-mirror symmetries for a suitable 
 Within this class, the \emph{exponential symmetries} are those with a linear infinitesimal generator $Q_\rho=I+\rho A+o(\rho)$ for symmetric $A$, the group element is given by exponentiation to $e^{\lambda A}:=\lim_{\rho\to0}(I+\rho A+o(\rho))^{\lambda/\rho}$ and acts on $\theta$ by matrix-vector multiplication.
 Rescale, scale, and double rotation are all exponential symmetries for a suitable $A$.
 
-\subsubsection{Consequences}\label{sec:consequences-param-space-symmetries}
+\subsubsection{Conservation Laws (CL) and Conserved Quantities (CQ)}
 
+% CLAUDE WRITE HERE
+
+\subsubsection{Parameter Identifiability}
+
+\subsubsection{Learning Dynamics}\label{sec:learning-dynamics}
 
 
 \subsection{Bug or Feature}\label{sec:bug-or-feature}
