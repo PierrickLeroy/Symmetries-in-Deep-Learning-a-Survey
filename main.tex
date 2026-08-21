@@ -3056,7 +3056,65 @@ Finally, conservation laws govern when the symmetry can be factored out of the d
 meaning that any infinitesimal displacement of $\theta$ must change either the lifted variable or a conserved quantity.
 As a consequence, linear networks with the product lifting are not intrinsically recoverable in general (except for some initializations) but ReLU networks are.
 
-\subsubsection{Parameter Identifiability}
+\subsubsection{Parameter Identifiability}\label{sec:parameter-identifiability}
+The catalog of \Cref{sec:catalog-param-space-symmetries} raises a question: is it complete ?
+A group $G$ of parameter-space symmetries only guarantees the inclusion of orbits into fibers (\Cref{sec:hierarchy-param-space-symmetries}), and $\theta$ is \emph{identifiable up to $G$} when the inclusion is an equality,
+\begin{equation*}
+    \varphi^{-1}\big(\{\varphi(\theta)\}\big)=G\cdot\theta.
+\end{equation*}
+An identifiability result thus certifies that a list of known symmetries is exhaustive and instance-level symmetries of \Cref{sec:scope-param-space-symmetries} are possible local failure points.
+Identifiability also underlies what can, in principle, be recovered about the weights by querying a black-box model.
+
+Early results concern sigmoidal networks and are quite rigid.
+For smooth nonlinear activations $\sigma$, works by \citet{albertini1993,fefferman1993anips} revealed that the architecture and weights are generically determined up to permutations (and sign flips for odd activation such as $\mathrm{tanh}$).
+A local result was also given by \citet{fukumizu1996nn}: by relating Fisher Information Matrix with minimality (\Cref{sec:catalog-param-space-symmetries}, overparametrization) they gave a criterion guaranteeing identifiability in a small neighborhood around the parameter.
+
+\paragraph{Linear Region Boundaries of ReLU Networks}
+For ReLU networks the function $f_\theta$ is continuous piecewise linear, and its non-differentiability locus (the boundaries between linear regions) is a fingerprint of the parameters: each hidden neuron contributes a ``bent hyperplane'' (the zero set of its preactivation), whose direction and bendings characterize $f_\theta$.
+\citet{rolnick2020p3icml} turn this observation into a recoverability result: when boundaries are connected and each intersects the boundaries of all previous layers, the architecture, weights, and biases can be reconstructed up to permutation and rescaling.
+They further show that boundaries can be approximated by querying the network, and algorithmically reverse-engineer ReLU networks from output queries alone.
+\citet{phuong2019} prove identifiability for non-increasing architectures: fixing $(d_0,\dots,d_L)$ with $d_0\ge d_1\ge\dots\ge d_{L-1}\ge 2$ and $d_L=1$, if $\varphi(\theta)=\varphi(\eta)$ for general $\theta$ and $\eta$ satisfying non-degeneracies conditions, then there exist permutation matrices $P_l$ and positive diagonal matrices $D_l$ transforming $\theta$ into $\eta$, e.g.\ on a hidden layer $1<l<L$,
+\begin{equation*}
+    W_l^{\eta}=D_lP_l\,W_l^{\theta}\,P_{l-1}^{-1}D_{l-1}^{-1}:
+\end{equation*}
+permutations and rescalings are the only general symmetries.
+\citet{bona-pellissier2023} reach the same conclusion under weaker and different conditions.
+
+\paragraph{Instance Level Symmetries of ReLU Networks}
+In general, fibers can strictly exceed orbits.
+\citet{grigsby2023p4icml} identify four mechanisms producing instance-level (\emph{hidden}) symmetries.
+For the example of ``never co-active pairs'', let $H_v:=\{x\in\mathbb{R}^{d_0} : z_v(x)>0\}$ denote the active region in input space of a neuron $v$; if $u$ in layer $l-1$ and $v$ in layer $l$ satisfy $H_u\cap H_v=\emptyset$, the weight $w_{uv}$ never contributes to the function and can be perturbed freely.
+Empirically, they observe that hidden symmetries become more frequent with depth and rarer with width.
+\citet{grigsby2023p4icml} also prove that for architectures at least as wide as the input ($d_0\le d_l$ for all hidden $l$), a positive-measure subset of $\Theta$ has no hidden symmetries.
+Together with the complementary result of \citet{phuong2019}, this shows that monotone architectures admit large sets of identifiable parameters.
+For three-layer bottleneck architectures $(d_0,d_1,d_2,d_3)$ with $d_1\le d_0$, \citet{gegenfurtner2026} characterize the fibers completely.
+Since the first-layer map is then generically surjective onto the nonnegative orthant $\mathbb{R}^{d_1}_{\ge0}$, the analysis reduces to one-hidden-layer networks on this domain.
+They encode such a function $f_\theta: \mathbb R^{d_1}_{\geq 0}\to \mathbb R^{d_2}$ by its \emph{hyperplane representation}, a weighted hyperplane arrangement together with a reference affine map such that $f_\theta=f_\eta$ if and only if the representations coincide.
+Partitioning hidden neurons into those acting \emph{linearly} and \emph{nonlinearly} on the orthant, they uncover new instance-level symmetries created by linear neurons, and derive conditions for generic bottleneck network identifiability.
+They also notably show that symmetries can appear from the composition of layers, making non-identifiability non-localizable.
+
+\paragraph{Functional Dimension}
+A quantitative measure of identifiability is the \emph{functional dimension} of \citet{elisendagrigsby2025aim}.
+For a batch $Z=(z_1,\dots,z_k)$ of inputs, the \emph{evaluation map} $E_Z:\Theta\to\mathbb{R}^{kd_L}$, $\theta\mapsto(f_\theta(z_1),\dots,f_\theta(z_k))$, probes the function space through finitely many queries, and
+\begin{equation*}
+    \dim_{\mathrm{fun}}(\theta):=\sup_{Z}\ \operatorname{rank}\,\partial E_Z(\theta)
+\end{equation*}
+where $\partial E_Z$ denotes the Jacobian of the evaluation map, counts degrees of freedom of $f_\theta$ under infinitesimal perturbations of $\theta$.
+For ReLU networks, the functional dimension is upper bounded by the parameter count minus one degree of freedom per hidden neuron, accounting for the rescaling symmetries.
+Crucially, the functional dimension is inhomogeneous across parameter space, dropping with instance-level symmetries which inflate the fiber.
+\citet{grillo2026} further define its upper bound as the \emph{expected functional dimension}, $\dim(\Theta/\!\sim)$, the dimension of the parameter space quotiented by permutations and rescalings, and prove that every ReLU architecture (with input and hidden widths at least $2$) contains an open set $U\subseteq\Theta$ of parameters attaining it.
+
+\paragraph{Polynomial Networks and Attention}
+\citet{henry2025} study \emph{lightning self-attention}, $X\mapsto VXX^{\top}K^{\top}QX$, a normalization-free variant of self-attention that is polynomial in its weights.
+For a single layer the generic fiber is exactly the orbit of two symmetries: a $GL(d_k,\mathbb{R})$ acting on the factors of the attention matrix $A=K^{\top}Q$ where $Q, K\in \mathbb R^{d_k\times d}$ (typically $d_k<d$), and the one-parameter rescaling $(A,V)\mapsto(\lambda A,\lambda^{-1}V)$, $\lambda\neq0$ (deep networks carry an additional between-layer $GL$ symmetry).
+The neuromanifold dimension is then computed from the fiber count.
+With the normalization restored, single-layer fibers are generically singletons. The authors conjecture, with numerical support, generic identifiability in the deep case.
+For networks with monomial activation $z\mapsto z^{r}$, \citet{usevich2025} study \emph{Finite Identifiability} (FI) at generic $\theta$: whether $\{\eta\in\Theta : f_\eta=f_\theta,\ \eta\nsim\theta\}$ is finite, where $\sim$ denotes equivalence up to permutations and rescalings.
+They prove a local-to-global theorem: if every shallow sub-architecture $\big(\min\{d_0,\dots,d_{l-1}\},d_l,d_{l+1}\big)$ is FI, so is the full network.
+Thus, pyramidal architectures ($d_0\ge\dots\ge d_{L-1}\ge2$) and networks having degree growing linearly with the width ($r_l\ge 2d_l-1$) are FI.
+\citet{shahverdi2026} treat generic polynomial activations for which the rescaling symmetry disappears and their relation to the neuromanifold $\mathcal{M}=\{f_{\theta} \mid \theta \in \Theta \}$: generic MLP fibers are finite and therefore $\dim\mathcal{M}=\dim\Theta$.
+Moreover, generic CNN parametrizations are one-to-one.
+Non-identifiability is carried by \emph{subnetworks}, parameters where the outgoing weights of some neurons vanish ($|A_i|$ deactivated neurons in layer $i$): \emph{strict} (incoming weights vanish too) subnetworks have fibers of dimension at least $\sum_{i=1}^{L-1}|A_i|d_{i-1}$ and generate the singular locus of the neuromanifold, a locus the loss landscape of MLPs is biased towards.
 
 \subsubsection{Learning Dynamics}\label{sec:learning-dynamics}
 
