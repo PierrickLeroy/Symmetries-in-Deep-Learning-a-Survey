@@ -2876,9 +2876,9 @@ which holds neuron-wise: negating the incoming weights, bias, and outgoing weigh
 Each hidden layer thus carries a group $\{\pm 1\}^{d_l}$, which combines with the permutations above giving a discrete symmetry group of order $\prod_{l=1}^{L}2^{d_l}d_l!$ for a $\tanh$ MLP \citep{hecht-nielsen1990anc}.
 
 \paragraph{Translation}
-Following \citet{kunin2020}, a subset $\mathcal{A}$ of the parameters, with indicator vector $\mathbb{1}_{\mathcal{A}}$, possesses a translation symmetry if
+Following \citet{kunin2020}, a subset $\mathcal{A}$ of the parameters, with indicator vector $\boldsymbol{1}_{\mathcal{A}}$, possesses a translation symmetry if
 \begin{equation*}
-    \mathcal{L}(\theta)=\mathcal{L}(\theta+\alpha\mathbb{1}_{\mathcal{A}}) \qquad \forall\alpha\in\mathbb{R},
+    \mathcal{L}(\theta)=\mathcal{L}(\theta+\alpha\boldsymbol{1}_{\mathcal{A}}) \qquad \forall\alpha\in\mathbb{R},
 \end{equation*}
 a one-parameter action of the noncompact additive group $(\mathbb{R},+)$.
 The prototype is the softmax.
@@ -2888,7 +2888,7 @@ The gating translation of Mixture-of-Experts encountered above is the same pheno
 \paragraph{Scale}
 A subset $\mathcal{A}$ possesses a scale symmetry if \citep{kunin2020}
 \begin{equation*}
-    \mathcal{L}(\theta)=\mathcal{L}(\alpha_{\mathcal{A}}\odot\theta) \quad \forall\alpha>0, \qquad \text{where}\quad \alpha_{\mathcal{A}}:=\alpha\mathbb{1}_{\mathcal{A}}+\mathbb{1}_{\mathcal{A}^{c}}.
+    \mathcal{L}(\theta)=\mathcal{L}(\alpha_{\mathcal{A}}\odot\theta) \quad \forall\alpha>0, \qquad \text{where}\quad \alpha_{\mathcal{A}}:=\alpha\boldsymbol{1}_{\mathcal{A}}+\boldsymbol{1}_{\mathcal{A}^{c}}.
 \end{equation*}
 Normalization layers are a main source.
 Batch normalization \citep{ioffe2015p3icml} standardizes each preactivation with batch statistics, $\operatorname{BN}_{\gamma,\beta}(x_i)=\gamma\odot\frac{x_i-\mu_B}{\sqrt{\sigma_B^2+\epsilon}}+\beta$ with $\mu_B=\frac{1}{m}\sum_{i=1}^{m}x_i$ and $\sigma_B^2=\frac{1}{m}\sum_{i=1}^{m}(x_i-\mu_B)^2$, hence $\operatorname{BN}(\lambda Wx)=\operatorname{BN}(Wx)$ for $\lambda>0$.
@@ -2967,9 +2967,94 @@ Rotation, permutation, and sign flip are all O-mirror symmetries for a suitable 
 Within this class, the \emph{exponential symmetries} are those with a linear infinitesimal generator $Q_\rho=I+\rho A+o(\rho)$ for symmetric $A$, the group element is given by exponentiation to $e^{\lambda A}:=\lim_{\rho\to0}(I+\rho A+o(\rho))^{\lambda/\rho}$ and acts on $\theta$ by matrix-vector multiplication.
 Rescale, scale, and double rotation are all exponential symmetries for a suitable $A$.
 
-\subsubsection{Conservation Laws (CL) and Conserved Quantities (CQ)}
+\subsubsection{Conservation Laws (CL) and Conserved Quantities (CQ)}\label{sec:conservation-laws}
 
-% CLAUDE WRITE HERE
+The continuous symmetries of \Cref{sec:catalog-param-space-symmetries} do more than shape the loss landscape: they constrain the training trajectories themselves.
+Since the loss is constant along a symmetry orbit, the gradient has a null component in the orbit direction, and this null direction can integrate---in analogy with Noether's theorem in mechanics---into a \emph{conservation law}: a function of the parameters whose value, the \emph{conserved quantity}, is fixed at initialization and retained throughout training.
+
+\paragraph{From Continuous Symmetry to Conservation Law}
+A function $h:\Theta\to\mathbb{R}$ is \emph{conserved} by a flow $\dot\theta=\chi(\theta)$ if $h(\theta(t))=h(\theta(0))$ for every trajectory and every $t$; equivalently, if $\langle\nabla h(\theta),\chi(\theta)\rangle=0$ for all $\theta$.
+In the simplest case the flow is the usual gradient flow $\chi=-\nabla\mathcal{L}$.
+Let $(\psi_\alpha)_\alpha$ be a one-parameter symmetry, defined for $\alpha$ in a neighborhood of $0$ with $\psi_0=\operatorname{id}$, i.e.\ $\mathcal{L}(\psi_\alpha(\theta))=\mathcal{L}(\theta)$, and let
+\begin{equation*}
+    \xi(\theta):=\frac{d}{d\alpha}\psi_\alpha(\theta)\Big\vert_{\alpha=0}
+\end{equation*}
+be its \emph{generator}, the vector field giving at each $\theta$ the local direction of the symmetry curve.
+Differentiating the invariance at $\alpha=0$ yields $\langle\nabla\mathcal{L}(\theta),\xi(\theta)\rangle=0$, hence along the gradient flow
+\begin{equation*}
+    \langle \xi(\theta(t)), \dot\theta(t)\rangle=0 \qquad \forall t:
+\end{equation*}
+the trajectory never moves along the symmetry direction.
+This orthogonality becomes a conservation law when the generator is a gradient field, $\xi=\nabla C$, since then $\frac{d}{dt}C(\theta(t))=\langle\nabla C(\theta(t)),\dot\theta(t)\rangle=0$.
+The existence of $C$ can be characterized by the exactness of the differential $1$-form $\xi^\flat$.
+The Poincar\'e lemma states that on a simply connected domain---such as a standard parameter space $\Theta\subseteq\mathbb{R}^n$---every closed $1$-form is exact:
+\begin{equation*}
+    \xi^\flat \text{ closed} \iff \exists\, C:\Theta\to\mathbb{R} \text{ such that } \nabla C=\xi,
+\end{equation*}
+and by properties of the exterior derivative, closedness reduces to the symmetry of the Jacobian $\partial\xi(\theta)$.
+Taking concrete examples from \citep{kunin2020} in the catalog of \Cref{sec:catalog-param-space-symmetries}, the translation generator $\xi=\boldsymbol{1}_{\mathcal{A}}$ integrates to $C(\theta)=\langle\theta,\boldsymbol{1}_{\mathcal{A}}\rangle$; the scale generator to $\lVert\theta_{\mathcal{A}}\rVert^2$; the rescale generator to $\lVert\theta_{\mathcal{A}_1}\rVert^2-\lVert\theta_{\mathcal{A}_2}\rVert^2$. See \citep{kunin2020,zhao2023a,marcotte2023,ziyin2024a} for more details and \citet[Prop.~52]{gegenfurtner2026} for an example of a continuous symmetry that induces no conserved quantity.
+
+\paragraph{Conservation Laws in the Literature}
+
+% Linear 
+Conservation laws entered deep learning theory as an analytical device for linear networks.
+\citet{saxe2014piclr2} analyze the nonlinear learning dynamics of deep linear networks: after an SVD-aligned change of variables the gradient flow decouples into independent modes $(a,b)$, constrained by the conserved imbalance $a^2-b^2$ to a hyperbola in the $(a,b)$ plane.
+\citet{tarmoun2021p3icml} quantify how conserved quantities control convergence speed: for asymmetric matrix factorization with a spectrally aligned initialization, the $i$-th eigencomponent of the product matrix converges at rate $O(e^{-t\sqrt{4\sigma_i^2+\lambda_i^2}})$, where $\sigma_i$ is the $i$-th singular value of the ground truth and $\lambda_i>0$ is a conserved quantity growing with the imbalance at initialization.
+Strong imbalance accelerates convergence and the order in which eigencomponents are learned also depends on $\lambda_i$.
+\citet{zhao2023a} similarly shows a loss trajectory explicitly depending on the conserved quantity $Q$, $\partial_Q\mathcal{L}(\theta(t))\neq0$ meaning that the value of the loss at a specific time depends on $Q$.
+\citet{du2018anips} exploit approximate conservation under gradient \emph{descent}.
+A challenge in low-rank asymmetric matrix factorization is that $(U,V) \mapsto \lVert UV^\top-M^\star\rVert_F^2$ is not smooth due to the rescale symmetry.
+However, with sufficiently fast decreasing stepsizes the balancedness quantities remain bounded, which allows to prove convergence to a bounded global optimum.
+The conserved quantities for homogeneous networks are also derived, namely for ReLU networks: $\frac{d}{dt} \left( \|W^{(h)}[i, :]\|^2 - \|W^{(h+1)}[:, i]\|^2 \right) = 0$.
+
+% Finding all CL
+Given an architecture, one may ask whether the known conserved quantities are all of them.
+\citet{marcotte2023} formalize the question through the \emph{flow field} $W(\theta):=\operatorname{span}\{\nabla\mathcal{L}(\theta;X,Y),\ \forall X,Y\}$, the space of all possible gradients, and $h$ is conserved if and only if $\nabla h(\theta)\perp W(\theta)$ for all $\theta$.
+They propose two algorithms to find all polynomial conservation laws and count the exact number of independent laws through the Lie algebra generated by the flow field, certifying that for shallow linear and ReLU networks no conservation law exists beyond the known ones.
+\citet{marcotte2025p4icml} extend to ResNets and Transformers: for shallow architectures the number of laws is governed by the number of hidden components (channels or heads), and residual connections $x\mapsto f_\theta(x)+x$ do not alter them.
+For stacked architectures, they frame conservation laws by blocks $h_k:\Theta_k\subset\Theta\to\mathbb{R}$ depending only on the parameters of one block, and prove that these are exactly the laws of the building block in isolation.
+
+% \paragraph{Beyond Idealized Gradient Flow}
+Training heuristics perturb the conservation mechanism.
+\citet{kunin2020} derive a modified gradient flow accounting for finite learning rate, momentum and weight decay, under which CL break.
+With weight decay $\lambda$, for instance, the translation law decays as $\langle\theta(t),\mathbb{1}_{\mathcal{A}}\rangle=e^{-\lambda t}\,c$ with $c=\langle\theta(0),\mathbb{1}_{\mathcal{A}}\rangle$ the quantity conserved when $\lambda=0$ (see \Cref{sec:param-space-sb}).
+\citet{marcotte2025p4icml} prove that weight decay does not create new laws---showing that any law under weight decay maps to a law without it---; that Adam-like optimizers typically break them, and discretization induces a drift of order $O(\tau^2 k)$ after $k$ steps of size $\tau$, so laws hold approximately for small learning rates.
+Instead, \citet{saul2023} restore CL: they derive a \emph{weight-balancing flow} under which a balanced network stays exactly balanced while (under assumptions) still descending the regularized loss (see \Cref{sec:fix-symmetry-bug}).
+Gradient noise breaks conservation in a more structured way.
+For exponential symmetries, whose CQ takes the quadratic form $C(\theta)=\theta^\top A\theta$, \citet{ziyin2024a} show a  drift under SGD noise which defines a flow on the symmetry orbit, admitting (under conditions) a unique attractive fixed point.
+Thus, a value of the CQ is selected independently of initialization, for example with scale-invariant losses, the noise-free gradient being tangent to the sphere of radius $\lVert\theta\rVert$, the parameters are attracted to $\lVert\theta\rVert=\infty$.
+
+% \paragraph{Conserved Quantities and the Topology of the Reachable Set}
+CQ are fixed at initialization, therefore gradient flow is confined to their level set, whose geometry then delimits what training can reach.
+For shallow ReLU networks, \citet{nurisso2024a} show that this \emph{invariant set} $\mathcal{H}(c)$ is homeomorphic to a product of hyperquadrics, one per hidden neuron,
+\begin{equation*}
+    \mathcal{H}(c)\cong\mathcal{Q}(c_1)\times\dots\times\mathcal{Q}(c_l),
+\end{equation*}
+where $c_k$ is the neuron balance (incoming minus outgoing squared norms).
+For a scalar output, each negative balance disconnects the optimization space, so $\mathcal{H}(c)$ fragments into $2^{l_-}$ connected components ($l_-$ the number of neurons with $c_k<0$), potentially causing a \emph{topological obstruction}: initializing on a ``bad'' component makes the optimum unreachable, for any dataset and any loss depending on $\theta$ only through $f_\theta$.
+\citet{nurisso2025} extend the analysis to general DAG architectures: collecting the balances $c:=[c_v]_{v\in\tilde{V}}$ over hidden neurons, the connectedness of the invariant set $\mathcal{H}_G(c)$ is characterized by sign conditions on sums of conserved quantities around \emph{bottleneck} neurons (neurons with a single incoming or outgoing edge).
+Also seing CQ as space descriptors, \citet{zhao2023a} employ them as coordinates along the symmetry orbits of minima, though they do not parametrize a level set completely in general.
+Exploring these orbits, they observe variations of convergence speed and sharpness.
+
+% \paragraph{Conservation Laws from Data Symmetries}
+We have discussed CL stemming from architectural symmetries holding for any data, but \citet{galley2026} ask whether they can be induced by symmetries of the data.
+Following the criterion of \citet{marcotte2023}, a necessary condition is that symmetrization strictly shrinks the flow field,
+\begin{equation*}
+    \operatorname{span}_{(x,y)}\nabla_\theta\ell^G_{(x,y)}(\theta)\subsetneq\operatorname{span}_{(x,y)}\nabla_\theta\ell_{(x,y)}(\theta),
+\end{equation*}
+where $\ell_{(x,y)}$ is the per-example loss and $\ell^G_{(x,y)}$ its average over the orbit of the symmetry group $G$.
+This yields a negative result: for finite groups and analytic non-polynomial losses of the form $L(\hat y,y)=f(\langle\hat y,y\rangle)$ (e.g.\ the logistic loss), no additional conservation law exists.
+However on networks whose function decouples parameters from data as $f_\theta(x)=M(\theta)T(x)$ (called tensorizable networks e.g.\ polynomial networks): the discrete data symmetry lifts to a continuous parameter-space symmetry with MSE loss, for which a CL holds approximately under gradient descent.
+
+% \paragraph{Intrinsic Dynamics on the Quotient}
+Finally, conservation laws govern when the symmetry can be factored out of the dynamics altogether.
+\citet{marcotte2026} consider losses that factor through a symmetry-invariant lifting $\phi$, i.e.\ $\mathcal{L}=f\circ\phi$ (e.g. the end-to-end matrix $\phi(\theta)=W_L\cdots W_1$ for linear networks, the path-lifting for ReLU networks), and study the dynamics of the lifted parameter $z(t):=\phi(\theta(t))$.
+\emph{Intrinsic recoverability} asks that $\theta(t)$ be recoverable from the lift and the conservation laws $h:\mathbb{R}^D\to\mathbb{R}^N$, i.e.\ that there exists $\Gamma$ with $\Gamma(\phi(\theta),h(\theta))=\theta$; it is equivalent to
+\begin{equation*}
+    \ker\partial\phi(\theta)\cap\ker\partial h(\theta)=\{0\},
+\end{equation*}
+meaning that any infinitesimal displacement of $\theta$ must change either the lifted variable or a conserved quantity.
+As a consequence, linear networks with the product lifting are not intrinsically recoverable in general (except for some initializations) but ReLU networks are.
 
 \subsubsection{Parameter Identifiability}
 
@@ -3023,6 +3108,8 @@ Rescale, scale, and double rotation are all exponential symmetries for a suitabl
 The following abbreviations are used in this manuscript:\\
 \noindent
 \begin{tabular}{@{}ll}
+CL & Conservation Law \\
+CQ & Conserved Quantity \\
 DA & Data Augmentation \\
 GDL & Geometric Deep Learning \\
 SB & Symmetry Breaking
