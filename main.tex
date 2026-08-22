@@ -3118,6 +3118,63 @@ Non-identifiability is carried by \emph{subnetworks}, parameters where the outgo
 
 \subsubsection{Learning Dynamics}\label{sec:learning-dynamics}
 
+Conservation laws (\Cref{sec:conservation-laws}) showed continuous symmetries constraining training trajectories.
+This section widens the view to the interplay between symmetries---discrete ones included---and the learning dynamics.
+Symmetric states (\Cref{sec:hierarchy-param-space-symmetries}) populate the landscape with critical manifolds or attractive sets, and symmetries further interact with regularization, overparametrization, and discretization.
+
+\paragraph{Symmetric States Structure the Landscape}
+In the context of matrix factorization, \citet{li2018} show for a function $f:\mathbb{R}^m\to\mathbb{R}$ invariant under a group $G$, that whenever the group directions span the whole space, $\operatorname{Span}\{g(x)-x \mid g\in G,\ x\in\mathbb{R}^m\}=\mathbb{R}^m$, every fixed point of the group ($g(x_G)=x_G$ for all $g\in G$, i.e.\ a symmetric state) is a critical point of $f$.
+They also observe that at any critical point $x$, the tangent space of the orbit contains only flat directions,
+\begin{equation*}
+    T_x(G\cdot x)\subseteq\operatorname{Null}\big(\nabla^2 f(x)\big):
+\end{equation*}
+symmetry directions carry no curvature.
+For neural networks, \citet{brea2019} encounter \emph{permutation points}---a type of permutation-symmetric states---which are critical points, typically saddles of index one.
+Their argument applies to permutation-symmetric states in general: each of the $d_{k+1}$ pairs of outgoing weights can be changed as long as its sum remains constant, yielding $d_{k+1}$ flat Hessian directions.
+These flat directions form a $d_{k+1}$-dimensional affine plateau of critical points which, remarkably, contains all $d_k!$ reparametrizations of $\theta$ due to layer-$k$ neuron permutations.
+Conversely, regularization can force minima to be symmetric states.
+For the linear autoencoder with encoder $W_1\in\mathbb{R}^{k\times d}$, decoder $W_2\in\mathbb{R}^{d\times k}$ and loss $\mathcal{L}(W_1,W_2)=\lVert X-W_2W_1X\rVert_F^2$, \citet{kunin2019p3icml} show that every critical point of the $L_2$-regularized loss must be symmetric: $W_1=W_2^{\top}$.
+
+\paragraph{Attractivity of Symmetric States}
+Works have explored the dynamical question of whether training is drawn to symmetric states.
+Since these states are related to overparametrization and subnetworks, this question is related to simplicity biases (also a theme SLT \Cref{sec:adjacent-fields}). 
+\citet{chen2024jsm} call a set $A\subseteq\Theta$ an \emph{invariant set} of SGD if $\mathbb{P}\big(\theta^{(t)}\in A \mid \theta^{(0)}\in A\big)=1$ for all $t\in\mathbb{N}$.
+For losses satisfying an \emph{approximately} $Q$-\emph{symmetric} condition, with $Q$ a symmetric or orthogonal matrix, $\{\theta : Q\theta=\theta\}$ is an invariant set.
+Two given examples show the connection to simpler subnetworks: for $Q$ diagonal with $\pm1$ entries and origin-passing activations, the \emph{sign invariant sets} are characterized by disconnected neurons; for $Q$ a neuronwise permutation matrix, the \emph{permutation invariant sets} are the symmetric states $\theta_v=\theta_w$ for two hidden neurons $v,w$.
+They derive a sufficient condition for invariant sets to be \emph{stochastically attractive} based on the comparison between the loss curvature and gradient noise strength and observe this stochastic attractivity in VGG-16 trained on CIFAR-10.
+\citet{ziyin2024} reach a similar conclusion for the mirror symmetries of \Cref{sec:unifying-works-param-space-symmetries}: the reflection surface $\{\theta : O^{\top}\theta=0\}$ of a symmetry $\mathcal{L}(\theta)=\mathcal{L}(R\theta)$, $R=I-2OO^{\top}$, is attractive either for GD with high enough weight decay or for SGD with a high enough learning rate.
+\citet{ziyin2025} nuance the picture: measuring a \emph{symmetry-breaking distance}, $\lVert\theta_i-\theta_j\rVert_2^2$ in the permutation case, unveils a nontrivial dynamics that alternates between more and less symmetric states, both through space (layers) and time (iterations).
+
+\paragraph{Scale Invariance, and Weight Decay}
+The scale symmetry combined with weight decay generate a dynamics of its own.
+Under GF the parameter norm decreases monotonically.
+This is unsustainable for GD: scale invariance implies $\nabla^2 f(\alpha\theta)=\frac{1}{\alpha^2}\nabla^2 f(\theta)$, so the loss is increasingly non-smooth towards the origin and the stability condition $\eta<2/\lambda_{\mathrm{max}}$ must eventually break---pointing towards a chaotic behavior of GD \citep{li2020anips} which ceases to be a faithful discretization of GF.
+Gradient noise can, however, stabilizes the dynamics.
+Viewing the dynamics onto the unit sphere, \citet{li2020anips} show that the direction $\overline{W}_t=W_t/\lVert W_t\rVert$ evolves with an \emph{effective learning rate} $\eta_{\mathrm{eff}}=\eta/\lVert W_t\rVert^2$, the angular step size of directional updates.
+Under assumptions on the noise, it equilibrates at a stationary value $\propto\sqrt{\eta\lambda}$ with $\lambda$ the weight decay parameter: the dynamics does not collapse.
+Adopting the same sphere-projected view, \citet{lyu2023} explain why normalization and weight decay lead GD to flatter minima (under a well-defined \emph{spherical sharpness}, see \Cref{sec:fix-symmetry-bug}).
+When the parameter reaches a local minimum after a first phase of ``standard'' descent, weight decay accounts for most of the update direction and drives the effective learning rate upwards; the parameter then keeps oscillating while drifting towards regions of lesser spherical sharpness.
+Weight decay also interacts with the symmetries of multiplicative parametrizations $W=AB^{\top}$, such as the key-query products of attention layers.
+Although not phrased in symmetry terms, \citet{kobayashi2024anips} prove the bound
+\begin{equation*}
+    \Big|\, \lVert AB^{\top}\rVert_{*}-\frac{\lVert A\rVert_F^2+\lVert B\rVert_F^2}{2} \,\Big| \;\le\; \sqrt{\lVert A^{\top}A-B^{\top}B\rVert_{*}}\ \frac{\lVert A\rVert_{*}+\lVert B\rVert_{*}}{2},
+\end{equation*}
+where $\lVert\cdot\rVert_{*}$ is the nuclear norm and $A^{\top}A-B^{\top}B$ is the matrix-valued conserved quantity of linear networks (\Cref{sec:conservation-laws}).
+Weight decay breaks this conservation law and drives the imbalance exponentially fast to zero, thus (for bounded factors) $L_2$ and nuclear norm penalty behave similarly, explaining a bias towards low rank.
+Empirically, increasing the regularization strength decreases the \emph{pseudo rank}, the smallest $k$ such that $\sum_{i=1}^{k}\sigma_i \ge 0.95 \sum_{i=1}^{n}\sigma_i$ for singular values $\sigma_1\ge\dots\ge\sigma_n$.
+Finally, \citet{tanaka2021} go beyond GF and account for a finite learning rate through the modified flow
+\begin{equation*}
+    \frac{\eta}{2}\ddot\theta+\dot\theta=-\nabla\mathcal{L}(\theta),
+\end{equation*}
+whose second-order term is an \emph{implicit acceleration}.
+A Lagrangian formulation reveals that symmetries of $\mathcal{L}$ do not necessarily imply symmetries of the learning dynamics, and the conserved quantities of gradient flow can have a nontrivial evolution.
+Accounting for discretization can be interpreted as producing an adaptive momentum effect similar to RMSProp for normalization layers.
+
+\paragraph{Overparametrization}
+\citet{simsek2021} also observe \citep{brea2019} that for a minimal MLP of widths $(r_1^{*},\dots,r_L^{*})$ achieving zero loss, adding a single hidden neuron to every layer connects the $\prod_l r_l^{*}!$ disconnected permutation-equivalent minima.
+They count two types of subspaces: $G(r,m)$, the number of \emph{symmetry-induced critical subspaces} obtained by expanding critical points of width-$r$ sub-architectures into the width-$m$ network, and $T(r^{*},m)$, the number of affine subspaces composing the global-minima manifold, where the minimal width $r^{*}$ measures the degree of overparametrization.
+Either count can dominate, depending on the regime: under mild overparametrization the saddle subspaces $G(r,m)$ dominate which intuitively means more strictly-positive-loss saddle volume, hence harder optimization.
+\citet{sareen2026} assess the dynamical effect of overparametrizing by neuron splitting: splitting acts as a diagonal preconditioning of the Hessian, and minima measures such as the pseudo-determinant $\prod_{i:\lambda_i>0}\lambda_i$ increase under splitting (corresponding to a volume decrease) though the overall impact on optimization remains unclear.
 
 \subsection{Bug or Feature}\label{sec:bug-or-feature}
 
@@ -3170,7 +3227,10 @@ CL & Conservation Law \\
 CQ & Conserved Quantity \\
 DA & Data Augmentation \\
 GDL & Geometric Deep Learning \\
-SB & Symmetry Breaking
+SB & Symmetry Breaking \\
+GF & Gradient Flow \\
+GD & Gradient Descent \\
+SGD & Stochastic Gradient Descent
 \end{tabular}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

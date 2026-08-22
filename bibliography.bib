@@ -47,6 +47,8 @@
   title = {{{FOR NEURAL NETWORKS}}, {{FUNCTION DETERMINES FORM}}},
   author = {Albertini, Francesca and Sontag, E. D.},
   year = 1993,
+  journal = {Neural Networks},
+  publisher = {Elsevier},
   urldate = {2026-07-31},
   abstract = {This article shows that the weights of continuous-time feedback neural networks are uniquely identifiable from input/output measurements. Under weak genericity assumptions, the following is true: Assume given two nets, whose neurons all have the same nonlinear activation function sigma; if the two nets have equal behaviors as ''black boxes'' then necessarily they must have the same number of neurons and-except at most for sign reversals at each node-the same weights. Moreover, even if the activations are not a priori known to coincide, they are shown to be also essentially determined from the external measurements.},
   langid = {english},
@@ -222,7 +224,7 @@
   file = {/home/pierrick/OneDrive/zotero-library/2018/Arora/arora2018p3icml.pdf}
 }
 
-@article{ba2016,
+@misc{ba2016,
   title = {Layer {{Normalization}}},
   author = {Ba, Jimmy Lei and Kiros, Jamie Ryan and Hinton, Geoffrey E.},
   year = 2016,
@@ -958,7 +960,7 @@
 @article{chen2024jsm,
   title = {Stochastic Collapse: How Gradient Noise Attracts {{SGD}} Dynamics towards Simpler Subnetworks*},
   shorttitle = {Stochastic Collapse},
-  author = {Chen, Feng and Kunin, Daniel and Yamamura (山村篤志), Atsushi and Ganguli, Surya},
+  author = {Chen, Feng and Kunin, Daniel and Yamamura, Atsushi and Ganguli, Surya},
   year = 2024,
   journal = {Journal of Statistical Mechanics: Theory and Experiment},
   volume = {2024},
@@ -2010,6 +2012,7 @@
   title = {On the {{Symmetries}} of {{Deep Learning Models}} and Their {{Internal Representations}}},
   author = {Godfrey, Charles and Brown, Davis and Emerson, Tegan and Kvinge, Henry},
   year = 2022,
+  journal = {Advances in Neural Information Processing Systems},
   abstract = {Symmetry has been a fundamental tool in the exploration of a broad range of complex systems. In machine learning, symmetry has been explored in both models and data. In this paper we seek to connect the symmetries arising from the architecture of a family of models with the symmetries of that family's internal representation of data. We do this by calculating a set of fundamental symmetry groups, which we call the intertwiner groups of the model. Each of these arises from a particular nonlinear layer of the model and different nonlinearities result in different symmetry groups. These groups change the weights of a model in such a way that the underlying function that the model represents remains constant but the internal representations of data inside the model may change. We connect intertwiner groups to a model's internal representations of data through a range of experiments that probe similarities between hidden states across models with the same architecture. Our work suggests that the symmetries of a network are propagated into the symmetries in that network's representation of data, providing us with a better understanding of how architecture affects the learning and prediction process. Finally, we speculate that for ReLU networks, the intertwiner groups may provide a justification for the common practice of concentrating model interpretability exploration on the activation basis in hidden layers rather than arbitrary linear combinations thereof.},
   langid = {english},
   keywords = {/read},
@@ -4436,6 +4439,7 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   title = {Weight-{{Balancing Fixes}} and {{Flows}} for {{Deep Learning}}},
   author = {Saul, Lawrence K},
   year = 2023,
+  journal = {Transactions on Machine Learning Research},
   abstract = {Feedforward neural networks with homogeneous activation functions possess an internal symmetry: the functions they compute do not change when the incoming and outgoing weights at any hidden unit are rescaled by reciprocal positive values. This paper makes two contributions to our understanding of these networks. The first is to describe a simple procedure, or fix, for balancing the weights in these networks: this procedure computes multiplicative rescaling factors---one at each hidden unit---that rebalance the weights of these networks without changing the end-to-end functions that they compute. Specifically, given an initial network with arbitrary weights, the procedure determines the functionally equivalent network whose weight matrix is of minimal {$\ell$}p,q-norm; the weights at each hidden unit are said to be balanced when this norm is stationary with respect to rescaling transformations. The optimal rescaling factors are computed in an iterative fashion via simple multiplicative updates, and the updates are notable in that (a) they do not require the tuning of learning rates, (b) they operate in parallel on the rescaling factors at all hidden units, and (c) they converge monotonically to a global minimizer of the {$\ell$}p,q-norm. The paper's second contribution is to analyze the optimization landscape for learning in these networks. We suppose that the network's loss function consists of two terms---one that is invariant to rescaling transformations, measuring predictive accuracy, and another (a regularizer) that breaks this invariance, penalizing large weights. We show how to derive a weight-balancing flow such that the regularizer remains minimal with respect to rescaling transformations as the weights descend in the loss function. These dynamics reduce to an ordinary gradient flow for {$\ell$}2-norm regularization, but not otherwise. In this way our analysis suggests a canonical pairing of alternative flows and regularizers.},
   langid = {english},
   keywords = {/read,minimal parameter norm,ReLU,ReLU network,rescale symmetry},
