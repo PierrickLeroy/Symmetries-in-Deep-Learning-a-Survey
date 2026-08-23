@@ -2723,7 +2723,7 @@ Relaxation is meant to smooth training while exactness can be restored at test t
 
 
 
-\section{Loss Landscape and Parameter-Space Symmetries}\seccol{col-gold}\label{sec:loss-landscape-parameter-space-symmetries}\label{sec:parameter-space-symmetries}
+\section{Loss Landscape and Parameter-Space Symmetries}\seccol{col-gold}\label{sec:parameter-space-symmetries}
 % zhao2025: indicate overlaps
 
 
@@ -2905,7 +2905,7 @@ It gives a group $(\mathbb{R}_{>0})^{d_l}$ per layer.
 Degree-$r$ homogeneity skews the pairing: for a monomial activation $z^r$ the symmetry becomes $\mathcal{L}(\theta)=\mathcal{L}(\alpha_{\mathcal{A}_1}^{r}\odot\alpha_{\mathcal{A}_2}^{-1}\odot\theta)$.
 The symmetry is also found in lightning self-attention which satisfies $(K^{\top}Q,V)\mapsto(\lambda K^{\top}Q,\lambda^{-1}V)$ in addition to its other symmetries \citep{henry2025}.
 
-Although rescaling preserves $f_\theta$, it alters internal quantities---feature maps, gradients, and measures of flatness \citep{armenta2021b}---a point we return to in \Cref{sec:learning-dynamics,sec:fix-symmetry-bug}.
+Although rescaling preserves $f_\theta$, it alters internal quantities---feature maps, gradients, and measures of flatness \citep{armenta2021b}---a point we return to in \Cref{sec:learning-dynamics,sec:bug-or-feature}.
 
 \paragraph{General Linear Group}
 Whenever linear maps compose without an intervening nonlinearity, the factorization is defined only up to $AB=(AM^{-1})(MB)$ for $M$ invertible.
@@ -3019,7 +3019,7 @@ Training heuristics perturb the conservation mechanism.
 \citet{kunin2020} derive a modified gradient flow accounting for finite learning rate, momentum and weight decay, under which CL break.
 With weight decay $\lambda$, for instance, the translation law decays as $\langle\theta(t),\mathbb{1}_{\mathcal{A}}\rangle=e^{-\lambda t}\,c$ with $c=\langle\theta(0),\mathbb{1}_{\mathcal{A}}\rangle$ the quantity conserved when $\lambda=0$ (see \Cref{sec:param-space-sb}).
 \citet{marcotte2025p4icml} prove that weight decay does not create new laws---showing that any law under weight decay maps to a law without it---; that Adam-like optimizers typically break them, and discretization induces a drift of order $O(\tau^2 k)$ after $k$ steps of size $\tau$, so laws hold approximately for small learning rates.
-Instead, \citet{saul2023} restore CL: they derive a \emph{weight-balancing flow} under which a balanced network stays exactly balanced while (under assumptions) still descending the regularized loss (see \Cref{sec:fix-symmetry-bug}).
+Instead, \citet{saul2023} restore CL: they derive a \emph{weight-balancing flow} under which a balanced network stays exactly balanced while (under assumptions) still descending the regularized loss (see \Cref{sec:quotient-repr-align}).
 Gradient noise breaks conservation in a more structured way.
 For exponential symmetries, whose CQ takes the quadratic form $C(\theta)=\theta^\top A\theta$, \citet{ziyin2024a} show a  drift under SGD noise which defines a flow on the symmetry orbit, admitting (under conditions) a unique attractive fixed point.
 Thus, a value of the CQ is selected independently of initialization, for example with scale-invariant losses, the noise-free gradient being tangent to the sphere of radius $\lVert\theta\rVert$, the parameters are attracted to $\lVert\theta\rVert=\infty$.
@@ -3117,7 +3117,7 @@ Moreover, generic CNN parametrizations are one-to-one.
 Non-identifiability is carried by \emph{subnetworks}, parameters where the outgoing weights of some neurons vanish ($|A_i|$ deactivated neurons in layer $i$): \emph{strict} (incoming weights vanish too) subnetworks have fibers of dimension at least $\sum_{i=1}^{L-1}|A_i|d_{i-1}$ and generate the singular locus of the neuromanifold, a locus the loss landscape of MLPs is biased towards.
 
 \subsubsection{Learning Dynamics}\label{sec:learning-dynamics}
-
+% yang2025: permutation equivariant optimizers preserve neuron parameter's manifold topology for small enough LR
 Conservation laws (\Cref{sec:conservation-laws}) showed continuous symmetries constraining training trajectories.
 This section widens the view to the interplay between symmetries---discrete ones included---and the learning dynamics.
 Symmetric states (\Cref{sec:hierarchy-param-space-symmetries}) populate the landscape with critical manifolds or attractive sets, and symmetries further interact with regularization, overparametrization, and discretization.
@@ -3152,7 +3152,7 @@ This is unsustainable for GD: scale invariance implies $\nabla^2 f(\alpha\theta)
 Gradient noise can, however, stabilizes the dynamics.
 Viewing the dynamics onto the unit sphere, \citet{li2020anips} show that the direction $\overline{W}_t=W_t/\lVert W_t\rVert$ evolves with an \emph{effective learning rate} $\eta_{\mathrm{eff}}=\eta/\lVert W_t\rVert^2$, the angular step size of directional updates.
 Under assumptions on the noise, it equilibrates at a stationary value $\propto\sqrt{\eta\lambda}$ with $\lambda$ the weight decay parameter: the dynamics does not collapse.
-Adopting the same sphere-projected view, \citet{lyu2023} explain why normalization and weight decay lead GD to flatter minima (under a well-defined \emph{spherical sharpness}, see \Cref{sec:fix-symmetry-bug}).
+Adopting the same sphere-projected view, \citet{lyu2023} explain why normalization and weight decay lead GD to flatter minima (under a well-defined \emph{spherical sharpness}, see \Cref{sec:quotient-repr-align}).
 When the parameter reaches a local minimum after a first phase of ``standard'' descent, weight decay accounts for most of the update direction and drives the effective learning rate upwards; the parameter then keeps oscillating while drifting towards regions of lesser spherical sharpness.
 Weight decay also interacts with the symmetries of multiplicative parametrizations $W=AB^{\top}$, such as the key-query products of attention layers.
 Although not phrased in symmetry terms, \citet{kobayashi2024anips} prove the bound
@@ -3176,13 +3176,55 @@ They count two types of subspaces: $G(r,m)$, the number of \emph{symmetry-induce
 Either count can dominate, depending on the regime: under mild overparametrization the saddle subspaces $G(r,m)$ dominate which intuitively means more strictly-positive-loss saddle volume, hence harder optimization.
 \citet{sareen2026} assess the dynamical effect of overparametrizing by neuron splitting: splitting acts as a diagonal preconditioning of the Hessian, and minima measures such as the pseudo-determinant $\prod_{i:\lambda_i>0}\lambda_i$ increase under splitting (corresponding to a volume decrease) though the overall impact on optimization remains unclear.
 
-\subsection{Bug or Feature}\label{sec:bug-or-feature}
+\subsection{Prescription for Parameter-Space Symmetries: Fix the Bug and Exploit the Feature}\label{sec:bug-or-feature}
+% First three: fix the bug, last one: exploit the feature 
 
+\subsubsection{Optimization}\label{sec:symmetry-optimization}
 
+Parameter-space symmetries impact the landscape but also its traversal through the optimizer and its update rule.
+This section reviews prescriptions regarding optimization.
 
-\subsubsection{Fix the Symmetry Bug}\label{sec:fix-symmetry-bug}
+\paragraph{Symmetry-Induced Obstacles}
+A first obstacle type is analytical.
+In asymmetric matrix factorization, the $GL(r,\mathbb{R})$ symmetry makes the loss $(U,V)\mapsto\lVert UV^{\top}-M^{\star}\rVert_F^2$ non-smooth: along $(\alpha U,\alpha^{-1}V)$ the loss stays constant while the Lipschitz constant of its gradient blows up.
+As seen in \Cref{sec:conservation-laws}, \citet{du2018anips} contain the pathology with decreasing stepsizes under which the approximately conserved balancedness $\lVert U^{\top}U-V^{\top}V\rVert_F$ remains bounded; iterates are thereby confined to a region where smoothness holds, easing the analysis.
+A dynamical obstacle arises from weakly broken symmetry in the dynamic word embeddings of \citet{bamler2018p3icml}.
+A coupling regularizer $\psi(Z)$ breaks the per-time-step rotations $(R_1,\dots,R_T)$ down to a single global rotation $R_1=\dots=R_T$.
+However broken orbit directions are nearly flat (\emph{Goldstone modes} in spontaneous symmetry breaking in physics) and GD undergoes two phases: it first converges to an almost symmetric configuration optimizing the unregularized loss, then shifts very slowly along the approximate orbit to decrease $\psi$.
+Their \emph{Goldstone GD} decouples the two dynamics by alternating descent on the total loss with a minimization of $\psi(Z)$ restricted to the symmetry subspace, that is, over the rotations $(R_1,\dots,R_T)$.
 
+\paragraph{Optimizers Carry Their Own Symmetries}
+Equivariance of the update map is defined as any other equivariant map \citep{neyshabur2015anips,yi2022ptcuai,yen2025iclr,zhao2025,yang2025}: for $G$ acting on $\Theta$, the update $U:\Theta\to\Theta$ is equivariant to $G$ when
+\begin{equation}\label{eq:equivariant-optimizer}
+    U(g\cdot\theta)=g\cdot U(\theta)\qquad\forall g\in G,\ \theta\in\Theta.
+\end{equation}
+Optimizers have different invariance and equivariance properties.
+GD is equivariant to orthogonal reparameterizations $\theta\mapsto Q\theta$, $Q\in O(d)$; Newton's method to affine reparameterizations \citep{kristiadi2023anips}; natural gradient descent is infinitesimally invariant under any smooth invertible reparameterization \citep{amari1998nc,liang2019pticais,kristiadi2023anips,zhao2025}; Adam \citep{kingma2015} is invariant to positive diagonal rescalings of the gradients.
+This last property is \emph{scale-freeness}: the iterates $\{\theta_t\}_{t\geq0}$ are unchanged when every gradient is rescaled as $\nabla\mathcal{L}(\theta_t)\gets D\nabla\mathcal{L}(\theta_t)$ for a positive diagonal matrix $D$, and it turns out to separate variants of Adam \citep{zhuang2022tmlr}.
+AdamW postpones the weight-decay term $\lambda\theta_{t-1}$, adding it after the adaptive step instead of folding it into the gradient as Adam-$\ell_2$ does, and thereby does not treat the $L_2$ penalty like the task loss.
+\citet{zhuang2022tmlr} show that this preserves scale-freeness while Adam-$\ell_2$ loses it, and argue that scale-freeness carries optimization benefits (improving conditionning).
 
+\paragraph{Equivariant Optimizers}
+A mismatch between the symmetries of the model and those of the optimizer means that functionally identical parameters need not train identically.
+When the equivariance requirement \Cref{eq:equivariant-optimizer} is fulfilled however, $\theta_0\sim\tilde{\theta}_0$ implies $\theta_t\sim\tilde{\theta}_t$ for all $t$ and we may speak of \emph{the} functional trajectory unambiguously.
+One strategy to avoid the mismatch is thus to employ an optimizer equivariant to the symmetry group of the model (\Cref{sec:quotient-repr-align} present other approaches).
+
+\citet{neyshabur2015anips}, observing that SGD is not equivariant to the rescaling symmetry of ReLU networks repair it through paths.
+The \emph{path vector} $\pi(w)$ collects the products of weights along all input--output paths: $\pi_c(w)=\prod_{k}w_{e_k}$ for a path $c=(e_1,\dots,e_L)$ of edges.
+Since every path crosses each neuron through one incoming and one outgoing edge, $\pi$ is rescaling-invariant, and so are the proposed $\ell_p$-path regularizer $\lVert\pi(w)\rVert_p$ and \emph{Path-SGD}, a variant of SGD with the coordinate-wise update
+\begin{equation*}
+    w_e^{(t+1)}\gets w_e^{(t)}-\frac{\eta}{\gamma_p(w^{(t)},e)}\,\frac{\partial\mathcal{L}}{\partial w_e}(w^{(t)}),
+\end{equation*}
+where $\gamma_p(w,e)$ is the squared $\ell_p$-norm of the path vector filtered to keep only paths containing edge $e$.
+\citet{kristiadi2023anips} distinguish \emph{weight-space symmetries}, which move $\theta$ while the parameter space itself does not transform, from \emph{reparameterizations} $\phi:\Theta\to\Psi$ between distinct parameter spaces regarded as Riemannian manifolds with explicit metrics.
+Under a reparameterization, transformation rules apply not only to the parameter but to every object attached to it, tangent vectors and gradients in particular.
+The apparent non-invariance of GD then stems from the metric left implicitlt Euclidean; making it explicit in the update, $\dot{\theta}=-G(\theta)^{-1}\nabla\mathcal{L}(\theta)$ makes GD invariant.
+\citet{yen2025iclr} make a similar contribution for LoRA, whose update $Z=AB^{\top}$ has $GL(r,\mathbb{R})$ symmetry with $r$ the low-rank dimension, and show that most practical optimizers (Adam, RMSProp, Shampoo, \dots) are not equivariant to it.
+They restore equivariance with a preconditioning matrix $P$---which they show cannot be restricted to diagonal matrices---applied as a right preconditioner in the low $r$-dimensional row space (i.e., $\nabla_A\mathcal{L}\,P$ instead of $P\,\nabla_A\mathcal{L}$), for efficiency.
+
+\subsubsection{Quotient, Representative and Alignement}\label{sec:quotient-repr-align}
+
+\subsubsection{Measurements in Parameter Space}
 
 \subsubsection{Exploit the Symmetry Feature}\label{sec:exploit-symmetry-feature}
 
