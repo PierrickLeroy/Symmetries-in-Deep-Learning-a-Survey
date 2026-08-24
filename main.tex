@@ -3408,7 +3408,39 @@ where $T_w^{-1}$ is a normalization operator responsible for cancelling the effe
 
 \subsubsection{Exploit the Symmetry Feature}\label{sec:exploit-symmetry-feature}
 
-% CLAUDE WRITE HERE
+Some works try to see symmetries as resource rather than a nuisance, findings symmetry levers to accelerate convergence or perform pruning.
+
+\paragraph{Overparametrization}
+In linear networks $\Phi^N=\{\mathbf{x}\mapsto W_N\cdots W_1\mathbf{x}\}$ \citet{arora2018p3icml} study the dynamics of $W_e:=W_N\dots W_1$ under gradient descent and find that overparametrization by depth acts as a preconditioner combining adaptive learning rate and momentum-like effects.
+It can improve training speed and they prove the mechanism is not replicable by any regularization term.
+\citet{jacot2022} exploit overparametrization along a different axis, width, as an formalizing tool.
+The \emph{saddle-to-saddle conjecture} states that, under small initialization, gradient flow in a deep linear network visits saddles of increasing rank before reaching a low-rank global minimum.
+Conceptually, this can be formalized using an overparametrization symmetry: the full-width network dynamics is approximated as a sequence of sub-architectural dynamics starting with a width $1$ network and progressively adding neurons.
+
+\paragraph{Teleportation}
+A line of works seeks to interleave gradient steps and movements on the orbit.
+\citet{armenta2021b} instantiate this within a quiver representation formalism\citep{armenta2021a}, primarily for the rescale symmetry.
+Although the function is preserved, feature maps, flatness, and gradients are not: the gradient transforms as
+\begin{equation*}
+    \frac{\partial L}{\partial v^{(l)}_{ij}}=\frac{\tau^{(l-1)}_i}{\tau^{(l)}_j}\,\frac{\partial L}{\partial w^{(l)}_{ij}},
+\end{equation*}
+where $\tau^{(l)}_i$ is the scalar value of the rescaling of neuron $i$ in layer $l$, an exact backward-pass counterpart of the forward rescaling.
+Empirically, teleportating at initialization or mid-training can speed up SGD.
+\citet{zhao2023} prolongs the idea: for $G$ acting on $w$, teleportation picks $g\leftarrow\arg\max_{g\in G}\lVert\nabla\mathcal{L}(g\cdot w_t)\rVert^2$ and updates $w_t\leftarrow g\cdot w_t$ before the usual gradient step, the continuous-group case optimization problem can be solved by gradient ascent on $g$.
+\citet{zhao2023} give theoretical motivation; writing $J=\partial(g\cdot w)/\partial w$ for the Jacobian of the transformation and $\eta$ for a (possibly matrix-valued) learning rate playing the role of a metric, teleportation accelerates the loss decay if
+\begin{equation*}
+    \big\lVert[J^{-1}]^{\top}\nabla\mathcal{L}(w)\big\rVert_{\eta}^2>\big\lVert\nabla\mathcal{L}(w)\big\rVert_{\eta}^2,
+\end{equation*}
+meaning that orthogonal transformations are useless.
+Furthermore, the optimal target relates to Newton's method: at the point of a level set with locally maximal gradient norm, the gradient direction coincides with the Newton direction.
+In practice, however, the maximizing $g$ may lie at infinity or be costly to approximate, \citet{zhao2024} replace the inner loop by a meta-learned optimizer for $g$, avoiding the per-step search cost.
+
+\paragraph{Pruning}
+Conservation laws (\Cref{sec:conservation-laws}) have proven useful to design pruning strategies.
+\citet{tanaka2020anips} design a pruning at initialization scheme which avoids layer collapse.
+Their algorithm computes a per-edge score $\langle \frac{\partial L}{\partial \theta}, \theta \rangle$ which, because of the conservation law balances between layers and thus assigns higher scores to sparser layers thereby preventing total pruning of a layer.
+The invariant set $\mathcal{H}_G(c)=\{\theta:\tilde{B}\theta^2=c\}$ of \citet{nurisso2025}, where $\tilde B$ encodes the conservation constraint, contains singularities that correspond exactly to configurations where zero-weighted edges disconnect a subset of neurons from both input and output, i.e.\ to prunable subnetworks.
+Regularizing the rank of the Jacobian $J_G(\theta)=2\tilde{B}\operatorname{diag}(\theta)$ yields a differentiable pruning approach that empirically produces whole-neuron sparsification rather than the edge-level sparsity of an $\ell_1$ penalty.
 
 \subsection{Adjacent fields}\label{sec:adjacent-fields}
 % Weight-space learning/metanetworks and SLT/Neuroalgebraic geometry
