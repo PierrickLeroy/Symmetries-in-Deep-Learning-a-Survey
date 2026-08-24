@@ -3222,9 +3222,81 @@ The apparent non-invariance of GD then stems from the metric left implicitlt Euc
 \citet{yen2025iclr} make a similar contribution for LoRA, whose update $Z=AB^{\top}$ has $GL(r,\mathbb{R})$ symmetry with $r$ the low-rank dimension, and show that most practical optimizers (Adam, RMSProp, Shampoo, \dots) are not equivariant to it.
 They restore equivariance with a preconditioning matrix $P$---which they show cannot be restricted to diagonal matrices---applied as a right preconditioner in the low $r$-dimensional row space (i.e., $\nabla_A\mathcal{L}\,P$ instead of $P\,\nabla_A\mathcal{L}$), for efficiency.
 
-\subsubsection{Quotient, Representative and Alignement}\label{sec:quotient-repr-align}
+\subsubsection{Quotient, Representative and Alignment}\label{sec:quotient-repr-align}
 
-\subsubsection{Measurements in Parameter Space}
+Rather than adapting to symmetries, a branch of works aims at taking the symmetries out of the picture altogether.
+Working with equivalence classes or with canonical elements thereof uncovers patterns that symmetries could otherwise hide and sidesteps the optimizer mismatch of \Cref{sec:symmetry-optimization}.
+We report on three strategies.
+\emph{Quotienting} constructs a representation of the equivalence classes themselves: orbits become points of the quotient space $\Theta/\!\sim$.
+\emph{Representative extraction} selects a particular element inside each class, that is, a section of the quotient map $\Theta\to\Theta/\!\sim$ picking one point in each fiber.
+\emph{Alignment} is a pairwise version of representative extraction: the chosen representatives are not absolute but depend on the relation between two parameter instances.
+As an illustration, consider circles randomly placed in the plane but such that they don't overlap.
+Two points are defined to be equivalent when they lie on the same circle, so that the equivalence classes are precisely the circles.
+Quotienting represents each circle, for instance the center--radius pair in $\mathbb{R}^2\times\mathbb{R}_{>0}$.
+Representative extraction distinguishes one point on each circle, for instance the point of highest $y$-coordinate (with the random placement assumption, these coordinates are unique).
+Alignment selects $2$ points simultaneously when $2$ circles are compared: it could return the two points---one on each circle---minimizing the distance between them.
+
+\paragraph{Quotiented Parameter Spaces}
+\citet{meng2019} push the path perspective of \citet{neyshabur2015anips} one step further: they optimize ReLU networks directly in a space of invariant coordinates, the path values $\pi_c(w)$ of \Cref{sec:symmetry-optimization}.
+Since these values are not independent, a subset of $(m-H)$ \emph{basis paths} is first extracted, with $m$ the number of weights and $H$ the number of hidden neurons: one degree of freedom removed per hidden neuron, in agreement with the expected functional dimension of \Cref{sec:parameter-identifiability}.
+For batch-normalized networks, \citet{yi2022ptcuai} constructs the quotient as a Riemannian manifold.
+Collecting the incoming weight vectors $w^{(1)},\dots,w^{(m)}$ of the $m$ neurons, the \emph{Positively Scale-Invariant manifold} is the quotient $\big(\mathbb{R}^{d_1}\times\dots\times\mathbb{R}^{d_m}\big)/\!\sim$ by per-neuron positive rescalings.
+It is equipped with the Riemannian metric
+\begin{equation*}
+    g_{w}(\xi_1,\xi_2)=\sum_{i=1}^{m}\frac{\langle\xi_1^{(i)},\xi_2^{(i)}\rangle}{\lVert w^{(i)}\rVert^2}.
+\end{equation*}
+Riemannian gradient descent on this manifold is equivariant in the sense of \Cref{eq:equivariant-optimizer}.
+
+Quotienting can also express the loss on another domain.
+In the linear autoencoder of \Cref{sec:learning-dynamics}, where every critical point of the regularized loss is symmetric, $W_1=W_2^{\top}\in \mathbb R^{k\times d}$, \citet{kunin2019p3icml} reinterpret the loss as a function on the Grassmannian $\operatorname{Gr}_k(\mathbb{R}^d)$ of $k$-planes in $\mathbb{R}^d$.
+Fixing a point cloud $X$, the loss value at a $k$-plane is the sum of squared distances from the points of $X$ to that plane: the $GL(k,\mathbb{R})$ symmetry has disappeared.
+Finally, identifiability questions have been investigated form a quotient perspective: writing $\varphi:\Theta/\!\sim\,\to\mathcal{F}$ for the realization map from the quotient, \citet{grillo2026} phrase identifiability up to quotiented symmetries as the fiber $\varphi^{-1}(f_\theta)$ being a singleton.
+
+\paragraph{Representative Extraction}
+\citet{hecht-nielsen1990anc} constructs a cone $H\subset\mathbb{R}^q$ in parameter space, itself a union of cones of the form $\{x\in\mathbb{R}^q : |x_i|\le|x_k|,\ i\neq k\}$, guaranteed to contain at least one parameter implementing each realizable function.
+Weight search can be restricted to $H$ but it remains redundant, still containing a number of permuted copies of any given network, motivating the notion of a \emph{minimal search set}: in modern terms, a section of the quotient.
+
+For rescaling symmetries a possible section is a unit-norm slice.
+\citet{badrinarayanan2015} constrain each neuron of a batch-normalized network to a unit-norm incoming weight vector, $\operatorname{diag}\big(W^{(l)}{W^{(l)}}^{\top}\big)=I$ for every layer $l$, and train by Riemannian SGD on the resulting \emph{oblique manifold}.
+\citet{huang2017} approximate Riemannian gradient descent by a standard gradient step $\tilde{w}^{(t+1)}=w^{(t)}-\eta\nabla\mathcal{L}(w^{(t)})$ followed by norm projection $w^{(t+1)}=\tilde{w}^{(t+1)}/\lVert\tilde{w}^{(t+1)}\rVert$ back onto the manifold; they do not change variables, contrary to e.g. \citep{salimans2016anips}.
+Note that the projection rescales only incoming weights without other compensation. Thanks to a subsequent normalization layer this still preserves the function, showcasing an interplay between the scale and rescale symmetries.
+The minimal-norm representative is another canonical choice.
+\citet{stock2018} extract the unique representative of minimal $\ell_p$-norm by minimizing
+\begin{equation*}
+    \sum_{k=1}^{q}\big\lVert D_{k-1}^{-1}W_{k}D_{k}\big\rVert_p^p
+\end{equation*}
+over positive diagonal matrices $D_k$ with a coordinate descent scheme.
+Applying this \emph{Equi-normalization} in-between SGD steps empirically improves performance.
+\citet{saul2023} reaches the minimal $\ell_{p,q}$-norm representative through per-unit closed form multiplicative updates: the incoming weights of every hidden neuron $i$ are simultaneously multiplied (and its outgoing weights divided) by
+\begin{equation*}
+    a_i=\Bigg[\frac{\sum_{j}\rho_j(W)\,\pi_{ji}(W)}{\rho_i(W)}\Bigg]^{\frac{1}{4\max(p,q)}} ,
+    \quad
+    \pi_{ji}(W)=\frac{|W_{ji}|^p}{\sum_{k}|W_{jk}|^p},
+\end{equation*}
+where $\rho_i$ measures the input norm of neuron $i$.
+If neuron $i$ has smaller input norm than the weighted average of the next layer neurons' input norm, then $a_i>1$ and the update will drive the network towards balance.
+
+\paragraph{Alignment}
+Alignment extracts paired representatives, making it a tool of choice for comparing or merging trained networks; it is a pillar of the mode connectivity literature (\Cref{sec:mode-connectivity}).
+Working in activation space, \citet{lenc2014a} aligned representations $\phi,\phi'$ with a learned linear map $E_{\phi\to\phi'}$ and showed than stitching representations from one trained networks to another was possible.
+\citet{godfrey2022} sharpen the connection to parameter-space symmetries: for ReLU networks, restricting the stitching map from arbitrary linear layers to the intertwiner group $G_{\mathrm{ReLU}}$ of \Cref{sec:unifying-works-param-space-symmetries} suffices to preserve good performance, suggesting that parameter symmetries account for much of the misalignment between independently trained representations.
+They propose feature-space dissimilarity measures invariant to $G_{\mathrm{ReLU}}$ (and to global translation): $G_{\mathrm{ReLU}}$-\emph{Procrustes} compares feature matrices $X,Y\in\mathbb{R}^{n\times d}$ through
+\begin{equation*}
+    \mu(X,Y):=1-\frac{1}{2\sqrt{d}}\,\min_{P}\big\lVert XD_X^{-1}-YD_Y^{-1}P\big\rVert_F,
+\end{equation*}
+where $P$ ranges over permutation matrices and $D_X=\operatorname{diag}\big(\lVert X_{:,1}\rVert,\dots,\lVert X_{:,d}\rVert\big)$ normalizes features.
+\citet{zhang2025p4icml} align the double rotation symmetry of self-attention in transformers models.
+The restriction from the full $GL(d_k,\mathbb{R})$ symmetry to rotations trades generality for a closed-form solution but their matching algorithm separately includes a rescaling alignment of self-attention matrices and of permutation in MLPs; it improves model fusion.
+Finally for ReLU classifiers, \citet{pittorino2022jsm} combine representative extraction with alignment in two steps:
+(1) Each hidden neuron $v$ is rescaled to the oblique manifold, and the output layer is globally rescaled (they work not with the loss but error landscape); the normalized parameter space becoming a product of spheres including one sphere $S^{d_{l-1}}$ per hidden neuron of layer $l$.
+(2) When two networks $\theta$ and $\eta$ are compared, layerwise permutations maximizing the cosine agreement $\sum_{v=1}^{H}\langle\theta_v^{+},\eta_v^{+}\rangle$ over each sphere are found by linear assignment.
+On the resulting geometry, geodesics replace linear interpolation paths, and distances, barriers and flatness are closer to a functional meaning as we see next in  \Cref{sec:measurements-param-space}.
+
+\subsubsection{Measurements in Parameter Space}\label{sec:measurements-param-space}
+
+\paragraph{(Linear) Mode Connectivity}\label{sec:mode-connectivity}
+
+\paragraph{Flatness}
 
 \subsubsection{Exploit the Symmetry Feature}\label{sec:exploit-symmetry-feature}
 
