@@ -3312,6 +3312,63 @@ We focus on two such measurements: barrier values in (linear) mode connectivity,
 
 \paragraph{(Linear) Mode Connectivity}\label{sec:mode-connectivity}
 
+\emph{Mode connectivity} (MC) \citep{garipov2018,draxler2018p3icml} asks whether two minima are connected by a low-loss path, the obstruction being quantified by the \emph{barrier height}
+\begin{equation}\label{eq:barrier-height}
+    \mathcal{B}:\Theta\times\Theta\to\mathbb{R},\qquad(\theta_0,\theta_1)\longmapsto\min_{\gamma}\ \max_{t\in[0,1]}\mathcal{L}(\gamma(t)),
+\end{equation}
+over the continuous curves $\gamma:[0,1]\to\Theta$ with $\gamma(0)=\theta_0$ and $\gamma(1)=\theta_1$.
+The barrier is invariant under continuous symmetries $g$ as an orbit path from $\theta_1$ to $g\cdot\theta_1$ of constant loss can always be prepended to $\gamma$ at no cost.
+Therefore, literature concentrates on discrete symmetries, in particular on permutations.
+
+\citet{freeman2017} motivate the study of sublevel sets $\Omega(\lambda)=\{\theta\in\Theta:\mathcal{L}(\theta)\le\lambda\}$ since their connectedness guarantees no spurious local minimum.
+They show that overparametrization prevents asymptotically obstruction due to permutation symmetry.
+For a shallow ReLU network of width $m$ and any $\theta,\theta'$ with $\max\big(\mathcal{L}(\theta),\mathcal{L}(\theta')\big)\le\lambda$, they construct a continuous path $\gamma$ from $\theta$ to $\theta'$ such that
+\begin{equation*}
+    \max_{t\in[0,1]}\mathcal{L}(\gamma(t))\le\max(\lambda,\epsilon),\qquad \epsilon=\mathcal{O}\big(m^{-1/d}\big),
+\end{equation*}
+with $d$ the input dimension.
+Remarkably, the rescaling symmetry enters the proof: a continuous symmetry serves to remove the obstacle raised by a discrete one.
+Rather than diluting the permutation asymptotically, other works directly aim at sorting it out.
+\citet{tatro2020} align the hidden neurons between identical architecture, choosing the permutation minimizing on the training set the activation-based cost
+\begin{equation*}
+    c(x,y):=1-\operatorname{corr}(x,y)
+\end{equation*}
+between neurons $x$ and $y$ of the two networks.
+After alignment, the loss barrier is reduced.
+\citet{brea2019} sample paths between a minimum and a permuted version under the constraint of passing through a permutation symmetric state which is an index $1$ saddle.
+They notice that at this saddle, an extended loss plateau allows to generate all possible symmetric states observing that one redundant pair of neurons suffices to make the permuted minima connected \citep{brea2019,simsek2021}.
+\citet{zhao2025a} study the minima of a full-rank linear network, $\mathcal{L}^{-1}(0)$ for $\mathcal{L}(\theta)=\lVert Y-W_L\cdots W_1X\rVert_F^2$ with $X,Y\in GL(h,\mathbb{R})$ and $W_l\in\mathbb{R}^{h\times h}$.
+The internal $GL(h,\mathbb{R})^{L-1}$ symmetry acts transitively on that set, and since continuous maps preserve connectedness the topology of the group transfers to the topology of the minima: $\mathcal{L}^{-1}(0)\cong GL(h,\mathbb{R})^{L-1}$, which thus contains exactly $2^{L-1}$ components, one per sign pattern of the determinants which can be chosen by permuting neurons so MC holds up to permutation.
+
+\emph{Linear mode connectivity} (LMC) replaces general paths with straight segment, the barrier can then be measured against the linear interpolation of the endpoint losses,
+\begin{equation}\label{eq:linear-barrier}
+    B(\theta_0,\theta_1)=\sup_{\alpha\in[0,1]}\Big[\mathcal{L}\big(\alpha\theta_0+(1-\alpha)\theta_1\big)-\big(\alpha\mathcal{L}(\theta_0)+(1-\alpha)\mathcal{L}(\theta_1)\big)\Big],
+\end{equation}
+and the invariance to continuous symmetries of \Cref{eq:barrier-height} breaks down.
+To begin, without alignment LMC can occur when the two endpoints are produced with a common grounding.
+\citet{frankle2020p3icml} separates training only after the $k$-th iteration by adding distinct SGD noise.
+The two outcomes have a non-negligible linear barrier only for $k>0$, typically a short initial phase of training is sufficient.
+\citet{lim2024} obtain the same effect architecturally: under their symmetry-removal procedure (\Cref{sec:param-space-sb}), independently trained networks are forced to be compatible and interpolate linearly with low barrier.
+LMC up to permutation encompasses more natural settings.
+\citet{entezari2022} conjecture that, permutations accounted for, most SGD solutions have LMC.
+As empirical support, they show that sampling $\theta_0,\theta_1$ with SGD and drawing a random permutation $\pi$, the barrier $B(\theta_0,\theta_1)$ between independent solutions and the barrier $B(\theta_0,\pi\cdot\theta_0)$ within a single orbit follow similar distributions, as if independent runs differed only by a permutation.
+On the theoretical side, wide-enough shallow ReLU networks satisfy the conjecture under standard initialization conditions.
+\citet{ainsworth2023} make the permutation search more practical, aligning the two networks by coordinate descent over layerwise assignment problems.
+They exhibit a zero-barrier linear interpolation between independently trained ResNets, and applications to merging models trained on disjoint data splits in the spirit of federated learning.
+Consistently with the invariance requirement of this section, \citet{pittorino2022jsm} accounts for two symmetries and evaluate barriers only after rescaling-representative extraction and permutation alignment, using geodesic paths in place of linear ones in their product-of-spheres parameter space.
+However, the conjecture is not universally true: \citet{zhao2025a} use the rescaling symmetry to produce a counterexample.
+For homogeneous activations, comparing the segment joining $(W_1,\dots,\alpha W_{L-1},\alpha^{-1}W_L)$ to $(W_1,\dots,\alpha^{-1}W_{L-1},\alpha W_L)$ as $\alpha\to0$ yields two functionally equivalent minima whose linear barrier is arbitrarily large, and (under assumptions) no permutation fixes it.
+Finally, \citet{tran2025anips} covers Mixture-of-Experts, whose symmetry group is $G(n)=\mathbb{R}^{d+1}\times S_n$, the continuous factor coming from the softmax over gating scores (\Cref{sec:descr-param-space-symmetries}).
+They show that perhaps surprisingly, $B$ is invariant under this $\mathbb{R}^{d+1}$ factor---the mechanism of \Cref{eq:barrier-height} survives the restriction to linear paths---so that permutations alone govern LMC for MoEs.
+The experts carry symmetries of their own, consequently they propose hierarchical alignment: experts are first matched (as blocks of parameters) e.g. by their gating scores, then the neurons inside each matched pair of experts are matched in turn.
+The procedure reduces the linear barrier for both ViT and language-model.
+
+\begin{Remark}
+    Alignment is not the unique difficulty.
+    \citet{jordan2023} observe a \emph{variance collapse} along the interpolating path: two aligned units are only imperfectly correlated, so their midpoint has lower variance, compounding with depth until deep activations are nearly constant.
+    Their REPAIR algorithm mitigates the problem by making use of batchnorm to rescale the preactivations.
+\end{Remark}
+
 \paragraph{Flatness}
 
 \subsubsection{Exploit the Symmetry Feature}\label{sec:exploit-symmetry-feature}
