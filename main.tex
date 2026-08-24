@@ -3294,6 +3294,22 @@ On the resulting geometry, geodesics replace linear interpolation paths, and dis
 
 \subsubsection{Measurements in Parameter Space}\label{sec:measurements-param-space}
 
+Evaluations about $f_\theta$ e.g. generalization measures, should not depend on the specific $\theta$ realizing it~\citep{dinh2017}.
+Concretely, a measurement $\mathcal M:\Theta^k\to\mathbb R$ taking $k$ parameters as input should factor through a well-defined induced measurement on the quotient, $(\Theta/\!\sim)^k\to\mathbb R$, or through the realization map $\varphi:\Theta\to\mathcal F$ as a measurement of functions, $\mathcal F^k\to\mathbb R$.
+Parameter-space symmetries are thus an invariance desideratum for any measurement built from $\theta$, similarly to the equivariant metanetworks of \Cref{sec:adjacent-fields}.
+We focus on two such measurements: barrier values in (linear) mode connectivity, and flatness of the loss landscape.
+
+\begin{Remark}
+    Other measurements of $\theta$ face the same requirement.
+    Classical generalization bounds scale with the dimension of $\theta$; \emph{norm-based complexity measures} rely on a dimension-less notion of magnitude of $\theta$ which should therefore be consistent with respect to symmetries.
+    \citet{liang2019pticais} propose the--technically not a norm---\emph{Fisher-Rao norm}:
+    \begin{equation*}
+        \lVert\theta\rVert_{\mathrm{fr}}^2:=\langle\theta,I(\theta)\theta\rangle,\qquad I(\theta)=\mathbb E\big[\nabla_\theta \ell(f_\theta(X),Y)\otimes\nabla_\theta \ell(f_\theta(X),Y)\big],
+    \end{equation*}
+    which is invariant under the reparametrizations at stake contrary to others such as the $\ell_2$ norm.
+    One can also measure a property of the minima manifold $\varphi^{-1}(f_\theta)\subset\Theta$ as a geometric object, for instance \citet{zhao2024} look at the curvature along orbits though the measure is not invariant under reparametrization.
+\end{Remark}
+
 \paragraph{(Linear) Mode Connectivity}\label{sec:mode-connectivity}
 
 \paragraph{Flatness}
@@ -3303,7 +3319,7 @@ On the resulting geometry, geodesics replace linear interpolation paths, and dis
 
 
 \subsection{Adjacent fields}\label{sec:adjacent-fields}
-% Weight-space learning and SLT
+% Weight-space learning/metanetworks and SLT/Neuroalgebraic geometry
 
 
 
