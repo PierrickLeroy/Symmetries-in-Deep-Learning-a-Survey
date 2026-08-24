@@ -1377,7 +1377,7 @@
   journal = {International Conference on Machine Learning},
   abstract = {Despite their overwhelming capacity to overfit, deep learning architectures tend to generalize relatively well to unseen data, allowing them to be deployed in practice. However, explaining why this is the case is still an open area of research. One standing hypothesis that is gaining popularity, e.g. Hochreiter \& Schmidhuber (1997); Keskar et al. (2017), is that the flatness of minima of the loss function found by stochastic gradient based methods results in good generalization. This paper argues that most notions of flatness are problematic for deep models and can not be directly applied to explain generalization. Specifically, when focusing on deep networks with rectifier units, we can exploit the particular geometry of parameter space induced by the inherent symmetries that these architectures exhibit to build equivalent models corresponding to arbitrarily sharper minima. Furthermore, if we allow to reparametrize a function, the geometry of its parameters can change drastically without affecting its generalization properties.},
   langid = {english},
-  keywords = {,/read,flatness,generalization,geometry,minimum,sharpness},
+  keywords = {,/read,flatness,generalization,geometry,minimum,sharpness,survey/param-space/flatness},
   annotation = {GSCC: 0000897},
   file = {/home/pierrick/OneDrive/zotero-library/2017/Dinh/dinh2017 1.pdf;/home/pierrick/OneDrive/zotero-library/2017/Dinh/dinh2017.pdf}
 }
@@ -1753,7 +1753,7 @@
   urldate = {2024-04-10},
   abstract = {In today's heavily overparameterized models, the value of the training loss provides few guarantees on model generalization ability. Indeed, optimizing only the training loss value, as is commonly done, can easily lead to suboptimal model quality. Motivated by prior work connecting the geometry of the loss landscape and generalization, we introduce a novel, effective procedure for instead simultaneously minimizing loss value and loss sharpness. In particular, our procedure, Sharpness-Aware Minimization (SAM), seeks parameters that lie in neighborhoods having uniformly low loss; this formulation results in a min-max optimization problem on which gradient descent can be performed efficiently. We present empirical results showing that SAM improves model generalization across a variety of benchmark datasets (e.g., CIFAR-10, CIFAR-100, ImageNet, finetuning tasks) and models, yielding novel state-of-the-art performance for several. Additionally, we find that SAM natively provides robustness to label noise on par with that provided by state-of-the-art procedures that specifically target learning with noisy labels. We open source our code at \textbackslash url\textbraceleft https://github.com/google-research/sam\textbraceright.},
   archiveprefix = {arXiv},
-  keywords = {/read,Computer Science - Machine Learning,flatness,generalization,optimization,sharpness,sharpness aware minimization,Statistics - Machine Learning},
+  keywords = {/read,Computer Science - Machine Learning,flatness,generalization,optimization,sharpness,sharpness aware minimization,Statistics - Machine Learning,survey/param-space/flatness},
   annotation = {GSCC: 0001743 \\
 847 citations (Semantic Scholar/arXiv) [2024-04-14]},
   file = {/home/pierrick/OneDrive/zotero-library/2021/Foret/foret2021.pdf}
@@ -2685,6 +2685,19 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   file = {/home/pierrick/OneDrive/zotero-library/2021/Keller/keller2021anips.pdf}
 }
 
+@inproceedings{keskar2017,
+  title = {On {{Large-Batch Training}} for {{Deep Learning}}: {{Generalization Gap}} and {{Sharp Minima}}},
+  shorttitle = {On {{Large-Batch Training}} for {{Deep Learning}}},
+  booktitle = {International {{Conference}} on {{Learning Representations}}},
+  author = {Keskar, Nitish Shirish and Mudigere, Dheevatsa and Nocedal, Jorge and Smelyanskiy, Mikhail and Tang, Ping Tak Peter},
+  year = 2017,
+  urldate = {2024-04-15},
+  abstract = {The stochastic gradient descent (SGD) method and its variants are algorithms of choice for many Deep Learning tasks. These methods operate in a small-batch regime wherein a fraction of the training data, say \$32\$--\$512\$ data points, is sampled to compute an approximation to the gradient. It has been observed in practice that when using a larger batch there is a degradation in the quality of the model, as measured by its ability to generalize. We investigate the cause for this generalization drop in the large-batch regime and present numerical evidence that supports the view that large-batch methods tend to converge to sharp minimizers of the training and testing functions---and as is well known, sharp minima lead to poorer generalization. In contrast, small-batch methods consistently converge to flat minimizers, and our experiments support a commonly held view that this is due to the inherent noise in the gradient estimation. We discuss several strategies to attempt to help large-batch methods eliminate this generalization gap.},
+  langid = {english},
+  keywords = {/read,flat minimum,flatness,generalization,survey/param-space/flatness},
+  file = {/home/pierrick/OneDrive/zotero-library/2017/Keskar/Keskar et al. - 2017 - On Large-Batch Training for Deep Learning Generalization Gap and Sharp Minima.pdf}
+}
+
 @article{kingma2015,
   title = {{Adam: A Method for Stochastic Optimization}},
   shorttitle = {{Adam}},
@@ -2853,7 +2866,7 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   pages = {17669--17688},
   urldate = {2025-06-10},
   langid = {english},
-  keywords = {,/read,differential geometry,flatness,Hessian,Riemannian geometry},
+  keywords = {,/read,differential geometry,flatness,Hessian,Riemannian geometry,survey/param-space/flatness},
   annotation = {GSCC: 0000014 2025-11-09T20:01:06.827Z 0.14},
   file = {/home/pierrick/OneDrive/zotero-library/2023/Kristiadi/kristiadi2023anips.pdf}
 }
@@ -2899,7 +2912,7 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   urldate = {2025-06-10},
   abstract = {Recently, learning algorithms motivated from sharpness of loss surface as an effective measure of generalization gap have shown state-of-the-art performances. Nevertheless, sharpness defined in a rigid region with a fixed radius, has a drawback in sensitivity to parameter re-scaling which leaves the loss unaffected, leading to weakening of the connection between sharpness and generalization gap. In this paper, we introduce the concept of adaptive sharpness which is scale-invariant and propose the corresponding generalization bound. We suggest a novel learning method, adaptive sharpness-aware minimization (ASAM), utilizing the proposed generalization bound. Experimental results in various benchmark datasets show that ASAM contributes to significant improvement of model generalization performance.},
   langid = {english},
-  keywords = {/read,flatness,flatness measure/rescaling invariant,sharpness aware minimization},
+  keywords = {/read,flatness,flatness measure/rescaling invariant,sharpness aware minimization,survey/param-space/flatness},
   annotation = {GSCC: 0000390},
   file = {/home/pierrick/OneDrive/zotero-library/2021/Kwon/kwon2021p3icml.pdf}
 }
@@ -3277,7 +3290,7 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   urldate = {2025-05-29},
   abstract = {Normalization layers (e.g., Batch Normalization, Layer Normalization) were introduced to help with optimization difficulties in very deep nets, but they clearly also help generalization, even in not-so-deep nets. Motivated by the long-held belief that flatter minima lead to better generalization, this paper gives mathematical analysis and supporting experiments suggesting that normalization (together with accompanying weight-decay) encourages GD to reduce the sharpness of loss surface. Here "sharpness" is carefully defined given that the loss is scale-invariant, a known consequence of normalization. Specifically, for a fairly broad class of neural nets with normalization, our theory explains how GD with a finite learning rate enters the so-called Edge of Stability (EoS) regime, and characterizes the trajectory of GD in this regime via a continuous sharpness-reduction flow.},
   archiveprefix = {arXiv},
-  keywords = {/read,edge of stability,flatness,flatness measure/normalization invariant},
+  keywords = {/read,edge of stability,flatness,flatness measure/normalization invariant,survey/param-space/flatness},
   annotation = {GSCC: 0000094},
   file = {/home/pierrick/OneDrive/zotero-library/2023/Lyu/lyu2023.pdf}
 }
@@ -4020,7 +4033,7 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   publisher = {Curran Associates, Inc.},
   urldate = {2024-04-15},
   abstract = {Flatness of the loss curve is conjectured to be connected to the generalization ability of machine learning models, in particular neural networks. While it has been empirically observed that flatness measures consistently correlate strongly with generalization, it is still an open theoretical problem why and under which circumstances flatness is connected to generalization, in particular in light of reparameterizations that change certain flatness measures but leave generalization unchanged. We investigate the connection between flatness and generalization by relating it to the interpolation from representative data, deriving notions of representativeness, and feature robustness. The notions allow us to rigorously connect flatness and generalization and to identify conditions under which the connection holds. Moreover, they give rise to a novel, but natural relative flatness measure that correlates strongly with generalization, simplifies to ridge regression for ordinary least squares, and solves the reparameterization issue.},
-  keywords = {/read,flat minimum,flatness,flatness measure/rescaling invariant,generalization,reparametrization},
+  keywords = {/read,flat minimum,flatness,flatness measure/rescaling invariant,generalization,reparametrization,survey/param-space/flatness},
   annotation = {GSCC: 0000093},
   file = {/home/pierrick/OneDrive/zotero-library/2021/Petzka/petzka2021anips.pdf}
 }
@@ -4066,7 +4079,7 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   urldate = {2024-10-27},
   abstract = {We systematize the approach to the investigation of deep neural network landscapes by basing it on the geometry of the space of implemented functions rather than the space of parameters. Grouping classifiers into equivalence classes, we develop a standardized parameterization in which all symmetries are removed, resulting in a toroidal topology. On this space, we explore the error landscape rather than the loss. This lets us derive a meaningful notion of the flatness of minimizers and of the geodesic paths connecting them. Using different optimization algorithms that sample minimizers with different flatness we study the mode connectivity and relative distances. Testing a variety of state-of-the-art architectures and benchmark datasets, we confirm the correlation between flatness and generalization performance; we further show that in function space flatter minima are closer to each other and that the barriers along the geodesics connecting them are small. We also find that minimizers found by variants of gradient descent can be connected by zero-error paths composed of two straight lines in parameter space, i.e. polygonal chains with a single bend. We observe similar qualitative results in neural networks with binary weights and activations, providing one of the first results concerning the connectivity in this setting. Our results hinge on symmetry removal, and are in remarkable agreement with the rich phenomenology described by some recent analytical studies performed on simple shallow models.},
   langid = {english},
-  keywords = {/read,flat minimum,flatness,loss landscape,mode connectivity,network normalization,networks alignment,ReLU network},
+  keywords = {/read,flat minimum,flatness,loss landscape,mode connectivity,network normalization,networks alignment,ReLU network,survey/param-space/flatness},
   annotation = {GSCC: 0000033\\
 TLDR: A standardized parameterization is developed in which all symmetries are removed, resulting in a toroidal topology, and it is found that minimizers found by variants of gradient descent can be connected by zero-error paths composed of two straight lines in parameter space.},
   file = {/home/pierrick/OneDrive/zotero-library/2022/Pittorino/pittorino2022jsm.pdf}
@@ -4847,7 +4860,7 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   urldate = {2025-05-29},
   abstract = {Adversarial training (AT) has become the de-facto standard to obtain models robust against adversarial examples. However, AT exhibits severe robust overfitting: cross-entropy loss on adversarial examples, so-called robust loss, decreases continuously on training examples, while eventually increasing on test examples. In practice, this leads to poor robust generalization, i.e., adversarial robustness does not generalize well to new examples. In this paper, we study the relationship between robust generalization and flatness of the robust loss landscape in weight space, i.e., whether robust loss changes significantly when perturbing weights. To this end, we propose average- and worst-case metrics to measure flatness in the robust loss landscape and show a correlation between good robust generalization and flatness. For example, throughout training, flatness reduces significantly during overfitting such that early stopping effectively finds flatter minima in the robust loss landscape. Similarly, AT variants achieving higher adversarial robustness also correspond to flatter minima. This holds for many popular choices, e.g., AT-AWP, TRADES, MART, AT with self-supervision or additional unlabeled examples, as well as simple regularization techniques, e.g., AutoAugment, weight decay or label noise. For fair comparison across these approaches, our flatness measures are specifically designed to be scale-invariant and we conduct extensive experiments to validate our findings.},
   archiveprefix = {arXiv},
-  keywords = {/read,adversarial example,adversarial robustness,flatness,flatness measure/rescaling invariant,robust loss},
+  keywords = {/read,adversarial example,adversarial robustness,flatness,flatness measure/rescaling invariant,robust loss,survey/param-space/flatness},
   annotation = {GSCC: 0000074},
   file = {/home/pierrick/OneDrive/zotero-library/2021/Stutz/stutz2021.pdf}
 }
@@ -5095,7 +5108,7 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   urldate = {2025-05-29},
   abstract = {The notion of flat minima has played a key role in the generalization studies of deep learning models. However, existing definitions of the flatness are known to be sensitive to the rescaling of parameters. The issue suggests that the previous definitions of the flatness might not be a good measure of generalization, because generalization is invariant to such rescalings. In this paper, from the PAC-Bayesian perspective, we scrutinize the discussion concerning the flat minima and introduce the notion of normalized flat minima, which is free from the known scale dependence issues. Additionally, we highlight the scale dependence of existing matrix-norm based generalization error bounds similar to the existing flat minima definitions. Our modified notion of the flatness does not suffer from the insufficiency, either, suggesting it might provide better hierarchy in the hypothesis class.},
   archiveprefix = {arXiv},
-  keywords = {/read,flatness,flatness measure/rescaling invariant},
+  keywords = {/read,flatness,flatness measure/rescaling invariant,survey/param-space/flatness},
   annotation = {GSCC: 0000081},
   file = {/home/pierrick/OneDrive/zotero-library/2019/Tsuzuku/tsuzuku2019.pdf}
 }
@@ -5858,7 +5871,7 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   urldate = {2024-04-15},
   abstract = {It was empirically confirmed by Keskar et al.\textbackslash cite\textbraceleft SharpMinima\textbraceright{} that flatter minima generalize better. However, for the popular ReLU network, sharp minimum can also generalize well \textbackslash cite\textbraceleft SharpMinimacan\textbraceright. The conclusion demonstrates that the existing definitions of flatness fail to account for the complex geometry of ReLU neural networks because they can't cover the Positively Scale-Invariant (PSI) property of ReLU network. In this paper, we formalize the PSI causes problem of existing definitions of flatness and propose a new description of flatness - \textbackslash emph\textbraceleft PSI-flatness\textbraceright. PSI-flatness is defined on the values of basis paths \textbackslash cite\textbraceleft GSGD\textbraceright{} instead of weights. Values of basis paths have been shown to be the PSI-variables and can sufficiently represent the ReLU neural networks which ensure the PSI property of PSI-flatness. Then we study the relation between PSI-flatness and generalization theoretically and empirically. First, we formulate a generalization bound based on PSI-flatness which shows generalization error decreasing with the ratio between the largest basis path value and the smallest basis path value. That is to say, the minimum with balanced values of basis paths will more likely to be flatter and generalize better. Finally. we visualize the PSI-flatness of loss surface around two learned models which indicates the minimum with smaller PSI-flatness can indeed generalize better.},
   archiveprefix = {arXiv},
-  keywords = {/read,batch size,complexity,Computer Science - Machine Learning,flatness,flatness measure/rescaling invariant,generalization,path,sgd,Statistics - Machine Learning},
+  keywords = {/read,batch size,complexity,Computer Science - Machine Learning,flatness,flatness measure/rescaling invariant,generalization,path,sgd,Statistics - Machine Learning,survey/param-space/flatness},
   annotation = {GSCC: 0000025 \\
 17 citations (Semantic Scholar/arXiv) [2024-04-22]},
   file = {/home/pierrick/OneDrive/zotero-library/2019/Yi/yi2019.pdf}

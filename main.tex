@@ -3152,7 +3152,7 @@ This is unsustainable for GD: scale invariance implies $\nabla^2 f(\alpha\theta)
 Gradient noise can, however, stabilizes the dynamics.
 Viewing the dynamics onto the unit sphere, \citet{li2020anips} show that the direction $\overline{W}_t=W_t/\lVert W_t\rVert$ evolves with an \emph{effective learning rate} $\eta_{\mathrm{eff}}=\eta/\lVert W_t\rVert^2$, the angular step size of directional updates.
 Under assumptions on the noise, it equilibrates at a stationary value $\propto\sqrt{\eta\lambda}$ with $\lambda$ the weight decay parameter: the dynamics does not collapse.
-Adopting the same sphere-projected view, \citet{lyu2023} explain why normalization and weight decay lead GD to flatter minima (under a well-defined \emph{spherical sharpness}, see \Cref{sec:quotient-repr-align}).
+Adopting the same sphere-projected view, \citet{lyu2023} explain why normalization and weight decay lead GD to flatter minima (under a well-defined \emph{spherical sharpness}, see \Cref{sec:measurements-param-space}).
 When the parameter reaches a local minimum after a first phase of ``standard'' descent, weight decay accounts for most of the update direction and drives the effective learning rate upwards; the parameter then keeps oscillating while drifting towards regions of lesser spherical sharpness.
 Weight decay also interacts with the symmetries of multiplicative parametrizations $W=AB^{\top}$, such as the key-query products of attention layers.
 Although not phrased in symmetry terms, \citet{kobayashi2024anips} prove the bound
@@ -3370,6 +3370,41 @@ The procedure reduces the linear barrier for both ViT and language-model.
 \end{Remark}
 
 \paragraph{Flatness}
+
+Intuitively, a minimum $\theta^\star$ is \emph{flat} when the loss stays close to $\mathcal{L}(\theta^\star)$ on a neighborhood of $\theta^\star$.
+\citet{keskar2017} reported that large-batch SGD converges to sharper minima than small-batch SGD and that this sharpness tracks the generalization gap thus empirically flatness correlates with better test performance.
+However, \citet{dinh2017} soon objected that the usual definitions of flatness are not well posed.
+For a one-hidden-layer ReLU network they lower bound the Hessian at a rescaled parameter $T_\alpha\theta:=(\alpha\theta_1,\alpha^{-1}\theta_2)$ by
+\begin{equation}\label{eq:dinh-hessian-bound}
+    \big\lVert(\nabla^2\mathcal{L})(T_\alpha\theta)\big\rVert_F\ \ge\ \alpha^{-2}\gamma,
+\end{equation}
+where $\gamma>0$ is a positive diagonal entry of $(\nabla^2\mathcal{L})(\theta)$ demonstrating that a minimum can be made arbitrarily sharp.
+
+Subsequent measures close address this gap \citep{tsuzuku2019,yi2019,petzka2021anips}, for example \citet{tsuzuku2019} proposes \emph{normalized sharpness}
+\begin{equation*}
+    \sum_{l}\sqrt{\lVert W^{(l)}\rVert_F^2\;H^{(l)}},
+\end{equation*}
+where $H^{(l)}$ is the sum of diagonal entries of the Hessian of the loss.
+Experimentally, they find that their measure better correlates with generalization gap than unnormalized measures like the trace of the Hessian.
+Instead of redefining, \citet{pittorino2022jsm} canonicalize: flatness is evaluated after the rescaling-representative extraction of \Cref{sec:quotient-repr-align}.
+\citet{stutz2021} adapt this principle for adversarial training, where the quantity of interest is the \emph{robust generalization} gap, measured on adversarial test examples.
+They propose an invariant version of the worst-case increase of the robust loss in a neighborhood of the parameter.
+For scale invariant losses, \citet{lyu2023} propose the \emph{spherical sharpness} $\lambda_1\big(\nabla^2\mathcal{L}(\theta/\lVert\theta\rVert_2)\big)$, where $\lambda_1$ extracts the largest eigenvalue.
+For \citet{kristiadi2023anips} (see \Cref{sec:symmetry-optimization}), flatness appears non invariant only because the Riemannian metric is implicit taken to be $G=I$.
+They build an invariant Hessian $E:=G^{-1}H$ from the Hessian $H$ by seeing it as a linear operator on the tangent space $T_\theta\Theta$. Because $G$ and $H$ are both bilinear forms, they transform in the same ways and thus $\det E$ is invariant for example.
+\citet{petzka2021anips} look closer at the correlation reported by \citet{keskar2017}.
+They study models of the form $f(w\phi(x))$ with $\phi$ a feature extractor and $w$ the weights of the final linear layer and find that for the flatness-generalization connection to hold, features smoothness is important ($\phi$ must have locally constant labels which must be stable to small perturbation in feature space).
+They also propose a flatness measure invariant to rescalings defined as a Hessian trace weighted by the weights of the model.
+
+Sharpness-Aware Minimization (SAM) \citep{foret2021} treats classic flatness as a part of the objective, replacing the training loss by its worst case over a ball,
+\begin{equation*}
+    \mathcal{L}^{\mathrm{SAM}}(\theta):=\max_{\lVert\epsilon\rVert_p\le\rho}\mathcal{L}(\theta+\epsilon),
+\end{equation*}
+with $\rho$ a radius hyperparameter and $p\in[1,\infty]$ and \citet{kwon2021p3icml} correct it proposing the \emph{adaptive SAM} objective
+\begin{equation*}
+    \max_{\lVert T_\theta^{-1}\epsilon\rVert_p\le\rho}\mathcal{L}(\theta+\epsilon)-\mathcal{L}(\theta),
+\end{equation*}
+where $T_w^{-1}$ is a normalization operator responsible for cancelling the effect of rescaling on sharpness. For ReLU networks, $T_w=\operatorname{diag}(|w_1|, \dots, |w_k|)$ is a valid choice. Adaptive sharpness is shown to better correlate with generalization.
 
 \subsubsection{Exploit the Symmetry Feature}\label{sec:exploit-symmetry-feature}
 
