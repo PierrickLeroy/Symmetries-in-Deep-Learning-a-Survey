@@ -3176,8 +3176,12 @@ They count two types of subspaces: $G(r,m)$, the number of \emph{symmetry-induce
 Either count can dominate, depending on the regime: under mild overparametrization the saddle subspaces $G(r,m)$ dominate which intuitively means more strictly-positive-loss saddle volume, hence harder optimization.
 \citet{sareen2026} assess the dynamical effect of overparametrizing by neuron splitting: splitting acts as a diagonal preconditioning of the Hessian, and minima measures such as the pseudo-determinant $\prod_{i:\lambda_i>0}\lambda_i$ increase under splitting (corresponding to a volume decrease) though the overall impact on optimization remains unclear.
 
-\subsection{Prescription for Parameter-Space Symmetries: Fix the Bug and Exploit the Feature}\label{sec:bug-or-feature}
-% First three: fix the bug, last one: exploit the feature 
+\subsection{Prescription for Parameter-Space Symmetries}\label{sec:bug-or-feature}
+
+Having describer parameter-space symmetries and consequences, we turn to the prescriptive question: how can the ``symmetry bug'' be fixed ? Or can it even be exploited ?
+A radical fix is to intervene on the model to remove symmetries altogether, by making the architecture asymmetric \citep{lim2024} or by anchoring a random bias \citep{ziyin2024b} as already covered in \Cref{sec:param-space-sb}.
+Outside of these drastic proposals, works have accounted for the symmetries when traversing the landscape (\Cref{sec:symmetry-optimization}), when representing the parameters (\Cref{sec:quotient-repr-align}), and when measuring them (\Cref{sec:measurements-param-space}).
+Finally, treating symmetries as a resource can accelerate convergence or guide pruning (\Cref{sec:exploit-symmetry-feature}).
 
 \subsubsection{Optimization}\label{sec:symmetry-optimization}
 
@@ -3446,8 +3450,9 @@ Regularizing the rank of the Jacobian $J_G(\theta)=2\tilde{B}\operatorname{diag}
 % Weight-space learning/metanetworks and SLT/Neuroalgebraic geometry
 
 
+\section{Discussion}\seccol{col-slate}
 
-\section{Extensions}\seccol{col-magenta}
+\subsection{Extensions}\seccol{col-magenta}
 % Class-specific symmetries
 % wieser2020anips: similar to class pose
 % cohen2014 can be considered an early work that discusses the idea of separating in different subspaces the identity of an object from its ``factors of variations'' 
@@ -3458,8 +3463,7 @@ Regularizing the rank of the Jacobian $J_G(\theta)=2\tilde{B}\operatorname{diag}
 % anselmi2019pr
 % escriche2025
 
-\section{Discussion}\seccol{col-slate}
-
+\subsection{Conclusions}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \authorcontributions{}
