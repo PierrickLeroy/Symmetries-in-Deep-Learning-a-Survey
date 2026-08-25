@@ -2859,13 +2859,13 @@ For a layer $x\mapsto U\sigma(Vx)$ with pointwise nonlinearity $\sigma$,
     U\sigma(Vx)=UP^{\top}\sigma(PVx)
 \end{equation*}
 for any permutation matrix $P$: relabeling the hidden neurons i.e. permuting the rows of $V$ (with their biases) and the columns of $U$ accordingly, leaves $f_\theta$ unchanged.
-The same principle applies to filters in CNNs and to heads in multi-head attention.
+The same principle applies to filters in CNNs and to heads in multi-head attention~\citep{tran2025iclr}.
 \citet{hecht-nielsen1990anc} gave an early group-theoretic account: for an MLP with hidden widths $d_1,\dots,d_L$ the permutation group has order $\prod_{l=1}^{L}d_l!$.
 
 The symmetry also appears one level up.
 In Mixture-of-Experts \citep{shazeer2017}, a gating score $s$ with components $s_i(x)=w_i^{\top}x+b_i$ estimates the contribution of expert $\mathcal{E}_i:\mathbb{R}^d\to\mathcal{Y}$.
 The output is the weighted sum $\mathcal{D}(x)=\operatorname{Softmax}(s(x))^{\top}\mathcal{E}(x)$ is invariant to the simultaneous permutation of the $n$ experts and their gating rows.
-Combined with the translation symmetry of the softmax (see below), \citet{tran2025anips} prove that the resulting group $G(n)=\mathbb{R}^{d+1}\times S_n$ is \emph{complete} in the sense of \Cref{sec:hierarchy-param-space-symmetries}
+Combined with the translation symmetry of the softmax (see translation symmetry below), \citet{tran2025anips} prove that the resulting group $G(n)=\mathbb{R}^{d+1}\times S_n$ is \emph{complete} in the sense of \Cref{sec:hierarchy-param-space-symmetries} for the mixture level.
 
 \paragraph{Sign Flip}
 Odd activations, $\sigma(-z)=-\sigma(z)$ such as $\tanh$, admit a discrete flip symmetry,
@@ -3203,7 +3203,7 @@ Equivariance of the update map is defined as any other equivariant map \citep{ne
     U(g\cdot\theta)=g\cdot U(\theta)\qquad\forall g\in G,\ \theta\in\Theta.
 \end{equation}
 Optimizers have different invariance and equivariance properties.
-GD is equivariant to orthogonal reparameterizations $\theta\mapsto Q\theta$, $Q\in O(d)$; Newton's method to affine reparameterizations \citep{kristiadi2023anips}; natural gradient descent is infinitesimally invariant under any smooth invertible reparameterization \citep{amari1998nc,liang2019pticais,kristiadi2023anips,zhao2025}; Adam \citep{kingma2015} is invariant to positive diagonal rescalings of the gradients.
+GD is equivariant to orthogonal reparameterizations $\theta\mapsto Q\theta$, $Q\in O(d)$; Newton's method to affine reparameterizations \citep{kristiadi2023anips}; natural gradient descent is infinitesimally invariant under any smooth invertible reparameterization \citep{amari1998nc,liang2019pticais,kristiadi2023anips,zhao2025}; Adam \citep{kingma2015} is invariant to positive diagonal scalings of the gradients.
 This last property is \emph{scale-freeness}: the iterates $\{\theta_t\}_{t\geq0}$ are unchanged when every gradient is rescaled as $\nabla\mathcal{L}(\theta_t)\gets D\nabla\mathcal{L}(\theta_t)$ for a positive diagonal matrix $D$, and it turns out to separate variants of Adam \citep{zhuang2022tmlr}.
 AdamW postpones the weight-decay term $\lambda\theta_{t-1}$, adding it after the adaptive step instead of folding it into the gradient as Adam-$\ell_2$ does, and thereby does not treat the $L_2$ penalty like the task loss.
 \citet{zhuang2022tmlr} show that this preserves scale-freeness while Adam-$\ell_2$ loses it, and argue that scale-freeness carries optimization benefits (improving conditionning).

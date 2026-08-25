@@ -203,7 +203,7 @@
   abstract = {In this paper, we explore a process called neural teleportation, a mathematical consequence of applying quiver representation theory to neural networks. Neural teleportation ``teleports'' a network to a new position in the weight space and preserves its function. This phenomenon comes directly from the definitions of representation theory applied to neural networks and it turns out to be a very simple operation that has remarkable properties.},
   archiveprefix = {arXiv},
   langid = {english},
-  keywords = {/read,loss landscape,neural network,quiver/quiver representation},
+  keywords = {/read,loss landscape,neural network,quiver/quiver representation,survey/param-space/exploit-feature},
   annotation = {GSCC: 0000027 2026-02-16T13:30:39.305Z 0.11},
   file = {/home/pierrick/OneDrive/zotero-library/2021/Armenta/armenta2021b.pdf}
 }
@@ -220,7 +220,7 @@
   urldate = {2024-05-21},
   abstract = {Conventional wisdom in deep learning states that increasing depth improves expressiveness but complicates optimization. This paper suggests that, sometimes, increasing depth can speed up optimization. The effect of depth on optimization is decoupled from expressiveness by focusing on settings where additional layers amount to overparameterization -- linear neural networks, a well-studied model. Theoretical analysis, as well as experiments, show that here depth acts as a preconditioner which may accelerate convergence. Even on simple convex problems such as linear regression with \$\textbackslash ell\_p\$ loss, \$p{$>$}2\$, gradient descent can benefit from transitioning to a non-convex overparameterized objective, more than it would from some common acceleration schemes. We also prove that it is mathematically impossible to obtain the acceleration effect of overparametrization via gradients of any regularizer.},
   langid = {english},
-  keywords = {/read},
+  keywords = {/read,survey/param-space/exploit-feature},
   file = {/home/pierrick/OneDrive/zotero-library/2018/Arora/arora2018p3icml.pdf}
 }
 
@@ -2533,7 +2533,7 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   urldate = {2025-12-09},
   abstract = {The dynamics of Deep Linear Networks (DLNs) is dramatically affected by the variance \${$\sigma$}\textasciicircum 2\$ of the parameters at initialization \$\texttheta\_0\$. For DLNs of width \$w\$, we show a phase transition w.r.t. the scaling \${$\gamma\$$} of the variance \${$\sigma$}\textasciicircum 2=w\textasciicircum\textbraceleft -{$\gamma$}\textbraceright\$ as \$w\textbackslash to\textbackslash infty\$: for large variance (\${$\gamma<$}1\$), \$\texttheta\_0\$ is very close to a global minimum but far from any saddle point, and for small variance (\${$\gamma>$}1\$), \$\texttheta\_0\$ is close to a saddle point and far from any global minimum. While the first case corresponds to the well-studied NTK regime, the second case is less understood. This motivates the study of the case \${$\gamma\backslash$}to +\textbackslash infty\$, where we conjecture a Saddle-to-Saddle dynamics: throughout training, gradient descent visits the neighborhoods of a sequence of saddles, each corresponding to linear maps of increasing rank, until reaching a sparse global minimum. We support this conjecture with a theorem for the dynamics between the first two saddles, as well as some numerical experiments.},
   archiveprefix = {arXiv},
-  keywords = {/read,escape,mean field regime,NTK,optimization,saddle to saddle,small initialization},
+  keywords = {/read,escape,mean field regime,NTK,optimization,saddle to saddle,small initialization,survey/param-space/exploit-feature},
   annotation = {GSCC: 0000100 2026-06-02T13:26:59.245Z 0.44},
   file = {/home/pierrick/OneDrive/zotero-library/2022/Jacot/jacot2022.pdf}
 }
@@ -3737,7 +3737,7 @@ TLDR: This paper proposes a differentiable policy search pipeline for data augme
   urldate = {2026-02-19},
   abstract = {Understanding the properties of the parameter space in feed-forward ReLU networks is critical for effectively analyzing and guiding training dynamics. After initialization, training under gradient flow decisively restricts the parameter space to an algebraic variety that emerges from the homogeneous nature of the ReLU activation function. In this study, we examine two key challenges associated with feed-forward ReLU networks built on general directed acyclic graph (DAG) architectures: the (dis)connectedness of the parameter space and the existence of singularities within it. We extend previous results by providing a thorough characterization of connectedness, highlighting the roles of bottleneck nodes and balance conditions associated with specific subsets of the network. Our findings clearly demonstrate that singularities are intricately connected to the topology of the underlying DAG and its induced sub-networks. We discuss the reachability of these singularities and establish a principled connection with differentiable pruning. We validate our theory with simple numerical experiments.},
   langid = {english},
-  keywords = {/read},
+  keywords = {/read,survey/param-space/exploit-feature},
   file = {/home/pierrick/OneDrive/zotero-library/2025/Nurisso/nurisso2025.pdf}
 }
 
@@ -4971,7 +4971,7 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   publisher = {Curran Associates, Inc.},
   urldate = {2024-05-12},
   abstract = {Pruning the parameters of deep neural networks has generated intense interest due to potential savings in time, memory and energy both during training and at test time. Recent works have identified, through an expensive sequence of training and pruning cycles, the existence of winning lottery tickets or sparse trainable subnetworks at initialization. This raises a foundational question: can we identify highly sparse trainable subnetworks at initialization, without ever training, or indeed without ever looking at the data? We provide an affirmative answer to this question through theory driven algorithm design. We first mathematically formulate and experimentally verify a conservation law that explains why existing gradient-based pruning algorithms at initialization suffer from layer-collapse, the premature pruning of an entire layer rendering a network untrainable. This theory also elucidates how layer-collapse can be entirely avoided, motivating a novel pruning algorithm Iterative Synaptic Flow Pruning (SynFlow). This algorithm can be interpreted as preserving the total flow of synaptic strengths through the network at initialization subject to a sparsity constraint. Notably, this algorithm makes no reference to the training data and consistently competes with or outperforms existing state-of-the-art pruning algorithms at initialization over a range of models (VGG and ResNet), datasets (CIFAR-10/100 and Tiny ImageNet), and sparsity constraints (up to 99.99 percent). Thus our data-agnostic pruning algorithm challenges the existing paradigm that, at initialization, data must be used to quantify which synapses are important.},
-  keywords = {/read,balancedness,conservation law,gradient descent,lottery ticket hypothesis,No DOI found,pruning},
+  keywords = {/read,balancedness,conservation law,gradient descent,lottery ticket hypothesis,No DOI found,pruning,survey/param-space/exploit-feature},
   file = {/home/pierrick/OneDrive/zotero-library/2020/Tanaka/tanaka2020anips 1.pdf;/home/pierrick/OneDrive/zotero-library/2020/Tanaka/tanaka2020anips.pdf}
 }
 
@@ -5075,6 +5075,19 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   abstract = {Linear Mode Connectivity (LMC) is a notable phenomenon in the loss landscapes of neural networks, wherein independently trained models have been observed to be connected---up to permutation symmetries---by linear paths in parameter space along which the loss remains consistently low. This observation challenges classical views of non-convex optimization and has implications for model ensembling, generalization, and our understanding of neural loss geometry. Inspired by recent studies on LMC in standard neural networks, we systematically investigate this phenomenon within Mixture-of-Experts (MoE) architectures---a class of models known for their scalability and computational efficiency, which combine traditional neural networks---referred to as experts---through a learnable gating mechanism. We begin by conducting a comprehensive analysis of both dense and sparse gating regimes, demonstrating that the symmetries inherent to MoE architectures are fully characterized by permutations acting on both the expert components and the gating function. Building on these foundational findings, we propose a matching algorithm that enables alignment between independently trained MoEs, thereby facilitating the discovery of LMC. Finally, we empirically validate the presence of LMC using our proposed algorithm across diverse MoE configurations---including dense, sparse, and shared-expert variants---under a wide range of model settings and datasets of varying scales and modalities. Our results confirm the existence of LMC in MoE architectures and offer fundamental insights into the functional landscape and optimization dynamics of deep learning models.},
   keywords = {/read,mixture-of-experts},
   file = {/home/pierrick/OneDrive/zotero-library/2025/Tran/tran2025anips.pdf}
+}
+
+@article{tran2025iclr,
+  title = {Equivariant {{Neural Functional Networks}} for {{Transformers}}},
+  author = {Tran, Viet-Hoang and Vo, Thieu and Nguyen, An and Tran, Tho-Huu and {Nguyen-Nhat}, Minh-Khoi and Tran, Thanh and Pham, Duy-Tung and Nguyen, Tan},
+  year = 2025,
+  journal = {International Conference on Learning Representations},
+  volume = {2025},
+  pages = {16270--16341},
+  urldate = {2026-08-25},
+  langid = {english},
+  keywords = {/read},
+  file = {/home/pierrick/OneDrive/zotero-library/2025/Tran/tran2025iclr.pdf}
 }
 
 @article{tricco2018aim,
@@ -6031,7 +6044,7 @@ TLDR: A standardized parameterization is developed in which all symmetries are r
   urldate = {2024-04-19},
   abstract = {Existing gradient-based optimization methods update parameters locally, in a direction that minimizes the loss function. We study a different approach, symmetry teleportation, that allows parameters to travel a large distance on the loss level set, in order to improve the convergence speed in subsequent steps. Teleportation exploits symmetries in the loss landscape of optimization problems. We derive loss-invariant group actions for test functions in optimization and multi-layer neural networks, and prove a necessary condition for teleportation to improve convergence rate. We also show that our algorithm is closely related to second order methods. Experimentally, we show that teleportation improves the convergence speed of gradient descent and AdaGrad for several optimization problems including test functions, multi-layer regressions, and MNIST classification.},
   archiveprefix = {arXiv},
-  keywords = {/read,application/training dynamics,gradient descent,loss invariant,loss landscape,math language/group action,math language/group theory,object of study/parameter space,symmetry,teleportation},
+  keywords = {/read,application/training dynamics,gradient descent,loss invariant,loss landscape,math language/group action,math language/group theory,object of study/parameter space,survey/param-space/exploit-feature,symmetry,teleportation},
   annotation = {GSCC: 0000045 2026-05-31T22:30:38.298Z 0.25 \\
 8 citations (Semantic Scholar/arXiv) [2024-04-22]},
   file = {/home/pierrick/OneDrive/zotero-library/2023/Zhao/zhao2023.pdf}
@@ -6061,7 +6074,7 @@ TLDR: It is shown that conserved quantities associated with linear symmetries ca
   year = 2024,
   abstract = {In many neural networks, different values of the parameters may result in the same loss value. Parameter space symmetries are loss-invariant transformations that change the model parameters. Teleportation applies such transformations to accelerate optimization. However, the exact mechanism behind this algorithm's success is not well understood. In this paper, we show that teleportation not only speeds up optimization in the short-term, but gives overall faster time to convergence. Additionally, teleporting to minima with different curvatures improves generalization, which suggests a connection between the curvature of the minimum and generalization ability. Finally, we show that integrating teleportation into a wide range of optimization algorithms and optimization-based meta-learning improves convergence. Our results showcase the versatility of teleportation and demonstrate the potential of incorporating symmetry in optimization.},
   langid = {english},
-  keywords = {/read,generalization,object of study/parameter space,optimization},
+  keywords = {/read,generalization,object of study/parameter space,optimization,survey/param-space/exploit-feature},
   annotation = {GSCC: 0000034 2026-05-31T22:32:35.511Z 0.27},
   file = {/home/pierrick/OneDrive/zotero-library/2024/Zhao/zhao2024.pdf}
 }
