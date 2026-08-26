@@ -2925,22 +2925,23 @@ Rotations also index dynamics: the saddle-to-saddle trajectory of deep linear ne
 Finally, an orthogonal symmetry can hold exactly, without regularization, for non-pointwise activations: the radial rescaling activation $\sigma(z)=f(\lVert z\rVert)z$ satisfies $\sigma(gz)=g\sigma(z)$, so $W_2g^{-1}\sigma(gW_1x)=W_2\sigma(W_1x)$ for all $g\in O(h)$ \citep{zhao2023a}.
 
 \paragraph{Overparametrization}
-A last family of symmetries appears when a group of neurons can be emulated by a smaller subset.
-The classical notion is \emph{minimality} \citep{sussmann1992nn,fukumizu1996nn,brea2019,simsek2021,grillo2026,gegenfurtner2026}: a network $f_\theta$ with $H$ hidden units is minimal if for any $g_\eta$ with $\tilde{H}<H$ hidden units there exists $x$ with $f_\theta(x)\neq g_\eta(x)$; \citet{fukumizu1996nn} showed that the Fisher information matrix is positive definite if and only if the network is minimal, tying overparametrization to degenerate local geometry.
+Symmetries appear when a group of neurons can be emulated by a smaller subset.
+The converse classical notion is \emph{minimality} \citep{sussmann1992nn,fukumizu1996nn,brea2019,simsek2021,grillo2026,gegenfurtner2026}: a network $f_\theta$ with $H$ hidden units is minimal if for any $g_\eta$ with $\tilde{H}<H$ hidden units there exists $x$ with $f_\theta(x)\neq g_\eta(x)$.
+\citet{fukumizu1996nn} showed that for sigmoidal activation the Fisher information matrix is positive definite if and only if the network is minimal, tying overparametrization to degenerate local geometry.
 At non-minimal parameters the fiber grows beyond the orbit of the general symmetry group.
 \citet{sareen2026} describe an overparametrization mechanism as a width-changing transformations: in linear networks the factorization symmetry extends to $(W_L,\dots,W_{l+1}M^{\dagger},MW_l,\dots,W_1)$ for a full-column-rank $M\in\mathbb{R}^{r\times d_l}$ with $r>d_l$.
-For general activations possible width-changing transformations are \emph{duplication} (post-activation splitting), where $M$ duplicates rows of the identity and $M^{\dagger}$ recombines them with coefficients summing to $1$, and \emph{0-type neurons}, groups of neurons implementing the zero function.
+For general activations, possible width-changing transformations are \emph{duplication} (post-activation splitting), where $M$ duplicates rows of the identity and $M^{\dagger}$ recombines them with coefficients summing to $1$, and \emph{0-type neurons}, groups of neurons implementing the zero function.
 Homogeneous activations additionally allow \emph{pre-activation splitting}.
-These are architectural symmetries in the sense of \Cref{sec:scope-param-space-symmetries}: expansion is always possible but merging is only defined on duplicated configurations, so they compose as a groupoid (\Cref{sec:extent-restriction}) rather than a group.
+These are architectural symmetries, forming a groupoid (\Cref{sec:extent-restriction}) rather than a group: expansion is always possible but merging is only defined on duplicated configurations.
+Non-minimality can also induces instance symmetries, applying in particular for symmetric states.
+When two neurons have identical incoming weights, as for permutation symmetric states, an $n_{k+1}$-dimensional additive group acts freely: the paired outgoing weights can be varied arbitrarily as long as their sums stay constant \citep{brea2019}.
+At a rescale-symmetric state ($\theta_v=0$ for a neuron $v$), additive groups of dimensions $n_{k+1}$ and $n_{k-1}$ separately act freely.
+After layer $2$ in a ReLU MLP, a unit $v$ with negative input parameter $\theta^+_v$ causes non-minimality since it doesn't contribute to the implemented function.
+The scaling $D\theta^+_v$ with $D$ a diagonal matrix whose diagonal is strictly positive, constitutes a symmetry.
 
-\begin{Remark}
-    Depth alone cannot cause overparametrization: generically, the function of an $L$-layer ReLU network cannot be realized by any $(L-1)$-layer network, so additional layers keep increasing expressivity \citep{grillo2026}.
-\end{Remark}
-
-\begin{Remark}[Symmetric states, minimality, and overparametrization]
-    Overparametrized configurations connect to the symmetric states of \Cref{sec:hierarchy-param-space-symmetries}.
-    At a permutation-symmetric state of layer $k$ i.e. when two neurons have identical incoming and outgoing weights, an $n_{k+1}$-dimensional additive group acts freely: the paired outgoing weights can be varied arbitrarily as long as their sums stay constant \citep{brea2019}.
-    Similarly, at a rescale-symmetric state ($\theta_v=0$ for a neuron $v$), additive groups of dimensions $n_{k+1}$ and $n_{k-1}$ act freely.
+\begin{Remark}[Overparametrization by width and depth]
+    Here, we discuss overparametrization by width.
+    Overparametrization by depth also exists, for example in linear networks, however depth alone cannot cause overparametrization for a generic architecture: \citet{grillo2026} show that the function of an $L$-layer ReLU network cannot be realized by any $(L-1)$-layer network, so additional layers keep increasing expressivity.
 \end{Remark}
 
 % placeholder for a listing of papers placing them in a double entry table (symmetry, component) 
