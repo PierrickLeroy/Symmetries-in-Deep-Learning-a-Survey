@@ -3507,8 +3507,62 @@ The invariant set $\mathcal{H}_G(c)=\{\theta:\tilde{B}\theta^2=c\}$ of \citet{nu
 Regularizing the rank of the Jacobian $J_G(\theta)=2\tilde{B}\operatorname{diag}(\theta)$ yields a differentiable pruning approach that empirically produces whole-neuron sparsification rather than the edge-level sparsity of an $\ell_1$ penalty.
 
 \subsection{Adjacent fields}\label{sec:adjacent-fields}
-% Weight-space learning/metanetworks and SLT/Neuroalgebraic geometry
+We close this section by mentioning adjacent fields which directly engage with parameter-space symmetries.
 
+\paragraph{Weight-space learning and Neural Functional Networks}
+\emph{Neural Functional Networks}\citep{zhou2023} (also called \emph{metanetworks}) process the parameter vector $\theta$ (or the gradient) of another network or an implicit neural representation encoding a signal \citep[INR,][]{sitzmann2020anips}.
+Since its input lives in $\Theta$, and two parameters related by a symmetry carry the same information: the parameter-space symmetry group is exactly the group a metanetwork should be invariant or equivariant to.
+Weight-space learning is in this sense geometric deep learning applied one level up.
+
+For an $L$-layer MLP the weight space splits into
+\begin{equation*}
+    \Theta=\mathcal{W}\oplus\mathcal{B}=\Big(\bigoplus_{l=1}^{L}\mathcal{W}_l\Big)\oplus\Big(\bigoplus_{l=1}^{L}\mathcal{B}_l\Big)=\Big(\bigoplus_{l=1}^{L}\mathbb{R}^{d_l\times d_{l-1}}\Big)\oplus\Big(\bigoplus_{l=1}^{L}\mathbb{R}^{d_l}\Big).
+\end{equation*}
+\citet{navon2023p4icml} analyze the constraints of affine $G$-equivariant maps on this decomposition and propose the \emph{DWS layer} $\Lambda:\Theta\to\Theta$ structured as
+\begin{equation*}
+    \Lambda=\begin{pmatrix}\Lambda_{\mathcal{W}\mathcal{W}} & \Lambda_{\mathcal{B}\mathcal{W}}\\[2pt] \Lambda_{\mathcal{W}\mathcal{B}} & \Lambda_{\mathcal{B}\mathcal{B}}\end{pmatrix}:\mathcal{W}\oplus\mathcal{B}\longrightarrow\mathcal{W}\oplus\mathcal{B},
+\end{equation*}
+each block ($\Lambda_{\mathcal{W}\mathcal{W}}$ etc) splits into maps $\mathcal{W}_i\to\mathcal{W}_j$, and every such elementary block follows set equivariance rule \citep{zaheer2018}.
+Stacking DWS layers with pointwise nonlinearities yields a network expressive enough to approximate the forward pass of the original model and (under regularity conditions) any function on the functional space $F_W\to \mathbb R$.
+Concurrently, \citet{zhou2023} propose a similar construction.
+Applications include predicting the class of an INR and domain adaptation.
+Graph metanetworks \citep{lim2024iclr,kofinas2024iclr} treat the problem as a GNN task and thus benefit from permutation equivariance by design. 
+\citet{kalogeropoulos2024} extend them to the rescaling and sign-flip symmetries.
+The technical difficulty lies in that the classical GNN message function $\operatorname{MSG}$ must now receives arguments that scale differently.
+Writing $h_V,h_E$ for the vertex and edge features of one message-passing round and $q_i:=q_l(i)$, $q_j:=q_{l-1}(j)$ for the rescalings of a neuron $i$ in layer $l$ and of a neighbour $j$ in layer $l-1$, the constraint reads:
+\begin{equation*}
+    q_i\operatorname{MSG}\big(h_V(i),h_V(j),h_E(i,j)\big)=\operatorname{MSG}\big(q_ih_V(i),\;q_jh_V(j),\;q_iq_j^{-1}h_E(i,j)\big).
+\end{equation*}
+For transformers, \citet{tran2025iclr} identify the symmetry group of multi-head attention with $h$ heads as
+\begin{equation*}
+    G:=S_h\times \operatorname{GL}(D_k,\mathbb{R})^{h}\times \operatorname{GL}(D_v,\mathbb{R})^{h},
+\end{equation*}
+under the assumption $D_k,D_v\le D$ that keys and values project to a lower dimension.
+They then propose Transformer-NFN equivariant under $G\times S_D\times S_{D_A}$, including permutation symmetries of the transformer outside attention ($D_A$ is the width of the downstream network) but leaving aside some symmetries.
+
+A converse move is also possible: by removing symmetries in the model, \citet{lim2024} finds improved weight-space learnability.
+Finally, \emph{hypernetworks} \citep{ha2017} are a conceptual opposite, mapping a code $z$ to the parameters $\theta=g(z)$ of a target network.
+Symmetry then bears on the codomain and hitting a fiber $\varphi^{-1}(f)$ becomes ambiguous.
+
+\paragraph{Algebro-Geometric Approaches}
+\emph{Singular learning theory} \citep[SLT,][]{watanabe2009} is a Bayesian framework leveraging algebraic geometry to extend statistical learning theory to \emph{singular} (i.e. non-identifiable) models as opposed to the \emph{regular} ones of classical statistics.
+Tools such as the \emph{Real Log Canonical Threshold} (RLCT) or learning coefficient $\lambda$ are used to quantify the effective dimension of a model.
+Insights on generalization are a main goal of SLT.
+\citet{lau2025p2icais} build on the RLCT to propose the \emph{local learning coefficient} (LLC), a complexity measure for trained networks.
+For $\theta^\star$ a minimum of $\mathcal{L}$ and $B(\theta^\star)$ a neighborhood small enough that $\mathcal{L}(\theta^\star)\le\mathcal{L}(\theta)$ for all $\theta\in B(\theta^\star)$,
+\begin{equation*}
+    V(\epsilon):=\operatorname{Vol}\big\{\theta\in B(\theta^\star)\ :\ \mathcal{L}(\theta)-\mathcal{L}(\theta^\star)<\epsilon\big\}
+\end{equation*}
+is the volume of the sublevel set at tolerance $\epsilon$.
+It scales (in simple cases) like $V(\epsilon)\propto\,\epsilon^{\lambda(\theta^\star)}$ as $\epsilon\to0$, and the rational exponent $\lambda(\theta^\star)$ is the LLC.
+It measures volume growth: the more degenerate the minimum, the more low-loss volume around it and the smaller the LLC.
+The LLC is invariant under any local diffeomorphism such as common continuous parameter-space symmetries.
+The authors further derive a tractable estimator.
+
+\emph{Neuroalgebraic geometry} \citep{marchetti2025a} is an emerging field studying the function spaces---or \emph{neuromanifolds} $\mathcal{M}=\varphi(\Theta)$---of \emph{algebraic} models such as polynomial neural networks (PNNs).
+The program laid out by \citet{marchetti2025a} translates deep learning questions into algebro-geometric terms: dimension for expressivity; singularities coinciding with subnetworks and attracting empirical risk minimizers for implicit bias.
+For example, the dimension of the closure of the neuromanifold is maximal (equal to the number of parameters) if and only if the model is finitely identifiable for homogeneous PNNs \citep{usevich2025}.
+While the polynomial setting is restrictive, it still approximates a broad class of functions, and represents an idealized yet analytically tractable middleground similarly to infinite-width regimes.
 
 \section{Discussion}\seccol{col-slate}
 
