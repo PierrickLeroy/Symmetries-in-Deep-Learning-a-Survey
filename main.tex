@@ -29,6 +29,11 @@
 \titleformat{\paragraph}[runin]{\fontsize{10}{10}\selectfont\bfseries}{}{0pt}{}[.]
 \titlespacing{\paragraph}{0pt}{12pt}{1em}
 \usepackage{rotating} % landscape (sideways) tables
+% The MDPI text block is offset to the right by \extralength (the margin column),
+% so sideways floats, which are centred on \textwidth, inherit that offset.
+% Shifting the reference point left by \extralength/2 re-centres them on the paper.
+\setlength{\rotFPtop}{0pt plus 1fil}
+\addtolength{\rotFPtop}{-\extralength}
 
 % --- Section color-coding (visual overview of section balance) -----------
 % Toggle: set to \seccolorsfalse to disable all section coloring in one line.
@@ -2733,13 +2738,15 @@ Relaxation is meant to smooth training while exactness can be restored at test t
 Symmetries acting on the parameters can be given related but non-equivalent definitions.
 Before describing the transformations and their consequences (\Cref{sec:descr-param-space-symmetries}), we organize these definitions along two axes, partly overlapping with the classification of \citet{zhao2025}.
 The first axis forms a hierarchy: each class of transformations contains the previous one.
-The second axis pertains to scope: what is allowed to enter the definition of a transformation, and on which objects (parameters, data, architecture) conditions may be imposed.
+The second axis depends on scope: what is allowed to enter the definition of a transformation, and on which objects (parameters, data, architecture) conditions may be imposed.
 
 Throughout this section, we fix an architecture with parameter space $\Theta\subseteq\mathbb{R}^n$ and denote by
 \begin{equation}\label{eq:implementation-map}
     \varphi:\Theta\to\mathcal{F}, \qquad \varphi(\theta)=f_\theta,
 \end{equation}
 the \emph{implementation} (or \emph{realization}) map sending parameters to the implemented function (cf.\ \Cref{ex:equivalence_observational}), and by $\mathcal{L}:\Theta\to\mathbb{R}$ the training objective.
+\Cref{tab:param-double-entry} references works discussing parameter-space symmetries and the components in which they appear.
+One deep-learning component can carry multiple symmetries, and the same symmetry can appear in different components.
 
 \subsubsection{Hierarchical Axis}\label{sec:hierarchy-param-space-symmetries}
 
@@ -2849,9 +2856,7 @@ We start by a describing the main parameter space symmetries in \Cref{sec:catalo
 This part focuses on understanding the symmetries themselves, while \Cref{sec:bug-or-feature} will discuss how to account for or leverage them.
 
 \subsubsection{Catalog}\label{sec:catalog-param-space-symmetries}
-We list the main parameter-space symmetries starting with discrete, then continuous ones, and finally report approaches that have a unifying flavor.
-A single architecture can carry multiple symmetries, and the same symmetry can appear in different architectures. 
-\Cref{tab:param-double-entry} provides a double-entry table of the main symmetries and the components they act on, with references to the literature.
+We list the main parameter-space symmetries starting with discrete, then continuous ones, and finally report approaches unifying multiple symmetries.
 
 \paragraph{Permutation}
 The permutation of units within a layer is a ubiquitous parameter-space symmetry.
