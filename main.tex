@@ -28,6 +28,7 @@
 % Display paragraph titles in bold, with body text on the same line (overrides the non-bold block default of mdpi.cls)
 \titleformat{\paragraph}[runin]{\fontsize{10}{10}\selectfont\bfseries}{}{0pt}{}[.]
 \titlespacing{\paragraph}{0pt}{12pt}{1em}
+\usepackage{rotating} % landscape (sideways) tables
 
 % --- Section color-coding (visual overview of section balance) -----------
 % Toggle: set to \seccolorsfalse to disable all section coloring in one line.
@@ -2944,10 +2945,63 @@ The scaling $D\theta^+_v$ with $D$ a diagonal matrix whose diagonal is strictly 
     Overparametrization by depth also exists, for example in linear networks, however depth alone cannot cause overparametrization for a generic architecture: \citet{grillo2026} show that the function of an $L$-layer ReLU network cannot be realized by any $(L-1)$-layer network, so additional layers keep increasing expressivity.
 \end{Remark}
 
-% placeholder for a listing of papers placing them in a double entry table (symmetry, component) 
-\begin{table}\label{tab:param-double-entry}
-    
-\end{table}
+\begin{sidewaystable}[p]
+    \centering
+    \scriptsize
+    \setlength{\tabcolsep}{2pt}
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabularx}{\textheight}{|>{\raggedright\arraybackslash\bfseries}p{2.0cm}|*{10}{>{\raggedright\arraybackslash}X|}}
+        \hline
+        \textbf{Component} & \textbf{Permutation} & \textbf{Rescaling} & \textbf{Sign flip} & \textbf{Scale} & \textbf{Translation} & \textbf{Orthogonal} & \textbf{$GL(n)$} & \textbf{Cross-\-architectural} & \textbf{Data-\-dependent} & \textbf{Instance / hidden} \\
+        \hline
+        Feedforward networks & \citep{hecht-nielsen1990anc,brea2019,tatro2020,entezari2022,ainsworth2023,jordan2023,navon2023p4icml,chen2024jsm,lim2024,nurisso2024a,kalogeropoulos2024,simsek2021,zhang2025p4icml,ziyin2025,godfrey2022,ziyin2024} & \citep{ziyin2024a,ziyin2025a,ziyin2025} & \citep{ziyin2025,ziyin2024} & \citep{ziyin2024a,ziyin2025a,ziyin2025} & \citep{ziyin2025} & \citep{ziyin2024a,ziyin2025a,ziyin2025,ziyin2024} &  & \citep{fukumizu1996nn} & \citep{zhao2023a} &  \\
+        \hline
+        Transformers & \citep{zhang2025p4icml,tran2025iclr} &  &  &  &  & \citep{zhang2025p4icml,kobayashi2024anips} & \citep{henry2025,kobayashi2024anips} &  &  &  \\
+        \hline
+        Multi-head attention & \citep{tran2025iclr} &  &  &  &  & \citep{zhang2025p4icml} (per head) & \citep{tran2025iclr} &  &  &  \\
+        \hline
+        Self-attention &  & \citep{zhang2025p4icml} &  &  &  & \citep{zhang2025p4icml,kobayashi2024anips,ziyin2024a,ziyin2025} (double rotation) & \citep{kobayashi2024anips} &  &  &  \\
+        \hline
+        Lightning self-attention &  &  &  & \citep{henry2025} (within-layer) &  &  & \citep{henry2025} (also between-layer) &  &  &  \\
+        \hline
+        LoRA &  &  &  &  &  &  & \citep{yen2025iclr} &  &  &  \\
+        \hline
+        BatchNorm &  &  &  & \citep{badrinarayanan2015,huang2017,kunin2020,li2020anips,armenta2021b,tanaka2021,yi2022ptcuai,jordan2023,lyu2023,ziyin2024a} &  &  &  &  &  &  \\
+        \hline
+        BatchNorm variants &  &  &  & \citep{wu2018a} (GN, LN, IN), \citep{kunin2020} (LN, WN), \citep{lyu2023} (LN), \citep{ziyin2024a} (LN), \citep{li2020anips} (GN, WN), \citep{salimans2016anips} (WN), \citep{tanaka2021} (GN, LN) &  &  &  &  &  &  \\
+        \hline
+        Softmax / cross entropy &  &  &  &  & \citep{kunin2020,tanaka2021,tran2025anips,ziyin2025} &  &  &  &  &  \\
+        \hline
+        Linear networks &  &  &  & \citep{saxe2014piclr2} &  & \citep{jacot2022,saxe2014piclr2,li2018,kunin2019p3icml,ziyin2024a} & \citep{godfrey2022,saxe2014piclr2,arora2018p3icml,kunin2019p3icml,zhao2025a} & \citep{jacot2022} &  &  \\
+        \hline
+        ReLU networks & \citep{godfrey2022,phuong2019,bona-pellissier2023,freeman2017,pittorino2022jsm,lim2024,nurisso2024a,elisendagrigsby2025aim,grillo2026,gegenfurtner2026,rolnick2020p3icml} & \citep{rolnick2020p3icml,godfrey2022,phuong2019,bona-pellissier2023,neyshabur2015anips,dinh2017,freeman2017,huang2017,badrinarayanan2015,liang2019pticais,meng2019,tsuzuku2019,yi2019,kunin2020,armenta2021b,kwon2021p3icml,petzka2021anips,pittorino2022jsm,saul2023,zhao2023,kalogeropoulos2024,lim2024,nurisso2024a,zhao2024,elisendagrigsby2025aim,zhao2025a,nurisso2025,ziyin2025,grillo2026,gegenfurtner2026} &  &  &  &  &  &  &  & \citep{rolnick2020p3icml,grigsby2023p4icml,gegenfurtner2026} \\
+        \hline
+        Homogeneous activation & \citep{godfrey2022} (leaky ReLU), \citep{tanaka2021} & \citep{godfrey2022} (leaky ReLU), \citep{kunin2020,saul2023,zhao2023,zhao2024,kalogeropoulos2024,nurisso2025}, \citep{usevich2025} ($\sigma(\alpha x)=\alpha^{r}\sigma(x)$) &  &  &  &  &  &  &  &  \\
+        \hline
+        Polynomial activation & \citep{godfrey2022,usevich2025} & \citep{godfrey2022,usevich2025} &  & \citep{henry2025} &  &  & \citep{henry2025} &  &  &  \\
+        \hline
+        Tanh, odd activation & \citep{fefferman1993anips} &  & \citep{fefferman1993anips,kalogeropoulos2024} &  &  &  &  &  &  &  \\
+        \hline
+        Radial activation & \citep{godfrey2022} &  & \citep{godfrey2022} (diagonal with $\pm1$ entries) &  &  & \citep{zhao2023a} &  &  &  &  \\
+        \hline
+        Mixture-of-experts & \citep{tran2025anips} (experts) &  &  &  & \citep{tran2025anips} (gating params) &  &  &  &  &  \\
+        \hline
+        Quiver NN & \citep{armenta2021a} & \citep{armenta2021a}, \citep{saul2023} (DAG), \citep{nurisso2025} (DAG) &  & \citep{armenta2021a} &  &  &  & \citep{armenta2021a} &  &  \\
+        \hline
+        Word embedding &  &  &  &  &  & \citep{bamler2018p3icml,tanaka2021} &  &  &  &  \\
+        \hline
+        Over\-para\-metri\-zation by width &  &  &  &  & \citep{brea2019,simsek2021} &  &  & \citep{fukumizu1996nn,jacot2022,simsek2021,sareen2026} &  &  \\
+        \hline
+        CNN filters & \citep{godfrey2022,entezari2022,pittorino2022jsm,ainsworth2023,jordan2023,chen2024jsm} & \citep{pittorino2022jsm} &  &  &  &  &  &  &  &  \\
+        \hline
+        Classification error (argmax) &  &  &  & \citep{pittorino2022jsm} & \citep{pittorino2022jsm} &  &  &  &  &  \\
+        \hline
+        Optimizers & \citep{yang2025} & \citep{neyshabur2015anips,meng2019,huang2017} &  & \citep{zhuang2022tmlr,badrinarayanan2015,kingma2015,yi2022ptcuai} &  & \citep{bamler2018p3icml} & \citep{amari1998nc,zhao2023,zhao2024,yen2025iclr,kristiadi2023anips} &  &  &  \\
+        \hline
+    \end{tabularx}
+    \caption{Double-entry table of parameter-space symmetries: architectural components and objects (rows) against the type of symmetry acting on them (columns).}
+    \label{tab:param-double-entry}
+\end{sidewaystable}
 
 \paragraph{Unifying Works}\label{sec:unifying-works-param-space-symmetries}
 Rather than treating the symmetries above as a list of unrelated case studies, several works view them as instances of a single formalism.
