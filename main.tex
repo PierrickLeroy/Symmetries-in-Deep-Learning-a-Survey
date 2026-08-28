@@ -120,28 +120,40 @@ We propose a few criterion to categorize occurrences of symmetries in a deep lea
 
 \begin{table}[ht]
     \centering
-    \begin{tabularx}{\textwidth}{|c|c|c|c|X|}
+    \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{1.9cm}|>{\raggedright\arraybackslash}p{3.0cm}|>{\raggedright\arraybackslash}p{2.1cm}|>{\RaggedRight\arraybackslash}X|}
         \hline
-        \textbf{Main} & \textbf{Values} & \textbf{Secondary} & \textbf{Values} & \textbf{Description} \\
+        \textbf{Criterion} & \textbf{Definition} & \textbf{Values} & \textbf{Definition} \\
         \hline
-        Exactness & Exact       &          &          & \multirow{3}{=}{Whether the symmetry exactly holds or not.} \\
-                  & Approximate &          &          & \\ % Leave the last column empty here
-                  & Partial &          &          & \\ % Leave the last column empty here
+        \multirow{3}{=}{Exactness} & \multirow{3}{=}{How does the symmetry hold?} & Exact & The symmetry holds exactly, without any approximation or restriction in its application. \\
+        \cline{3-4}
+        & & Extent restricted & There is a restriction on the extent of the symmetry; a subset is singled out; it is local or partial. \\
+        \cline{3-4}
+        & & Approximate & There is a notion of tolerance involved in the validity of the symmetry. \\
         \hline
-        Methodology & Prescriptive & Encoding & Implicit & \multirow{3}{=}{What is the interaction with the symmetry. Prescriptive assumes prior knowledge.} \\
-                    &              &          & Explicit & \\ % Leave the last column empty here
-        \cline{2-4}
-                    & Descriptive &  &  & \\
+        \multirow{2}{=}{Purpose} & \multirow{2}{=}{How does the work interact with the symmetry?} & Descriptive & The work seeks to understand the effect, validity, existence or consequences of a symmetry. \\
+        \cline{3-4}
+        & & Prescriptive & The work provides guidelines to account for or use a symmetry. \\
         \hline
-        Object & Data & & & \multirow{4}{=}{What is the relevant scope to consider the symmetry. Data, model and framework are not mutually exclusive.} \\
-        \cline{2-4}
-               & Model & State & Fixed & \\
-               &       &       & Dynamic & \\
-        \cline{2-4}
-               & Framework      &       & &\\
+        \multirow{3}{=}{Object} & \multirow{3}{=}{What is the symmetry locus, where does the symmetry come from?} & Data & The symmetry acts on input data. \\
+        \cline{3-4}
+        & & Parameter & The symmetry acts in a parameter space. \\
+        \cline{3-4}
+        & & Other & The symmetry is found elsewhere. \\
+        \hline
+        \multirow{2}{=}{A-priori knowledge} & \multirow{2}{=}{Is the symmetry assumed to be known?} & Known & The work starts already knowing the symmetry. \\
+        \cline{3-4}
+        & & Unknown & The symmetry or its validity is not known, or not fully. \\
+        \hline
+        \multirow{2}{=}{State} & \multirow{2}{=}{Is there a process evolving?} & Dynamic & The symmetry, its validity or strength varies depending on a time-based process. \\
+        \cline{3-4}
+        & & Static & The symmetry always holds in the same way. \\
+        \hline
+        \multirow{2}{=}{Explicitness} & \multirow{2}{=}{Does the work use a standard symmetry-language to formalize its thesis?} & Implicit & There is a symmetry but it is not abstracted, not presented as such. \\
+        \cline{3-4}
+        & & Explicit & The symmetry is abstracted or manipulated, overtly discussed and referred to. \\
         \hline
     \end{tabularx}
-    \caption{\textbf{Main}: top-level criterion. \textbf{Secondary}: optional second level, depending on the value of the main criterion. The main criteria are independent; the secondary level is hierarchically dependent on the main level.}
+    \caption{Criteria proposed to categorize occurrences of symmetries in a deep learning context. Each criterion answers a defining question and takes one of a small set of values.}
     \label{table:taxonomy}
 \end{table}
 
