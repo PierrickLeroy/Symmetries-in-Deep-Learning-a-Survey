@@ -35,20 +35,6 @@
 \setlength{\rotFPtop}{0pt plus 1fil}
 \addtolength{\rotFPtop}{-\extralength}
 
-% --- Section color-coding (visual overview of section balance) -----------
-% Toggle: set to \seccolorsfalse to disable all section coloring in one line.
-\newif\ifseccolors\seccolorsfalse
-\definecolor{col-crimson}{RGB}{196,30,58}      % crimson
-\definecolor{col-orange}{RGB}{214,120,10}       % orange
-\definecolor{col-forestgreen}{RGB}{34,139,34}         % forest green
-\definecolor{col-blue}{RGB}{30,90,200}     % blue
-\definecolor{col-purple}{RGB}{140,40,170} % purple
-\definecolor{col-teal}{RGB}{0,150,160} % teal
-\definecolor{col-gold}{RGB}{170,110,0}   % gold/brown
-\definecolor{col-magenta}{RGB}{200,20,140}       % magenta
-\definecolor{col-slate}{RGB}{70,90,120} % slate
-\definecolor{col-gray}{RGB}{110,110,110} % gray
-\newcommand{\seccol}[1]{\ifseccolors\color{#1}\fi}
 % -------------------------------------------------------------------------
 
 \newcommand{\pnote}[1]{\textcolor{red}{PL: #1}}
@@ -80,13 +66,13 @@
 \setlength{\headheight}{20pt}
 \begin{document}
 
-\section{Introduction}\seccol{col-crimson}
+\section{Introduction}
 % ennes2025fcm: first paragraph of the introduction
 % makse2025: book on symmetries in living systems, chap 26 about deep learning
 
 \pnote{write at the end}
 
-\section{Materials and Methods}\seccol{col-orange}
+\section{Materials and Methods}
 % The different sections have some degree of overlap and the positioning of branches in the taxonomy is indicative of main tendencies but not capturing all the diversity or granularity (many works combine different technique, or could be classified in two different ways depending on what is put forward). It is a simplifying picture.
 
 \subsection{Methodology}
@@ -115,7 +101,7 @@ Compared to these works, we work in reverse and go broad, starting from the conc
 % A taxonomy where each cell contains a branch name and a few representative works
 % The linear structure of the paper is organized along the methodological dimension of the taxonomy
 
-We propose a few criterion to categorize occurrences of symmetries in a deep learning context.
+We propose a faceted taxonomy in \Cref{tab:taxonomy} to categorize occurrences of symmetries in works.
 
 
 \begin{sidewaystable}[p]
@@ -126,37 +112,38 @@ We propose a few criterion to categorize occurrences of symmetries in a deep lea
         \hline
         \textbf{Criterion} & \textbf{Definition} & \textbf{Values} & \textbf{Definition} & \textbf{Examples} \\
         \hline
-        \multirow{3}{=}{Exactness} & \multirow{3}{=}{How does the symmetry hold?} & Exact & The symmetry holds exactly, without any approximation or restriction in its application. & \\
+        \multirow{3}{=}{Exactness} & \multirow{3}{=}{How does the symmetry hold?} & Exact & The symmetry holds exactly, without any approximation or restriction in its application. & Geometric Deep Learning: design an equivariant layer; data augmentations such as vertical flip; parameter-space symmetries; conservation laws under GF. \\
         \cline{3-5}
-        & & Extent restricted & There is a restriction on the extent of the symmetry; a subset is singled out; it is local or partial. & \\
+        & & Extent restricted & There is a restriction on the extent of the symmetry; a subset is singled out; it is local or partial. & Symmetry-Breaking due to regularization; data augmentations such as cropping, blurring or rotation in MNIST; instance-level parameter space symmetries.\\
         \cline{3-5}
-        & & Approximate & There is a notion of tolerance involved in the validity of the symmetry. & \\
+        & & Approximate & There is a notion of tolerance involved in the validity of the symmetry. & Soft equivariance penalty; conservation laws in discrete time; quantification of the strength of a symmetry.\\
         \hline
-        \multirow{2}{=}{Purpose} & \multirow{2}{=}{How does the work interact with the symmetry?} & Descriptive & The work seeks to understand the effect, validity, existence or consequences of a symmetry. & \\
+        \multirow{2}{=}{Purpose} & \multirow{2}{=}{How does the work interact with the symmetry?} & Descriptive & The work seeks to understand the effect, validity, existence or consequences of a symmetry. & Understand the consequences of a parameter-space symmetry on the learning dynamics; symmetry discovery in data or models.\\
         \cline{3-5}
-        & & Prescriptive & The work provides guidelines to account for or use a symmetry. & \\
+        & & Prescriptive & The work provides guidelines to account for or use a symmetry. & Design an equivariant layer; extract a representative or align two parameters of the same architecture. \\
         \hline
-        \multirow{3}{=}{Object} & \multirow{3}{=}{What is the symmetry locus, where does the symmetry come from?} & Data & The symmetry acts on input data. & \\
+        \multirow{3}{=}{Object} & \multirow{3}{=}{What is the symmetry locus, where does the symmetry come from?} & Data & The symmetry acts on input data. & Symmetry discovery in data; geometric deep learning. \\
         \cline{3-5}
-        & & Parameter & The symmetry acts in a parameter space. & \\
+        & & Parameter & The symmetry acts in a parameter space. & Find all conservation laws of an architecture. \\
         \cline{3-5}
-        & & Other & The symmetry is found elsewhere. & \\
+        & & Other & The symmetry is found elsewhere. & Evaluate the impact of applying a permutation to the batch ordering. \\
         \hline
-        \multirow{2}{=}{A-priori knowledge} & \multirow{2}{=}{Is the symmetry assumed to be known?} & Known & The work starts already knowing the symmetry. & \\
+        \multirow{2}{=}{A-priori knowledge} & \multirow{2}{=}{Is the symmetry assumed to be known?} & Known & The work starts already knowing the symmetry. & Derive the consequences of a parameter-space symmetry; design an equivariant optimizer.\\
         \cline{3-5}
-        & & Unknown & The symmetry or its validity is not known, or not fully. & \\
+        & & Unknown & The symmetry or its validity is not known, or not fully. & Symmetry discovery; use RL to learn an automated data augmentation policy; measure an equivariance error; characterize the fiber of the implementation map. \\
         \hline
-        \multirow{2}{=}{State} & \multirow{2}{=}{Is there a process evolving?} & Dynamic & The symmetry, its validity or strength varies depending on a time-based process. & \\
+        \multirow{2}{=}{State} & \multirow{2}{=}{Is there a process evolving?} & Dynamic & The symmetry, its validity or strength varies depending on a time-based process. & Conservation laws; automated data augmentation; track the evolution of symmetric states along training.\\
         \cline{3-5}
-        & & Static & The symmetry always holds in the same way. & \\
+        & & Static & The symmetry always holds in the same way. & Standard data augmentation; quotienting a symmetry in parameter-space; design an equivariant layer.\\
         \hline
-        \multirow{2}{=}{Explicitness} & \multirow{2}{=}{Does the work use a standard symmetry-language to formalize its thesis?} & Implicit & There is a symmetry but it is not abstracted, not presented as such. & \\
+        \multirow{2}{=}{Explicitness} & \multirow{2}{=}{Does the work use a standard symmetry-language to formalize its thesis?} & Implicit & There is a symmetry but it is not abstracted, not presented as such. & Data augmentation; works not adopting a symmetry perspective (ex: \citep{kobayashi2024anips})\\
         \cline{3-5}
-        & & Explicit & The symmetry is abstracted or manipulated, overtly discussed and referred to. & \\
+        & & Explicit & The symmetry is abstracted or manipulated, overtly discussed and referred to. & Most works in this survey. \\
         \hline
     \end{tabularx}
+    \small
     \caption{Criteria proposed to categorize occurrences of symmetries in a deep learning context. Each criterion answers a defining question and takes one of a small set of values.}
-    \label{table:taxonomy}
+    \label{tab:taxonomy}
 \end{sidewaystable}
 
 % Description of the table criteria: approximate if it holds to first order but not strictly (\textit{e.g.} due to noise), incomplete for a restriction (\textit{e.g.} subset of the group
@@ -164,7 +151,7 @@ We propose a few criterion to categorize occurrences of symmetries in a deep lea
 
 
 
-\section{Background: Mathematical Foundations of Symmetry}\seccol{col-forestgreen}
+\section{Background: Mathematical Foundations of Symmetry}
 % Conservation laws ?
 % Core notions
 % \cite{borde2025,carlsson,chen2020,2023tg,bronstein2021}
@@ -1838,10 +1825,10 @@ cases it is measured by exactly the same orbit--stabilizer pair
 
 
 
-\section{Symmetry as a Design Principle}\seccol{col-blue}
+\section{Symmetry as a Design Principle}
 
 This section gathers the methods in which a symmetry is \emph{known in advance} and deliberately built into the learning system.
-This prescriptive stance (\Cref{table:taxonomy}) assumes prior knowledge of the group $G$ acting on the problem and treats it as an inductive bias to be enforced rather than a structure to be discovered.
+This prescriptive stance (\Cref{tab:taxonomy}) often assumes prior knowledge of the group $G$ acting on the problem and treats it as an inductive bias to be enforced.
 We distinguish three broad strategies, ordered by how tightly the symmetry is coupled to the model.
 At one extreme, \emph{equivariant architectures} encode the symmetry \emph{implicitly} in the hypothesis class, so that invariance or equivariance holds by construction for every parameter setting; geometric deep learning is the systematic development of this idea.
 At the other extreme, \emph{data augmentation} leaves the architecture untouched and instead enforces the symmetry \emph{explicitly} on the data, encouraging---but not guaranteeing---invariance through orbit-averaged training.
@@ -2235,10 +2222,10 @@ Not every permutation symmetry in a loss calls for special treatment.
 Passing from a triplet loss to the InfoNCE / multi-negative losses \citep{oord2018a} introduces a permutation symmetry over the negative samples, but the loss is manifestly symmetric in them (a plain sum over negatives) and hence requires no alignment or assignment step.
 \end{Remark}
 
-\section{Symmetry as an unknown: Symmetry Discovery}\seccol{col-purple}
+\section{Symmetry as an unknown: Symmetry Discovery}
 
 The previous section assumed the relevant symmetry was known and could be engineered into the model.
-Here we take the opposite stance, corresponding to the \emph{descriptive} branch of the taxonomy (\Cref{table:taxonomy}): the symmetry is treated as something to be inferred rather than imposed.
+Here we take the opposite stance, corresponding to the \emph{descriptive} branch of the taxonomy (\Cref{tab:taxonomy}): the symmetry is treated as something to be inferred rather than imposed.
 Two complementary problems fall under this heading, and it is useful to see them as conceptual opposites.
 \emph{Symmetry discovery} is \emph{additive}: it starts from few or no assumptions and accumulates evidence \emph{for} the presence of a symmetry, letting the model learn which group acts on the data.
 \emph{Approximate} (or soft) \emph{equivariance} is \emph{retractive}: it starts from an assumed symmetry and gathers evidence \emph{against} it, letting the model learn \emph{when} to deviate from the posited invariance.
@@ -2398,7 +2385,7 @@ Taken together, these measures range from single-neuron firing ratios to loss-fr
 
 
 
-\section{Incomplete symmetries}\label{sec:incomplete-symmetries}\seccol{col-teal}
+\section{Incomplete symmetries}\label{sec:incomplete-symmetries}
 % ha2017: hypernetworks in RNN break weight-sharing through time
 
 The previous section treated the symmetry as an object to discover; here we treat it as one that is \emph{imperfect}, not exact or ephemeral.
@@ -2736,7 +2723,7 @@ Relaxation is meant to smooth training while exactness can be restored at test t
 
 
 
-\section{Loss Landscape and Parameter-Space Symmetries}\seccol{col-gold}\label{sec:parameter-space-symmetries}
+\section{Loss Landscape and Parameter-Space Symmetries}\label{sec:parameter-space-symmetries}
 % zhao2025: indicate overlaps
 
 
@@ -3571,9 +3558,9 @@ The program laid out by \citet{marchetti2025a} translates deep learning question
 For example, the dimension of the closure of the neuromanifold is maximal (equal to the number of parameters) if and only if the model is finitely identifiable for homogeneous PNNs \citep{usevich2025}.
 While the polynomial setting is restrictive, it still approximates a broad class of functions, and represents an idealized yet analytically tractable middleground similarly to infinite-width regimes.
 
-\section{Discussion}\seccol{col-slate}
+\section{Discussion}
 
-\subsection{Extensions}\seccol{col-magenta}
+\subsection{Extensions}
 % Class-specific symmetries
 % wieser2020anips: similar to class pose
 % cohen2014 can be considered an early work that discusses the idea of separating in different subspaces the identity of an object from its ``factors of variations'' 
@@ -3617,7 +3604,7 @@ SGD & Stochastic Gradient Descent
 \appendixtitles{yes}
 \appendixstart
 \appendix
-\section[\appendixname~\thesection]{Group table}\seccol{col-gray}
+\section[\appendixname~\thesection]{Group table}
 
 % The group table: a table listing [group, nature, papers]
 \begin{table}[ht]
