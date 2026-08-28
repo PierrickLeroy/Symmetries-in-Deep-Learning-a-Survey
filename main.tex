@@ -148,13 +148,6 @@ We propose a few criterion to categorize occurrences of symmetries in a deep lea
 % Description of the table criteria: approximate if it holds to first order but not strictly (\textit{e.g.} due to noise), incomplete for a restriction (\textit{e.g.} subset of the group
 % Partial vs approximate terminology from \cite{petrache2023}
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.75\linewidth]{images/draft/taxonomy.png}
-    \caption{Classification tree based on the taxonomy from \Cref{table:taxonomy}}
-    \label{fig:taxonomy}
-\end{figure}
-
 
 
 \section{Background: Mathematical Foundations of Symmetry}\seccol{col-forestgreen}
@@ -2421,7 +2414,7 @@ Second, \emph{whether} the breaking can be intentional (a modelling choice) or u
 \Cref{table:symmetry-breaking} organizes the literature along the first axis, which we adopt as the structure of this subsection: \emph{functional} SB is a mismatch between the symmetry of the target $f$ and that of the hypothesis class; \emph{distributional} SB is non-uniformity of the data density along orbits; and \emph{parameter-space} SB concerns symmetries of the loss and of the training dynamics.
 
 To precise these notions, let us consider two works providing a contrast.
-The pointwise taxonomy of \citet{wang2023a} contrasts functional and distributional meanings.
+The pointwise categorization of \citet{wang2023a} contrasts functional and distributional meanings.
 For a point $x$ and a transformation $g$: writing $p$ for the data density, they call $g$ at $x$ \emph{correct} when $p(gx)>0$ and $f(gx)=gf(x)$ (the digit $0$ under a $180^\circ$ rotation), \emph{incorrect} when $p(gx)>0$ but $f(gx)\neq gf(x)$ (the digit $6$ sent to $9$), and \emph{extrinsic} when $p(gx)=0$, i.e.\ $g$ carries $x$ off the data manifold (a rotated $4$).
 Incorrect equivariance is a pointwise instance of functional breaking, whereas extrinsic equivariance is a localized occurence of distributional breaking.
 The functional meaning is itself composite.
