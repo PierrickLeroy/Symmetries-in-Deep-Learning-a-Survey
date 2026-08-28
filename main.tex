@@ -118,44 +118,46 @@ Compared to these works, we work in reverse and go broad, starting from the conc
 We propose a few criterion to categorize occurrences of symmetries in a deep learning context.
 
 
-\begin{table}[ht]
+\begin{sidewaystable}[p]
     \centering
-    \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{1.9cm}|>{\raggedright\arraybackslash}p{3.0cm}|>{\raggedright\arraybackslash}p{2.1cm}|>{\RaggedRight\arraybackslash}X|}
+    \small
+    \renewcommand{\arraystretch}{1.6}
+    \begin{tabularx}{\textheight}{|>{\raggedright\arraybackslash}p{2.4cm}|>{\raggedright\arraybackslash}p{4.6cm}|>{\raggedright\arraybackslash}p{2.6cm}|>{\RaggedRight\arraybackslash}X|>{\RaggedRight\arraybackslash}X|}
         \hline
-        \textbf{Criterion} & \textbf{Definition} & \textbf{Values} & \textbf{Definition} \\
+        \textbf{Criterion} & \textbf{Definition} & \textbf{Values} & \textbf{Definition} & \textbf{Examples} \\
         \hline
-        \multirow{3}{=}{Exactness} & \multirow{3}{=}{How does the symmetry hold?} & Exact & The symmetry holds exactly, without any approximation or restriction in its application. \\
-        \cline{3-4}
-        & & Extent restricted & There is a restriction on the extent of the symmetry; a subset is singled out; it is local or partial. \\
-        \cline{3-4}
-        & & Approximate & There is a notion of tolerance involved in the validity of the symmetry. \\
+        \multirow{3}{=}{Exactness} & \multirow{3}{=}{How does the symmetry hold?} & Exact & The symmetry holds exactly, without any approximation or restriction in its application. & \\
+        \cline{3-5}
+        & & Extent restricted & There is a restriction on the extent of the symmetry; a subset is singled out; it is local or partial. & \\
+        \cline{3-5}
+        & & Approximate & There is a notion of tolerance involved in the validity of the symmetry. & \\
         \hline
-        \multirow{2}{=}{Purpose} & \multirow{2}{=}{How does the work interact with the symmetry?} & Descriptive & The work seeks to understand the effect, validity, existence or consequences of a symmetry. \\
-        \cline{3-4}
-        & & Prescriptive & The work provides guidelines to account for or use a symmetry. \\
+        \multirow{2}{=}{Purpose} & \multirow{2}{=}{How does the work interact with the symmetry?} & Descriptive & The work seeks to understand the effect, validity, existence or consequences of a symmetry. & \\
+        \cline{3-5}
+        & & Prescriptive & The work provides guidelines to account for or use a symmetry. & \\
         \hline
-        \multirow{3}{=}{Object} & \multirow{3}{=}{What is the symmetry locus, where does the symmetry come from?} & Data & The symmetry acts on input data. \\
-        \cline{3-4}
-        & & Parameter & The symmetry acts in a parameter space. \\
-        \cline{3-4}
-        & & Other & The symmetry is found elsewhere. \\
+        \multirow{3}{=}{Object} & \multirow{3}{=}{What is the symmetry locus, where does the symmetry come from?} & Data & The symmetry acts on input data. & \\
+        \cline{3-5}
+        & & Parameter & The symmetry acts in a parameter space. & \\
+        \cline{3-5}
+        & & Other & The symmetry is found elsewhere. & \\
         \hline
-        \multirow{2}{=}{A-priori knowledge} & \multirow{2}{=}{Is the symmetry assumed to be known?} & Known & The work starts already knowing the symmetry. \\
-        \cline{3-4}
-        & & Unknown & The symmetry or its validity is not known, or not fully. \\
+        \multirow{2}{=}{A-priori knowledge} & \multirow{2}{=}{Is the symmetry assumed to be known?} & Known & The work starts already knowing the symmetry. & \\
+        \cline{3-5}
+        & & Unknown & The symmetry or its validity is not known, or not fully. & \\
         \hline
-        \multirow{2}{=}{State} & \multirow{2}{=}{Is there a process evolving?} & Dynamic & The symmetry, its validity or strength varies depending on a time-based process. \\
-        \cline{3-4}
-        & & Static & The symmetry always holds in the same way. \\
+        \multirow{2}{=}{State} & \multirow{2}{=}{Is there a process evolving?} & Dynamic & The symmetry, its validity or strength varies depending on a time-based process. & \\
+        \cline{3-5}
+        & & Static & The symmetry always holds in the same way. & \\
         \hline
-        \multirow{2}{=}{Explicitness} & \multirow{2}{=}{Does the work use a standard symmetry-language to formalize its thesis?} & Implicit & There is a symmetry but it is not abstracted, not presented as such. \\
-        \cline{3-4}
-        & & Explicit & The symmetry is abstracted or manipulated, overtly discussed and referred to. \\
+        \multirow{2}{=}{Explicitness} & \multirow{2}{=}{Does the work use a standard symmetry-language to formalize its thesis?} & Implicit & There is a symmetry but it is not abstracted, not presented as such. & \\
+        \cline{3-5}
+        & & Explicit & The symmetry is abstracted or manipulated, overtly discussed and referred to. & \\
         \hline
     \end{tabularx}
     \caption{Criteria proposed to categorize occurrences of symmetries in a deep learning context. Each criterion answers a defining question and takes one of a small set of values.}
     \label{table:taxonomy}
-\end{table}
+\end{sidewaystable}
 
 % Description of the table criteria: approximate if it holds to first order but not strictly (\textit{e.g.} due to noise), incomplete for a restriction (\textit{e.g.} subset of the group
 % Partial vs approximate terminology from \cite{petrache2023}
