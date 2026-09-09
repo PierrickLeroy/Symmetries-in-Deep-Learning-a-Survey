@@ -2226,8 +2226,9 @@ Not every permutation symmetry in a loss calls for special treatment.
 Passing from a triplet loss to the InfoNCE / multi-negative losses \citep{oord2018a} introduces a permutation symmetry over the negative samples, but the loss is manifestly symmetric in them (a plain sum over negatives) and hence requires no alignment or assignment step.
 \end{Remark}
 
-\section{Loss Landscape and Parameter-Space Symmetries}\label{sec:parameter-space-symmetries}
+\section{Loss Landscape and Parameter-Space: Symmetries Puzzles}\label{sec:parameter-space-symmetries}
 % zhao2025: indicate overlaps
+% In parameter-space, symmetries are mostly a source of confusion, either directly (identifiability) or indirectly (ex: consequences on learning dynamics)
 
 
 \subsection{Classifications}\label{sec:classifications-param-space-symmetries}
@@ -2253,7 +2254,7 @@ We order the invariance conditions from the strongest to the weakest.
 A parameter $\theta$ is in a symmetric state \citep{simsek2021,ziyin2025} if there exists a nontrivial group $G$ such that $g\cdot\theta=\theta$ for all $g\in G$.
 The prototypical example is permutation: $\theta$ is fixed by the transposition of neurons $i$ and $j$ exactly when the two neurons carry identical incoming and outgoing weights.
 
-\paragraph{(PS) Parameter-Space Symmetries}.
+\paragraph{(PS) Parameter-Space Symmetries}
 $G$ is a group of parameter-space symmetries if $f_{g\cdot\theta}=f_\theta$ for all $g\in G$ i.e.\ if
 \begin{equation*}
     g\cdot\theta \in \varphi^{-1}\big(\{\varphi(\theta)\}\big),
@@ -2262,7 +2263,7 @@ the set $\varphi^{-1}(\{\varphi(\theta)\})$ being called the \emph{fiber} of $\t
 This notion is sometimes referred to as \emph{observational equivalence}, \emph{non-identifiability} in statistics or \emph{reparametrization} invariance.
 When the action of $G$ is transitive on fibers, capturing all the redundancy of the parametrization, $G$ is called \emph{complete} and $\theta$ is identifiable up to $G$ \citep{zhao2025}.
 
-\paragraph{(LS) Loss-Level Symmetries}. $G$ is a loss symmetry if orbits remain within level sets of the loss,
+\paragraph{(LS) Loss-Level Symmetries} $G$ is a loss symmetry if orbits remain within level sets of the loss,
 \begin{equation*}
     g\cdot\theta \in \mathcal{L}^{-1}\big(\{\mathcal{L}(\theta)\}\big) \qquad \forall g \in G.
 \end{equation*} 
@@ -3061,7 +3062,7 @@ The program laid out by \citet{marchetti2025a} translates deep learning question
 For example, the dimension of the closure of the neuromanifold is maximal (equal to the number of parameters) if and only if the model is finitely identifiable for homogeneous PNNs \citep{usevich2025}.
 While the polynomial setting is restrictive, it still approximates a broad class of functions, and represents an idealized yet analytically tractable middleground similarly to infinite-width regimes.
 
-\section{Symmetry as an unknown: Symmetry Discovery}
+\section{Symmetry as an Unknown: Symmetry Discovery}
 
 The previous sections typically assumed the symmetries at play were known, here we take the opposite stance where the symmetry is to be inferred or its validity assessed rather than imposed or understood.
 
@@ -3218,7 +3219,7 @@ Taken together, these measures range from single-neuron firing ratios to loss-fr
 
 
 
-\section{Incomplete symmetries}\label{sec:incomplete-symmetries}
+\section{Incomplete Symmetries}\label{sec:incomplete-symmetries}
 % ha2017: hypernetworks in RNN break weight-sharing through time
 
 The previous section treated the symmetry as an object to discover; here we treat it as one that is \emph{imperfect}, not exact or ephemeral.
