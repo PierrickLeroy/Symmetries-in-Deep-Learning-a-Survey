@@ -2138,27 +2138,47 @@ Here however, the two encoders cannot share weights and the symmetry is only pre
 CLIP also uses comparatively little data augmentation, presumably because the image/text modality gap already supplies ample view diversity.
 Multimodal joint-embeddings highlight the question of a representational hierarchy: \citet{desai2023p4icml} replace the Euclidean embedding space with a hyperbolic one paired with an entailment loss, so that the difference in level of detail between an image and the text describing is represented geometrically.
 
-\subsubsection{Loss symmetries}\label{sec:loss-function-symmetries}
+\subsubsection{Criterion Symmetries}\label{sec:criterion-symmetries}
 
 The training objective is subject to symmetries.
-Write $L:\mathcal{Y}\times\mathcal{Y}\to\mathbb{R}$ for a loss comparing a prediction $\hat y$ to a target $y$.
-We say $L$ is \emph{invariant} under a group $G$ acting on $\mathcal{Y}$ when it depends on the target only through its orbit,
+Write $\ell:\mathcal{Y}\times\mathcal{Y}\to\mathbb{R}$ for a loss criterion comparing a prediction $\hat y$ to a target $y$.
+We say $\ell$ is \emph{invariant} under a group $G$ acting on $\mathcal{Y}$ when it depends only on the target or prediction orbit,
 $$
-L(\hat y,\, y) = L(\hat y,\, g\cdot y) \qquad \forall g\in G.
+\ell(\hat y,\, y) = \ell(\hat y,\, g\cdot y) \quad \text{ or } \quad \ell(\hat y,\, y) = \ell(g \hat y,\, \cdot y)
 $$
-\citet{kaba2025anips} formalize this as an \emph{invariant loss function}, additionally requiring symmetry between the two arguments,
+for all $g\in G$.
+\citet{kaba2025anips} additionally require symmetry between the two arguments and calls \emph{invariant loss function} a loss criterion satisfying
 $$
-L(g\cdot\hat y,\, y) = L(\hat y,\, g\cdot y) = L(\hat y,\, y) \qquad \forall g\in G.
+\ell(g\cdot\hat y,\, y) = \ell(\hat y,\, g\cdot y) = \ell(\hat y,\, y) \qquad \forall g\in G.
 $$
+A typical example is when $y$ is a vector which has ranges of indices representing elements of a set.
+Concretely assume $y\in \mathbb R^{2n}$ is composed of two objects identical up to properties we want to predict; $[y_1, \dots, y_n]^T$ represents the properties of the first object (such as two spatial positions for $n=3$) and $[y_{n+1}, \dots, y_{2n}]^T$ those of the second.
+Then, a desideratum for $\ell$ would be to be invariant under an action of $\mathbb Z_2$ permuting the two objects: $[gy]_i=y_{i+n \mod n}$.
+Subtler cases exist as shown in the next examples.
 
-The definition is relative to a group, as we illustrate with the mean-squared error.
-$L(\hat y,y)=\|\hat y-y\|_2^2$ is \emph{not} invariant under a translation $y\mapsto y+t$, since $\|\hat y-(y+t)\|_2^2\neq\|\hat y-y\|_2^2$ in general.
-It does, however, carry a \emph{prediction-dependent} orthogonal symmetry: for $O\in O(d)$ and the action $g\cdot y:=O(y-\hat y)+\hat y$,
-$$
-\|g\cdot y-\hat y\|_2^2 = \|O(y-\hat y)\|_2^2 = \|y-\hat y\|_2^2,
-$$
-so MSE is an invariant loss for this particular (being $\hat y$-dependent) action.
-This has concrete implications: when the loss is not invariant but the task is, several targets $\{g\cdot y:g\in G\}$ are equally valid, and training against a fixed representative can be harmful.
+\begin{Example}[Dependent group action]
+    The MSE criterion $\ell(\hat y,y)=\|\hat y-y\|_2^2$ is \emph{not} invariant under a translation $y\mapsto y+t$, since $\|\hat y-(y+t)\|_2^2\neq\|\hat y-y\|_2^2$ in general.
+    However it carries a \emph{prediction-dependent} orthogonal symmetry: for $O\in O(d)$ and the action $g\cdot y:=O(y-\hat y)+\hat y$,
+    $$
+    \|g\cdot y-\hat y\|_2^2 = \|O(y-\hat y)\|_2^2 = \|y-\hat y\|_2^2,
+    $$
+    so MSE is an invariant loss for this particular (being $\hat y$-dependent) action.
+    Analogously, a ground-truth-dependent action can be defined on the target.
+\end{Example}
+
+\begin{Example}[False-class symmetry]\label{ex:false-class-symmetries}
+    Due to the criterion being blind to part of the prediction, a symmetry arises in cross-entropy $\operatorname{CE}(\hat y, y)=-\sum_i y_i\log\hat y_i$.
+    When labels are pure i.e. $y=e_c$ for true class $c$, one has $\operatorname{CE}(\hat y,e_c)=-\log \hat y_c$, which depends on $\hat y$ only through its $c$-th coordinate.
+    Hence
+    \begin{equation*}
+        \operatorname{CE}(P\hat y,\, y)=\operatorname{CE}(\hat y,\, y),
+    \end{equation*}
+    for any permutation matrix $P$ with $P_{c} = e_c^{\top}$.
+    Note that here $\hat y$ and $y$ do not play the same role.
+\end{Example}
+
+When the loss is not invariant but the task is, several targets $\{g\cdot y:g\in G\}$ are equally valid, and training against a fixed representative can be harmful.
+The following works address this problem.
 
 \paragraph{Orbit and quotient losses}
 A sensible approach is to evaluate the loss on the quotient $\mathcal{Y}/G$ by minimizing over the group, the canonical form being the \emph{orbit loss}
@@ -2267,7 +2287,7 @@ When the action of $G$ is transitive on fibers, capturing all the redundancy of 
 \begin{equation*}
     g\cdot\theta \in \mathcal{L}^{-1}\big(\{\mathcal{L}(\theta)\}\big) \qquad \forall g \in G.
 \end{equation*} 
-Regularization and false-class invariance are two ways in which loss-level symmetries can exceed parameter-space symmetries, and the \emph{Q-symmetries} of \citet{ziyin2024a} formalize this notion.
+Regularization and criterion symmetries (\Cref{sec:criterion-symmetries}) are two ways in which loss-level symmetries can exceed parameter-space symmetries, and the \emph{Q-symmetries} of \citet{ziyin2024a} formalize this notion.
 
 The three conditions form a chain of implications for $g$,
 \begin{equation}\label{eq:param-symmetry-hierarchy}
@@ -2284,21 +2304,12 @@ Neither implication reverses.
     Then, degrading the model by gradient ascent until the loss climbs back to $\mathcal{L}(\theta)$ produces $\theta''$ with $\mathcal{L}(\theta'')=\mathcal{L}(\theta)$ but $f_{\theta''}\neq f_\theta$.
 \end{Example}
 
-\begin{Example}[Loss-level symmetry by false-class symmetry]\label{ex:false-class-symmetries}
-Even when $\mathcal{L}$ factors through $\varphi$, a loss-level symmetry can arise, for instance if the per-sample loss is blind to part of the prediction.
-With cross-entropy $\operatorname{CE}(\hat y, y)=-\sum_i y_i\log\hat y_i$ with pure labels $y=e_c$, one has $\operatorname{CE}(\hat y,e_c)=-\log \hat y_c$, which depends on $\hat y$ only through its $c$-th coordinate.
-Hence
-\begin{equation*}
-    \operatorname{CE}(P\hat y,\, y)=\operatorname{CE}(\hat y,\, y),
-\end{equation*}
-for any permutation matrix $P$ with $P_{c} = e_c^{\top}$.
-Two parameters whose predictions differ by such rearrangements are therefore loss-equivalent without being functionally equivalent.
-% Note the difference with the loss-function symmetries of \Cref{sec:loss-function-symmetries}: there the invariance is with respect to an action on the ground truth $y$, whereas here the action is on the prediction.
-\end{Example}
-
-\begin{Remark}[False-class asymmetry discriminates models]
-    The cross-entropy with pure labels is invariant to false-class distributions, left unconstrained at each training step, these distributions turn out to be idiosyncratic to each trained model: false-class behavior can discriminate between models.
+\begin{Remark}[False-class symmetry]
+    Even when $\mathcal{L}$ factors through $\varphi$, a loss-level symmetry can arise as the cross-entropy case of \Cref{ex:false-class-symmetries}.
+    Assuming an overparametrized setup where the model has enough flexibility to change per-example false-class values while fixing the true class probability $\hat y_c$, multiple parameters, whose predictions differ by such rearrangements, are therefore loss-equivalent without being functionally equivalent.
+    Interestingly, these false-class logits---left unconstrained during training---turn out to be idiosyncratic and can help to discriminate models.
     It has been used in the predictive churn of \citet{zhuang2022pmls}, the fraction of test points on which two models disagree to measure model instability across retrainings (\Cref{sec:data-ordering}); and \citet{godinot2024} used this principle as a fingerprinting technique.
+    Our hypothesis is that the lack of objectivisation of false-classes makes the influence of initialization perceptible even after training.
 \end{Remark}
 
 \subsubsection{Scope Axis}\label{sec:scope-param-space-symmetries}
