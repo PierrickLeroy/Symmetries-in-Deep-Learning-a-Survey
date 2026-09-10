@@ -3247,12 +3247,13 @@ Two sets of questions organize the material.
 The firsts---\emph{why} and \emph{when} a symmetry breaks---are the subject of symmetry breaking (\Cref{sec:symmetry-breaking-dl}).
 The remaining two subsections ask \emph{how} the symmetry is weakened: \Cref{sec:extent-restriction} restricts its extent while \Cref{sec:soft-equivariance} relaxes its exactness.
 
-These last two relaxations, can be unified through the \emph{$\epsilon$-stabilizer} introduced by \citet{petrache2023} of a map $f$. Writing
-$$\operatorname{ee}\colon\mathcal{F}\times G\to[0,+\infty),\qquad \operatorname{ee}(f,g)=\big\|\rho_Y(g)^{-1}f(\rho_X(g)\,\cdot)-f\big\|_\infty$$
-for the equivariance error of $f$ under a single $g$, the $\epsilon$-stabilizer at tolerance $\epsilon>0$ gathers the transformations that preserve $f$ up to $\epsilon$,
+These last two relaxations, can be contrasted by a unifying perspective through the \emph{$\epsilon$-stabilizer} introduced by \citet{petrache2023} of a map $f$.
+Let $G$ be a candidate group of transformation and write the equivariance error of $f$ under transformation $g\in G$ as
+$$\operatorname{ee}\colon\mathcal{F}\times G\to[0,+\infty),\qquad \operatorname{ee}(f,g)=\big\|\rho_Y(g)^{-1}f(\rho_X(g)\,\cdot)-f\big\|_\infty.$$
+The $\epsilon$-stabilizer at tolerance $\epsilon>0$ gathers the transformations that preserve $f$ up to $\epsilon$,
 $$\operatorname{Stab}_\epsilon(f)=\{g\in G:\ \operatorname{ee}(f,g)\le\epsilon\},$$
 which can be analogously defined at the level of the hypothesis class $\mathcal{F}$ by $\operatorname{Stab}_\epsilon(\mathcal{F})=\cap_{f\in \mathcal{F}}\operatorname{Stab}_\epsilon(f)$.
-Partial and approximate equivariance are then separated by an algebraic criterion: the symmetry is \emph{approximate} when $\operatorname{Stab}_\epsilon(f)$ is a group (\Cref{sec:soft-equivariance}) and \emph{partial} when it is not (\Cref{sec:non-closed-subsets}), with strictly positive tolerance $\epsilon$ in both cases.
+Partial and approximate equivariance are then separated by an algebraic criterion: the symmetry is \emph{approximate} when $\operatorname{Stab}_\epsilon(f)$ is a subgroup of $G$ (\Cref{sec:soft-equivariance}) and \emph{partial} when it is not (\Cref{sec:non-closed-subsets}), with strictly positive tolerance $\epsilon$ in both cases.
 
 Incomplete symmetries are in this sense dual to symmetry discovery (\Cref{sec:sym-disc-from-data}): where discovery asks to what extent a transformation \emph{is} a symmetry, this section looks at how assumed symmetries \emph{fails}---a form of \emph{negative discovery}.
 These parts are further interconnected in that for partial equivariance the range $S\subseteq G$ on which the symmetry holds is itself to be found, while for approximate equivariance the transformations are fixed and the goal is to \emph{calibrate} how much deviation is tolerated.
@@ -3504,13 +3505,14 @@ Where the previous subsection restricted the \emph{extent} of a symmetry---which
 Indeed, a symmetry may hold only to first order or be blurred by noise, and an idealized invariance often drifts, for instance over the course of a simulation.
 This regime overlaps with symmetry discovery (\Cref{sec:sym-disc-from-data})---some works such as \citet{wang2024p4icml} use the relaxation of a group convolution as an indirect way to \emph{discover} which symmetry the data actually carries---and with data augmentation (\Cref{par:auto-da}), which can itself be read as a soft push towards equivariance.
 
-\subsubsection{Definitions of approximate symmetries}
-The canonical notion is quantitative. Following \citep{wang2022p3icml,sipiran202523scgpis,ali2026}, a map $f$ is \emph{$\epsilon$-approximately equivariant} if
+\subsubsection{Definitions}
+Following \citep{wang2022p3icml,sipiran202523scgpis,ali2026} the primary definition of a map $f$ being \emph{$\epsilon$-approximately equivariant} to $G$ is when
 \begin{equation}\label{eq:equiv-error-approximate}
     \sup_{g\in G,\,x\in \mathcal{X}} d_Y\big(f(\rho_X(g)\,x),\ \rho_Y(g)\,f(x)\big)\le \epsilon,
 \end{equation}
-with $d_Y$ a distance on $Y$ and strict equivariance recovered at $\epsilon=0$; the supremum on the left is an equivariance error $\|f\|_{\mathrm{EE}}$ measuring the \emph{functional} symmetry breaking of $f$.
-Another formulation is given by \citet{petrache2023}: the approximate case is exactly when the $\epsilon$-stabilizer $\operatorname{Stab}_\epsilon(f)$ (\Cref{sec:non-closed-subsets}) consists of a \emph{group} despite $\epsilon>0$, which separates it from the \emph{partial} case where it is not.
+with $d_Y$ a distance on $Y$ and strict equivariance recovered at $\epsilon=0$.
+The supremum on the left is an equivariance error $\|f\|_{\mathrm{EE}}$ measuring the \emph{functional} symmetry breaking of $f$.
+Another formulation already mentioned in the introduction is given by \citet{petrache2023}: the approximate case is exactly when the $\epsilon$-stabilizer $\operatorname{Stab}_\epsilon(f)$ consists of a \emph{group} despite $\epsilon>0$, which separates it from the \emph{partial} case (\Cref{sec:non-closed-subsets}) where it is not.
 A probabilistic variant, the \emph{insensitivity} of \citet{vanderwilk2018anips}, bounds instead the probability of a large deviation, $\mathbb{P}_{g\sim p(g)}\big([f(x)-f(gx)]^2>L\big)<\epsilon$.
 A discrete definition is found in \citet{huang2023} for a fixed graph $\Gamma$: since real graphs have a trivial automorphism group $\operatorname{Aut}(\Gamma)$, they build an approximate symmetry group from a coarsening $\Gamma'$ chosen \textit{close} to $\Gamma$ (in graphon cut distance to be precise).
 The approximate symmetry group is then $\mathcal{G}_{\Gamma\to\Gamma'}=(S_1\times\cdots\times S_M)\rtimes\operatorname{Aut}(\Gamma')$, where each $S_i$ is a within cluster permutation group and $\operatorname{Aut}(\Gamma')$ captures the coarser global symmetry
