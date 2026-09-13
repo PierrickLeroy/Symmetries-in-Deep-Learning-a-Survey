@@ -2047,12 +2047,12 @@ Batch normalization (BN) introduces an additional dependency to data ordering be
 \citet{wu2023p4icml} show that standard GD, SS and RR then optimize \emph{three different objectives}.
 They study linear models with BN applied to the input, which take the form $x \mapsto W\Gamma\operatorname{BN}(x)$ with $\Gamma$ a diagonal matrix carrying BN's learnable scaling parameters; writing $m$ for the number of batches and $(\pi X)_i$ for the $i$-th batch under the ordering $\pi$, the objectives read
 $$
-L_{\mathrm{GD}} = L\big(W\Gamma\operatorname{BN}(X),\, Y\big), \qquad
-L_{\pi} = \sum_{i=1}^{m} L\big(W\Gamma\operatorname{BN}((\pi X)_i),\, (\pi Y)_i\big), \qquad
-L_{\mathrm{RR}} = \frac{1}{n!}\sum_{\pi\in S_n} L_{\pi},
+\mathcal{L}_{\mathrm{GD}} = L\big(W\Gamma\operatorname{BN}(X),\, Y\big), \qquad
+\mathcal{L}_{\pi} = \sum_{i=1}^{m} L\big(W\Gamma\operatorname{BN}((\pi X)_i),\, (\pi Y)_i\big), \qquad
+\mathcal{L}_{\mathrm{RR}} = \frac{1}{n!}\sum_{\pi\in S_n} \mathcal{L}_{\pi},
 $$
-where SS minimizes $L_\pi$ for a single fixed random $\pi$.
-Since $\pi$ affects the per-batch normalization statistics, $L_\pi \neq L_{\mathrm{GD}}$ in general.
+where SS minimizes $\mathcal{L}_\pi$ for a single fixed random $\pi$.
+Since $\pi$ affects the per-batch normalization statistics, $\mathcal{L}_\pi \neq \mathcal{L}_{\mathrm{GD}}$ in general.
 \citet{wu2023p4icml} further show that SS can suffer from training instabilities that RR avoids and, consistently, \citet{zhuang2022pmls} observe empirically that with BN, RR stabilizes training against data-ordering variability.
 
 \begin{Remark}[Non-invariance due to implementation.]
@@ -2098,7 +2098,7 @@ The training objective then carries a double symmetry potential:
 
 \paragraph{Avoiding representational collapse}
 \emph{Contrastive methods} keep branch-swap symmetry (shared weights) exactly and instead prevent collapse by adding negative pairs to the objective, balancing agreement between augmented views of the same $x$ against disagreement between different inputs.
-Early metric learning methods proposed a symmetric loss $L_\theta(x_1,x_2)$ trained on matched/mismatched pairs \citep{chopra20052icsccvprc,hadsell20062icsccvpr-v2c}; \citet{schroff20152iccvprc} extend it to a triplet loss $L_\theta(x,x_p,x_n)$ contrasting one positive against one negative, and \citet{oord2018a} generalize further to an arbitrary number of negatives with the InfoNCE loss.
+Early metric learning methods proposed a symmetric loss $\mathcal{L}_\theta(x_1,x_2)$ trained on matched/mismatched pairs \citep{chopra20052icsccvprc,hadsell20062icsccvpr-v2c}; \citet{schroff20152iccvprc} extend it to a triplet loss $\mathcal{L}_\theta(x,x_p,x_n)$ contrasting one positive against one negative, and \citet{oord2018a} generalize further to an arbitrary number of negatives with the InfoNCE loss.
 
 \citet{chen2020p3icml} (SimCLR) apply strong compositional data augmentation and a projection head $g$, still shared between branches, on top of which the loss is computed:
 \begin{equation}
@@ -2151,23 +2151,23 @@ Multimodal joint-embeddings highlight the question of a representational hierarc
 \subsubsection{Criterion Symmetries}\label{sec:criterion-symmetries}
 
 The training objective is subject to symmetries.
-Write $\ell:\mathcal{Y}\times\mathcal{Y}\to\mathbb{R}$ for a loss criterion comparing a prediction $\hat y$ to a target $y$.
-We say $\ell$ is \emph{invariant} under a group $G$ acting on $\mathcal{Y}$ when it depends only on the target or prediction orbit,
+Write $L:\mathcal{Y}\times\mathcal{Y}\to\mathbb{R}$ for a loss criterion comparing a prediction $\hat y$ to a target $y$.
+We say $L$ is \emph{invariant} under a group $G$ acting on $\mathcal{Y}$ when it depends only on the target or prediction orbit,
 $$
-\ell(\hat y,\, y) = \ell(\hat y,\, g\cdot y) \quad \text{ or } \quad \ell(\hat y,\, y) = \ell(g \hat y,\, \cdot y)
+L(\hat y,\, y) = L(\hat y,\, g\cdot y) \quad \text{ or } \quad L(\hat y,\, y) = L(g\cdot \hat y,\, y)
 $$
 for all $g\in G$.
 \citet{kaba2025anips} additionally require symmetry between the two arguments and calls \emph{invariant loss function} a loss criterion satisfying
 $$
-\ell(g\cdot\hat y,\, y) = \ell(\hat y,\, g\cdot y) = \ell(\hat y,\, y) \qquad \forall g\in G.
+L(g\cdot\hat y,\, y) = L(\hat y,\, g\cdot y) = L(\hat y,\, y) \qquad \forall g\in G.
 $$
 A typical example is when $y$ is a vector which has ranges of indices representing elements of a set.
 Concretely assume $y\in \mathbb R^{2n}$ is composed of two objects identical up to properties we want to predict; $[y_1, \dots, y_n]^T$ represents the properties of the first object (such as two spatial positions for $n=3$) and $[y_{n+1}, \dots, y_{2n}]^T$ those of the second.
-Then, a desideratum for $\ell$ would be to be invariant under an action of $\mathbb Z_2$ permuting the two objects: $[gy]_i=y_{i+n \mod n}$.
+Then, a desideratum for $L$ would be to be invariant under an action of $\mathbb Z_2$ permuting the two objects: $[gy]_i=y_{i+n \mod n}$.
 Subtler cases exist as shown in the next examples.
 
 \begin{Example}[Dependent group action]
-    The MSE criterion $\ell(\hat y,y)=\|\hat y-y\|_2^2$ is \emph{not} invariant under a translation $y\mapsto y+t$, since $\|\hat y-(y+t)\|_2^2\neq\|\hat y-y\|_2^2$ in general.
+    The MSE criterion $L(\hat y,y)=\|\hat y-y\|_2^2$ is \emph{not} invariant under a translation $y\mapsto y+t$, since $\|\hat y-(y+t)\|_2^2\neq\|\hat y-y\|_2^2$ in general.
     However it carries a \emph{prediction-dependent} orthogonal symmetry: for $O\in O(d)$ and the action $g\cdot y:=O(y-\hat y)+\hat y$,
     $$
     \|g\cdot y-\hat y\|_2^2 = \|O(y-\hat y)\|_2^2 = \|y-\hat y\|_2^2,
@@ -2195,10 +2195,10 @@ A sensible approach is to evaluate the loss on the quotient $\mathcal{Y}/G$ by m
 $$
 L_{\mathrm{orbit}}(\hat y,\, y) = \inf_{g\in G}\, L(\hat y,\, g\cdot y).
 $$
-Such a loss is invariant by construction but raises an optimization problem which can be non-trivial (see alignment problems below).
+Such a loss is invariant by construction but raises an optimization problem which can be non-trivial (see alignment \labelcref{sec:framework-criterion-alignment}).
 \citet{mehr20182iccvpr} instantiate this for an autoencoder on point clouds in $\mathbb{R}^3$ with $G=SO(3)$.
 Given an input $x$, they sample its orbit $(g_1 x,\dots,g_M x)$, encode each element, and max-pool across the orbit---an \emph{orbit-pooling} layer producing an (approximately) invariant latent vector $z(x)\approx z(g\cdot x)$---then decode back to input space.
-The optimization is conducted with a \emph{quotient loss} $$L(\theta, \eta)=\inf_{g\in G} d\big(g\cdot x,\,\operatorname{dec}_\eta(\operatorname{enc}_\theta(x))\big),$$ whose infimum is found either by discretizing $SO(3)$ or numerically.
+The optimization is conducted with a \emph{quotient loss} $$\mathcal{L}(\theta, \eta)=\inf_{g\in G} d\big(g\cdot x,\,\operatorname{dec}_\eta(\operatorname{enc}_\theta(x))\big),$$ whose infimum is found either by discretizing $SO(3)$ or numerically.
 
 \paragraph{Permutation losses for unordered outputs}
 A pervasive case is $G=S_n$ acting on an unordered collection of outputs, the \emph{label-ambiguity} or \emph{permutation problem}.
@@ -2229,17 +2229,17 @@ trading classification confidence against a bounding-box overlap term $L_{\mathr
 
 \paragraph{Set-distance losses for point clouds}
 Principled comparison of point clouds can be done via a permutation-invariant set distance.
-For 3D reconstruction, \citet{fan2017} predict a point cloud $\hat S_i = NN_\theta(I_i, r)$ from an image $I_i$ and noise $r$, and train with a set distance $d$ summed over examples, $L(\{\hat S_i\},\{S_i^{\mathrm{gt}}\})=\sum_i d(\hat S_i, S_i^{\mathrm{gt}})$, proposing two choices:
+For 3D reconstruction, \citet{fan2017} predict a point cloud $\hat S_i = NN_\theta(I_i, r)$ from an image $I_i$ and noise $r$, and train with a set distance $d$ summed over examples, $\mathcal{L}(\{\hat S_i\},\{S_i^{\mathrm{gt}}\})=\sum_i d(\hat S_i, S_i^{\mathrm{gt}})$, proposing two choices:
 $$
 d_{\mathrm{CD}}(S_1,S_2) = \sum_{x\in S_1}\min_{y\in S_2}\|x-y\|_2^2 + \sum_{y\in S_2}\min_{x\in S_1}\|x-y\|_2^2,
 $$
 the \emph{Chamfer distance}, invariant due to the nearest-neighbour correspondence, whereas the \emph{Earth Mover's distance} is a matching loss minimizing over bijections $\phi$:
 $$
-d_{\mathrm{EMD}}(S_1,S_2) = \min_{\phi:S_1\to S_2}\sum_{x\in S_1}\|x-\phi(x)\|_2 ,
+d_{\mathrm{EMD}}(S_1,S_2) = \min_{\phi:S_1\to S_2}\sum_{x\in S_1}\|x-\phi(x)\|_2 .
 $$
 \citet{lin2023} likewise adopt the Chamfer distance for \emph{point-cloud completion}, the task of inferring a full cloud from a partial one (as arises under occlusion or limited sensor resolution).
 
-\paragraph{Alignment}
+\paragraph{Alignment}\label{sec:framework-criterion-alignment}
 In the above examples, minimization problems are only a means to an end: the loss is evaluated on the best-aligned pair of outputs and targets.
 Recovering the minimizing group element can be a challenge in itself.
 \citet{alvarez-melis2018p2cemnlp} align point clouds living in \emph{distinct} metric spaces (e.g.\ word embeddings of two languages) via the Gromov--Wasserstein distance: from within-domain similarity matrices $C_{ij}=d(i,j)$ and $C'_{kl}=d'(k,l)$ they solve
@@ -2352,7 +2352,7 @@ Note that $\Omega(S,V)$ is not a group but a groupoid (cf.\ \Cref{sec:extent-res
 An \emph{architectural} symmetry is allowed to change the architecture: if the parameter space is $\mathbb{R}^n$, we admit actions $G\times\mathbb{R}^n\to\mathbb{R}^m$ with $m\neq n$ into a different architecture, \emph{mutatis mutandis}.
 Neuron splitting is the prototype: duplicating a neuron and sharing its outgoing weights maps a width-$r$ network to a functionally identical width-$(r+1)$ one---creating a symmetric state in the enlarged architecture.
 
-We propose in \Cref{fig:param-space-symmetries} a unifying schematic description of the two axes, as transformations leaving invariant: (1) the parameter $\theta$ itself, (2) the function $f_\theta$, (3) a loss depending on $\theta$ only through $f_\theta$, (4) a loss with regularizer $\ell(f_\theta,\theta)$, (5) the restriction $f_\theta|_S$ for a subset $S\subsetneq\mathcal{X}$ of the data, and (6) $f_\theta$ for $\theta$ in a subset $U\subsetneq\Theta$.
+We propose in \Cref{fig:param-space-symmetries} a schematic description of the two axes, as transformations leaving invariant: (1) the parameter $\theta$ itself, (2) the function $f_\theta$, (3) a loss depending on $\theta$ only through $f_\theta$, (4) a loss with regularizer $\mathcal{L}(\theta)=\mathcal{L}_F(f_\theta)+\mathcal{L}_R(\theta)$, (5) the restriction $f_\theta|_S$ for a subset $S\subsetneq\mathcal{X}$ of the data, and (6) $f_\theta$ for $\theta$ in a subset $U\subsetneq\Theta$.
 
 \paragraph{Extensions}\label{sec:param-catalog-extension}
 A transformation may act on more than the weights: the quiver representation formalism $(W,f)$ of \citet{armenta2021a} includes both weights and activation functions.
@@ -2444,7 +2444,7 @@ Low-rank adapters \citep[LoRA,][]{hu2021} inherit it as well: the update $\Delta
 \paragraph{Orthogonal and Rotation}
 Orthogonal symmetries often arise as the residue of a broken $GL$ symmetry: an $L_2$ penalty is not invariant under the full factorization group, but its subgroup preserving norms survives.
 \citet{kunin2019p3icml} work this out for linear autoencoders, with encoder $W_1\in\mathbb{R}^{k\times d}$ and decoder $W_2\in\mathbb{R}^{d\times k}$ trained on $\mathcal{L}(W_1,W_2)=\lVert X-W_2W_1X\rVert_F^2$: the unregularized problem has symmetry group $GL(k,\mathbb{R})$, but adding $\lambda(\lVert W_1\rVert_F^2+\lVert W_2\rVert_F^2)$ breaks the scaling part and reduces the group to $O(k)$; \citet{kobayashi2024anips} observe the same reduction $GL(d_k,\mathbb{R})\downarrow O(d_k)$ for weight-decayed attention layers.
-\citet{bamler2018p3icml} exhibit the phenomenon in dynamic word embeddings: a per-time-step objective satisfies $l(X_t;R_tZ_t)=l(X_t;Z_t)$ for rotations $R_t$ of the embeddings $Z_t$, but a coupling regularizer $\psi(Z)=\frac{\lambda}{2}\sum_{i=1}^{N}\sum_{t=1}^{T-1}\lVert z_{t+1,i}-z_{t,i}\rVert_2^2$ in the total loss $\mathcal{L}(Z)=\sum_{t=1}^{T}l(X_t;Z_t)+\psi(Z)$ breaks the independent tuple $(R_1,\dots,R_T)$ down to a single global rotation $R_1=\dots=R_T$.
+\citet{bamler2018p3icml} exhibit the phenomenon in dynamic word embeddings: a per-time-step objective satisfies $\ell(X_t,R_tZ_t)=\ell(X_t,Z_t)$ for rotations $R_t$ of the embeddings $Z_t$, but a coupling regularizer $\psi(Z)=\frac{\lambda}{2}\sum_{i=1}^{N}\sum_{t=1}^{T-1}\lVert z_{t+1,i}-z_{t,i}\rVert_2^2$ in the total loss $\mathcal{L}(Z)=\sum_{t=1}^{T}\ell(X_t,Z_t)+\psi(Z)$ breaks the independent tuple $(R_1,\dots,R_T)$ down to a single global rotation $R_1=\dots=R_T$.
 
 Rotations also index dynamics: the saddle-to-saddle trajectory of deep linear networks is characterized up to rotation \citep{jacot2022}.
 Finally, an orthogonal symmetry can hold exactly, without regularization, for non-pointwise activations: the radial rescaling activation $\sigma(z)=f(\lVert z\rVert)z$ satisfies $\sigma(gz)=g\sigma(z)$, so $W_2g^{-1}\sigma(gW_1x)=W_2\sigma(W_1x)$ for all $g\in O(h)$ \citep{zhao2023a}.
@@ -2540,9 +2540,9 @@ They report $6$ intertwiner groups (identity, sigmoid, ReLu, LeakyReLU, RBF and 
 
 At the level of the loss, \citet{kunin2020} frames differentiable symmetries under the form $\mathcal{L}(\theta)=\mathcal{L}(\psi(\theta,\alpha))$ for a one-parameter transformation $\psi$ with $\psi(\theta,0)=\theta$.
 Translation, scale, and rescale are recovered by taking $\psi$ additive, multiplicative, or paired multiplicative-inverse on a subset $\mathcal{A}\subset \Theta$.
-For $O$ with orthonormal columns and reflection $R=I-2OO^{\top}$, \citet{ziyin2024} define the \emph{O-mirror symmetry} if $l_0(w)=l_0(Rw)$ for all $w$.
+For $O$ with orthonormal columns and reflection $R=I-2OO^{\top}$, \citet{ziyin2024} define the \emph{O-mirror symmetry} if $\mathcal{L}(\theta)=\mathcal{L}(R\theta)$ for all $\theta\in\Theta$.
 Rotation, permutation, and sign flip are all O-mirror symmetries for a suitable choice of $O$.
-\citet{ziyin2024a} formalize a general notion (reused in \citep{ziyin2025a}) of \emph{Q-symmetry} as the case $\ell(\theta,z)=\ell(Q_\rho(\theta),z)$ for a one-parameter family $Q_\rho$ with $Q_0=\operatorname{id}$.
+\citet{ziyin2024a} formalize a general notion (reused in \citep{ziyin2025a}) of \emph{Q-symmetry} as the case $\ell(x,\theta)=\ell(x,Q_\rho(\theta))$ for a one-parameter family $Q_\rho$ with $Q_0=\operatorname{id}$.
 Within this class, the \emph{exponential symmetries} are those with a linear infinitesimal generator $Q_\rho=I+\rho A+o(\rho)$ for symmetric $A$, the group element is given by exponentiation to $e^{\lambda A}:=\lim_{\rho\to0}(I+\rho A+o(\rho))^{\lambda/\rho}$ and acts on $\theta$ by matrix-vector multiplication.
 Rescale, scale, and double rotation are all exponential symmetries for a suitable $A$.
 
@@ -2884,10 +2884,10 @@ We focus on two such measurements: barrier values in (linear) mode connectivity,
 
 \begin{Remark}
     Other measurements of $\theta$ face the same requirement.
-    Classical generalization bounds scale with the dimension of $\theta$; \emph{norm-based complexity measures} rely on a dimension-less notion of magnitude of $\theta$ which should therefore be consistent with respect to symmetries.
-    \citet{liang2019pticais} propose the--technically not a norm---\emph{Fisher-Rao norm}:
+    Classical generalization bounds scale with the dimension of $\theta$ but \emph{norm-based complexity measures} strive for a dimension-less notion of magnitude of $\theta$ which should also be consistent with symmetries.
+    \citet{liang2019pticais} propose the---technically not a norm---\emph{Fisher-Rao norm}:
     \begin{equation*}
-        \lVert\theta\rVert_{\mathrm{fr}}^2:=\langle\theta,I(\theta)\theta\rangle,\qquad I(\theta)=\mathbb E\big[\nabla_\theta \ell(f_\theta(X),Y)\otimes\nabla_\theta \ell(f_\theta(X),Y)\big],
+        \lVert\theta\rVert_{\mathrm{fr}}^2:=\langle\theta,I(\theta)\theta\rangle,\qquad I(\theta)=\mathbb E\big[\nabla_\theta L(f_\theta(X),Y)\otimes\nabla_\theta L(f_\theta(X),Y)\big],
     \end{equation*}
     which is invariant under the reparametrizations at stake contrary to others such as the $\ell_2$ norm.
     One can also measure a property of the minima manifold $\varphi^{-1}(f_\theta)\subset\Theta$ as a geometric object, for instance \citet{zhao2024} look at the curvature along orbits though the measure is not invariant under reparametrization.
@@ -3228,7 +3228,7 @@ Logit-based scores sharpen this input-output analysis: \citet{hutchinson2021p3ic
 Crucially they distinguish \emph{genuine} invariance from a weaker \emph{learned} invariance, in which a network (e.g.\ trained by data augmentation) reaches correct predictions on an orbit while maintaining \emph{separate} internal representations per transformation.
 Under an MNIST $\to$ Fashion-MNIST interpolation their predictive-distribution invariance $DI_f = \sum_{x\sim D}\sum_{g\sim G} D_{\mathrm{KL}}\big(f(x)\,\Vert\,f(gx)\big)$ finds that learned invariance deteriorates rapidly with the domain shift, a direct empirical argument for the robustness that strictly equivariant architectures guarantee by construction.
 In the same vein, an equivariance error $\frac{1}{n} \sum_{i=1}^{n} \operatorname{std}(L_{R_i} \Phi(f_i) - \Phi(L_{R_i} f_i)) / \operatorname{std}(\Phi(f_i))$ is proposed by \citet{cohen2018}, measuring an average normalized difference between pre and post application of group actions $L_{R_i}$ on feature maps $f_i$.
-\citet{shen2026} instead define an \emph{equivariance error} as the share of the total loss attributable to non-equivariance, $L_{\mathrm{equiv}}(\theta)/L(\theta)$, and observe that for augmentation-trained non-equivariant models it drops quickly to low values ($\approx 2\%$ of the loss).\newline
+\citet{shen2026} instead define an \emph{equivariance error} as the share of the total loss attributable to non-equivariance, $\mathcal{L}_{\mathrm{equiv}}(\theta)/\mathcal{L}(\theta)$, and observe that for augmentation-trained non-equivariant models it drops quickly to low values ($\approx 2\%$ of the loss).\newline
 A final family quantifies sensitivity infinitesimally.
 \citet{gruver2024} use the \emph{Lie derivative} $\mathcal{L}_X f$, where the vector field $X$ along which $f$ is differentiated is precisely an infinitesimal symmetry generator, yielding a hyperparameter-free local equivariance error that quantifies local sensitivity in the symmetry direction.
 The nullspace methods of \Cref{par:identification-anchor} used for identification can serve as quantification: \citet{moskalev2023} (LieGG) read off a \emph{symmetry variance} $\mathcal{V}(\mathcal{E}) = \sigma_{\min}(\mathcal{E})^2/|D|$ characterizing how close the network is to admitting an invariant direction in data space, and, against a known generator, a \emph{symmetry bias} measuring how faithfully that symmetry is respected.
@@ -3289,7 +3289,7 @@ It also supports \emph{pose-informed} breaking, achieved by supplying an extra t
         \hline
         Distributional & data density $p$ & $p(x)\neq p(\rho_X(g)x)$ & \citep{lawrence2026,rygiel2026,chen2020,urbano2026} \\
         \hline
-        Parameter-space & loss / dynamics & $l(\theta)=l(g\cdot\theta)$ or $g\theta=\theta$ breaks & \citep{kunin2020,tanaka2021,ziyin2025,arjevani2023} \\
+        Parameter-space & loss / symmetric state & $\mathcal{L}(\theta)=\mathcal{L}(g\cdot\theta)$ or $g\theta=\theta$ breaks & \citep{kunin2020,tanaka2021,ziyin2025,arjevani2023} \\
         \hline
     \end{tabularx}
     \caption{Three meanings of symmetry breaking according to which object carries less symmetry than the group of interest for the considered problem.}
@@ -3391,10 +3391,10 @@ A simple example: a quantity conserved under GF instead decays as $\langle\theta
 This can be seen from the Lagrangian $\mathcal{L}=T-V$ where $T=\frac{1}{2} m \dot q^2$ is the kinetic energy and $V$ the potential energy. Parameter-space symmetries leave $V$ invariant by definition, however $T$ is not necessarily invariant.
 They give the example of a scaling transformation where $\dot q^2$ transforms as $(1+s)\dot q^2$, thus the kinetic part is responsible for breaking the symmetry of $\mathcal{L}$, and alteration of the trajectory.
 This \emph{kinetic SB} is surprisingly shown to turn normalization layers into an implicit RMSProp-like adaptive optimizer.
-\citet{ziyin2025a} reach similar conclusions from an entropic perspective: with stochastic minibatches and finite steps the descent follows $\dot\theta=-\eta(\nabla L+\gamma\theta+\nabla S)$, whose \emph{entropic} term $S(\theta)=-\tfrac14\mathbb{E}_B\|\sqrt{\Lambda}\,\mathbb{E}_{x\in B}\nabla \ell(x,\theta)\|^2$ can be invariant only to orthogonal symmetries.
+\citet{ziyin2025a} reach similar conclusions from an entropic perspective: with stochastic minibatches and finite steps the descent follows $\dot\theta=-\eta(\nabla \mathcal{L}+\gamma\theta+\nabla S)$, whose \emph{entropic} term $S(\theta)=-\tfrac14\mathbb{E}_B\|\sqrt{\Lambda}\,\mathbb{E}_{x\in B}\nabla \ell(x,\theta)\|^2$ can be invariant only to orthogonal symmetries.
 Additionally, when the learning rate $\Lambda$ is matrix-valued (common optimizers like Adam) with $\Lambda\neq\alpha I$, only to \emph{discrete} ones: stochasticity systematically breaks continuous symmetries.
 The inverse of SB is also studied and was coined \emph{symmetry restoration}~\citep{ziyin2025}.
-\citet{ziyin2024} study mirror symmetries $l_0(w)=l_0(Rw)$ with $R=I-2OO^\top$ (subsuming rescaling, rotation and permutation symmetries), whose reflection surface $\{w:O^\top w=0\}$ is both gradient-stable ($O^\top\nabla_w l_0(w)=0$) and, under enough weight decay or a large enough learning rate, attractive, so training can move \emph{toward} more symmetric parameters.
+\citet{ziyin2024} study mirror symmetries $\mathcal{L}(\theta)=\mathcal{L}(R\theta)$ with $R=I-2OO^\top$ (subsuming rescaling, rotation and permutation symmetries), whose reflection surface $\{\theta:O^\top \theta=0\}$ is both gradient-stable ($O^\top\nabla_\theta \mathcal{L}(\theta)=0$) and, under enough weight decay or a large enough learning rate, attractive, so training can move \emph{toward} more symmetric parameters.
 \citet{ziyin2025} synthesize the two directions: a $G$-symmetric state is the fixed set of the projector $P_G=\frac{1}{|G|}\sum_g\rho_\Theta(g)$, and a \emph{symmetry-breaking distance} $\Delta^G=\|\theta-P_G\theta\|_2^2$ tracks how learning alternates between symmetry-breaking \citep{ziyin2025a} and symmetry-restoration \citep{ziyin2024} phases across layers and iterations.
 For example, a symmetric state for the permutation symmetry occurs when two neurons $i$ and $j$ are isomorphic in the computational graph and have exactly the same input and output weights--being virtually indistinguishable.
 $\Delta^G$, specifically evaluated for the pair $(i,j)$ simply yields $\| \theta_i - \theta_j \|_2^2$.\
@@ -3402,7 +3402,7 @@ The distance $\Delta^G$, in practice used with a threshold, unveils a non-trivia
 
 \paragraph{Designed Symmetry Breaking in Parameter Space}
 Since symmetries can slow optimization, cap effective capacity \citep{ziyin2024b}, or obscure landscape analysis \citep{lim2024}, works remove parameter-symmetries \emph{on purpose}, to study counterfactually or improve training.
-\citet{ziyin2024b} propose \emph{syre}, a model-agnostic scheme that anchors a random static bias at initialization, $l_r(\theta,x)=l(\theta+\theta_0)+\gamma\|\theta\|^2$, with the penalty upgraded to $\gamma\,\theta^\top D\theta$, $D_{ii}\sim\operatorname{Unif}(1-\epsilon,1+\epsilon)$, to also discard continuous symmetries.
+\citet{ziyin2024b} propose \emph{syre}, a model-agnostic scheme that anchors a random static bias at initialization, $\mathcal{L}_r(\theta)=\mathcal{L}(\theta+\theta_0)+\gamma\|\theta\|^2$, with the penalty upgraded to $\gamma\,\theta^\top D\theta$, $D_{ii}\sim\operatorname{Unif}(1-\epsilon,1+\epsilon)$, to also discard continuous symmetries.
 \citet{lim2024} instead build \emph{asymmetric} networks, either through an untrainability mask $W\mapsto M\odot W+(1-M)\odot W_{fixed}$ whose rows are nonzero and distinct (the networks remaining universal approximators) or through a non-elementwise activation.
 They observe that the resulting models enjoy direct linear mode connectivity, smoother loss landscapes and better weight-space learnability.
 
@@ -3451,7 +3451,7 @@ A pragmatic use of subgroups is \emph{discretization}: a finite $H\le G$ approxi
 
 A second role of subgroups organizes the representation itself.
 Direct product of subgroup is used by \citet{higgins2018} to define a representation $f\colon W\to Z$ \emph{disentangled} with respect to a decomposition $G=G_1\times\cdots\times G_m$ if $Z$ splits as $Z=\bigoplus_{i=1}^m Z_i$ with $f$ equivariant and each factor $G_i$ acting nontrivially only on $Z_i$.
-Among methods proposed to learn disentangled representation (1) \citet{quessard2020anips} starts from trajectories $(o_1, g_1, o_2, g_2 \dots, )$ and maps observations $o_i$ to a vector space $V$ and actions $g_i$ to $GL(V)$ while regularizing the number of dimensions acted on by the representation of the $g_i$ (2) \citet{pfau2020anips} (GEOMANCER) geometrically factorize the global manifold into disentangled submanifolds: $M=M_1\times M_2$, guaranteed whenever there exists a subspace of the tangent space left invariant by the holonomy group of $M$ (under conditions on $M$) (3) \citet{shakerinava2022anips} formulate a disentangling loss, using a subgroup objective $L=\sum_{i=1}^{m} \left [L_{G_i}^{equiv} + \sum_{j\neq i} L_{G_j}^{inv}\right ]$; however it requires to have samples where subgroups act in isolation i.e. having datasets $D_i$ where only $G_i$ acts as $\tau (e, \dots, e, g_i, e, \dots, e)$.
+Among methods proposed to learn disentangled representation (1) \citet{quessard2020anips} starts from trajectories $(o_1, g_1, o_2, g_2 \dots, )$ and maps observations $o_i$ to a vector space $V$ and actions $g_i$ to $GL(V)$ while regularizing the number of dimensions acted on by the representation of the $g_i$ (2) \citet{pfau2020anips} (GEOMANCER) geometrically factorize the global manifold into disentangled submanifolds: $M=M_1\times M_2$, guaranteed whenever there exists a subspace of the tangent space left invariant by the holonomy group of $M$ (under conditions on $M$) (3) \citet{shakerinava2022anips} formulate a disentangling loss, using a subgroup objective $\mathcal{L}=\sum_{i=1}^{m} \big[\mathcal{L}_{G_i}^{\mathrm{equiv}} + \sum_{j\neq i} \mathcal{L}_{G_j}^{\mathrm{inv}}\big]$; however it requires to have samples where subgroups act in isolation i.e. having datasets $D_i$ where only $G_i$ acts as $\tau (e, \dots, e, g_i, e, \dots, e)$.
 
 Finally, the loss landscape can be structured by isotropy groups: in a student-teacher framework composed of two-layer ReLU networks with fixed output weights, \citet{arjevani2023} find that when the teacher has isotropy group isomorphic to $S_d$, spurious local minima have smaller isotropy group $S_p\times S_q$ with $p+q=d$.
 However, these proper subgroups are maximal: they break symmetry but the least possible.
@@ -3562,14 +3562,13 @@ The filter at position $(i,j)$ is $F^{(i,j)}=\sum_{k=1}^{K}w^{(k)}_{i,j}F^{(k)}$
 For Bayesian methods the relaxation lives in the prior. \citet{vanderwilk2018anips} build an approximately invariant Gaussian-process kernel from a base kernel by summing over augmentations, $k(x,x')=\sum_{x_a\in\mathcal{A}(x)}\sum_{x'_a\in\mathcal{A}(x')}k_g(x_a,x'_a)$, where $\mathcal{A}$ encodes a group or the desired insensitivity, and selects the invariance by maximizing the marginal likelihood; \citet{finzi2021anips} place different prior strengths on the equivariant and flexible pathways, and \citet{ouderaa2023} make those strengths learnable hyperparameters selected the same way.
 
 \subsubsection{Soft penalties}
-An orthogonal, architecture-agnostic route imposes symmetry through the objective alone.
-
-One line performs ``symmetry regularization''~\citep{shakerinava2022anips} via group invariants: \citet{shakerinava2022anips} note that equivariance is a weak condition as any injective $f:X\to Z$ is equivariant for a (generally nonlinear) induced action $\tau(g,z)=f(\tau(g,f^{-1}(z)))$ and therefore constrain the \emph{form} of that action by aiming to preserve a chosen invariant $Inv:Y^2\to\mathbb{R}$, using only pairs transformed by the same unknown element, $\sum_{x, x'} l\big(\operatorname{Inv}(f(x),f(x')),\,\operatorname{Inv}(f(gx),f(gx'))\big)$ (e.g.\ distances for $E(n)$).
+Another architecture-agnostic route imposes symmetry through the objective alone.
+A first line performs ``symmetry regularization''~\citep{shakerinava2022anips} via group invariants: \citet{shakerinava2022anips} note that equivariance is a weak condition as any injective $f:X\to Z$ is equivariant for a (generally nonlinear) induced action $\tau(g,z)=f(\tau(g,f^{-1}(z)))$ and therefore constrain the \emph{form} of that action by aiming to preserve a chosen invariant $Inv:Y^2\to\mathbb{R}$, using only pairs transformed by the same unknown element, $\sum_{x, x'} L\big(\operatorname{Inv}(f(x),f(x')),\,\operatorname{Inv}(f(gx),f(gx'))\big)$ (e.g.\ distances for $E(n)$).
 Here, we stress that the element $g$ is not known, it only matters that the same $g$ is applied to both $x$ and $x'$.
-\citet{gupta2023a} specialize this to orthogonal representations with an equivariance loss $L_{\mathrm{equiv}}(f,a)=\mathbb{E}_{x,x'}\big[(f(a(x))^\top f(a(x'))-f(x)^\top f(x'))^2\big]$, combined with InfoNCE terms: (1) an invariance term that keeps the induced rotations small and (2) a uniformity term preventing global collapse.
-They prove that a small $L_{\mathrm{equiv}}$ upper-bounds the approximate-equivariance error $\sup_x\|f(a(x))-R_a f(x)\|$, where $R_a$ is an orthogonal matrix corresponding to the group element $a$.
+\citet{gupta2023a} specialize this to orthogonal representations with an equivariance loss $\mathcal{L}_{\mathrm{equiv}}(f;a)=\mathbb{E}_{x,x'}\big[(f(a(x))^\top f(a(x'))-f(x)^\top f(x'))^2\big]$, combined with InfoNCE terms: (1) an invariance term that keeps the induced rotations small and (2) a uniformity term preventing global collapse.
+They prove that a small $\mathcal{L}_{\mathrm{equiv}}$ upper-bounds the approximate-equivariance error $\sup_x\|f(a(x))-R_a f(x)\|$, where $R_a$ is an orthogonal matrix corresponding to the group element $a$.
 
-A direct version couples an unconstrained network to an explicit equivariance loss $\mathcal{L}_{\mathrm{equiv}}(f_\theta,\mathcal{X},\mathcal{Y},G)=\frac1n\sum_i\mathbb{E}_{g\sim G}\big[\ell(f_\theta(\rho_X(g)x_i),\rho_Y(g)y_i)\big]$, used both to encode a \emph{discovered} symmetry into a free backbone \citep{escriche2025,elhag2026}.
+A second line directly couples an unconstrained network to an explicit equivariance loss $\mathcal{L}_{\mathrm{equiv}}(f_\theta)=\frac1n\sum_i\mathbb{E}_{g\sim G}\big[L(f_\theta(\rho_X(g)x_i),\rho_Y(g)y_i)\big]$, used to encode a symmetry into a free backbone \citep{escriche2025,elhag2026}.
 For encoder--decoder models \citet{ali2026} decompose this into three terms---input-to-latent $\operatorname{MSE}(\rho_Z(g)E(x),E(gx))$, latent-to-output $L_{\mathrm{task}}(D(\rho_Z(g)E(x)),gy)$ with $\rho_Z(g)$ a learnable per-generator matrix, and a presentation-based penalty encouraging $\rho_Z$ towards being a genuine representation, which would be for example \ $\operatorname{MSE}(\rho_Z(r)^3,I_d)$ for a $C_3$ group with rotation generator $r$.
 
 \subsubsection{Training and inference}

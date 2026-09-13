@@ -56,8 +56,8 @@ Flags:
 | Symbol | Meaning |
 |---|---|
 | $\ell$ | Per-example loss, $\ell(x,\theta)$ |
-| $L$ | Loss comparing a prediction to a target, $L(\hat y, y)$ |
-| $\mathcal{L}$ | Full training objective (SimCLR, Barlow Twins, DINO, …) |
+| $L$ | Loss criterion comparing a prediction to a target, $L(\hat y, y)$ |
+| $\mathcal{L}$ | Single argument loss $\Theta \to \mathbb R$ or $\mathcal F \to \mathbb R$ or full training objective (SimCLR, Barlow Twins, DINO, …) |
 | $\hat R$ | Empirical risk |
 | $R$ | Population risk |
 
