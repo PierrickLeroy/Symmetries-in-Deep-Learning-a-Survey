@@ -2900,8 +2900,12 @@ We focus on two such measurements: barrier values in (linear) mode connectivity,
     \mathcal{B}:\Theta\times\Theta\to\mathbb{R},\qquad(\theta_0,\theta_1)\longmapsto\min_{\gamma}\ \max_{t\in[0,1]}\mathcal{L}(\gamma(t)),
 \end{equation}
 over the continuous curves $\gamma:[0,1]\to\Theta$ with $\gamma(0)=\theta_0$ and $\gamma(1)=\theta_1$.
-The height is invariant under continuous symmetries $g$ as an orbit path from $\theta_1$ to $g\cdot\theta_1$ of constant loss can always be prepended to $\gamma$ at no cost.
-Therefore, literature concentrates on discrete symmetries, in particular on permutations.
+If the symmetry group $G$ of the loss is a Lie group, the path height is invariant under the action of $G_e$, the path component \citep{baker2003} of the the identity i.e.
+$$
+    g_1, g_2\in G_e \Rightarrow B(g_1\theta_1, g_2\theta_2)=B(\theta_1, \theta_2)
+$$
+since any path between $\theta_1$ and $\theta_2$ can be extended at no cost by actions from $G_e$. 
+Therefore, literature concentrates on disconnected symmetry groups, in particular, permutations.
 
 \citet{freeman2017} motivate the study of sublevel sets $\Omega(\lambda)=\{\theta\in\Theta:\mathcal{L}(\theta)\le\lambda\}$ since their connectedness guarantees no spurious local minimum.
 They show that overparametrization prevents asymptotically obstruction due to permutation symmetry.
