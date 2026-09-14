@@ -2895,12 +2895,12 @@ We focus on two such measurements: barrier values in (linear) mode connectivity,
 
 \paragraph{(Linear) Mode Connectivity}\label{sec:mode-connectivity}
 
-\emph{Mode connectivity} (MC) \citep{garipov2018,draxler2018p3icml} asks whether two minima are connected by a low-loss path, the obstruction being quantified by the \emph{barrier height}
+\emph{Mode connectivity} (MC) \citep{garipov2018,draxler2018p3icml} asks whether two minima are connected by a low-loss path, the obstruction being quantified by the \emph{path height}
 \begin{equation}\label{eq:barrier-height}
     \mathcal{B}:\Theta\times\Theta\to\mathbb{R},\qquad(\theta_0,\theta_1)\longmapsto\min_{\gamma}\ \max_{t\in[0,1]}\mathcal{L}(\gamma(t)),
 \end{equation}
 over the continuous curves $\gamma:[0,1]\to\Theta$ with $\gamma(0)=\theta_0$ and $\gamma(1)=\theta_1$.
-The barrier is invariant under continuous symmetries $g$ as an orbit path from $\theta_1$ to $g\cdot\theta_1$ of constant loss can always be prepended to $\gamma$ at no cost.
+The height is invariant under continuous symmetries $g$ as an orbit path from $\theta_1$ to $g\cdot\theta_1$ of constant loss can always be prepended to $\gamma$ at no cost.
 Therefore, literature concentrates on discrete symmetries, in particular on permutations.
 
 \citet{freeman2017} motivate the study of sublevel sets $\Omega(\lambda)=\{\theta\in\Theta:\mathcal{L}(\theta)\le\lambda\}$ since their connectedness guarantees no spurious local minimum.
@@ -2917,13 +2917,13 @@ Rather than diluting the permutation asymptotically, other works directly aim at
     c(x,y):=1-\operatorname{corr}(x,y)
 \end{equation*}
 between neurons $x$ and $y$ of the two networks.
-After alignment, the loss barrier is reduced.
+After alignment, the path height is reduced.
 \citet{brea2019} sample paths between a minimum and a permuted version under the constraint of passing through a permutation symmetric state which is an index $1$ saddle.
 They notice that at this saddle, an extended loss plateau allows to generate all possible symmetric states observing that one redundant pair of neurons suffices to make the permuted minima connected \citep{brea2019,simsek2021}.
 \citet{zhao2025a} study the minima of a full-rank linear network, $\mathcal{L}^{-1}(0)$ for $\mathcal{L}(\theta)=\lVert Y-W_L\cdots W_1X\rVert_F^2$ with $X,Y\in GL(h,\mathbb{R})$ and $W_l\in\mathbb{R}^{h\times h}$.
 The internal $GL(h,\mathbb{R})^{L-1}$ symmetry acts transitively on that set, and since continuous maps preserve connectedness the topology of the group transfers to the topology of the minima: $\mathcal{L}^{-1}(0)\cong GL(h,\mathbb{R})^{L-1}$, which thus contains exactly $2^{L-1}$ components, one per sign pattern of the determinants which can be chosen by permuting neurons so MC holds up to permutation.
 
-\emph{Linear mode connectivity} (LMC) replaces general paths with straight segment, the barrier can then be measured against the linear interpolation of the endpoint losses,
+\emph{Linear mode connectivity} (LMC) replaces general paths with straight segments, a \emph{barrier} can then be measured against the linear interpolation of the endpoint losses,
 \begin{equation}\label{eq:linear-barrier}
     B(\theta_0,\theta_1)=\sup_{\alpha\in[0,1]}\Big[\mathcal{L}\big(\alpha\theta_0+(1-\alpha)\theta_1\big)-\big(\alpha\mathcal{L}(\theta_0)+(1-\alpha)\mathcal{L}(\theta_1)\big)\Big],
 \end{equation}
