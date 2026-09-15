@@ -203,7 +203,7 @@ Symmetry can be defined by invariance by saying that an object has a symmetry if
 \end{Example}
 
 \begin{Example}[Observationally equivalent parameters]\label{ex:equivalence_observational}
-    If $\mathcal{X}$ a parameter space, $\mathcal{Y}$ a functional space and $\phi$ is the implementation map then the sets given by the equivalence relation $\phi$ are the observationally equivalent parameters
+    If $\mathcal{X}$ a parameter space, $\mathcal{Y}$ a functional space and $\phi$ is the implementation map, then the sets given by the equivalence relation $\phi$ are the observationally equivalent parameters (see \Cref{sec:parameter-space-symmetries}).
 \end{Example}
 
 \begin{Definition}[Invariance]\label{def:invariance}
@@ -2258,8 +2258,16 @@ Passing from a triplet loss to the InfoNCE / multi-negative losses \citep{oord20
 
 \section{Loss Landscape and Parameter-Space: Symmetries Puzzles}\label{sec:parameter-space-symmetries}
 % zhao2025: indicate overlaps
-% In parameter-space, symmetries are mostly a source of confusion, either directly (identifiability) or indirectly (ex: consequences on learning dynamics)
 
+Neural networks are parametrized functions and the \emph{implementation} or \emph{realization map}:
+\begin{equation}\label{eq:implementation-map}
+    \varphi:\Theta\to\mathcal{F}, \qquad \varphi(\theta)=f_\theta,
+\end{equation}
+relates the parameter and function spaces $\Theta$ and $\mathcal F$ (through an architecture accepting $\theta$ as an input, left implicit here).
+Frequently, $\phi$ is not injective or \emph{non-identifiable}: multiple parameters yield the same function.
+% $\mathcal{L}:\Theta\to\mathbb{R}$ is the training objective.
+This section studies what changes once we recognize parameters are not unique descriptions of implemented functions and consider the whole fiber of $\phi$ or $L$ corresponding to a particular function or loss value.
+In parameter-space, symmetries are mostly a source of confusion, either directly (identifiability) or indirectly (ex: consequences on learning dynamics)
 
 \subsection{Classifications}\label{sec:classifications-param-space-symmetries}
 
@@ -2267,12 +2275,6 @@ Symmetries acting on the parameters can be given related but non-equivalent defi
 Before describing the transformations and their consequences (\Cref{sec:descr-param-space-symmetries}), we organize these definitions along two axes, partly overlapping with the classification of \citet{zhao2025}.
 The first axis forms a hierarchy: each class of transformations contains the previous one.
 The second axis depends on scope: what is allowed to enter the definition of a transformation, and on which objects (parameters, data, architecture) conditions may be imposed.
-
-Throughout this section, we fix an architecture with parameter space $\Theta\subseteq\mathbb{R}^n$ and denote by
-\begin{equation}\label{eq:implementation-map}
-    \varphi:\Theta\to\mathcal{F}, \qquad \varphi(\theta)=f_\theta,
-\end{equation}
-the \emph{implementation} (or \emph{realization}) map sending parameters to the implemented function (cf.\ \Cref{ex:equivalence_observational}), and by $\mathcal{L}:\Theta\to\mathbb{R}$ the training objective.
 \Cref{tab:param-double-entry} references works discussing parameter-space symmetries and the components in which they appear.
 One deep-learning component can carry multiple symmetries, and the same symmetry can appear in different components.
 
@@ -2301,7 +2303,7 @@ Regularization and criterion symmetries (\Cref{sec:criterion-symmetries}) are tw
 
 The three conditions form a chain of implications for $g$,
 \begin{equation}\label{eq:param-symmetry-hierarchy}
-    \underbrace{g\cdot\theta=\theta}_{(SS)} \implies \underbrace{f_{g\cdot\theta}=f_\theta}_{(PSS)} \implies \underbrace{\mathcal{L}(g\cdot\theta)=\mathcal{L}(\theta)}_{(LS)},
+    \underbrace{g\cdot\theta=\theta}_{(SS)} \implies \underbrace{f_{g\cdot\theta}=f_\theta}_{(PS)} \implies \underbrace{\mathcal{L}(g\cdot\theta)=\mathcal{L}(\theta)}_{(LS)},
 \end{equation}
 where the first implication is immediate and the second holds whenever the objective factors through the implementation map, $\mathcal{L}=\mathcal{L}_F\circ\varphi$, as does any unregularized empirical risk.
 Neither implication reverses.
