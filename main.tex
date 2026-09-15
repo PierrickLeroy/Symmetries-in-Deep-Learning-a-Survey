@@ -2259,15 +2259,15 @@ Passing from a triplet loss to the InfoNCE / multi-negative losses \citep{oord20
 \section{Loss Landscape and Parameter-Space: Symmetries Puzzles}\label{sec:parameter-space-symmetries}
 % zhao2025: indicate overlaps
 
-Neural networks are parametrized functions and the \emph{implementation} or \emph{realization map}:
+Neural networks are parametrized functions: the \emph{implementation} (or \emph{realization}) map
 \begin{equation}\label{eq:implementation-map}
     \varphi:\Theta\to\mathcal{F}, \qquad \varphi(\theta)=f_\theta,
 \end{equation}
-relates the parameter and function spaces $\Theta$ and $\mathcal F$ (through an architecture accepting $\theta$ as an input, left implicit here).
-Frequently, $\phi$ is not injective or \emph{non-identifiable}: multiple parameters yield the same function.
+relates the parameter space $\Theta$ and the function space $\mathcal F$, through an architecture that takes $\theta$ as input (left implicit here).
+Frequently $\varphi$ is not injective, i.e.\ \emph{non-identifiable}: distinct parameters can yield the same function.
 % $\mathcal{L}:\Theta\to\mathbb{R}$ is the training objective.
-This section studies what changes once we recognize parameters are not unique descriptions of implemented functions and consider the whole fiber of $\phi$ or $L$ corresponding to a particular function or loss value.
-In parameter-space, symmetries are mostly a source of confusion, either directly (identifiability) or indirectly (ex: consequences on learning dynamics)
+This section studies what changes once we recognize that parameters are not unique descriptions of the functions they implement, and consider the whole fiber of $\varphi$ (or level set of $L$) corresponding to a given function (or loss value).
+In parameter space, symmetries are mostly a source of confusion, either directly (identifiability) or indirectly, e.g.\ through their consequences on learning dynamics.
 
 \subsection{Classifications}\label{sec:classifications-param-space-symmetries}
 
