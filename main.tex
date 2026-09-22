@@ -3068,7 +3068,7 @@ They then propose Transformer-NFN equivariant under $G\times S_D\times S_{D_A}$,
 
 A converse move is also possible: by removing symmetries in the model, \citet{lim2024} finds improved weight-space learnability.
 Finally, \emph{hypernetworks} \citep{ha2017} are a conceptual opposite, mapping a code $z$ to the parameters $\theta=g(z)$ of a target network.
-Symmetry then bears on the codomain and hitting a fiber $\varphi^{-1}(f)$ becomes ambiguous.
+Parameter-space symmetries then appear in the codomain of the hypernetwork forward map $g:\mathcal Z\to \Theta$, and $g$ selects a point arbitrarily inside the fiber $\varphi^{-1}(f_\theta)$, thus in this context, parameter-symmetries can be seen as criterion symmetries (\Cref{sec:criterion-symmetries}).
 
 \paragraph{Algebro-Geometric Approaches}
 \emph{Singular learning theory} \citep[SLT,][]{watanabe2009} is a Bayesian framework leveraging algebraic geometry to extend statistical learning theory to \emph{singular} (i.e. non-identifiable) models as opposed to the \emph{regular} ones of classical statistics.
