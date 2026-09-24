@@ -36,7 +36,6 @@
 \addtolength{\rotFPtop}{-\extralength}
 
 % -------------------------------------------------------------------------
-
 \newcommand{\pnote}[1]{\textcolor{red}{PL: #1}}
 \newcommand{\myline}{
   \vspace{5mm}
@@ -182,10 +181,11 @@ We propose a faceted taxonomy in \Cref{tab:taxonomy} to categorize occurrences o
 % Conservation laws ?
 % Core notions
 % \cite{borde2025,carlsson,chen2020,2023tg,bronstein2021}
+In \Cref{sec:what-is-sym}, we start with a lightweight introduction to the main concepts; definitions will be precised in the subsequent sections.
 
 
 
-\subsection{What is a Symmetry?}
+\subsection{What is a Symmetry?}\label{sec:what-is-sym}
 
 % reasons symmetry appears: (a) it's present in the problem, (b) it emerges from the architecture or training procedure
 
@@ -194,17 +194,18 @@ A \textit{symmetry} is a transformation that leaves an object as a whole unchang
 Symmetry can be defined by invariance by saying that an object has a symmetry if its identity is invariant under a specific transformation.
 
 \begin{Definition}[$\phi$-equivalence, {\citep{cohen2014}}]\label{def:equivalence}
-    Let $\phi : \mathcal{X} \to \mathcal{Y}$ be a function from an input domain $\mathcal{X}$ to a codomain $\mathcal{Y}$, where for example $\mathcal{X} \subseteq \mathbb{R}^d$, and $\mathcal{Y}$ may be $\{0,1\}$ (binary classification), $\{1,\dots,L\}$ (multiclass classification), $\mathbb{R}$ (regression), or $\mathbb{R}^e$ (feature representation).
-    
+    Let $\phi : \mathcal{X} \to \mathcal{Y}$ be a function from an input domain $\mathcal{X}$ to a codomain $\mathcal{Y}$.
     Two elements $x, y \in \mathcal{X}$ are said to be \emph{$\phi$-equivalent}, denoted $x \sim_{\phi} y$, if
     \[
         \phi(x) = \phi(y).
     \]
     The relation $\equiv_{\phi}$ is an equivalence relation on $\mathcal{X}$ and induces a partition of $\mathcal{X}$ into equivalence classes.
 \end{Definition}
+    
+In \Cref{def:equivalence} for our deep learning context, $\mathcal{X}$ could be a vector space $\mathbb{R}^d$, a set of structured objects (images, graphs, point clouds), a function/parameter space etc; while $\mathcal{Y}$ may be a label in $\{0,1\}$ (binary classification) or $\{1,\dots,L\}$ (multiclass classification), a scalar (regression), another vector space $\mathbb{R}^e$ (feature representation) etc.
 
 \begin{Example}[Image segmentation]\label{ex:image-segmentation}
-    If $\mathcal{X}$ is an image, $x\in \mathcal{X}$ a pixel and $\mathcal{Y} = \left \{ 1\dots L\right \}$ are segmentation labels, then the sets defined by the equivalence relation are the pixels that belong of the same segmentation class.
+    If $\mathcal{X}$ is an image, $x\in \mathcal{X}$ a pixel slot and $\mathcal{Y} = \left \{ 1\dots L\right \}$ are segmentation labels, then the sets defined by the equivalence relation are the pixels that belong to the same segmentation class.
 \end{Example}
 
 \begin{Example}[Image classification]\label{ex:image-classification}
@@ -212,16 +213,18 @@ Symmetry can be defined by invariance by saying that an object has a symmetry if
 \end{Example}
 
 \begin{Example}[Loss level sets]
-    If $\mathcal{Y} = \mathbb{R}$ and $\phi$ is a generic loss function, then the sets defined by the equivalence relation are the level set of the loss function.
+    If $\mathcal X$ is a parameter space, $\mathcal{Y} = \mathbb{R}$ and $\phi$ is a loss function, then the sets defined by the equivalence relation are the level set of the loss function.
 \end{Example}
 
 \begin{Example}[Observationally equivalent parameters]\label{ex:equivalence_observational}
-    If $\mathcal{X}$ a parameter space, $\mathcal{Y}$ a functional space and $\phi$ is the implementation map, then the sets given by the equivalence relation $\phi$ are the observationally equivalent parameters (see \Cref{sec:parameter-space-symmetries}).
+    If $\mathcal{X}$ a parameter space, $\mathcal{Y}$ the hypothesis space and $\phi$ is the implementation map, then the sets given by the equivalence relation $\phi$ are the observationally equivalent parameters (see \Cref{sec:parameter-space-symmetries}).
 \end{Example}
 
 \begin{Definition}[Invariance]\label{def:invariance}
     Let $G$ be a group acting on a set $\mathcal{X}$.
-    A function $\phi : \mathcal{X} \to \mathcal{Y}$ is $G$-invariant if $\phi(g\cdot x)=\phi(x)$ for all $g\in G$ and $x\in \mathcal{X}$.
+    A function $\phi : \mathcal{X} \to \mathcal{Y}$ is $G$-invariant if $g\cdot x$ is $\phi$-equivalent to $x$ for all $g\in G$.
+    That is, 
+    $$\phi(g\cdot x)=\phi(x) \text{ for all } g\in G \text{ and } x\in \mathcal{X}.$$ 
 \end{Definition}
 
 In \Cref{ex:image-classification,ex:image-segmentation}, $G$ acts on images and could contain translations, rotations or reflections while in \Cref{ex:equivalence_observational}, $G$ acts on parameters and contains transformations that leave the implemented function unchanged such as within-layer neuron permutations for MLPs.
@@ -236,21 +239,39 @@ In \Cref{ex:image-classification,ex:image-segmentation}, $G$ acts on images and 
 \end{Definition}
 
 In equivariance, the group $G$ acts both on the input and output.
-$G$ can act similarly on the two sets, as it can be the case for 3D physical data \citep{geiger2022,bogatskiy2020p3icml}, for example when studying forces acting on a molecule one might want to encode in $G$ the fact that when rotating the molecules, a similar rotation must be applied to the forces.
-A similar case is in image segmentation where translation of the domain must induce the same translation of segmentation map.
+$G$ can act similarly on the two sets, as it can be the case for 3D physical data \citep{geiger2022,bogatskiy2020p3icml}: when studying forces acting on a molecule one might want to encode in $G$ the fact that when rotating the molecules, a similar rotation must be applied to the forces.
+Similarly for image segmentation, translation of the domain (input) must induce the same translation of segmentation map (output).
 
-However, equivariance does not require that the group $G$ acts in the same way on input and output \citep{cohen2016a,bogatskiy2020p3icml}.
-Formally, let $\rho_X$ and $\rho_Y$ be two maps taking inputs from $G$ and producing $\rho_X(g)$ and $\rho_Y(g)$ acting on $\mathcal{X}$ and $\mathcal{Y}$ respectively, so that the equivariance condition reads $\phi(\rho_X(g)\,x)=\rho_Y(g)\,\phi(x)$.
-In general, the only requirement is that $\rho_X$ and $\rho_Y$ are linear representations of $G$, \textit{i.e.} that the following holds:
-
+However, equivariance does not require that the group $G$ acts in the same way on input and output \citep{cohen2016a,bogatskiy2020p3icml}: a single abstract element $g\in G$ may take one form on $\mathcal{X}$ and a different form on $\mathcal{Y}$.
+For explicit distinction, two maps (\emph{actions}; see def~\ref{def:group-action}) are attached to $G$:
+\[
+    \rho_X : G \to \operatorname{Sym}(\mathcal{X}), \qquad \rho_Y : G \to \operatorname{Sym}(\mathcal{Y}),
+\]
+where $\operatorname{Sym}(\mathcal{S})$ denotes the group of bijections of a set $\mathcal{S}$.
+The only requirement is that each form respects the group structure, i.e.\ that $\rho_X$ and $\rho_Y$ are group homomorphisms:
+\begin{equation}\label{eq:representation-homomorphism}
+    \rho_X(gh)=\rho_X(g)\circ\rho_X(h) \quad \textrm{and} \quad \rho_Y(gh)=\rho_Y(g)\circ\rho_Y(h) \qquad \forall g, h \in G.
+\end{equation}
+The equivariance condition of \cref{def:equivariance} then reads (omitting parentheses):
 \begin{equation}\label{eq:general-equivariance}
-    \rho_X(gh)=\rho_X(g)\rho_X(h) \quad \textrm{and} \quad \rho_Y(gh)=\rho_Y(g)\rho_Y(h) \qquad \forall g, h \in G.
+    \phi\big(\rho_X(g)\,x\big)=\rho_Y(g)\,\phi(x) \qquad \forall g\in G,\ x\in\mathcal{X}.
 \end{equation}
 
-From \Cref{eq:general-equivariance}, we see that invariance can be realized as a special case of equivariance, namely taking $\rho_Y(g)=\operatorname{id}_{\mathcal{Y}}$ for all $g$.
-In words, $\rho_Y$ maps all group elements to the identity group action.
+\begin{Example}[One rotation, several forms]
+    Let $G=C_4=\{e,r,r^2,r^3\}$ be the group of rotations by multiples of $90^\circ$, and let $\rho_X(r)$ rotate the pixel grid of an image $x\in\mathcal{X}=\mathbb{R}^{n\times n}$ (a permutation of pixels).
+    Depending on the task, the same $r$ acts on the output as:
+    \begin{itemize}
+        \item a shift of angle, $\rho_Y(r)\,\theta=\theta+\pi/2 \bmod 2\pi$, if $\phi$ predicts an orientation $\theta\in\mathcal{Y}=[0,2\pi)$;
+        \item a $2\times 2$ matrix, $\rho_Y(r)=\left(\begin{smallmatrix}-1&0\\0&-1\end{smallmatrix}\right)$, if $\phi$ predicts a tilt in $\mathcal{Y}=\mathbb{R}^2$;
+        \item the identity, $\rho_Y(r)=\operatorname{id}_{\mathcal{Y}}$, if $\phi$ predicts a class label.
+    \end{itemize}
+    In each case $\rho_Y(r)^4=\operatorname{id}_{\mathcal{Y}}$, so $\rho_Y$ satisfies \Cref{eq:representation-homomorphism}.
+\end{Example}
 
-Throughout, we write $g\cdot x$ whenever the action is unambiguous---in particular when $G$ acts in the same way on $\mathcal{X}$ and $\mathcal{Y}$---and revert to the explicit $\rho_X(g)$, $\rho_Y(g)$ whenever the two actions must be distinguished.
+From \Cref{eq:general-equivariance}, we see that invariance is the special case of equivariance with $\rho_Y(g)=\operatorname{id}_{\mathcal{Y}}$: $\rho_Y$ then simply maps all elements of $G$ to the identity group action.
+
+Throughout the text, we write $g\cdot x$ whenever the action is unambiguous---in particular when $G$ acts in the same way on $\mathcal{X}$ and $\mathcal{Y}$---and revert to the explicit $\rho_X(g)$, $\rho_Y(g)$ whenever the two actions must be distinguished.
+Following usage, our use of the term ``symmetry'' will be general and refer to symmetry, invariance or equivariance broadly.
 The triple $(G,\rho_X,\rho_Y)$ is the object that symmetry-discovery methods set out to recover (\Cref{sec:sym-disc-from-data}).
 
 % Group Theory, the algebraic backbone: Group (closure, associativity, identity, inverses), group action (orbits, stabilizers, free vs. transitive actions)
