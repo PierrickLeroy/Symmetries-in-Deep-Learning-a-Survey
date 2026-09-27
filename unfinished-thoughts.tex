@@ -1,17 +1,47 @@
 \section*{Draft}
 
 \myline
-\paragraph{Methodology}
+
+\paragraph{Mathematical background cuts}
+
+
+
+\myline
+
+\paragraph{Group table}
+
+% The group table: a table listing [group, nature, papers]
+\begin{table}[ht]
+    \centering
+    \begin{tabularx}{\textwidth}{|l|l|X|}
+        \hline
+        \textbf{Group} & \textbf{Nature} & \textbf{References} \\
+        \hline
+        $O(1,3)$ / $SO^+(1,3)$ (Lorentz) & Non-compact, non-semisimple
+            & \citep{bogatskiy2020p3icml,spinner2024,ruhe2023,ali2024,yang2023p4icml} \\
+        \hline
+        $SE(n) = \mathbb{R}^n \rtimes SO(n)$ & Non-compact (translation factor)
+            & \citep{yarotsky2018r,finzi2020p3icml,finzi2021p3icml} \\
+        \hline
+        $Sp(n)$ (symplectic) & Non-compact (split real form)
+            & \citep{finzi2021p3icml,pearce-crump2023p4icml} \\
+        \hline
+        General matrix groups & Potentially non-compact
+            & \citep{finzi2021p3icml,desai2022prd} \\
+        \hline
+    \end{tabularx}
+    \caption{The group table \pnote{draft, to check}}
+    \label{tab:groups}
+\end{table}
+
+\myline
+\paragraph{Cover letter}
 More emphasis has been put on less organized topics and less emphasis on well documented (a lot or recent covering materials) ones such as GDL, data augmentation or parameter-space symmetries.
 Broadness has been chosen over exhausivity.
 
 \myline
 
-Two complementary problems fall under this heading, and it is useful to see them as conceptual opposites.
-\emph{Symmetry discovery} is \emph{additive}: it starts from few or no assumptions and accumulates evidence \emph{for} the presence of a symmetry, letting the model learn which group acts on the data.
-\emph{Approximate} (or soft) \emph{equivariance} is \emph{retractive}: it starts from an assumed symmetry and gathers evidence \emph{against} it, letting the model learn \emph{when} to deviate from the posited invariance.
 A recurring difficulty ties the two together: a symmetry is a \emph{constraint} on the functions a model may represent, and such constraints are not rewarded by objectives that merely optimize data fit, so the unconstrained (asymmetric) solution is generically favoured unless the method actively nudges the model towards symmetry \citep{ouderaa2022,benton2020anips,ouderaa2024}.
-We first treat symmetry discovery---from data and from trained models---and then turn to incomplete and approximate symmetries.
 
 \myline
 
