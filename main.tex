@@ -1066,17 +1066,21 @@ Multimodal joint-embeddings highlight the question of a representational hierarc
 
 \subsubsection{Criterion Symmetries}\label{sec:criterion-symmetries}
 
-The training objective is subject to symmetries.
-Write $L:\mathcal{Y}\times\mathcal{Y}\to\mathbb{R}$ for a loss criterion comparing a prediction $\hat y$ to a target $y$.
+The differentiable function $L:\mathcal{Y}\times\mathcal{Y}\to\mathbb{R}$ used to compare predicted logits $\hat y$ and ground-truth $y$, called here the \emph{criterion}, can be a symmetry locus.
 We say $L$ is \emph{invariant} under a group $G$ acting on $\mathcal{Y}$ when it depends only on the target or prediction orbit,
 $$
 L(\hat y,\, y) = L(\hat y,\, g\cdot y) \quad \text{ or } \quad L(\hat y,\, y) = L(g\cdot \hat y,\, y)
 $$
 for all $g\in G$.
 \citet{kaba2025anips} additionally require symmetry between the two arguments and calls \emph{invariant loss function} a loss criterion satisfying
-$$
-L(g\cdot\hat y,\, y) = L(\hat y,\, g\cdot y) = L(\hat y,\, y) \qquad \forall g\in G.
-$$
+\begin{equation}\label{eq:invariant-loss}
+    L(g\cdot\hat y,\, y) = L(\hat y,\, g\cdot y) = L(\hat y,\, y) \qquad \forall g\in G.
+\end{equation}
+
+\begin{Remark}[Diagonal subgroup of \ref{eq:invariant-loss}]
+    The subcase of \Cref{eq:invariant-loss} where $L$ is invariant under the diagonal subgroup $\Delta G=\{(g,g)\}\le G\times G$ i.e. $L(g\cdot\hat y,\; g\cdot y)=L(\hat y,\; y)$ for $g\in G$ also appears in the literature~\citep{nordenfors2024,lawrence2026,shen2026}, for instance as a natural assumption on $L$ when training an equivariant model on an equivariant task since $L(\hat y,y)=L(f(x), y) = L(f(gx), gy)= L(gf(x), gy) = L(g\hat y, gy)$.
+\end{Remark}
+
 A typical example is when $y$ is a vector which has ranges of indices representing elements of a set.
 Concretely assume $y\in \mathbb R^{2n}$ is composed of two objects identical up to properties we want to predict; $[y_1, \dots, y_n]^T$ represents the properties of the first object (such as two spatial positions for $n=3$) and $[y_{n+1}, \dots, y_{2n}]^T$ those of the second.
 Then, a desideratum for $L$ would be to be invariant under an action of $\mathbb Z_2$ permuting the two objects: $[gy]_i=y_{i+n \mod n}$.
