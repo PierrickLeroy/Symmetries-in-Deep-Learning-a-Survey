@@ -932,24 +932,25 @@ Comparing DA to equivariant architectures, \citet{nordenfors2024} show that the 
 Empirically, \citet{shen2026} find that DA rapidly learn 3D rotation equivariance with negligible efficiency gap attributable to lack of strict equivariance.
 
 \subsection{Framework Symmetries}
+We now turn our attention to symmetries appearing in the ``outside scope'', either in the way data is piped through during training (cf~\ref{sec:data-ordering} and \ref{sec:joint-embedding} on data ordering and joint-embedding) or that reflect more a limitation in downstream processing than a true problem constraint: criterion symmetries (\ref{sec:criterion-symmetries}) are the irreducible loss symmetries that can't be adressed through parameter or architectural adjustments.
 
 \subsubsection{Data Ordering}\label{sec:data-ordering}
-
-The strategies above engineer symmetry into the model or into the data; a complementary question is which symmetries the \emph{training procedure itself} possesses.
+The previous sections engineered symmetries into the model; a complementary question is which symmetries are baked-in the training procedure itself, starting with the data stream.
 Formally, view a learning algorithm as a map
 $$
-\mathcal{A} : (\mathcal{D},\, \theta_0,\, \xi) \longmapsto \theta_T,
+\mathcal{A} : \left ( \{\mathcal{D}_e\}_{e\in E},\, \theta_0, \right ) \longmapsto \theta_T,
 $$
-sending a dataset $\mathcal{D}=\{(x_i,y_i)\}_{i\in[n]}$, an initialization $\theta_0$, and algorithmic randomness $\xi$ (batching, augmentation draws, dropout masks, \ldots) to trained parameters $\theta_T$.
-Although $\mathcal{D}$ is semantically a \emph{set}, it is materialized as a sequence, so $S_n$ acts on it by permuting the samples, and one may ask whether $\mathcal{A}$ is invariant: $\mathcal{A}(\sigma\cdot\mathcal{D},\theta_0,\xi)=\mathcal{A}(\mathcal{D},\theta_0,\xi)$ for all $\sigma\in S_n$.
-The answer depends on the optimizer.
+sending per-epoch datasets $\mathcal{D}_e$ of $n_e$ points with $E$ the number of epochs, and initialization $\theta_0$ to trained parameters $\theta_T$ after $T$ training steps.
+Here we do not consider other sources of randomness such as augmentation draws or dropout masks.
+Materialized as a sequence, each $\mathcal{D}_e$ is subject to a $S_{n_e}$ symmetry acting by sample permutation, and one may ask whether $\mathcal{A}$ is invariant: $\mathcal{A}(\{\sigma_e\cdot\mathcal{D}_e\}_{e\in E},\theta_0)=\mathcal{A}(\{\mathcal{D}_e\}_{e\in E},\theta_0)$.
 Over one epoch, full-batch gradient descent (GD) sums the gradients of all $n$ samples before updating, and is therefore $S_n$-invariant.
-Mini-batch GD with a fixed partition into $k$ batches of size $B=n/k$ (assumed integer for simplicity) sums gradients within each batch but applies the $k$ updates sequentially, so it is invariant only under the subgroup $\prod_{i=1}^{k} S_B \leq S_n$ of within-batch permutations--the extreme case ($B=1$) retaining no invariance in general-- the gap between these symmetry groups is
+Mini-batch GD with a fixed partition into $k$ batches of size $B=n/k$ (assumed integer for simplicity) sums gradients within each batch but applies the $k$ updates sequentially, so it is invariant only under the subgroup $\prod_{i=1}^{k} S_B \leq S_n$ of within-batch permutations---the extreme case ($B=1$) retainining no invariance.
+The size ratio between these symmetry groups is
 $$
 \frac{n!}{(B!)^{k}} \;\underset{n\to\infty}{\sim}\; (2\pi n)^{\frac{1-k}{2}}\, k^{\,n+\frac{k}{2}}
 $$
 by Stirling's formula.
-As $n$ grows, GD is invariant to a vastly larger set of data orderings than its mini-batch counterparts, and over multiple epochs the gap widens further when the data are reshuffled at each epoch (see below).
+As $n$ grows, GD is invariant to an increasingly larger set of data orderings than its mini-batch counterparts, and over multiple epochs the gap widens further when the data are reshuffled at each epoch (see below).
 
 \citet{zhuang2022pmls} distinguish \emph{algorithmic} sources of stochasticity (data augmentation, data shuffling) from \emph{implementation} ones (floating-point effects) and quantify their impact on training through three metrics: (i) the \emph{churn} $C(f_1,f_2)=\mathbb{E}_x\big[1_{\operatorname{pred}(f_1,x)\neq \operatorname{pred}(f_2,x)}\big]$, the fraction of test points on which two independently trained models disagree; (ii) the distance $\|w_1^\star-w_2^\star\|_2$ between trained weights---an imperfect metric because of parameter-space symmetries of \Cref{sec:parameter-space-symmetries} and (iii) the standard deviation of accuracy on subgroups of the data, quantifying local variability in input space.
 While global test accuracy is constant across runs, these three metrics fluctuate substantially---churn ranges from $5\%$ to over $20\%$.
@@ -959,7 +960,7 @@ For data ordering specifically, SGD exhibits higher variability than GD, consist
 In practice, there are multiple ways to implement mini-batch training: \emph{stochastic sampling}, which draws each batch with replacement and thus involves no permutation; \emph{single shuffle} (SS), which samples one permutation $\pi\in S_n$ once and reuses it at every epoch; and \emph{random reshuffling} (RR), which resamples a new permutation at each epoch.
 Randomized ordering is not optional: mini-batch SGD requires it to converge well \citep{xu2024vj}, and, perhaps surprisingly, the permutation-based schemes SS and RR outperform with-replacement sampling \citep{koloskova2024p4icml}.
 The distinction between SS and RR is of practical importance because globally reshuffling a dataset can be a hardware bottleneck, which at scale makes RR impractical \citep{nguyen20222iipdpsi,koloskova2024p4icml,xu2024vj}.
-Batch normalization (BN) introduces an additional dependency to data ordering because of batch composition---hence data ordering---determines the batch statistics.
+Batch normalization (BN) introduces an additional dependency to data ordering since batch composition determines the batch statistics.
 \citet{wu2023p4icml} show that standard GD, SS and RR then optimize \emph{three different objectives}.
 They study linear models with BN applied to the input, which take the form $x \mapsto W\Gamma\operatorname{BN}(x)$ with $\Gamma$ a diagonal matrix carrying BN's learnable scaling parameters; writing $m$ for the number of batches and $(\pi X)_i$ for the $i$-th batch under the ordering $\pi$, the objectives read
 $$
@@ -981,33 +982,40 @@ The pointwise invariance lost by SGD can be restored \emph{in distribution} when
 A sequence $\boldsymbol{X}_n=(X_1,\dots,X_n)$ is \emph{exchangeable} (a generalization of the i.i.d.\ assumption) if $\pi\boldsymbol{X}_n \overset{d}{=} \boldsymbol{X}_n$ for every $\pi\in S_n$
 \citep{bloem-reddy2020} relate this concept to distributional invariance through the \emph{empirical measure} $\mathbb{M}_{\boldsymbol{X}_n}(\cdot):=\sum_{i=1}^{n}\delta_{X_i}(\cdot)$, which represents the data but forgets its ordering.
 They show that a conditional distribution is permutation-invariant, $(Y \mid \boldsymbol{X}_n)\overset{d}{=}(Y \mid \pi\boldsymbol{X}_n)$, precisely when $Y$ factors through the empirical measure, $(\boldsymbol{X}_n, Y)\overset{a.s.}{=}\big(\boldsymbol{X}_n,\, f(\eta, \mathbb{M}_{\boldsymbol{X}_n})\big)$ for some measurable $f$ and independent noise $\eta$.
-This result can be reinterpreted as
+The result, stated for simplicity with a single epoch, can be reinterpreted as
 $$
-\operatorname{Law}\big(\mathcal{A}(\sigma\cdot\mathcal{D},\,\theta_0,\,\xi)\big) = \operatorname{Law}\big(\mathcal{A}(\mathcal{D},\,\theta_0,\,\xi)\big) \qquad \text{for all } \sigma\in S_n,
+\operatorname{Law}\big(\mathcal{A}(\sigma\cdot\mathcal{D},\,\theta_0)\big) = \operatorname{Law}\big(\mathcal{A}(\mathcal{D},\,\theta_0)\big) \qquad \text{for all } \sigma\in S_n,
 $$
 even though each realization of $\mathcal{A}$ is not $S_n$-invariant.
 
 \begin{Remark}[Example of non-exchangeable data]
     Not all tasks can be modeled with exchangeable data.
     In \emph{curriculum learning} \citep{bengio2009p2aicml}, examples are deliberately ordered, often from easy to hard or progress from primitive to compositional tasks \citep{lee2024}.
-    % and show that a good ordering yields exponential speedups
+    This can be framed either as a single sorted dataset ($E=1$) or with a progression over epoch datasets ($D_e\neq D_{e'}$ for $e'\neq e \in [E]$).
     Ordering biases can also be more fortuitous: data stored in database systems can be clustered by attribute producing a non-exchangeable stream \citep{xu2024vj}.
 \end{Remark}
 
 \subsubsection{Joint-embedding architectures}\label{sec:joint-embedding}
 
 Joint-embedding (or Siamese) architectures learn representations by training a network to closely embed two related \emph{views}, rather than by predicting a label or reconstructing the input.
-We give here a symmetry-centered reading of the development of this family of self-supervised methods; for an in-depth account, see \citet{ilina2022sa}.
+We give here a symmetry-centered reading of the development of this family of self-supervised methods; for a more in-depth account, see \citet{ilina2022sa}.
 In this part, invariance prevails but equivariance-based methods have also been explored~\citep{gupta2023a}.
 
-In the simplest setting, for views $x_1$ and $x_2$ and encoders $f_{\theta_1}$ and $f_{\theta_2}$, a loss 
-$$L\big(f_{\theta_1}(x_1),\,f_{\theta_2}(x_2)\big)$$
+In the simplest setting, for views $x_1$ and $x_2$ of the same underlying object $x$ and encoders $f_{\theta_1}$ and $f_{\theta_2}$, a loss 
+$$
+    L\big(f_{\theta_1}(x_1),\,f_{\theta_2}(x_2)\big)
+$$
 computing a similarity between embeddings is minimized.
 A common way to generate views is through data augmentation: for $x\sim\mathcal{D}$, two transformations $t,t'$ are drawn i.i.d.\ from an augmentation family $\mathcal{T}$ to form the views $x_1=t\cdot x$ and $x_2=t'\cdot x$.
-The training objective then carries a double symmetry potential:
+This setup carries a double (often incomplete) symmetry:
 \begin{enumerate}
-    \item \emph{Branch symmetry} via weight sharing, which can be exact or deliberately broken. Much of the design space below is organized by how and where it is broken.
-    \item \emph{Data symmetry} via the two views, often not a group.
+    \item A symmetry of the implemented function (parameter-level in \Cref{fig:sym-loci}).
+    Involving data transformation, it is conceptually close to DA (\ref{sec:data-augmentation}) and soft penalties (\ref{sec:soft-equivariance}).
+    Contrasting with DA, which is typically a supervised approach focusing on the invariance of the $(x,y)$ mapping, this symmetry is typically implemented online and focuses on invariance of representation.
+    This symmetry is a desired goal: we want $f_\theta$ to be invariant to $\mathcal{T}$.
+    \item A \emph{Branch symmetry}, exact or deliberately broken, in the training protocol.
+    Obtained via weight entangling, it is transparent at inference time and is only a means to achieve the previous desired symmetry.
+    Much of the design space below is organized by how and where it is broken.
 \end{enumerate}
 
 \emph{Representational collapse} is the failure mode where encoders are constant and methods can be envisioned by how they deviate from exact symmetries toward carefully engineered asymmetry to avoid collapse.
