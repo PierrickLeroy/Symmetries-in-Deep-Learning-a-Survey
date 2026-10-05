@@ -2347,6 +2347,7 @@ They observe that the resulting models enjoy direct linear mode connectivity, sm
 Finally, \citet{arjevani2023} identify a principle of \emph{least} SB: for a shallow ReLU network $f_\theta(x)=\mathbf 1^\top\operatorname{ReLU}(Wx)$ with a teacher of isotropy $S_d$, spurious minima have strictly smaller isotropy $S_p\times S_q$ with $p+q=d$, yet these are \emph{maximal} proper subgroups: they break the teacher's symmetry as little as possible.
 
 \subsection{Extent restriction: beyond groups}\label{sec:extent-restriction}
+% Add deformation stability [bronstein2021] which is about diffeomorphisms
 
 We organize this section based on the \emph{algebraic structure} of the set $S$ of transformations i.e.\ by which of the group axioms (closure, identity, inverses) $S$ retains.
 \Cref{table:extent-restriction} classifies the main cases along this axis.
@@ -2438,6 +2439,7 @@ Finally, quivers and category theory have been used to reframe and extend geomet
 \subsection{Approximate symmetries: tolerance}\label{sec:soft-equivariance}
 % bamler2018p3icml: almost symmetric subspace from weak symmetry breaking by regularizer \psi(Z)
 % chen2024jsm: approximately Q-symmetric loss function
+% contrast approximate EDL with deformation stability of GDL, see LLM_saved-outputs/responses-saved/GDL_EDL.md
 
 Where the previous subsection restricted the \emph{extent} of a symmetry---which transformations belong to the set $S$ (\Cref{sec:extent-restriction})---this one relaxes its \emph{exactness}: the group $G$ is retained in full, but equivariance is only required to hold approximately.
 Indeed, a symmetry may hold only to first order or be blurred by noise, and an idealized invariance often drifts, for instance over the course of a simulation.
