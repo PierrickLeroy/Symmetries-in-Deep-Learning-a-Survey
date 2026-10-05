@@ -111,10 +111,10 @@ Compared to these works, we work in reverse and go broad, starting from the conc
 
 
 \subsection{Taxonomy and paper organization}
-% A taxonomy where each cell contains a branch name and a few representative works
-% The linear structure of the paper is organized along the methodological dimension of the taxonomy
+% add walkthrough linking taxonomy, loci figure and the manuscript's headers
 
 We propose a faceted taxonomy in \Cref{tab:taxonomy} to categorize occurrences of symmetries in works.
+\Cref{fig:sym-loci} further details the \emph{Object} axis of the taxonomy.
 
 \begin{figure}[!tbp]
     \centering
@@ -750,10 +750,6 @@ Symmetry thus acts in two ways: \emph{global} symmetry, one group acting on the 
 
 
 
-
-
-
-
 \section{Symmetry as a Design Principle}
 
 This section gathers the methods in which a symmetry is \emph{known in advance} and deliberately built into the learning system.
@@ -765,7 +761,6 @@ In between sits the design of \emph{symmetric frameworks}, such as Siamese netwo
 These strategies are not mutually exclusive and are frequently combined; we discuss the trade-offs between them, in particular the recurring question of whether the cost of exact equivariance is justified over a simpler model trained with augmentation.
 
 \subsection{Geometric Deep Learning}\label{sec:gdl}
-
 % Irreducible representation (seems to be particularly used for E(n) equivariance)
 % add citation to dehmamy2021anips: achieve equivariance through Lie algebra
 % scale: sosnovik2020 (scale equivariant convolutions), bekkers2021, sosnovik20212iwcacvw (application of scale equivariance in object tracking with Siamese architecture)
@@ -777,13 +772,8 @@ These strategies are not mutually exclusive and are frequently combined; we disc
 % could add a warning about misspecification of symmetries: yang2023p4icml,finzi2021anips and the fact that approximate equivariance addresses the case where specification is slightly off due to real world fluctuations
 % wang2025: permutation equivariant input in scene reconstruction
 
-Geometric Deep Learning (GDL) \citep{bronstein2017ispm,bronstein2021} studies how to exploit the symmetry group and geometric structure of the data domain to design architectures that are sample-efficient, generalizable, and principled.
-It provides a unifying framework for deep learning architectures by viewing them through the lens of symmetry and group equi\slash invariance.
-Its central thesis, inspired by Felix Klein's Erlangen Program, is that the appropriate inductive bias for a learning problem is determined by the symmetries of its domain.
-This perspective simultaneously furnishes a common mathematical framework for existing architectures such as CNNs, RNNs, GNNs and Transformers, and a constructive blueprint for designing new ones on non-Euclidean domains such as graphs and manifolds.
-As a result, equivariant neural network architectures typically benefit from fewer learnable parameters, better interpretability (\textit{e.g.} CNNs filter), robustness guarantees (since the network behavior is dictated by symmetry groups, its response to some data manipulation is deterministic) and generalization properties (out-of-distribution data points can become in-distribution once a symmetry is imposed \textit{e.g.} an image with an upside down car).
 A treatment of the underlying mathematical foundations is given in \citep{borde2025,gerken2021,carlsson}, with \citet{borde2025} being the most accessible.
-While the scope of GDL includes a taxonomic point of view and geometry of the domain itself, we will focus on equivariant architecture design since it directly pertains to symmetries.
+While the scope of GDL includes a taxonomic point of view and geometry of the domain itself, we will focus on its Equivariant Deep Learning (EDL) core since it directly pertains to symmetries.
 
 \subsubsection{The role of convolution}
 \citet{cohen2016} showed how convolutional networks can be generalized into \textit{Group Convolutional neural networks} (G-CNNs) to exploit larger groups of symmetries, including discrete rotations and reflections.
