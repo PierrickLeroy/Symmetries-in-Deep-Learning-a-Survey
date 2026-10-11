@@ -771,15 +771,15 @@ These strategies are not mutually exclusive and are frequently combined; we disc
 % romero2023tmlr: scale equivariance for audio signal
 % could add a warning about misspecification of symmetries: yang2023p4icml,finzi2021anips and the fact that approximate equivariance addresses the case where specification is slightly off due to real world fluctuations
 % wang2025: permutation equivariant input in scene reconstruction
+% monti20172iccvprc early work on GDL by Bronstein
 
 \subsubsection{The role of convolution}
-\citet{cohen2016} showed how convolutional networks can be generalized into \textit{Group Convolutional neural networks} (G-CNNs) to exploit larger groups of symmetries, including discrete rotations and reflections.
+\citet{cohen2016} showed how classic convolutional networks can be generalized into \textit{Group Convolutional Neural Networks} (G-CNNs) to exploit larger groups of symmetries, including discrete rotations and reflections.
 An important result of GDL is obtained by \citet{kondor2018p3icml} for compact groups.
-They provide general guidelines for constructing equivariant neural networks with respect to compact groups and show that the convolutional structure is not just sufficient but necessary for designing equivariant NN (under some hypotheses).
+They provide general guidelines for constructing equivariant neural networks with respect to compact groups and show that the convolutional structure is not just sufficient but necessary for designing equivariant NN under some hypotheses (linear map between transitive domains of a compact group with pointwise activation).
 Similar statements are obtained in the context of the $SE(3)$ group~\citep{weiler2018anips} and for homogeneous spaces in \citet{cohen2019anips} by rephrasing G-CNNs in a general fiber bundle formalism.
 
-\subsubsection{Euclidean transformations}
-% Tess schmidt, Euclidean neural network, spherical harmonics, irreducible representations
+\subsubsection{Euclidean transformations} % Tess Smidt, Euclidean neural network, spherical harmonics, irreducible representations
 % thomas2018
 An important branch of GDL is concerned with Euclidean transformation since these are pertaining to the physical world.
 With the introduction of G-CNNs, \citet{cohen2016} demonstrate its principle on discrete rotations and reflections.
@@ -795,7 +795,6 @@ G-CNNs are further generalized to arbitrary Lie group in \citep{bekkers2021}.
 \citet{finzi2021p3icml} provides a general algorithm for constructing equivariant MLP for arbitrary matrix groups by collecting symmetry constraints and solving the system with an SVD decomposition, recovering known solutions as special cases.
 % Gauge
 A gauge-equivariance perspective is given by \citep{cohen2019p3icml,gerken2021,weiler2026,boyda2021prd}.
-% GATr and Clifford/geometric algebra approach: ruhe2023, brehmer2023
 
 \subsubsection{Permutations}
 
@@ -808,10 +807,10 @@ PointNet \citep{qi2017a} pioneered deep learning directly on raw point clouds by
 
 \paragraph{Graphs}
 % huang2023: distinguishes active and passive graph symmetries in constrat to CNNs
+% morris2019pacai, xu2019, bouritsas2021, bodnar2021a, maron2020
 On graphs, permutation equivariance applies to the node indices.
 The message passing framework \citep{gilmer2017} unified earlier graph models \citep{duvenaud2015,kipf2017,bruna2014} into a single formalism involving a message function, an aggregation function (enforcing permutation invariance), and an update function.
 \citet{velickovic2018} incorporated an attention-like mechanism into this scheme while preserving permutation invariance.
-% TODO: morris2019pacai, xu2019, bouritsas2021, bodnar2021a, maron2020
 For geometric graphs, where nodes carry coordinates in $\mathbb{R}^3$, permutation equivariance must be combined with Euclidean symmetries.
 \citet{satorras2021p3icml} achieves joint $E(n)$-equivariance and permutation equivariance through invariant edge features based on interpoint distances, without requiring costly higher-order representations.
 \citet{fuchs2020} attains $SE(3)$-equivariance via self-attention on steerable features, at higher computational cost but with greater expressivity.
