@@ -752,15 +752,20 @@ Symmetry thus acts in two ways: \emph{global} symmetry, one group acting on the 
 
 \section{Symmetry as a Design Principle}
 
-This section gathers the methods in which a symmetry is \emph{known in advance} and deliberately built into the learning system.
-This prescriptive stance (\Cref{tab:taxonomy}) often assumes prior knowledge of the group $G$ acting on the problem and treats it as an inductive bias to be enforced.
-We distinguish three broad strategies, ordered by how tightly the symmetry is coupled to the model.
-At one extreme, \emph{equivariant architectures} encode the symmetry \emph{implicitly} in the hypothesis class, so that invariance or equivariance holds by construction for every parameter setting; geometric deep learning is the systematic development of this idea.
-At the other extreme, \emph{data augmentation} leaves the architecture untouched and instead enforces the symmetry \emph{explicitly} on the data, encouraging---but not guaranteeing---invariance through orbit-averaged training.
-In between sits the design of \emph{symmetric frameworks}, such as Siamese networks, where the symmetry is expressed in the training objective and the relational structure of the model rather than in either the layers or the data alone.
-These strategies are not mutually exclusive and are frequently combined; we discuss the trade-offs between them, in particular the recurring question of whether the cost of exact equivariance is justified over a simpler model trained with augmentation.
+This section gathers the methods in which a symmetry often \emph{known} in advance is built into a learning system.
+Here symmetry is a muse, it is recognized and taken into account to guide design as a response to the desire to "do things right"; therefore the purpose tends to be prescriptive, best illustrated by \cref{sec:gdl} on Geometric Deep Learning which proposes ways to distill a ground-truth problem symmetry into the hypothesis class.
+This is in contrast with \Cref{sec:parameter-space-symmetries} where symmetries are more like unanticipated emerging artifacts of a parametrization.
 
-\subsection{Geometric Deep Learning}\label{sec:gdl}
+We cover three subparts.
+The first two are Equivariant Deep Learning (EDL, \ref{sec:gdl}) and Data Augmentation (DA, \ref{sec:data-augmentation}) which both work at the interface between problem and model symmetries with the goal of distilling the first into the second.
+They approximately split on the explicitness axis, with EDL tending to be more formalized and group theoretic than DA.
+\emph{Equivariant architectures} encode the symmetry \emph{explicitly} in the hypothesis class, so that invariance or equivariance holds by construction for every parameter setting.
+Architecture-agnostic, DA instead enforces the symmetry \emph{implicitly} through input space transformations $\mathcal X \to \mathcal X$, encouraging but not guaranteeing invariance through orbit-averaged training.
+Note that these transformation can be expressed (implemented) by the designer in an explicit manner, but this is different from the intended meaning of explicitness in \Cref{tab:taxonomy}.
+Finally, \emph{framework symmetries} (\ref{sec:framework-symmetries}) differ on the object axis: they concern the training procedure itself, involving several forward calls (joint embeddings, \ref{sec:joint-embedding}), assumption on the way the data stream is presented (data ordering, \ref{sec:data-ordering}) or arise from the way the learning framework is set up rather than from a property of the problem (criterion symmetries, \ref{sec:criterion-symmetries}).
+
+
+\subsection{Geometric and Equivariant Deep Learning}\label{sec:gdl}
 % Irreducible representation (seems to be particularly used for E(n) equivariance)
 % add citation to dehmamy2021anips: achieve equivariance through Lie algebra
 % scale: sosnovik2020 (scale equivariant convolutions), bekkers2021, sosnovik20212iwcacvw (application of scale equivariance in object tracking with Siamese architecture)
@@ -916,7 +921,7 @@ Similarly to DA, FA can be applied beyond strict group-invariance settings, acco
 Comparing DA to equivariant architectures, \citet{nordenfors2024} show that the relative advantage depends on a compatibility condition between the spaces of admissible and equivariant layers: when it holds, the two strategies share the same set of equivariant stationary points.
 Empirically, \citet{shen2026} find that DA rapidly learn 3D rotation equivariance with negligible efficiency gap attributable to lack of strict equivariance.
 
-\subsection{Framework Symmetries}
+\subsection{Framework Symmetries}\label{sec:framework-symmetries}
 We now turn our attention to symmetries appearing in the ``outside scope'', which either arise in the way data is piped through during training (\Cref{sec:data-ordering,sec:joint-embedding} on data ordering and joint-embedding) or reflect a limitation in downstream processing rather than a true problem constraint: criterion symmetries (\Cref{sec:criterion-symmetries}) are the irreducible loss symmetries that cannot be addressed through parameter or architectural adjustments.
 
 \subsubsection{Data Ordering}\label{sec:data-ordering}
