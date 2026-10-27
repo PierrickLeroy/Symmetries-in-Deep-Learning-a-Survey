@@ -863,7 +863,7 @@ While not preventing adoption of these methods, this create a bottleneck because
     \item \textbf{Inflexibility}: once a symmetry is hard-coded into the architecture, the model cannot adapt if the assumptions are wrong.
     Many real-world datasets only approximately satisfy a given symmetry, for instance due to sensor noise, occlusions, or genuine symmetry breaking in the underlying phenomenon and in that case strictly equivariant models may then be over-constrained
 \end{enumerate}
-Fortunately, these hurdles are being addressed: (1) by symmetry discovery (\Cref{sec:sym-disc-from-data}), (2) by theoretical work aiming to construct equivariant networks for arbitrary groups and (3) by approximate or soft-equivariance methods (\Cref{sec:soft-equivariance}).
+These hurdles are not left unaddressed: (1) by symmetry discovery (\Cref{sec:sym-disc-from-data}); (2) by theoretical addressing multiple groups with the same recipe \citep{ravanbakhsh2017p3icml,finzi2020p3icml,finzi2021p3icml,pearce-crump2023p4icml}, foundational approaches \citep{goel2025} or symmetrization of a backbone \citep{puny2021,kaba2023p4icml}; (3) by approximate soft-equivariance methods (\Cref{sec:soft-equivariance}).
 
 \subsubsection{Equivariant or vanilla architectures ?}
 % add: brehmer2025
