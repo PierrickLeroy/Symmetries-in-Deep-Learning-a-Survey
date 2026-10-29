@@ -104,7 +104,7 @@ Symmetric architectures (such as Siamese networks) are surveyed in \citep{ilina2
 \citet{zhao2025} focuses on parameter-space symmetries: transformation that change the representation of a neural network but do not modify the implemented function.
 \citet{sipiran202523scgpis} references symmetry discovery methods in 3D shapes.
 % geometric deep learning
-\citet{bronstein2021} is the reference textbook on geometric deep learning,  \citet{gerken2021,carlsson} study the mathematical formalism of this field and \citet{basheer2025ijdsa,habte2023} focus more specifically on equivariant convolutions, \citet{fei2024air} on 3D rotations and \citet{seo2025a} on robotics.
+\citet{bronstein2021} is the reference textbook on geometric deep learning,  \citet{gerken2021,carlsson2025} study the mathematical formalism of this field and \citet{basheer2025ijdsa,habte2023} focus more specifically on equivariant convolutions, \citet{fei2024air} on 3D rotations and \citet{seo2025a} on robotics.
 \citet{rath2024air} gathers methods that integrate geometric prior knowledge to neural network such that their representations are invariant or equivariant.
 Compared to these works, we work in reverse and go broad, starting from the concept of symmetry, listing its occurrences and trying to delineate a conceptual understanding, adopting a high level point of view.
 
@@ -180,7 +180,7 @@ We propose a faceted taxonomy in \Cref{tab:taxonomy} to categorize occurrences o
 \section{Background: Mathematical Foundations of Symmetry}
 % Conservation laws ?
 % Core notions
-% \cite{borde2025,carlsson,chen2020,2023tg,bronstein2021}
+% \cite{borde2025,carlsson2025,chen2020,2023tg,bronstein2021}
 In \Cref{sec:what-is-sym}, we start with a lightweight introduction to the main concepts, made precise in the subsequent subsections.
 These introduce only the machinery used later in the survey: groups, actions, orbits, stabilizers and quotients (\Cref{sec:group-theory-backbone}), used throughout and in particular for parameter-space symmetries; representations and intertwiners (\Cref{subsec:representation-theory}); Lie groups and Lie algebras (\Cref{subsubsec:lie-groups}), for continuous symmetries, symmetry discovery and conservation laws; compactness, Haar measure and the Peter--Weyl theorem (\Cref{subsec:compactness-peter-weyl}) and harmonic analysis (\Cref{subsec:harmonic-analysis}), which underlie equivariant architectures; and homogeneous spaces and bundles (\Cref{subsec:homogeneous-spaces,subsec:manifold-gauge-theory}), the domains of equivariant and gauge-equivariant convolutions.
 
@@ -892,7 +892,7 @@ with the hope of encouraging the learned function to be approximately invariant 
 Compared to designing an equivariant architecture, DA is attractive in several practical scenarios: it can be applied on top of any pretrained model without architectural changes, making it well-suited to fine-tuning; it requires no group-theoretic implementation, lowering the barrier for rapid prototyping; it naturally accommodates complex or poorly characterized transformations (\textit{e.g.} variations in illumination, viewpoint, or background in images) not easily amenable to an algebraic description and it handles approximate or partial symmetries (see \Cref{sec:incomplete-symmetries}) without additional formalism.
 On the downside, covering a continuous symmetry group is impossible and materialized augmentation increase storage and compute requirements proportionally to the number of samples drawn per group orbit.
 
-\paragraph{Theoretical approaches}
+\subsubsection{Theoretical approaches}
 \citet{chen2020} propose a group-theoretic framework for DA and formally connect orbit averaging with lower generalization error.
 Variance reduction results can also be obtained \citep{chen2020,dao2019p3icml}.
 The notion of orbit averaging is declined and practically implemented in \citet{benton2020anips}.
@@ -901,7 +901,7 @@ For infinite-width and kernel-classifier settings, DA is shown to be equivalent 
 The value of DA might be context dependent with relevant aspect being the learning regime (over- or underparametrized) and task (classification or regression).
 A spectral point of view is given in \citet{lin2024} while \citet{lawrence2026} further studies the role of the symmetry distribution.
 
-\paragraph{Automated DA strategies}\label{par:auto-da}
+\subsubsection{Automated DA strategies}\label{par:auto-da}
 % automated DA vs sym discovery: automated DA has the goal of producing new augmentations, it can be transductive whereas sym discovery is more inductive and aims at recognizing the group and its actions (which can be an intermediate step before generating augmentations anyways)
 Rather than hand-crafting augmentation policies, several works have proposed to search for them automatically.
 \citet{cubuk20192iccvprc} introduce AutoAugment, which uses reinforcement learning to find a policy composed of image-processing operations such as rotations, translations, and shearing, optimized for validation accuracy.
@@ -913,7 +913,7 @@ A practical advantage shared by all these approaches is interpretability: learne
 One limitation, however, is that materializing augmentations requires an explicit parametric form for the transformations.
 \citet{shoshan2021} partly circumvent this in the face-generation setting by showing that a scalar attribute predictor (\textit{e.g.} age) provides sufficient supervision for a GAN to learn to manipulate that attribute in a controllable way without a closed-form group action.
 
-\paragraph{DA in Relation to Other Symmetry-Aware Methods}
+\subsubsection{DA in Relation to Other Symmetry-Aware Methods}
 Feature Averaging (FA) is another strategy for incorporating symmetries by averaging model outputs over a set of transformed inputs, effectively symmetrizing the model.
 Theoretically, \citet{dao2019p3icml} show that DA can be approximated in first-order by FA, while \citet{maass2024} establish, in the infinite-width limit, that DA and FA induce identical gradient flow dynamics when the activation functions respect the group action.
 Despite this asymptotic equivalence, \citet{lyle2020} prove, via PAC-Bayes bounds, that FA yields strictly lower generalization error than DA for convex losses, suggesting FA is preferable when applicable.
