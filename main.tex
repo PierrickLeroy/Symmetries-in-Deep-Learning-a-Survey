@@ -874,8 +874,15 @@ Research then sought to surpass this barrier by adding subgraph counts as struct
 \citet{maron2020} showed that $k$-th order invariant networks are at least as powerful as $k$-WL, and \citet{bodnar2021a} that cell complex networks are strictly more powerful than $1$-WL, a motivation for TDL (\Cref{sec:edl-permutation}).
 However, the quest for expressivity need not be an arms race towards higher orders: \citet{hordan2024} showed that $2$-WL on complete weighted graphs is already \emph{complete} for position--velocity point clouds, i.e.\ separates all orbits under permutations, rotations and translations.
 
-
 \subsubsection{Applications}
+EDL principles have permeated a wide range of domains.
+In atomistic modelling, \emph{neural network interatomic potentials} (NNIPs) serve as cheap surrogates of \textit{ab initio} methods such as density functional theory, predicting energies and per-atom forces from atomic configurations with $E(3)$-invariant \citep{schutt2017anips} or $E(3)$-equivariant \citep{batzner2022nc,liao2022,liao2023,passaro2023} architectures.
+Equivariant GNNs also simulate $n$-body dynamics \citep{satorras2021p3icml} and generate 3D molecules via equivariant diffusion \citep{cornet2024}.
+In structural biology, geometric inductive biases underpin protein structure prediction \citep{jumper2021na,baek2021s} and RNA structure scoring \citep{townshend2021s}.
+Further scientific uses include Lorentz-equivariant jet tagging in particle physics \citep{bogatskiy2020p3icml} and 3D G-CNNs for pulmonary nodule detection in medical imaging \citep{winkels2019mia}.
+In computer vision, spherical CNNs handle omnidirectional images and global climate patterns \citep{cohen2018,cohen2019p3icml}, while rotation and scale equivariance benefit 3D object detection \citep{yu2022} and object tracking \citep{sosnovik2021}, respectively.
+Beyond vision, scale--translation equivariance has been applied to raw audio \citep{romero2023tmlr}, permutation equivariance to compositional generalization in language \citep{gordon2020}, state--action symmetries to reinforcement learning \citep{vanderpol2020anips}, and Euclidean equivariance to robotics and 3D scene understanding \citep{seo2025a,fei2024air}.
+
 
 \subsubsection{To be or not to be equivariant: tradeoffs}
 
