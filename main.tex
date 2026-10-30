@@ -820,7 +820,7 @@ Continuous $SE(3)$-equivariance mostly relies on irreducible representations (ir
 The e3nn library \citep{geiger2022} implements these ideas.
 \emph{Equiformer} is an irreps-based transformer for atomistic graphs \citep{liao2022,liao2023}.
 
-\paragraph{Permutation: sets, point clouds and graphs}
+\paragraph{Permutation: sets, point clouds and graphs}\label{sec:edl-permutation}
 When data is unstructured (sets), spatially unorganized (point clouds), or defined on a graph, models must be invariant or equivariant to the order of input elements.
 We start with sets and point clouds since they have weaker structure.
 Stacking $n$ elements as the rows of $X\in\mathbb{R}^{n\times d}$, $\sigma\in S_n$ acts by $X\mapsto P_\sigma X$, with $P_\sigma$ the permutation matrix: set-level predictions must be invariant, $f(P_\sigma X)=f(X)$, and per-element ones equivariant, $f(P_\sigma X)=P_\sigma f(X)$.
@@ -846,14 +846,34 @@ The geometric and topological extensions compose: \citet{battiloro2024} construc
 \paragraph{Gauge equivariance}
 
 \subsubsection{Expressivity analysis}
-
-
+Equivariant architectures guarantee by construction that $\mathcal{H}\subseteq C_G(\mathcal{X},\mathcal{Y})$, the space of continuous $G$-equivariant maps.
+Expressivity is about the reverse inclusion.
+We report three answers from finest to coarsest: \emph{representation theorems} describe $C_G(\mathcal{X},\mathcal{Y})$, or a subclass of it such as linear maps, through an explicit form; \emph{universality} asks if $\overline{\mathcal{H}}=C_G(\mathcal{X},\mathcal{Y})$; and \emph{separation power} cares about orbit, asking which inputs $x \not\sim_G x'$ $\mathcal H$ can tell apart, i.e. if there is an $f \in\mathcal H$ with $f(x)\neq f(x')$.
 
 \paragraph{Representation theorems and the particular role of the convolution.}
+Representation theorems give an explicit form that every equivariant map must take; we give two examples.
+For linear maps, they lead to ``convolution is all you need'' statements.
+\citet{kondor2018p3icml} prove that, for a compact group $G$, linear equivariant maps between feature spaces over homogeneous spaces of $G$ are exactly generalized convolutions: convolution is not only sufficient for equivariance but also necessary.
+\citet{weiler2018anips} prove the analogous statement for $SE(3)$ and feature fields over $\mathbb{R}^3$, and \citet{cohen2019anips} extend it to general homogeneous spaces from a fiber bundle perspective (\Cref{subsec:homogeneous-spaces}).
+On sets, \citet{zaheer2018} show that every permutation-invariant function on a countable domain decomposes as $f(X)=\psi\big(\sum_{x\in X}\phi(x)\big)$.
+
+Such characterizations guide the design of $\mathcal{H}$: \textit{e.g.}\ approximating $\phi$ and $\psi$ by MLPs makes Deep Sets a universal approximator, a notion we now address.
 
 \paragraph{Universality}
+% pacini2026: something about \overline H not being too far from H
+Universality is a strong requirement: $\overline{\mathcal{H}} = C_G(\mathcal{X},\mathcal{Y})$, typically for uniform convergence on compact sets.
+For finite groups, \citet{ravanbakhsh2020p3icml} prove that equivariant MLPs with a single hidden layer on which $G$ acts regularly are universal.
+For continuous groups, \citet{yarotsky2018r} covers invariant maps under compact groups and equivariant maps under translations and $SE(2)$, \citet{bogatskiy2020p3icml} tensor-product networks for $SO(3)$ and the Lorentz group, and \citet{vadgama2025} their $SE(3)$-equivariant network Rapidash.
+\citet{elbaz2025} show that FS-KANs, permutation-equivariant Kolmogorov--Arnold networks, match the expressive power of parameter-sharing MLPs and thus any universality statement transfers.
 
 \paragraph{Separation power}
+Universality for invariant function implies that distinct orbits can be take different values (up to continuity), hence separation power is the weaker notion.
+GNNs have been extensively studied from this angle through the \emph{WL hierarchy} of Weisfeiler--Lehman graph isomorphism tests, which ranks GNN architectures by their ability to distinguish non-isomorphic graphs.
+\citet{xu2019,morris2019pacai} showed that message passing GNNs (MPNNs) are at most as powerful as $1$-WL, i.e.\ they cannot tell apart two graphs, or two nodes, that $1$-WL cannot.
+Research then sought to surpass this barrier by adding subgraph counts as structural features \citep{bouritsas2021}, going to higher orders \citep{morris2019pacai,maron2020}, or lifting graphs to cell complexes \citep{bodnar2021a}.
+\citet{maron2020} showed that $k$-th order invariant networks are at least as powerful as $k$-WL, and \citet{bodnar2021a} that cell complex networks are strictly more powerful than $1$-WL, a motivation for TDL (\Cref{sec:edl-permutation}).
+However, the quest for expressivity need not be an arms race towards higher orders: \citet{hordan2024} showed that $2$-WL on complete weighted graphs is already \emph{complete} for position--velocity point clouds, i.e.\ separates all orbits under permutations, rotations and translations.
+
 
 \subsubsection{Applications}
 

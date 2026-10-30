@@ -1,12 +1,3 @@
-\subsubsection{Expressivity}
-Enforcing symmetry constraints raises the question of expressivity (or \textit{universality} \citep{maass2024}) \textit{i.e.} the ability to represent an arbitrary function within its symmetric hypothesis class.
-In that regard, distinguishing non-isomorphic graphs has been a central theoretical concern in the GNN community: \citet{xu2019} proved that message passing networks are at most as powerful as the Weisfeiler--Lehman (WL) graph isomorphism test, and \citet{maron2020} showed that $k$-order tensor networks are at least as powerful as the $k$-WL test.
-Subsequent work sought to surpass the 1-WL barrier by incorporating structural features: \citet{bouritsas2021} counts subgraph isomorphisms, and \citet{bodnar2021a} lifts graphs to cell complexes, achieving provably greater expressivity while retaining efficient computation.
-\citet{zaheer2018} characterizes permutation-invariant functions on sets and derives necessary and sufficient conditions for permutation equivariance in deep models, showing that any such function decomposes into a sum of per-element transformations followed by a global aggregation (universal approximation of set functions)
-Universality results remain scarce, for Euclidean equivariant networks \citet{yarotsky2018r} establishes universal approximation for invariant maps, and \citet{bogatskiy2020p3icml} proves universality for Lorentz-equivariant models, while \citet{kondor2018p3icml} shows that equivariant linear maps between feature spaces over homogeneous spaces are necessarily generalized convolutions and \citet{pacini2026} establishes that shallow equivariant models can fail to be universal, but that sufficient depth or the addition of appropriate readout layers restores universality within the entry-wise separable regime.
-
-As already noted in the discussion of expressivity, lifting graphs to cell complexes provably strengthens the discriminative power of message passing beyond the 1-WL barrier \citep{bodnar2021a}.
-
 \subsubsection{The role of convolution}
 An important result is obtained by \citet{kondor2018p3icml} for compact groups.
 They provide general guidelines for constructing equivariant neural networks with respect to compact groups and show that the convolutional structure is not just sufficient but necessary for designing equivariant NN under some hypotheses (linear map between transitive domains of a compact group with pointwise activation).

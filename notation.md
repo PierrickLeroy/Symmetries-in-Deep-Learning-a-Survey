@@ -36,6 +36,8 @@ $$f(\rho_X(g)\,x) = \rho_Y(g)\,f(x).$$
 | Dataset | $\mathcal{D}$ | |
 | Hypothesis class | $\mathcal{H}$ | |
 | Function space | $\mathcal{F}$ | |
+| Continuous $G$-equivariant maps $\mathcal{X}\to\mathcal{Y}$ | $C_G(\mathcal{X},\mathcal{Y})$ | Invariant case: trivial action on $\mathcal{Y}$, e.g. $C_G(\mathcal{X},\mathbb{R})$. Topology of uniform convergence on compact sets unless stated; closure written $\overline{\mathcal{H}}$ (not `\bar`) |
+| Linear $G$-equivariant maps (intertwiners) | $\operatorname{Hom}_G(V,W)$ | Linear counterpart of $C_G$; already used in the Background |
 | Augmentation family | $\mathcal{T}$ | |
 | Vector space carrying a representation | $V$, $W$ | Plain, not calligraphic — these are representation carriers, not data spaces |
 | Manifold in a purely geometric statement | $M$ | e.g. GEOMANCER's $M = M_1\times M_2$ |
