@@ -766,17 +766,9 @@ Finally, \emph{framework symmetries} (\ref{sec:framework-symmetries}) differ on 
 
 
 \subsection{Geometric and Equivariant Deep Learning}\label{sec:gdl}
-% Irreducible representation (seems to be particularly used for E(n) equivariance)
-% add citation to dehmamy2021anips: achieve equivariance through Lie algebra
-% scale: sosnovik2020 (scale equivariant convolutions), bekkers2021, sosnovik20212iwcacvw (application of scale equivariance in object tracking with Siamese architecture)
-% ravanbakhsh2017p3icml: weight-tying and equivariance
-% place G-equivariant convolution and G-steerable convolution more clearly as two emblematic methods to achieve equivariance
+% dehmamy2021anips: achieve equivariance through Lie algebra
 % figure: draft/orbit-stability.png to reproduce or illustrate conceptually (equivariant models guarantee results don't change over an orbit)
-% figure: reproduce a toy example where equivariant models are more sample efficient ie they reach faster the best accuracy than vanilla models
-% romero2023tmlr: scale equivariance for audio signal
-% could add a warning about misspecification of symmetries: yang2023p4icml,finzi2021anips and the fact that approximate equivariance addresses the case where specification is slightly off due to real world fluctuations
-% wang2025: permutation equivariant input in scene reconstruction
-% monti20172iccvprc early work on GDL by Bronstein
+% Graphs, huang2023: distinguishes active and passive graph symmetries in constrat to CNNs
 
 \subsubsection{The role of convolution}
 \citet{cohen2016} showed how classic convolutional networks can be generalized into \textit{Group Convolutional Neural Networks} (G-CNNs) to exploit larger groups of symmetries, including discrete rotations and reflections.
@@ -784,8 +776,7 @@ An important result of GDL is obtained by \citet{kondor2018p3icml} for compact g
 They provide general guidelines for constructing equivariant neural networks with respect to compact groups and show that the convolutional structure is not just sufficient but necessary for designing equivariant NN under some hypotheses (linear map between transitive domains of a compact group with pointwise activation).
 Similar statements are obtained in the context of the $SE(3)$ group~\citep{weiler2018anips} and for homogeneous spaces in \citet{cohen2019anips} by rephrasing G-CNNs in a general fiber bundle formalism.
 
-\subsubsection{Euclidean transformations} % Tess Smidt, Euclidean neural network, spherical harmonics, irreducible representations
-% thomas2018
+\subsubsection{Euclidean transformations}
 An important branch of GDL is concerned with Euclidean transformation since these are pertaining to the physical world.
 With the introduction of G-CNNs, \citet{cohen2016} demonstrate its principle on discrete rotations and reflections.
 \citet{worrall2017} achieve continuous rotation equivariance for CNN on 2D images by restricting the filters to the class of circular harmonics.
@@ -794,25 +785,20 @@ For planar images, \citet{weiler2019anips} provides a general description of $E(
 A practical software implementing $E(3)$-equivariant operations including tensor products, spherical harmonics, and attention mechanisms is provided by \texttt{e3nn} \citep{geiger2022}.
 
 \subsubsection{Extensions: Lie groups and Gauges}
-% Lie groups
 \citet{finzi2020p3icml} proposes a general method to construct equivariant convolutional layers for any Lie group with a surjective exponential map.
 G-CNNs are further generalized to arbitrary Lie group in \citep{bekkers2021}.
 \citet{finzi2021p3icml} provides a general algorithm for constructing equivariant MLP for arbitrary matrix groups by collecting symmetry constraints and solving the system with an SVD decomposition, recovering known solutions as special cases.
-% Gauge
 A gauge-equivariance perspective is given by \citep{cohen2019p3icml,gerken2021,weiler2026,boyda2021prd}.
 
 \subsubsection{Permutations}
 
 \paragraph{Sets}
-% maron2020p3icml
 When data is unstructured (sets), spatially unorganized (point clouds), or defined on a graph, models must be invariant to the order of input elements.
 \citet{zaheer2018} characterizes permutation-invariant functions on sets and derives necessary and sufficient conditions for permutation equivariance in deep models, showing that any such function decomposes into a sum of per-element transformations followed by a global aggregation (universal approximation of set functions) and \citet{lee2019p3icml} extends the methods to allow for interaction between set elements with an attention-based architecture.
 PointNet \citep{qi2017a} pioneered deep learning directly on raw point clouds by applying a symmetric aggregation function to independently transformed elements, and PointNet++ \citep{qi2017} introduced hierarchical local grouping to capture multi-scale geometric structure.
 \citet{wang2019} bridges point clouds and graphs by dynamically computing a k-nearest-neighbor graph in feature space at each layer, enabling richer local context without a fixed input graph.
 
 \paragraph{Graphs}
-% huang2023: distinguishes active and passive graph symmetries in constrat to CNNs
-% morris2019pacai, xu2019, bouritsas2021, bodnar2021a, maron2020
 On graphs, permutation equivariance applies to the node indices.
 The message passing framework \citep{gilmer2017} unified earlier graph models \citep{duvenaud2015,kipf2017,bruna2014} into a single formalism involving a message function, an aggregation function (enforcing permutation invariance), and an update function.
 \citet{velickovic2018} incorporated an attention-like mechanism into this scheme while preserving permutation invariance.
@@ -831,10 +817,8 @@ In computer vision, equivariant networks have been applied to omnidirectional im
 For robotics and 3D scene understanding, equivariance to Euclidean transformations is a natural requirement, as surveyed in \citep{seo2025a,fei2024air}.
 
 \subsubsection{Expressivity}
-% Expressivity: do symmetry constraints impact the approximation power of GDL models ?
-% ravanbakhsh2020p3icml: universality of an MLP architecture
 Enforcing symmetry constraints raises the question of expressivity (or \textit{universality} \citep{maass2024}) \textit{i.e.} the ability to represent an arbitrary function within its symmetric hypothesis class.
-In that regard, distinguishing non-isomorphic graphs has been a central theoretical concern in the GNN community: \citet{xu2019} proved that message passing networks are at most as powerful as the Weisfeiler--Lehman (WL) graph isomorphism test, and \citet{maron2020} showed that higher-order tensor networks can match higher-order WL tests.
+In that regard, distinguishing non-isomorphic graphs has been a central theoretical concern in the GNN community: \citet{xu2019} proved that message passing networks are at most as powerful as the Weisfeiler--Lehman (WL) graph isomorphism test, and \citet{maron2020} showed that $k$-order tensor networks are at least as powerful as the $k$-WL test.
 Subsequent work sought to surpass the 1-WL barrier by incorporating structural features: \citet{bouritsas2021} counts subgraph isomorphisms, and \citet{bodnar2021a} lifts graphs to cell complexes, achieving provably greater expressivity while retaining efficient computation.
 Universality results remain scarce, for Euclidean equivariant networks \citet{yarotsky2018r} establishes universal approximation for invariant maps, and \citet{bogatskiy2020p3icml} proves universality for Lorentz-equivariant models, while \citet{kondor2018p3icml} shows that equivariant linear maps between feature spaces over homogeneous spaces are necessarily generalized convolutions and \citet{pacini2026} establishes that shallow equivariant models can fail to be universal, but that sufficient depth or the addition of appropriate readout layers restores universality within the entry-wise separable regime.
 
@@ -848,11 +832,10 @@ The two design axes can be combined: \citet{battiloro2024} constructs $E(n)$-equ
 \subsubsection{Challenges}
 
 \paragraph{Optimization}
-% Optimization of GDL models: does the symmetry constraint make optimization harder compared to a vanilla model ?
 Maintaining exact equivariance can introduce significant computational overhead.
 Models based on irreducible representations are computationally heavy even though recent work has optimized the tensor product decomposition \citep{passaro2023,luo2024a}.
 Equivariant architectures may require higher numerical precision, larger memory footprints, longer wall-clock training times relative to unconstrained counterparts and have a dependence to the input size which can limit their scalability to large systems \citep{bogatskiy2020p3icml}.
-Optimization difficulties for equivariant neural networks have been observed \citep{pertigkiozoglou2024,lawrence2026}.
+Optimization difficulties for equivariant neural networks have been observed \citep{pertigkiozoglou2024}.
 
 \paragraph{The ``symmetry bottleneck''}\label{par:sym-bottleneck}
 Equivariant neural network methods demand \textit{a priori} knowledge of the data's symmetries before they can be hard coded to the architecture.
@@ -866,13 +849,6 @@ While not preventing adoption of these methods, this create a bottleneck because
 These hurdles are not left unaddressed: (1) by symmetry discovery (\Cref{sec:sym-disc-from-data}); (2) by theoretical addressing multiple groups with the same recipe \citep{ravanbakhsh2017p3icml,finzi2020p3icml,finzi2021p3icml,pearce-crump2023p4icml}, foundational approaches \citep{goel2025} or symmetrization of a backbone \citep{puny2021,kaba2023p4icml}; (3) by approximate soft-equivariance methods (\Cref{sec:soft-equivariance}).
 
 \subsubsection{Equivariant or vanilla architectures ?}
-% add: brehmer2025
-% tahmasebi2023: similar to elesedy2021p3icml, obtains theoretical sample complexity gains
-% vadgama2025 similar to lawrence2026
-% ref to distributional SB
-% abramson2024n: alphafold (jumper2021na) train equivariance by data augmentation. Similarly wang2024p4icmla argue for scale above equivariant design for molecular conformers prediction.
-% qu2024anips: scale compensates for lack of symmetry prior
-% olah: same features can be learned by vanilla and equivariant architecture, could lead to interactive design where vanilla model prototype quickly/discover then equivariant models are developed (see also krippendorf2020, hu2025nn on relying on nn to extract symmetries in symmetry as an unknown part)
 A practical question is whether the design costs, potential difficulties in optimization and hardware regret due to less mature technology of equivariant models is justified over a simpler model, possibly trained with data augmentation.
 \citet{nordenfors2024} compare stability of equivariant and vanilla counterpart with data augmentation and \citet{shen2026} provides empirical evidence that, for 3D-rotation equivariant tasks, unconstrained models trained with augmentation reduce their equivariance error rapidly to below 2\% of the total loss within thousands of steps
 However equivariant architectures are arguably preferable when data is scarce, when physical consistency of predictions is required, or when generalization to unseen orientations or configurations is critical.
@@ -1063,7 +1039,7 @@ CLIP also uses comparatively little data augmentation, presumably because the im
 Multimodal joint-embeddings highlight the question of a representational hierarchy: \citet{desai2023p4icml} replace the Euclidean embedding space with a hyperbolic one paired with an entailment loss, so that the difference in level of detail between an image and the text describing is represented geometrically.
 
 \subsubsection{Criterion Symmetries}\label{sec:criterion-symmetries}
-
+% wang2025: quotient loss for SE(3) + orbit loss for scale = Sim(3) overall
 The differentiable function $L:\mathcal{Y}\times\mathcal{Y}\to\mathbb{R}$ used to compare predicted logits $\hat y$ and ground-truth $y$, called here the \emph{criterion}, can be a symmetry locus.
 We say $L$ is \emph{invariant} under a group $G$ acting on $\mathcal{Y}$ when it depends only on the target or prediction orbit,
 $$
