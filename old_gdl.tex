@@ -1,22 +1,7 @@
 \subsubsection{The role of convolution}
-\citet{cohen2016} showed how classic convolutional networks can be generalized into \textit{Group Convolutional Neural Networks} (G-CNNs) to exploit larger groups of symmetries, including discrete rotations and reflections.
-An important result of GDL is obtained by \citet{kondor2018p3icml} for compact groups.
+An important result is obtained by \citet{kondor2018p3icml} for compact groups.
 They provide general guidelines for constructing equivariant neural networks with respect to compact groups and show that the convolutional structure is not just sufficient but necessary for designing equivariant NN under some hypotheses (linear map between transitive domains of a compact group with pointwise activation).
 Similar statements are obtained in the context of the $SE(3)$ group~\citep{weiler2018anips} and for homogeneous spaces in \citet{cohen2019anips} by rephrasing G-CNNs in a general fiber bundle formalism.
-
-\subsubsection{Euclidean transformations}
-An important branch of GDL is concerned with Euclidean transformation since these are pertaining to the physical world.
-With the introduction of G-CNNs, \citet{cohen2016} demonstrate its principle on discrete rotations and reflections.
-\citet{worrall2017} achieve continuous rotation equivariance for CNN on 2D images by restricting the filters to the class of circular harmonics.
-Spherical CNNs \citep{cohen2018} use a generalized Fast Fourier Transform to achieve $3$D rotation equivariance and the $SE(3)$ case is addressed in \citep{weiler2018anips}.
-For planar images, \citet{weiler2019anips} provides a general description of $E(2)$-equivariant convolutions in the Steerable CNN framework \citep{cohen2016a}, constraining convolution kernels via the irreducible representations of the group, yielding a kernel basis whose elements are combined by learnable weights and thus ensuring equivariance.
-A practical software implementing $E(3)$-equivariant operations including tensor products, spherical harmonics, and attention mechanisms is provided by \texttt{e3nn} \citep{geiger2022}.
-
-\subsubsection{Extensions: Lie groups and Gauges}
-
-G-CNNs are further generalized to arbitrary Lie group in \citep{bekkers2021}.
-\citet{finzi2021p3icml} provides a general algorithm for constructing equivariant MLP for arbitrary matrix groups by collecting symmetry constraints and solving the system with an SVD decomposition, recovering known solutions as special cases.
-A gauge-equivariance perspective is given by \citep{cohen2019p3icml,gerken2021,weiler2026,boyda2021prd}.
 
 \subsubsection{Permutations}
 

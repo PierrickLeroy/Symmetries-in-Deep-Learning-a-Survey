@@ -774,7 +774,7 @@ Finally, \emph{framework symmetries} (\ref{sec:framework-symmetries}) differ on 
 
 Methods to design equivariant architectures generally intertwine equivariant linear maps with suitable non-linearities.
 
-\emph{$G$-CNNs} \citep{cohen2016} generalize CNNs from translations to discrete groups (\textit{e.g.} p4, p4m); continuous groups must be discretized.
+\emph{Group Convolutional Neural Networks} ($G$-CNNs) \citep{cohen2016} generalize traditional CNNs from translations to discrete groups (\textit{e.g.} p4, p4m); continuous groups must be discretized.
 The processing follows three steps.
 First, a lifting convolution maps a function on the domain $\mathcal{X}$ to a function on $G$.
 Then, iterated $G$-convolutions $(f\star\kappa)(g)=\sum_{h\in G}f(h)\,\kappa(g^{-1}h)$ compute feature maps $f^{(l)}:G\to\mathbb{R}^{c_l}$.
@@ -788,7 +788,7 @@ Feature maps stay on the spatial domain as typed fields, transforming under a re
 Kernels solve the steerable constraint of \Cref{subsec:homogeneous-spaces} in a truncated equivariant basis, avoiding discretization of continuous groups.
 \citet{cesa2021} extend them to $\mathbb{R}^d\rtimes H$ for any compact $H\le O(d)$.
 
-Relatedly, \citet{finzi2021p3icml} numerically solve the linear equivariance constraint to build equivariant MLPs for arbitrary matrix groups.
+Relatedly, \citet{finzi2021p3icml} numerically solve the linear equivariance constraint with an SVD decomposition to build equivariant MLPs for arbitrary matrix groups.
 For finite groups acting by permutations, equivariance amounts to weight-tying: a layer is $G$-equivariant if $G$ preserves its parameter-sharing pattern \citep{ravanbakhsh2017p3icml}.
 \emph{Clifford (geometric) algebras} yield equivariant models such as the $E(n)$-equivariant CGENN \citep{ruhe2023} and the $E(3)$-equivariant transformer GATr \citep{brehmer2023}.
 
@@ -797,6 +797,28 @@ Other approaches include \emph{invariant-feature construction} from distances or
 \emph{Symmetrization} wraps an arbitrary backbone $\phi$, \textit{e.g.} by canonicalization \citep{kaba2023p4icml} or group/frame averaging with the Reynolds operator $\mathcal{R}$ \citep{puny2021}.
 
 \paragraph{Euclidean symmetries}
+Euclidean symmetries are important symmetries of the physical world, consisting of translations and rotations (with or without reflections).
+Mathematically, the three-dimensional Euclidean group
+\[
+E(3)=\mathbb{R}^3\rtimes O(3)
+\]
+is the group of all distance-preserving transformations of $\mathbb{R}^3$, and $SE(3)=\mathbb{R}^3\rtimes SO(3)$ its rigid motions.
+Tools to treat these symmetries include irreducible representations, Fourier analysis, tensor products and spherical harmonics.
+We proceed from coarse to fine rotations, in 2D then 3D.
+
+In 2D, seminal $G$-CNNs \citep{cohen2016} already treat $90^\circ$ rotations and reflections.
+\citet{hoogeboom2018} reach $60^\circ$ rotations without interpolation on hexagonal grids.
+\citet{weiler20182iccvpr} use finer rotation discretizations, bridging $G$-CNNs and steerable networks.
+Continuous rotations are handled with circular harmonics by \citet{worrall2017}, and the full group $E(2)$ by \citet{weiler2019anips}.
+In 3D, discrete rotation groups act on voxels, \textit{e.g.} for biomedical data \citep{worrall2018cv-e21ecmgs82ppv,winkels2019mia}.
+\emph{Spherical CNNs} \citep{cohen2018} handle continuous rotations of signals on $S^2$ using a generalized Fast Fourier Transform.
+\citet{monti20172iccvprc} sidestep extrinsic rotations via intrinsic surface coordinates.
+
+Continuous $SE(3)$-equivariance mostly relies on irreducible representations (irreps) of $SO(3)$, an idea explored early by \citet{cohen2014} for commutative groups.
+\citet{weiler2018anips} build $SE(3)$-equivariant convolutions on voxels with spherical-harmonic kernels.
+\emph{Tensor field networks} \citep{thomas2018} extend this to point clouds, combining irreps features with spherical-harmonic filters via tensor products.
+The e3nn library \citep{geiger2022} implements these ideas.
+\emph{Equiformer} is an irreps-based transformer for atomistic graphs \citep{liao2022,liao2023}.
 
 \paragraph{Permutation: sets, point clouds and graphs}
 
