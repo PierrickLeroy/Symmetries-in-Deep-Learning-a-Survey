@@ -821,29 +821,33 @@ The e3nn library \citep{geiger2022} implements these ideas.
 \emph{Equiformer} is an irreps-based transformer for atomistic graphs \citep{liao2022,liao2023}.
 
 \paragraph{Permutation: sets, point clouds and graphs}
-When data is unstructured (sets), spatially unorganized (point clouds), or defined on a graph, models must be invariant to the order of input elements.
+When data is unstructured (sets), spatially unorganized (point clouds), or defined on a graph, models must be invariant or equivariant to the order of input elements.
 We start with sets and point clouds since they have weaker structure.
-Permutation invariance for sets in was introduced by \citet{zaheer2018} with their \emph{Deep Sets} architecture.
-The method was extended to allow for interaction between set elements through attention with the \emph{Set Transformer} of \citet{lee2019p3icml}.
-PointNet \citep{qi2017a} pioneered deep learning directly on raw point clouds by applying a symmetric aggregation function to independently transformed elements, and PointNet++ \citep{qi2017} introduced hierarchical local grouping to capture multi-scale geometric structure.
-A more abstract use of permutation-equivariance is proposed by \citet{wang2025}, where they need $S_N$-equivariance in multi-view 3D reconstruction.
-Modalities can also blend: \citet{wang2019} lift on-the-fly a point-cloud to a graph by dynamically computing a k-nearest-neighbor graph in feature space at each layer, enabling richer local context without a fixed input graph.
+Stacking $n$ elements as the rows of $X\in\mathbb{R}^{n\times d}$, $\sigma\in S_n$ acts by $X\mapsto P_\sigma X$, with $P_\sigma$ the permutation matrix: set-level predictions must be invariant, $f(P_\sigma X)=f(X)$, and per-element ones equivariant, $f(P_\sigma X)=P_\sigma f(X)$.
+\citet{zaheer2018} introduced \emph{Deep Sets}, proving that invariant functions on a countable domain decompose as $f(X)=\psi\big(\sum_{i=1}^{n}\phi(x_i)\big)$ and characterizing equivariant linear layers (\Cref{ex:representations-recap}).
+The \emph{Set Transformer} \citep{lee2019p3icml} models element interactions with self-attention (equivariant without positional encodings) followed by invariant attention-based pooling.
+\citet{wang2025} make a more abstract use of $S_n$-equivariance in multi-view 3D reconstruction, where treating views as a set removes the bias of an arbitrary reference view.
+PointNet \citep{qi2017a} pioneered deep learning directly on raw point clouds though only permutation-invariance is built-in: translation and approximate rotation invariance come from normalization and learned canonicalization plus data augmentation respectively. 
+PointNet++ \citep{qi2017} applies PointNet hierarchically to local neighborhoods to capture multi-scale structure.
+\citet{wang2019} bridge point clouds and graphs: their DGCNN recomputes at each layer a $k$-nearest-neighbor graph in feature space and updates each point as $x_i'=\max_{j\in\mathcal{N}_k(i)}h_\Theta(x_i,x_j-x_i)$.
+Since this graph is built from features rather than indices, the layer is permutation-equivariant; it is a message passing layer, the central tool on graphs.
 
 The graph domain and \emph{Graph Neural Networks} (GNNs) are a prolific spearhead of EDL, especially for molecular applications.
-On graphs, permutation equivariance applies to the node indices.
-The message passing framework \citep{gilmer2017} unified earlier graph models \citep{duvenaud2015,kipf2017,bruna2014} into a single formalism involving a message function, an aggregation function (enforcing permutation invariance), and an update function.
-The *Message-Passing framework* defines a general class of gnn that respect graph symmetries: it is invariant to graph isomorphism (node permutation) \citep{gilmer2017}.
-\citet{velickovic2018} incorporated an attention-like mechanism into this scheme while preserving permutation invariance.
+On graphs, $S_n$ relabels nodes, acting on adjacency and node features as $\sigma\cdot(A,X)=(P_\sigma AP_\sigma^\top,P_\sigma X)$.
+The message passing framework \citep{gilmer2017} unified earlier graph models \citep{duvenaud2015,kipf2017,bruna2014} into a single formalism of message, aggregation and update functions: aggregating messages invariantly makes each layer equivariant, and an invariant readout yields graph-level predictions.
+\citet{velickovic2018} incorporated attention into this scheme while preserving permutation equivariance.
 For \emph{geometric graphs}, where nodes carry coordinates in $\mathbb{R}^3$, permutation equivariance must be combined with Euclidean symmetries (see above).
-\citet{satorras2021p3icml} achieves joint $E(n)$-equivariance and permutation equivariance through invariant edge features based on interpoint distances while \citet{fuchs2020} attains $SE(3)$-equivariance via self-attention on steerable features, at higher computational cost but with greater expressivity.
+\citet{satorras2021p3icml} achieve joint $E(n)$ and permutation equivariance through invariant edge features based on interpoint distances, while \citet{fuchs2020} attain $SE(3)$-equivariance via self-attention on steerable features, at higher computational cost but with greater expressivity.
 
-Message passing on graphs propagates information along edges i.e. between pairs of nodes.
-The recent *Topological Deep Learning* (TDL, \citep{papillon2023,papamarkou2024}) field keeps the same permutation-equivariant, symmetry-guided design to higher-order relational structures (simplicial, cell and combinatorial complexes, hypergraphs) allowing generalized messages between cells of different dimensions while retaining equivariance to the relabelling of those cells.
-These branches composes: \citet{battiloro2024} constructs $E(n)$-equivariant topological neural networks.
+Message passing propagates information along edges, i.e.\ between pairs of nodes.
+\emph{Topological Deep Learning} (TDL) \citep{papillon2023,papamarkou2024} extends this permutation-equivariant design to higher-order relational structures (simplicial, cell and combinatorial complexes, hypergraphs), passing messages between cells of different dimensions while remaining equivariant to cell relabelling.
+The geometric and topological extensions compose: \citet{battiloro2024} construct $E(n)$-equivariant topological neural networks.
 
 \paragraph{Gauge equivariance}
 
 \subsubsection{Expressivity analysis}
+
+
 
 \paragraph{Representation theorems and the particular role of the convolution.}
 

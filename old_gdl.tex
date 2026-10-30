@@ -1,13 +1,3 @@
-\subsubsection{Applications}
-GDL principles have been successfully applied to a wide range of domains. In molecular science, \citet{satorras2021p3icml} demonstrates joint $E(n)$-equivariance and permutation equivariance for chemical property prediction and $n$-body dynamics, while \citet{cornet2024} extends this to equivariant diffusion models for 3D molecule generation.
-Atomic energy and force prediction benefit from equivariant graph transformers such as Equiformer \citep{liao2022} and its scaled variant EquiformerV2 \citep{liao2023}.
-In structural biology, AlphaFold \citep{jumper2021na} and RoseTTAFold \citep{baek2021s} leverage geometric inductive biases for highly accurate protein structure prediction, while \citet{townshend2021s} applies $SE(3)$-equivariant networks to RNA structure scoring, achieving state-of-the-art results in a limited data settings.
-In particle physics, \citet{bogatskiy2020p3icml} introduces Lorentz-group equivariant networks for jet classification, obtaining competitive performance with substantially fewer parameters than non-equivariant baselines.
-In medical imaging, \citet{winkels2019mia} shows that 3D G-CNNs significantly improve pulmonary nodule detection in CT scans over standard convolutional counterparts again in a low data regime.
-In natural language processing, \citet{gordon2020} exploits permutation equivariance to explore compositional generalisation.
-In computer vision, equivariant networks have been applied to omnidirectional images and global climate pattern recognition via spherical CNNs \citep{cohen2018,cohen2019p3icml}, and to 3D object detection \citep{yu2022}.
-For robotics and 3D scene understanding, equivariance to Euclidean transformations is a natural requirement, as surveyed in \citep{seo2025a,fei2024air}.
-
 \subsubsection{Expressivity}
 Enforcing symmetry constraints raises the question of expressivity (or \textit{universality} \citep{maass2024}) \textit{i.e.} the ability to represent an arbitrary function within its symmetric hypothesis class.
 In that regard, distinguishing non-isomorphic graphs has been a central theoretical concern in the GNN community: \citet{xu2019} proved that message passing networks are at most as powerful as the Weisfeiler--Lehman (WL) graph isomorphism test, and \citet{maron2020} showed that $k$-order tensor networks are at least as powerful as the $k$-WL test.
@@ -21,6 +11,17 @@ As already noted in the discussion of expressivity, lifting graphs to cell compl
 An important result is obtained by \citet{kondor2018p3icml} for compact groups.
 They provide general guidelines for constructing equivariant neural networks with respect to compact groups and show that the convolutional structure is not just sufficient but necessary for designing equivariant NN under some hypotheses (linear map between transitive domains of a compact group with pointwise activation).
 Similar statements are obtained in the context of the $SE(3)$ group~\citep{weiler2018anips} and for homogeneous spaces in \citet{cohen2019anips} by rephrasing G-CNNs in a general fiber bundle formalism.
+
+\subsubsection{Applications}
+GDL principles have been successfully applied to a wide range of domains. In molecular science, \citet{satorras2021p3icml} demonstrates joint $E(n)$-equivariance and permutation equivariance for chemical property prediction and $n$-body dynamics, while \citet{cornet2024} extends this to equivariant diffusion models for 3D molecule generation.
+Atomic energy and force prediction benefit from equivariant graph transformers such as Equiformer \citep{liao2022} and its scaled variant EquiformerV2 \citep{liao2023}.
+In structural biology, AlphaFold \citep{jumper2021na} and RoseTTAFold \citep{baek2021s} leverage geometric inductive biases for highly accurate protein structure prediction, while \citet{townshend2021s} applies $SE(3)$-equivariant networks to RNA structure scoring, achieving state-of-the-art results in a limited data settings.
+In particle physics, \citet{bogatskiy2020p3icml} introduces Lorentz-group equivariant networks for jet classification, obtaining competitive performance with substantially fewer parameters than non-equivariant baselines.
+In medical imaging, \citet{winkels2019mia} shows that 3D G-CNNs significantly improve pulmonary nodule detection in CT scans over standard convolutional counterparts again in a low data regime.
+In natural language processing, \citet{gordon2020} exploits permutation equivariance to explore compositional generalisation.
+In computer vision, equivariant networks have been applied to omnidirectional images and global climate pattern recognition via spherical CNNs \citep{cohen2018,cohen2019p3icml}, and to 3D object detection \citep{yu2022}.
+For robotics and 3D scene understanding, equivariance to Euclidean transformations is a natural requirement, as surveyed in \citep{seo2025a,fei2024air}.
+
 
 \subsubsection{Challenges}
 
