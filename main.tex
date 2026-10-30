@@ -846,6 +846,8 @@ The geometric and topological extensions compose: \citet{battiloro2024} construc
 \paragraph{Gauge equivariance}
 
 \subsubsection{Expressivity analysis}
+% maron2018
+% Dunford-Pettis theorem
 Equivariant architectures guarantee by construction that $\mathcal{H}\subseteq C_G(\mathcal{X},\mathcal{Y})$, the space of continuous $G$-equivariant maps.
 Expressivity is about the reverse inclusion.
 We report three answers from finest to coarsest: \emph{representation theorems} describe $C_G(\mathcal{X},\mathcal{Y})$, or a subclass of it such as linear maps, through an explicit form; \emph{universality} asks if $\overline{\mathcal{H}}=C_G(\mathcal{X},\mathcal{Y})$; and \emph{separation power} cares about orbit, asking which inputs $x \not\sim_G x'$ $\mathcal H$ can tell apart, i.e. if there is an $f \in\mathcal H$ with $f(x)\neq f(x')$.
@@ -885,15 +887,68 @@ Beyond vision, scale--translation equivariance has been applied to raw audio \ci
 
 
 \subsubsection{Tradeoffs of equivariance}
+Restricting the hypothesis class $\mathcal{H}$ to $G$-equivariant maps is a double-edged sword: it can improve sample efficiency and generalization, but it costs speed, design effort, could hinder optimization and can impose the wrong symmetry.
+We review both sides and when equivariance is worth its cost.
 
 \paragraph{Advantages of EDL}
+Better sample complexity, i.e.\ learning from fewer examples, is put forward as a benefit of EDL.
+\citet{tahmasebi2023} predict the gain in effective dataset size from the symmetry group (invariance scaling laws for kernel ridge regression).
+Their follow-up \citep{tahmasebi2024p4icml} shows that a $G$-invariant distribution $\mu$ on a compact manifold $\mathcal{X}$ can be estimated from $n$ samples by some $\tilde{\mu}_n$ with, in $1$-Wasserstein distance,
+\[
+    \mathbb{E}\big[W_1(\mu,\tilde{\mu}_n)\big] \lesssim \Big(\frac{\operatorname{vol}(\mathcal{X}/G)}{n}\Big)^{1/d}, \qquad d = \dim(\mathcal{X}/G) \geq 3,
+\]
+versus $(\operatorname{vol}(\mathcal{X})/n)^{1/\dim\mathcal{X}}$ without invariance.
+For a finite group acting faithfully, $\operatorname{vol}(\mathcal{X}/G) = \operatorname{vol}(\mathcal{X})/|G|$, i.e.\ each sample counts $|G|$ times, while groups of positive dimension also improve the exponent ($d < \dim\mathcal{X}$).
+Concretely, these gains can translate into needing less data in applications, e.g.\ an order of magnitude less in medical imaging \citep{winkels2019mia}.
+
+Another benefit is generalization.
+In early work, \citet{shawe-taylor1991anips} derived a PAC bound in which the number of individual parameters is replaced by the number of weight-tying orbits.
+\citet{elesedy2021p3icml} prove that, for linear models and an equivariant target, an equivariant model can generalize strictly better than its unconstrained counterpart.
+\citet{sokolic2017p2icais} show that the generalization error of an invariant classifier is proportional to the complexity of the base space, essentially $\mathcal{X}/G$, rather than that of $\mathcal{X}$.
+By design, equivariant models are stable over $G$-orbits, which is not always the case for non-equivariant baselines, even with data augmentation \citep{lafarge2021mia}: this is a form of robustness.
 
 \paragraph{Disadvantages of EDL}
+The first drawback is speed.
+Equivariant models can have a larger memory footprint, scale worse with the input size \citep{bogatskiy2020p3icml}, and have higher latency and lower training throughput (steps/sec) \citep{gerken2022p3icml,elhag2026}.
+They also perform more FLOPs per parameter with worse GPU utilization \citep{brehmer2025}, and $E(3)$-equivariant models built on irreducible representations remain computationally heavy despite recent tensor-product speed-ups \citep{passaro2023,luo2024a}.
+These costs, however, depend strongly on hardware and software: equivariant models cannot always tap into the most optimized libraries \citep{qu2024anips,shen2026}.
 
-\paragraph{The symmetry bottleneck}
+Second, equivariant models can be harder to optimize, i.e.\ have a lower \emph{optimization ease} \citep{shen2026}, the loss reduction per training step $\mathcal{L}(\theta_t)-\mathcal{L}(\theta_{t+1})$, with $\theta_t$ the parameters at step $t$.
+Multiplied by throughput, it gives the loss reduction per second, whose deficit \citet{shen2026} call the \emph{efficiency gap}.
+\citet{qu2024anips} hypothesize that symmetry constraints impede optimization as models scale, and \citet{pertigkiozoglou2024} conjecture that the equivariant solution space is too constrained, hence relax equivariance during training and project back onto that space at test time.
+\citet[app.~A]{elhag2026} give qualitative support: GATr's loss landscape near its minimum is rougher than a standard Transformer's.
+
+Third, misspecification: baking in the wrong prior can degrade performance \citep{yang2023p4icml,finzi2021anips,benton2020anips,miao2023p4icml}; for instance, \citet{weiler2019anips} report, as expected, that $D_n$ performs worse than $C_n$ on rotated (unreflected) MNIST.
+\citet{wang2023a} prove an error lower bound for \emph{incorrect} equivariance, whereas \citet{wang2022b} report that equivariant models can still outperform unconstrained ones when the imposed symmetry is \emph{extrinsic} (\Cref{sec:symmetry-breaking-dl}).
+
+\paragraph{The symmetry bottleneck}\label{par:sym-bottleneck}
+Equivariant neural network methods demand \textit{a priori} knowledge of the data's symmetries before they can be hard coded to the architecture.
+This creates a bottleneck because:
+\begin{enumerate}
+    \item \textbf{Unknown symmetries}: in real datasets symmetries are often unspecified or difficult to define analytically.
+    \item \textbf{Manual sophistication}: understanding which symmetry group acts on data or designing a novel architecture requires domain expertise and mathematical sophistication.
+    \item \textbf{Inflexibility}: once a symmetry is hard-coded into the architecture, the model cannot adapt if the assumptions are wrong.
+    Many real-world datasets only approximately satisfy a given symmetry, for instance due to sensor noise, occlusions, or genuine symmetry breaking in the underlying phenomenon and in that case strictly equivariant models may then be over-constrained
+\end{enumerate}
+These hurdles are not left unaddressed: (1) by symmetry discovery (\Cref{sec:sym-disc-from-data}); (2) by theoretical addressing multiple groups with the same recipe \citep{ravanbakhsh2017p3icml,finzi2020p3icml,finzi2021p3icml,pearce-crump2023p4icml}, foundational approaches \citep{goel2025} or symmetrization of a backbone \citep{puny2021,kaba2023p4icml}; (3) by approximate soft-equivariance methods (\Cref{sec:soft-equivariance}).
 
 \paragraph{To be or not to be}
+A practical question is whether the design cost, potential optimization difficulties and hardware inefficiency of less mature implementations are justified compared with a simpler model, possibly trained with data augmentation.
 
+\citet{nordenfors2024} compare equivariant models with augmented vanilla ones: under a compatibility condition, both share the same equivariant stationary points, but some are stable only for the equivariant model.
+The relative benefit of equivariance also seems to depend on how well the data satisfy the symmetry.
+\citet{wang2023a} show that, depending on levels of \emph{correct}, \emph{incorrect} and \emph{extrinsic equivariance} in the data (\Cref{sec:symmetry-breaking-dl}), either the equivariant or the unconstrained model has the advantage.
+Similarly, \citet{lawrence2026} propose a decision rule based on the amount of \emph{distributional symmetry breaking} (\Cref{sec:distributional-sb}) in the dataset and its correlation with labels.
+\citet{rygiel2026} reach a similar conclusion by comparing equivariant and vanilla models on datasets with varying degrees of canonical alignment.
+Using Rapidash, an $SE(3)$-equivariant model whose equivariance can be selectively broken, \citet{vadgama2025} find that the advantage of well-aligned constraints is not closed by scaling capacity.
+A notable, if isolated, example of equivariance receding is AlphaFold~3 \citep{abramson2024n}, which dropped the $SE(3)$-equivariant structure module from its earlier version \citep{jumper2021na} to simplify the architecture at no accuracy cost.
+
+Beyond direct comparisons, \citet{brehmer2025} study scale: at matched compute ($10^{16}$--$10^{19}$ FLOPs), an $E(3)$-equivariant transformer reaches a roughly $2\times$ lower test loss than a non-equivariant one, with compatible power-law exponents.
+Equivariance thus remains worthwhile at scale, provided its implementations match standard FLOP throughput.
+Conversely, \citet{wang2024p4icmla} (conformer generation) and \citet{qu2024anips} (interatomic potentials) argue that scale compensates for the absence of built-in equivariance; however, they compare models at similar parameter count or wall-clock time rather than at matched FLOPs, so the two views are less opposed than they appear.
+\citet{shen2026} find that, for 3D-rotation equivariant tasks, augmented unconstrained models reduce their equivariance error to below 2\% of the total loss within thousands of steps; the learnability of a symmetry should also enter the cost-benefit analysis.
+
+While there is no denying that equivariant models are scientifically well-founded, one may wonder whether this will be another occurrence of the bitter lesson~\citep{sutton2019}.
 
 \subsection{Data augmentation}\label{sec:data-augmentation}
 % add adversarial training ? [Goodfellow, Explaining and harnessing adversarial examples] and [Madry, Towards deep learning models resistant to adversarial attacks]
@@ -2279,7 +2334,7 @@ This bound is informative when the true map $f^\star$ \emph{is} equivariant---it
 \citet{goel2025} turn the mechanism into a subgroup selector (cf.\ \Cref{sec:subgroups}): from a backbone $h_\theta:\mathcal{X}\times V\to\mathcal{Y}$ equivariant to a large group $G$, concatenating $v$ to the input with $\operatorname{Stab}(v)=H$ yields $f_\theta(x)=h_\theta(x,v)$ that is exactly $H$-equivariant provided $h_\theta$ is injective in $v$.
 Here however, the ``pose'' is not interpretable, closer to the random node features of GNNs than to positional encoding.
 
-\subsubsection{Distributional Symmetry Breaking}
+\subsubsection{Distributional Symmetry Breaking}\label{sec:distributional-sb}
 Distributional SB is a property of the data distribution,
 $$p(x)\neq p(\rho_X(g)x)\quad\text{for some }g,$$
 that is, orbits do not carry constant density.
