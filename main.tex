@@ -726,16 +726,16 @@ A \emph{section} is a smooth $s:\mathcal{X}\to E$ with $\pi\circ s = \operatorna
 \end{Definition}
 
 \begin{Definition}[Principal bundle]\label{def:principal-bundle}
-A \emph{principal $G$-bundle} is a fiber bundle $\pi : P\to\mathcal{X}$ with a smooth right $G$-action on $P$ that is free and transitive on each fiber, so each fiber $\pi^{-1}(x)$ is a $G$-torsor.
+A \emph{principal $H$-bundle} is a fiber bundle $\pi : P\to\mathcal{X}$ with a smooth right $H$-action on $P$ that is free and transitive on each fiber, so each fiber $\pi^{-1}(x)$ is an $H$-torsor; $H$ is the \emph{structure group}.
 A local section $s : U\to P$ is a \emph{gauge}.
-Any two gauges differ by a \emph{gauge transformation} $s' = s\cdot\gamma$ with $\gamma : U\to G$.
+Any two gauges differ by a \emph{gauge transformation} $s' = s\cdot\gamma$ with $\gamma : U\to H$.
 \end{Definition}
 
 The main example is the \emph{frame bundle} of a $d$-dimensional Riemannian manifold, whose fiber over $x$ is the set of orthonormal bases of $T_x\mathcal{X}$, a principal $O(d)$-bundle.
-A gauge is a local frame field, and $G$ acts by rotating the frame independently at each point.
+A gauge is a local frame field, and $H = O(d)$ acts by rotating the frame independently at each point.
 Local frames are unavoidable: on $S^2$ there is no continuous nonvanishing tangent vector field (hairy ball theorem), hence no global frame.
 
-Given a representation $\rho$ of $G$ on $V$, a \emph{feature field} of type $\rho$ is a section of the \emph{associated bundle} $P\times_\rho V = (P\times V)/\!\sim$, where $(p\cdot g,v)\sim(p,\rho(g)v)$.
+Given a representation $\rho$ of $H$ on $V$, a \emph{feature field} of type $\rho$ is a section of the \emph{associated bundle} $P\times_\rho V = (P\times V)/\!\sim$, where $(p\cdot h,v)\sim(p,\rho(h)v)$.
 In a gauge $s$ it is written as a function $f: U\to V$, and a change of gauge $s' = s\cdot\gamma$ transforms it by
 \[
     f'(x) \;=\; \rho\bigl(\gamma(x)\bigr)^{-1} f(x).
@@ -743,7 +743,7 @@ In a gauge $s$ it is written as a function $f: U\to V$, and a change of gauge $s
 Scalars ($\rho$ trivial) are unaffected, while tangent vectors ($\rho$ the defining representation) rotate with the frame.
 A convolution on $\mathcal{X}$ is independent of the arbitrary choice of gauge iff its kernel $K : \mathbb{R}^d\to\operatorname{Hom}(V_{\mathrm{in}},V_{\mathrm{out}})$, applied in normal coordinates, satisfies
 \[
-    K(g^{-1}v) \;=\; \rho_{\mathrm{out}}(g)^{-1}\,K(v)\,\rho_{\mathrm{in}}(g) \qquad \text{for all } g\in G.
+    K(h^{-1}v) \;=\; \rho_{\mathrm{out}}(h)^{-1}\,K(v)\,\rho_{\mathrm{in}}(h) \qquad \text{for all } h\in H.
 \]
 This is the steerable constraint of \Cref{subsec:homogeneous-spaces}, now imposed pointwise with respect to the structure group rather than globally \citep{cohen2019p3icml,weiler2021,weiler2026}.
 Symmetry thus acts in two ways: \emph{global} symmetry, one group acting on the whole of $\mathcal{X}$ (\Cref{subsec:group-actions,subsec:homogeneous-spaces}), and \emph{local} or \emph{gauge} symmetry, a group acting independently on the fiber over each point, with equivariance becoming a condition of consistency under local changes of frame.
