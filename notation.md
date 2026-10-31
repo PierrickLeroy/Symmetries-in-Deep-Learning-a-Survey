@@ -10,6 +10,7 @@
 | Stabilizer of $x$ (subgroup of $G$ fixing $x$) | $G_x$, or $\operatorname{Stab}(x)$ where the functional form reads better |
 | Stabilizer of an injected pose feature $v$ | $\operatorname{Stab}(v) = \{g : \rho(g)v = v\}$ |
 | $\epsilon$-stabilizer (Petrache–Trivedi) | $\operatorname{Stab}_\epsilon(f)$ |
+| Structure group of a principal bundle / gauge group (allowed changes of frame) | $H$, with $H\le GL(d)$ for frame bundles |
 | Automorphism group of a **graph** | $\operatorname{Aut}(\Gamma)$ |
 | Automorphism group of a **group** | $\operatorname{Aut}(N)$ |
 | Symmetry group of a function | $\operatorname{Sym}(f)$ |

@@ -843,7 +843,7 @@ Message passing propagates information along edges, i.e.\ between pairs of nodes
 \emph{Topological Deep Learning} (TDL) \citep{papillon2023,papamarkou2024} extends this permutation-equivariant design to higher-order relational structures (simplicial, cell and combinatorial complexes, hypergraphs), passing messages between cells of different dimensions while remaining equivariant to cell relabelling.
 The geometric and topological extensions compose: \citet{battiloro2024} construct $E(n)$-equivariant topological neural networks.
 
-\paragraph{Gauge equivariance}
+\paragraph{Gauge equivariance and local symmetries}
 
 \subsubsection{Expressivity analysis}
 % maron2018
@@ -886,7 +886,9 @@ In computer vision, spherical CNNs handle omnidirectional images and global clim
 Beyond vision, scale--translation equivariance has been applied to raw audio \citep{romero2023tmlr}, permutation equivariance to compositional generalization in language \citep{gordon2020}, state--action symmetries to reinforcement learning \citep{vanderpol2020anips}, and Euclidean equivariance to robotics and 3D scene understanding \citep{seo2025a,fei2024air}.
 
 
+
 \subsubsection{Tradeoffs of equivariance}
+% last par of [vadgama2025 sec 4]
 Restricting the hypothesis class $\mathcal{H}$ to $G$-equivariant maps is a double-edged sword: it can improve sample efficiency and generalization, but it costs speed, design effort, could hinder optimization and can impose the wrong symmetry.
 We review both sides and when equivariance is worth its cost.
 
