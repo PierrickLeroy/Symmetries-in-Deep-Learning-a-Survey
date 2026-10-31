@@ -1358,10 +1358,11 @@ The error landscape studied by \citet{pittorino2022jsm} possesses more symmetrie
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.9\textwidth]{images/draft/param-space-symmetries.png}
-    \caption{\textbf{Left.} Inclusion of transformations applicable to (1) symmetric states $\left \{g: g\theta=\theta\right \}$; (2) general functional symmetry $\left \{g: f_\theta = f_{g\theta} \right \}$ ; (3) loss symmetry  when the loss factors through the implementation map $\left \{g:\mathcal{L}(f_{g\theta})=\mathcal{L}(f_{\theta})\right \}$; (4) general loss symmetry $\left \{g:\mathcal{L}(g\theta)=\mathcal{L}(\theta) \right \}$; (5) data-dependent functional symmetry $\left \{g: {(f_{g\theta})}_{\vert X'}={(f_{\theta})}_{\vert X'}\right \}$ for $X'\subsetneq X$; (6) instance-dependent functional symmetry $\left \{g: \theta\in U \Rightarrow f_{g\theta}=f(\theta) \right \}$ for $U\subsetneq \Theta.$
-    Note that (3) and (4) can intersect (e.g. neurons permutations in MLP with $l_p$ regularization for (4)), but none is included in the other.
-    The illustration is not exhaustive,: data-dependent and instance symmetries can act at the loss level or be combined.
-    \textbf{Right.}}
+    \caption{\textbf{(a)} Inclusion of transformations applicable to (1) symmetric states $\left \{g: g\theta=\theta\right \}$; (2) general functional symmetry $\left \{g: f_\theta = f_{g\theta} \right \}$; (3) loss symmetry  when the loss factors through the implementation map $\left \{g:\mathcal{L}(f_{g\theta})=\mathcal{L}(f_{\theta})\right \}$; (4) general loss symmetry $\left \{g:\mathcal{L}(g\theta)=\mathcal{L}(\theta) \right \}$; (5) data-dependent functional symmetry $\left \{g: {(f_{g\theta})}_{\vert X'}={(f_{\theta})}_{\vert X'}\right \}$ for $X'\subsetneq \mathcal{X}$; (6) instance-dependent functional symmetry $\left \{g: \theta\in U \Rightarrow f_{g\theta}=f_\theta \right \}$ for $U\subsetneq \Theta$.
+    Each class is illustrated on the network $\mathcal{N}$ shown at the top.
+    Note that (3) and (4) can intersect (e.g. neuron permutations in an MLP with $\ell_p$ regularization for (4)), but none is included in the other.
+    The illustration is not exhaustive: data-dependent and instance symmetries can act at the loss level or be combined.
+    \textbf{(b)}}
     \label{fig:param-space-symmetries}
 \end{figure}
 
