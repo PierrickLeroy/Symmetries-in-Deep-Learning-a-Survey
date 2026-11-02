@@ -1054,7 +1054,7 @@
   urldate = {2024-05-04},
   abstract = {Convolutional Neural Networks (CNNs) have become the method of choice for learning problems involving 2D planar images. However, a number of problems of recent interest have created a demand for models that can analyze spherical images. Examples include omnidirectional vision for drones, robots, and autonomous cars, molecular regression problems, and global weather and climate modelling. A naive application of convolutional networks to a planar projection of the spherical signal is destined to fail, because the space-varying distortions introduced by such a projection will make translational weight sharing ineffective. In this paper we introduce the building blocks for constructing spherical CNNs. We propose a definition for the spherical cross-correlation that is both expressive and rotation-equivariant. The spherical correlation satisfies a generalized Fourier theorem, which allows us to compute it efficiently using a generalized (non-commutative) Fast Fourier Transform (FFT) algorithm. We demonstrate the computational efficiency, numerical accuracy, and effectiveness of spherical CNNs applied to 3D model recognition and atomization energy regression.},
   langid = {english},
-  keywords = {/read,equivariance,sphere},
+  keywords = {/read,equivariance,sphere,survey/gdl/local-sym},
   file = {/home/pierrick/GoogleDrive/zotero-library/2018/Cohen/cohen2018.pdf}
 }
 
@@ -1082,7 +1082,7 @@
   urldate = {2024-04-22},
   abstract = {The principle of equivariance to symmetry transformations enables a theoretically grounded approach to neural network architecture design. Equivariant networks have shown excellent performance and data efficiency on vision and medical imaging problems that exhibit symmetries. Here we show how this principle can be extended beyond global symmetries to local gauge transformations. This enables the development of a very general class of convolutional neural networks on manifolds that depend only on the intrinsic geometry, and which includes many popular methods from equivariant and geometric deep learning. We implement gauge equivariant CNNs for signals defined on the surface of the icosahedron, which provides a reasonable approximation of the sphere. By choosing to work with this very regular manifold, we are able to implement the gauge equivariant convolution using a single conv2d call, making it a highly scalable and practical alternative to Spherical CNNs. Using this method, we demonstrate substantial improvements over previous methods on the task of segmenting omnidirectional images and global climate patterns.},
   langid = {english},
-  keywords = {/read,fiber,field theory,gauge,gauge equivariance,gauge theory,group representation theory},
+  keywords = {/read,fiber,field theory,gauge,gauge equivariance,gauge theory,group representation theory,survey/gdl/local-sym},
   file = {/home/pierrick/GoogleDrive/zotero-library/2019/Cohen/cohen2019p3icml.pdf}
 }
 
@@ -1255,7 +1255,7 @@
   urldate = {2024-05-26},
   abstract = {A key requirement for graph neural networks is that they must process a graph in a way that does not depend on how the graph is described. Traditionally this has been taken to mean that a graph network must be equivariant to node permutations. Here we show that instead of equivariance, the more general concept of naturality is sufficient for a graph network to be well-defined, opening up a larger class of graph networks. We define global and local natural graph networks, the latter of which are as scalable as conventional message passing graph neural networks while being more flexible. We give one practical instantiation of a natural network on graphs which uses an equivariant message network parameterization, yielding good performance on several benchmarks.},
   archiveprefix = {arXiv},
-  keywords = {/unread,gnn,naturality,sym-survey/exotic-algstruct/cat-theory},
+  keywords = {/read,gnn,naturality,survey/gdl/local-sym,sym-survey/exotic-algstruct/cat-theory},
   file = {/home/pierrick/GoogleDrive/zotero-library/2020/de Haan/dehaan2020.pdf}
 }
 
@@ -1564,14 +1564,30 @@
   file = {/home/pierrick/GoogleDrive/zotero-library/2023/Esmaeili/esmaeili2023.pdf}
 }
 
-@article{esteves2018,
+@inproceedings{esteves2018,
   title = {Learning {{SO}}(3) {{Equivariant Representations}} with {{Spherical CNNs}}},
-  author = {Esteves, Carlos and Daniilidis, Kostas and Makadia, Ameesh and {Allec-Blanchette}, Christine},
+  booktitle = {Proceedings of the {{European Conference}} on {{Computer Vision}} ({{ECCV}})},
+  author = {Esteves, Carlos and Daniilidis, Kostas and Makadia, Ameesh and {Allen-Blanchette}, Christine},
   year = 2018,
+  pages = {52--68},
   abstract = {We address the problem of 3D rotation equivariance in convolutional neural networks. 3D rotations have been a challenging nuisance in 3D classification tasks requiring higher capacity and extended data augmentation in order to tackle it. We model 3D data with multivalued spherical functions and we propose a novel spherical convolutional network that implements exact convolutions on the sphere by realizing them in the spherical harmonic domain. Resulting filters have local symmetry and are localized by enforcing smooth spectra. We apply a novel pooling on the spectral domain and our operations are independent of the underlying spherical resolution throughout the network. We show that networks with much lower capacity and without requiring data augmentation can exhibit performance comparable to the state of the art in standard retrieval and classification benchmarks.},
   langid = {english},
-  keywords = {/unread,equivariance/rotation equivariance},
+  keywords = {/read,equivariance/rotation equivariance,survey/gdl/local-sym},
   file = {/home/pierrick/GoogleDrive/zotero-library/2018/Esteves/esteves2018.pdf}
+}
+
+@inproceedings{esteves2020anips,
+  title = {Spin-{{Weighted Spherical CNNs}}},
+  booktitle = {Advances in {{Neural Information Processing Systems}}},
+  author = {Esteves, Carlos and Makadia, Ameesh and Daniilidis, Kostas},
+  year = 2020,
+  volume = {33},
+  pages = {8614--8625},
+  publisher = {Curran Associates, Inc.},
+  urldate = {2026-10-31},
+  abstract = {Learning equivariant representations is a promising way to reduce sample and model complexity and improve the generalization performance of deep neural networks. The spherical CNNs are successful examples, producing SO(3)-equivariant representations of spherical inputs. There are two main types of spherical CNNs. The first type lifts the inputs to functions on the rotation group SO(3) and applies convolutions on the group, which are computationally expensive since SO(3) has one extra dimension. The second type applies convolutions directly on the sphere, which are limited to zonal (isotropic) filters, and thus have limited expressivity. In this paper, we present a new type of spherical CNN that allows anisotropic filters in an efficient way, without ever leaving the spherical domain. The key idea is to consider spin-weighted spherical functions, which were introduced in physics in the study of gravitational waves. These are complex-valued functions on the sphere whose phases change upon rotation. We define a convolution between spin-weighted functions and build a CNN based on it. The spin-weighted functions can also be interpreted as spherical vector fields, allowing applications to tasks where the inputs or outputs are vector fields. Experiments show that our method outperforms previous methods on tasks like classification of spherical images, classification of 3D shapes and semantic segmentation of spherical panoramas.},
+  keywords = {/read,gauge equivariance,survey/gdl/local-sym},
+  file = {/home/pierrick/GoogleDrive/zotero-library/2020/Esteves/esteves2020anips.pdf}
 }
 
 @misc{even2024,
@@ -1904,7 +1920,7 @@
   urldate = {2026-04-15},
   abstract = {We survey the mathematical foundations of geometric deep learning, focusing on group equivariant and gauge equivariant neural networks. We develop gauge equivariant convolutional neural networks on arbitrary manifolds \$\textbackslash mathcal\textbraceleft M\textbraceright\$ using principal bundles with structure group \$K\$ and equivariant maps between sections of associated vector bundles. We also discuss group equivariant neural networks for homogeneous spaces \$\textbackslash mathcal\textbraceleft M\textbraceright =G/K\$, which are instead equivariant with respect to the global symmetry \$G\$ on \$\textbackslash mathcal\textbraceleft M\textbraceright\$. Group equivariant layers can be interpreted as intertwiners between induced representations of \$G\$, and we show their relation to gauge equivariant convolutional layers. We analyze several applications of this formalism, including semantic segmentation and object detection networks. We also discuss the case of spherical networks in great detail, corresponding to the case \$\textbackslash mathcal\textbraceleft M\textbraceright =S\textasciicircum 2=\textbackslash mathrm\textbraceleft SO\textbraceright (3)/\textbackslash mathrm\textbraceleft SO\textbraceright (2)\$. Here we emphasize the use of Fourier analysis involving Wigner matrices, spherical harmonics and Clebsch-Gordan coefficients for \$G=\textbackslash mathrm\textbraceleft SO\textbraceright (3)\$, illustrating the power of representation theory for deep learning.},
   archiveprefix = {arXiv},
-  keywords = {/read,gauge,gauge equivariance},
+  keywords = {/read,gauge,gauge equivariance,survey/gdl/local-sym},
   file = {/home/pierrick/GoogleDrive/zotero-library/2021/Gerken/gerken2021.pdf}
 }
 
@@ -2119,6 +2135,19 @@
   langid = {english},
   keywords = {/read,hypernetwork},
   file = {/home/pierrick/GoogleDrive/zotero-library/2017/Ha/ha2017.pdf}
+}
+
+@inproceedings{haan2020,
+  title = {Gauge {{Equivariant Mesh CNNs}}: {{Anisotropic}} Convolutions on Geometric Graphs},
+  shorttitle = {Gauge {{Equivariant Mesh CNNs}}},
+  booktitle = {International {{Conference}} on {{Learning Representations}}},
+  author = {Haan, Pim De and Weiler, Maurice and Cohen, Taco and Welling, Max},
+  year = 2020,
+  urldate = {2026-10-31},
+  abstract = {A common approach to define convolutions on meshes is to interpret them as a graph and apply graph convolutional networks (GCNs). Such GCNs utilize isotropic kernels and are therefore insensitive to the relative orientation of vertices and thus to the geometry of the mesh as a whole. We propose Gauge Equivariant Mesh CNNs which generalize GCNs to apply anisotropic gauge equivariant kernels. Since the resulting features carry orientation information, we introduce a geometric message passing scheme defined by parallel transporting features over mesh edges. Our experiments validate the significantly improved expressivity of the proposed model over conventional GCNs and other methods.},
+  langid = {english},
+  keywords = {/read,gauge equivariance,survey/gdl/local-sym},
+  file = {/home/pierrick/GoogleDrive/zotero-library/2020/Haan/haan2020.pdf}
 }
 
 @incollection{habte2023,
@@ -3178,6 +3207,20 @@
   langid = {english},
   keywords = {/read,data augmentation/theory},
   file = {/home/pierrick/GoogleDrive/zotero-library/2024/Lin/lin2024.pdf}
+}
+
+@article{lippmann2025iclr,
+  title = {Beyond {{Canonicalization}}: {{How Tensorial Messages Improve Equivariant Message Passing}}},
+  shorttitle = {Beyond {{Canonicalization}}},
+  author = {Lippmann, Peter and Gerhartz, Gerrit and Remme, Roman and Hamprecht, Fred A.},
+  year = 2025,
+  journal = {International Conference on Learning Representations},
+  volume = {2025},
+  pages = {88067--88087},
+  urldate = {2026-10-31},
+  langid = {english},
+  keywords = {/read,gauge equivariance,survey/gdl/local-sym},
+  file = {/home/pierrick/GoogleDrive/zotero-library/2025/Lippmann/lippmann2025iclr.pdf}
 }
 
 @misc{liu2025c,
@@ -5504,7 +5547,7 @@
   urldate = {2026-06-26},
   abstract = {Motivated by the vast success of deep convolutional networks, there is a great interest in generalizing convolutions to non-Euclidean manifolds. A major complication in comparison to flat spaces is that it is unclear in which alignment a convolution kernel should be applied on a manifold. The underlying reason for this ambiguity is that general manifolds do not come with a canonical choice of reference frames (gauge). Kernels and features therefore have to be expressed relative to arbitrary coordinates. We argue that the particular choice of coordinatization should not affect a network's inference -- it should be coordinate independent. A simultaneous demand for coordinate independence and weight sharing is shown to result in a requirement on the network to be equivariant under local gauge transformations (changes of local reference frames). The ambiguity of reference frames depends thereby on the G-structure of the manifold, such that the necessary level of gauge equivariance is prescribed by the corresponding structure group G. Coordinate independent convolutions are proven to be equivariant w.r.t. those isometries that are symmetries of the G-structure. The resulting theory is formulated in a coordinate free fashion in terms of fiber bundles. To exemplify the design of coordinate independent convolutions, we implement a convolutional network on the M\"obius strip. The generality of our differential geometric formulation of convolutional networks is demonstrated by an extensive literature review which explains a large number of Euclidean CNNs, spherical CNNs and CNNs on general surfaces as specific instances of coordinate independent convolutions.},
   archiveprefix = {arXiv},
-  keywords = {/unread},
+  keywords = {/read,survey/gdl/local-sym},
   file = {/home/pierrick/GoogleDrive/zotero-library/2021/Weiler/weiler2021.pdf}
 }
 
@@ -5518,7 +5561,7 @@
   isbn = {978-981-98-0662-1},
   langid = {english},
   school = {WORLD SCIENTIFIC},
-  keywords = {/unread},
+  keywords = {/read,survey/gdl/local-sym},
   file = {/home/pierrick/GoogleDrive/zotero-library/2026/Weiler/weiler2026.pdf}
 }
 

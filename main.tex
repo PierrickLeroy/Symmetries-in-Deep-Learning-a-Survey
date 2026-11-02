@@ -843,7 +843,65 @@ Message passing propagates information along edges, i.e.\ between pairs of nodes
 \emph{Topological Deep Learning} (TDL) \citep{papillon2023,papamarkou2024} extends this permutation-equivariant design to higher-order relational structures (simplicial, cell and combinatorial complexes, hypergraphs), passing messages between cells of different dimensions while remaining equivariant to cell relabelling.
 The geometric and topological extensions compose: \citet{battiloro2024} construct $E(n)$-equivariant topological neural networks.
 
-\paragraph{Gauge equivariance and local symmetries}
+\paragraph{Gauges and local symmetries}
+% Introduction, intuition and motivation for why gauges
+Not all symmetries arise from isometries of the space $\mathcal X$, some come from our way of representing computations.
+In general, tangent spaces do not come with a canonical parametrization.
+Fixing a basis, a \emph{frame}, necessary to compute convolutions with coordinates thus forces an arbitrary choice to which we want to be equivariant. 
+This motivation has led to the development of \emph{coordinate independent CNNs} as ``generalizations of steerable CNNs from Euclidean (or homogeneous) spaces to Riemannian manifolds''\citep{weiler2021}, the latter including these passive, local (in the sense that no point actually move, only our computations) transformations.
+% Formal introduction
+A gauge is a smooth family of frames on an open set $(w_p)_{p\in U}$, with $w_p:\mathbb R^d\to T_pM$ being chosen in a set of \emph{allowed frames}, defined by a structure group $H$.
+Under a gauge transformations $g:U\to H\leq GL(d)$, features, should transform predictably, through a representation $\rho: H\to GL(C)$, where the dimension $C$ and induced transformation depends on the type of the feature.
+% Resources
+Detailed material include the survey by \citet{gerken2021} and the comprehensive work by Weiler \citep{weiler2021,weiler2026}.
+
+% Research
+First, we can understand one reason the ideas of gauge equivariance emerged due to global group.
+Consider a scalar field on $S^2$, and the problem of $SO(3)$-equivariance.
+A first approach by \citet{esteves2018} stay on $S^2$ and perform *spherical convolutions* with filters $h:S^2\to\mathbb R$:
+$$
+    (f\star_G h)(x)=\int_{g\in\mathbf{SO}(3)} f(g\eta),h(g^{-1}x),dg,
+$$
+where $\eta$ is a reference point (the north pole).
+The filters are, however, *zonal*, i.e. isotropic.
+From the gauge perspective, the structure group is $SO(2)$ with scalar features, yielding a kernel constraint $K(gv)=K(v)$ for all $g\in SO(2)$ and $v\in T_\eta S^2$.
+Concretely, kernels are invariant under rotations about their center, a limitation since orientation cannot be detected (e.g. no oriented edge detectors).
+Instead, \citet{cohen2018} lift from $S^2$ to $SO(3)$:
+$$
+    [\psi \star f](R) = \langle L_R \psi, f \rangle = \int_{S^2} \sum_{k=1}^K \psi_k(R^{-1}x) f_k(x) dx
+$$
+to avoid the restriction but at a higher computational cost.
+A follow up by \citet{esteves2020anips} proposes anisotropic kernels while staying on $S^2$, it is a spectral realization of gauge-equivariant CNNs on $S^2$ (without gauge formalism but similar ideas)
+\citet{cohen2019p3icml} is the seminal work introducing the theroy of gauge-equivariant CNNs theory on manifolds alongside a concrete instantiation for an icosahedral CNN.
+Still with the anisotry theme \citet{haan2020} introduces \emph{Gauge-equivariant Mesh GCNs} by generalizing the use Graph Convolutional Networks (GCN) to meshes.
+For standard GCN, kernels are anisotropic: $$
+    (K \star f)_p = K_{\mathrm{self}}\, f_p + \sum_{q \in \mathcal{N}_p} K_{\mathrm{neigh}}\, f_q
+$$
+with $ K_{\mathrm{self}}, K_{\mathrm{neigh}} \in \mathbb{R}^{C_{\mathrm{out}} \times C_{\mathrm{in}}}$.\
+Their generalization
+$$(K \star f)_p = K_{\mathrm{self}}\, f_p + \sum_{q \in \mathcal{N}_p} K_{\mathrm{neigh}}(\theta_{pq})\, \rho_{\mathrm{in}}(g_{q \to p})\, f_q$$
+makes the neighbor kernel depend on the angle $\theta_{pq}$ made between neighbor $q$ and an arbitrarily chosen reference neighbor $q_0$ after all neighbors $q_i$ have been projected to $T_pM$.\
+Here $K_{\text{neigh}}:[0,2\pi)\to\mathbb R^{C_{\text{out}}\times C_{\text{in}}}$ (and $g_{q\to p}$ is a parallel transport term).\
+Gauge equivariance takes the form of kernel constraints for all $g, \theta \in [0, 2\pi)$:\
+$$
+\begin{cases}
+    K_{\mathrm{neigh}}(\theta - g) = \rho_{\mathrm{out}}(-g)\, K_{\mathrm{neigh}}(\theta)\, \rho_{\mathrm{in}}(g)\\
+    K_{\mathrm{self}} = \rho_{\mathrm{out}}(-g) K_{\mathrm{self}} \rho_{\mathrm{in}}(g).
+\end{cases}
+$$
+\citet{weiler2021} (see also \citep{weiler2026}) deepen the theory of coordinate-independent CNNs, provide that coordinate-independence and weight-sharing implies gauge-equivariance for a general $G\leq GL(d)$ and that coordinate-independent convolutions are equivariant to symmetries of the $G$-structure (itself a subgroup of the isometries of $M$), linking local and global transformations.
+Their extensive work conduct an detailed literature review and taxonomize previous works in their coordinate-independent CNN formalism.
+Reinterpreting isomorphisms of graphs and neighborhoods as gauge transformations, \citet{dehaan2020} only keep to the minimum processing constraints in GNN layers: those coming from isomorphisms $\phi : \mathcal{V}(G) \to \mathcal{V}(G')$ between nodes of graphs $G$ and $G'$.
+The typical node permutation equivariance constraint of GNNs to the subgroup $\mathrm{Aut}(G) \subseteq S_n$.
+Finally, \citet{lippmann2025iclr} focuses on frames and handles $O(d)$-equivariance with \emph{local canonicalization}.
+For a point cloud $x_i \in \mathbb E^d$, a global frame is fixed by the choice of an origin $o$ and an orthonormal basis $(e_1, \dots, e_d)$.
+Still, they propose to localize the frame choice by additionally fixing a local frame (i.e. a gauge) $R_i$ at each point $x_i$ s.t. $R_i$ transforms equivariantly under a global rotation or reflection $\hat R \in O(d)$. This *local canonicalization* is partly learned: vectors
+$$
+    \mathbf{v}_{i,k} = \sum_{j \in \mathcal{N}(i)} \alpha_{ij,k} \, \frac{\mathbf{x}_i - \mathbf{x}_j}{|\mathbf{x}_i - \mathbf{x}_j|}
+$$
+are predicted, where invariant weights $\alpha_{ij,k} \in \mathbb R$ are computed by an MLP from invariant quantities (distances, scalar features).
+This let them work with feature coordinates $f_i = \rho(R_i)F_i$ invariant to active global $\hat R$, and that can thus be processed by arbitrary MLPs.
+Moreover, the basis vectors $\mathbf{v}_{i,k}$ depend on a small neighborhood/radius of/around $x_i$, so similar local structures are oriented similarly: coordinates of $f_i$ are aligned (close $F_i$ will have close $f_i$ in similar-looking neighborhouds), simplifying the processing.
 
 \subsubsection{Expressivity analysis}
 % maron2018
