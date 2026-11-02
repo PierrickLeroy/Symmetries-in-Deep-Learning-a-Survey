@@ -845,63 +845,61 @@ The geometric and topological extensions compose: \citet{battiloro2024} construc
 
 \paragraph{Gauges and local symmetries}
 % Introduction, intuition and motivation for why gauges
-Not all symmetries arise from isometries of the space $\mathcal X$, some come from our way of representing computations.
-In general, tangent spaces do not come with a canonical parametrization.
-Fixing a basis, a \emph{frame}, necessary to compute convolutions with coordinates thus forces an arbitrary choice to which we want to be equivariant. 
-This motivation has led to the development of \emph{coordinate independent CNNs} as ``generalizations of steerable CNNs from Euclidean (or homogeneous) spaces to Riemannian manifolds''\citep{weiler2021}, the latter including these passive, local (in the sense that no point actually move, only our computations) transformations.
+Not all symmetries arise from isometries of the space $\mathcal X$: some come from the way we represent computations.
+In general, the tangent spaces of a $d$-dimensional manifold $M$ do not come with a canonical basis.
+Computing a convolution in coordinates requires fixing one, a \emph{frame}, at each point: an arbitrary choice to which we want to be equivariant.
+This motivation has led to \emph{coordinate-independent CNNs}, ``generalizations of steerable CNNs from Euclidean (or homogeneous) spaces to Riemannian manifolds'' \citep{weiler2021}, which are equivariant to these passive and local transformations: no point moves, only the frame changes, independently at each point.
 % Formal introduction
-A gauge is a smooth family of frames on an open set $(w_p)_{p\in U}$, with $w_p:\mathbb R^d\to T_pM$ being chosen in a set of \emph{allowed frames}, defined by a structure group $H$.
-Under a gauge transformations $g:U\to H\leq GL(d)$, features, should transform predictably, through a representation $\rho: H\to GL(C)$, where the dimension $C$ and induced transformation depends on the type of the feature.
+Formally (see \Cref{subsec:manifold-gauge-theory} for bundles), a \emph{gauge} on an open set $U\subseteq M$ is a smooth family of frames $w_p:\mathbb{R}^d\to T_pM$, $p\in U$, and a \emph{gauge transformation} $\gamma:U\to GL(d)$ changes it into $w_p\,\gamma(p)$, so that coordinates of tangent vectors change as $v\mapsto\gamma(p)^{-1}v$.
+Restricting to \emph{allowed frames} (e.g. orthonormal ones) restricts $\gamma$ to a \emph{structure group} $H\leq GL(d)$ (e.g. $O(d)$); the smaller $H$, the more structure is fixed, down to a global frame field for $H=\{e\}$, which topology may forbid (e.g. on $S^2$).
+Features of type $\rho:H\to GL(C)$, where $C$ and $\rho$ depend on the feature (scalar, vector, \dots), have coefficients transforming as $f(p)\mapsto\rho(\gamma(p))^{-1}f(p)$.
+As features at different points live in unrelated frames, a convolution first parallel transports $f(q)$ to $p$, through $\rho(g_{p\leftarrow q})$ with $g_{p\leftarrow q}\in H$, then applies a kernel $K:\mathbb{R}^d\to\mathbb{R}^{C_{\mathrm{out}}\times C_{\mathrm{in}}}$ shared across $M$:
+\[
+    (K\star f)(p)=\int_{\mathbb{R}^d}K(v)\,\rho_{\mathrm{in}}(g_{p\leftarrow q_v})\,f(q_v)\,dv,\qquad q_v=\exp_p(w_pv).
+\]
+For $H\leq O(d)$, this convolution is gauge equivariant iff $K(h^{-1}v)=\rho_{\mathrm{out}}(h)^{-1}K(v)\,\rho_{\mathrm{in}}(h)$ for all $h\in H$ \citep{cohen2019p3icml}.
 % Resources
-Detailed material include the survey by \citet{gerken2021} and the comprehensive work by Weiler \citep{weiler2021,weiler2026}.
+Detailed material includes the survey by \citet{gerken2021} and the comprehensive work by \citet{weiler2021,weiler2026}.
 
 % Research
-First, we can understand one reason the ideas of gauge equivariance emerged due to global group.
+The need for gauge equivariance already surfaces with global symmetries.
 Consider a scalar field on $S^2$, and the problem of $SO(3)$-equivariance.
-A first approach by \citet{esteves2018} stay on $S^2$ and perform *spherical convolutions* with filters $h:S^2\to\mathbb R$:
-$$
-    (f\star_G h)(x)=\int_{g\in\mathbf{SO}(3)} f(g\eta),h(g^{-1}x),dg,
-$$
+\citet{esteves2018} stay on $S^2$ and perform \emph{spherical convolutions} with filters $h:S^2\to\mathbb{R}$:
+\[
+    (f\star h)(x)=\int_{SO(3)} f(g\eta)\,h(g^{-1}x)\,dg,
+\]
 where $\eta$ is a reference point (the north pole).
-The filters are, however, *zonal*, i.e. isotropic.
-From the gauge perspective, the structure group is $SO(2)$ with scalar features, yielding a kernel constraint $K(gv)=K(v)$ for all $g\in SO(2)$ and $v\in T_\eta S^2$.
-Concretely, kernels are invariant under rotations about their center, a limitation since orientation cannot be detected (e.g. no oriented edge detectors).
+The filters are, however isotropic (\emph{zonal} in their terminology).
+From the gauge perspective, $H=SO(2)$ with scalar features, and the kernel constraint reduces to $K(hv)=K(v)$ for all $h\in SO(2)$ and $v\in\mathbb{R}^2$: kernels are invariant under rotations about their center and cannot detect orientation (e.g. no oriented edge detectors).
 Instead, \citet{cohen2018} lift from $S^2$ to $SO(3)$:
-$$
-    [\psi \star f](R) = \langle L_R \psi, f \rangle = \int_{S^2} \sum_{k=1}^K \psi_k(R^{-1}x) f_k(x) dx
-$$
-to avoid the restriction but at a higher computational cost.
-A follow up by \citet{esteves2020anips} proposes anisotropic kernels while staying on $S^2$, it is a spectral realization of gauge-equivariant CNNs on $S^2$ (without gauge formalism but similar ideas)
-\citet{cohen2019p3icml} is the seminal work introducing the theroy of gauge-equivariant CNNs theory on manifolds alongside a concrete instantiation for an icosahedral CNN.
-Still with the anisotry theme \citet{haan2020} introduces \emph{Gauge-equivariant Mesh GCNs} by generalizing the use Graph Convolutional Networks (GCN) to meshes.
-For standard GCN, kernels are anisotropic: $$
-    (K \star f)_p = K_{\mathrm{self}}\, f_p + \sum_{q \in \mathcal{N}_p} K_{\mathrm{neigh}}\, f_q
-$$
-with $ K_{\mathrm{self}}, K_{\mathrm{neigh}} \in \mathbb{R}^{C_{\mathrm{out}} \times C_{\mathrm{in}}}$.\
-Their generalization
-$$(K \star f)_p = K_{\mathrm{self}}\, f_p + \sum_{q \in \mathcal{N}_p} K_{\mathrm{neigh}}(\theta_{pq})\, \rho_{\mathrm{in}}(g_{q \to p})\, f_q$$
-makes the neighbor kernel depend on the angle $\theta_{pq}$ made between neighbor $q$ and an arbitrarily chosen reference neighbor $q_0$ after all neighbors $q_i$ have been projected to $T_pM$.\
-Here $K_{\text{neigh}}:[0,2\pi)\to\mathbb R^{C_{\text{out}}\times C_{\text{in}}}$ (and $g_{q\to p}$ is a parallel transport term).\
-Gauge equivariance takes the form of kernel constraints for all $g, \theta \in [0, 2\pi)$:\
-$$
-\begin{cases}
-    K_{\mathrm{neigh}}(\theta - g) = \rho_{\mathrm{out}}(-g)\, K_{\mathrm{neigh}}(\theta)\, \rho_{\mathrm{in}}(g)\\
-    K_{\mathrm{self}} = \rho_{\mathrm{out}}(-g) K_{\mathrm{self}} \rho_{\mathrm{in}}(g).
-\end{cases}
-$$
-\citet{weiler2021} (see also \citep{weiler2026}) deepen the theory of coordinate-independent CNNs, provide that coordinate-independence and weight-sharing implies gauge-equivariance for a general $G\leq GL(d)$ and that coordinate-independent convolutions are equivariant to symmetries of the $G$-structure (itself a subgroup of the isometries of $M$), linking local and global transformations.
-Their extensive work conduct an detailed literature review and taxonomize previous works in their coordinate-independent CNN formalism.
-Reinterpreting isomorphisms of graphs and neighborhoods as gauge transformations, \citet{dehaan2020} only keep to the minimum processing constraints in GNN layers: those coming from isomorphisms $\phi : \mathcal{V}(G) \to \mathcal{V}(G')$ between nodes of graphs $G$ and $G'$.
-The typical node permutation equivariance constraint of GNNs to the subgroup $\mathrm{Aut}(G) \subseteq S_n$.
-Finally, \citet{lippmann2025iclr} focuses on frames and handles $O(d)$-equivariance with \emph{local canonicalization}.
-For a point cloud $x_i \in \mathbb E^d$, a global frame is fixed by the choice of an origin $o$ and an orthonormal basis $(e_1, \dots, e_d)$.
-Still, they propose to localize the frame choice by additionally fixing a local frame (i.e. a gauge) $R_i$ at each point $x_i$ s.t. $R_i$ transforms equivariantly under a global rotation or reflection $\hat R \in O(d)$. This *local canonicalization* is partly learned: vectors
-$$
-    \mathbf{v}_{i,k} = \sum_{j \in \mathcal{N}(i)} \alpha_{ij,k} \, \frac{\mathbf{x}_i - \mathbf{x}_j}{|\mathbf{x}_i - \mathbf{x}_j|}
-$$
-are predicted, where invariant weights $\alpha_{ij,k} \in \mathbb R$ are computed by an MLP from invariant quantities (distances, scalar features).
-This let them work with feature coordinates $f_i = \rho(R_i)F_i$ invariant to active global $\hat R$, and that can thus be processed by arbitrary MLPs.
-Moreover, the basis vectors $\mathbf{v}_{i,k}$ depend on a small neighborhood/radius of/around $x_i$, so similar local structures are oriented similarly: coordinates of $f_i$ are aligned (close $F_i$ will have close $f_i$ in similar-looking neighborhouds), simplifying the processing.
+\[
+    [\psi \star f](R) = \langle L_R \psi, f \rangle = \int_{S^2} \sum_{k=1}^{C} \psi_k(R^{-1}x)\, f_k(x)\, dx,
+\]
+avoiding the restriction at a higher computational cost.
+The follow-up of \citet{esteves2020anips} obtains anisotropic kernels while staying on $S^2$ with spin-weighted spherical functions, a spectral realization of gauge-equivariant CNNs on $S^2$ (without the gauge formalism).
+The seminal work of \citet{cohen2019p3icml} introduced the theory of gauge-equivariant CNNs on manifolds, with the Icosahedral CNN ($H=C_6$) as a concrete instantiation.
+Still with anisotropy in mind, \citet{haan2020} generalize Graph Convolutional Networks (GCNs) to meshes.
+A standard GCN layer $(K\star f)_p=K_{\mathrm{self}}f_p+\sum_{q\in\mathcal{N}_p}K_{\mathrm{neigh}}f_q$ is isotropic, with constant matrices $K_{\mathrm{self}},K_{\mathrm{neigh}}$.
+Their \emph{Gauge Equivariant Mesh CNNs} generalizes the convolution above as
+\[
+    (K \star f)_p = K_{\mathrm{self}}\, f_p + \sum_{q \in \mathcal{N}_p} K_{\mathrm{neigh}}(\theta_{pq})\, \rho_{\mathrm{in}}(g_{p\leftarrow q})\, f_q,
+\]
+where $\theta_{pq}$ is the angle between neighbor $q$ and an arbitrary reference neighbor (the gauge), and $g_{p\leftarrow q}\in SO(2)$ is the discrete parallel transporter.
+Parametrizing $SO(2)$ by angles $h$, the kernel constraint reads $K_{\mathrm{neigh}}(\theta-h)=\rho_{\mathrm{out}}(-h)\,K_{\mathrm{neigh}}(\theta)\,\rho_{\mathrm{in}}(h)$, and $K_{\mathrm{self}}$ must be an intertwiner (\Cref{subsec:representation-theory}).
+\citet{weiler2021} (see also \citep{weiler2026}) deepen the theory of coordinate independent CNNs: they prove that coordinate independence and weight sharing imply gauge equivariance for a general $H\leq GL(d)$, and that the resulting convolutions are equivariant to the isometries preserving the $H$-structure (a subgroup of the space symmetries), linking local and global transformations.
+They also extensively review the literature and classify previous works within their formalism.
+Reinterpreting isomorphisms of graphs and neighborhoods as gauge transformations, \citet{dehaan2020} keep only the minimal constraint on GNN layers: equivariance to isomorphisms $\phi : \mathcal{V}(\Gamma) \to \mathcal{V}(\Gamma')$ between the nodes of graphs $\Gamma$ and $\Gamma'$ (called \emph{naturality}).
+On a single graph, this relaxes the usual node-permutation equivariance from $S_n$ to its subgroup $\operatorname{Aut}(\Gamma)$.
+Finally, \citet{lippmann2025iclr} focus on frames and handle $O(d)$-equivariance with \emph{local canonicalization}.
+For a point cloud $x_i \in \mathbb E^d$, a global frame is given by an origin $o$ with an orthonormal basis $(e_1, \dots, e_d)$.
+They additionally fix a local frame (i.e. a gauge) $R_i\in O(d)$ at each point $x_i$, which transforms as $R_i\mapsto R_i\hat R^{-1}$ under a global rotation or reflection $\hat R \in O(d)$.
+This local canonicalization is partly learned: $R_i$ is obtained by orthonormalizing the vectors
+\[
+    v_{i,k} = \sum_{j \in \mathcal{N}(i)} \alpha_{ij,k} \, \frac{x_i - x_j}{\lVert x_i - x_j\rVert},
+\]
+where the invariant weights $\alpha_{ij,k} \in \mathbb R$ are computed by an MLP from invariant quantities (distances, scalar features).
+Feature coordinates $f_i = \rho(R_i)F_i$ are then invariant to the active global $\hat R$, and can be processed by arbitrary MLPs.
+Moreover, $R_i$ only depends on a small neighborhood of $x_i$, so similar local structures are oriented similarly and get similar coordinates $f_i$, thus the downstream network is presented aligned inputs.
 
 \subsubsection{Expressivity analysis}
 % maron2018
