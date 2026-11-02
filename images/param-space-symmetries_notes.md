@@ -1,16 +1,21 @@
-# `fig:param-space-symmetries` — notes for building the right panel
+# `fig:param-space-symmetries` — notes on building the figure
 
-Status (2026-10-31): left panel done, right panel to do.
-The figure environment in `main.tex` (≈ l. 1358) still includes `images/draft/param-space-symmetries.png`.
+Status (2026-11-02): both panels done and merged; `main.tex` (≈ l. 1415) includes `images/param-space-symmetries.pdf` (Figure 3, p. 33), caption (b) written.
 
 ## 1. Files
 
 | File | Role |
 |---|---|
+| `images/param-space-symmetries.pdf` | **Merged figure used by `main.tex`**, 184 × 127.4 mm, fonts embedded |
+| `images/param-space-symmetries.svg` | Merged figure, Inkscape-editable (layers "Panel a", "Panel b"; ids prefixed `a-`, `b-`) |
+| `images/scripts/pagella/make_combined.py` | Merges the two panel SVGs side by side and exports the PDF (`python3 make_combined.py`) |
 | `images/param-space-symmetries_left.svg` | **Final left panel (a)**, 92 × 127.4 mm, Inkscape-editable |
 | `images/draft/param-space-symmetries.png` | Hand-drawn draft of both panels (right half = right panel) |
 | `images/scripts/pagella/make_left_final.py` | Generator of the final left panel |
 | `images/scripts/pagella/make_left_variants.py` | Shared helpers (math text, widths, frames, badges, validator) |
+| `images/param-space-symmetries_right.svg` | **Right panel (b)**, 92 × 127.4 mm, Inkscape-editable |
+| `images/scripts/pagella/make_right_final.py` | Generator of the right panel (overwrites Inkscape edits if re-run) |
+| `images/scripts/pagella/make_right_variants.py` | Unused right-panel alternatives A and C (`python3 make_right_variants.py OUTDIR`) |
 | `images/param-space-symmetries_left_pagella-B.svg` | Unused alternative: 138 mm wide, 3 columns (delete if stacking is ruled out) |
 | `images/scripts/param_space_symmetries_left.py` | Unrelated earlier generator (LaTeX glyphs + Helvetica); not used for the final; writes `…_left_A/B.svg` |
 
@@ -20,16 +25,16 @@ Regenerating with `cd images/scripts/pagella && python3 make_left_final.py ../..
 
 - Right panel: **92 mm wide**, ideally **127.4 mm tall** (same height as the left panel), panel label **b** at the same place as **a** (bold TeX Gyre Pagella 10 pt, baseline at $(x,y)=(2.0, 5.2)$ mm).
 - Both panels side by side: $2\times 92 = 184$ mm ≤ full MDPI width $=$ `\textwidth` (138.6 mm) $+$ `\extralength` (46.1 mm) $=184.7$ mm.
-- Export each panel to PDF (`inkscape X.svg --export-type=pdf -o X.pdf`; fonts embed correctly, checked with `pdffonts`) and include with the MDPI full-width pattern:
+- Workflow: edit a panel SVG (by hand in Inkscape, or via its generator), then `cd images/scripts/pagella && python3 make_combined.py`, which rebuilds `param-space-symmetries.svg` from the two panels and exports `param-space-symmetries.pdf` (fonts embedded, checked with `pdffonts`). Edits made directly to the merged SVG are lost on the next merge.
+- Included with the MDPI full-width pattern; `[!tbp]` as for the other full-width figure (with `[ht]` the 185 mm float was deferred to the last page):
 
 ```latex
-\begin{figure}[ht]
+\begin{figure}[!tbp]
 \begin{adjustwidth}{-\extralength}{0cm}
     \centering
-    \includegraphics[width=92mm]{images/param-space-symmetries_left.pdf}\hfill
-    \includegraphics[width=92mm]{images/param-space-symmetries_right.pdf}
+    \includegraphics[width=\linewidth]{images/param-space-symmetries.pdf}
 \end{adjustwidth}
-    \caption{...}
+    \caption{\textbf{(a)} ... \textbf{(b)} ...}
     \label{fig:param-space-symmetries}
 \end{figure}
 ```
@@ -106,5 +111,36 @@ The draft's freehand colours (red, orange, green, purple, yellow, blue) should b
    - Step (i) $\eta_2\gets0$ lowers CE by $\log(5/4)$ and $\ell_1$ by $\log2$.
    - Step (ii) $\eta\gets\eta+(\Delta/3)\mathbf 1$ leaves CE unchanged and raises $\ell_1$ by $\Delta$.
    - With weight $\lambda$ on $\ell_1$: $\Delta=\log2+\lambda^{-1}\log(5/4)$.
-5. **$\Theta'$:** the draft has a second parameter space $\Theta'\subset\mathbb{R}^{m'}$, i.e. an architectural symmetry (main text, paragraph "Architectural Symmetry"). It is not among the six left-panel classes. Either drop it, or add it with its own colour and a map $\Theta\to\Theta'$ (neuron splitting), with $\varphi$ also defined on $\Theta'$.
+5. **$\Theta'$:** resolved (2026-11-02): kept in the right panel without its own colour or a map $\Theta\to\Theta'$; $\varphi$ is overloaded on $\Theta'$ (§7).
 6. **Left-panel layout:** 2 columns (3/2/1 left, 5/6/4 right), so "larger sets higher" holds only for 1 ⊂ 2 ⊂ 3 and 2 ⊂ 5. The ⊂ glyphs make every relation explicit.
+
+## 7. Right panel (b): what was built (2026-11-02)
+
+Regenerate: `cd images/scripts/pagella && python3 make_right_final.py ../../param-space-symmetries_right.svg` (validator: 0 issues).
+
+**Layout (variant B, "commutative square").** Top row: the modified spaces $\Theta'\subseteq\mathbb R^m$ (larger architecture; $n,m$ as in the "Architectural Symmetry" paragraph) and $\mathcal F_{\vert X'}$. Middle row: $\Theta\subseteq\mathbb R^n\xrightarrow{\varphi}\mathcal F$, with $\varphi:\Theta'\to\mathcal F$ curving in from above and $i:\mathcal F\to\mathcal F_{\vert X'}$ going up.
+Bottom: $\mathcal L_R$ under $\Theta$ and $\mathcal L_F$ under $\mathcal F$, both copies of $\mathbb R$ feed `AGG`, which maps down to a third $\mathbb R$. Legend (line sample + class number + set) bottom right.
+Frames and blobs use the left-panel frame recipe in grey: `fill:#555555;fill-opacity:0.07;stroke:#555555;stroke-width:0.35`, corner radius 1.6 (`FRAME_STYLE`). Label at $f_\theta$: $f_\theta=\varphi(\theta)$. Curves in $\mathcal F$ are trimmed to stay ≥ 1.6 mm inside the blob (`clip_inside`).
+
+**Visual code.**
+- Colour $k$ in $\Theta,\Theta'$ = set reached from $\theta$ by class $k$. Coincident sets are parallel lines of one ribbon (line 0.32 mm, spacing 0.62 mm).
+- A dot of colour $k$ is the point whose preimage is the colour-$k$ set: $f_\theta$ (2), $\mathcal L_F(f_\theta)$ (3), $\mathcal L(\theta)$ (4), $i(f_\theta)$ (5). $\theta$, $\tilde\theta$, $\mathcal L_R(\theta)$ are ink.
+- (1) The two components of $G\theta$ are mirror images about $G\tilde\theta$: reading $G\supseteq\mathbb Z_2$, $\tilde\theta$ is fixed by the reflection (stabilizer $\mathbb Z_2$), so its orbit has one component. The orbit stripe faces $G\tilde\theta$.
+- In $\Theta$: two $G\theta$ ribbons carry (1)(2)(3)(5); extra closed fibre component (2)(3)(5); extra arcs (3) and (5); the (4) level set crosses the ribbon at $\theta$.
+- In $\Theta'$: two fibre ribbons (2)(3)(5); extra arcs (3), (5); separate (4) arc. No point is marked in $\Theta'$.
+- In $\mathcal F$: level set $\mathcal L_F^{-1}(\mathcal L_F(f_\theta))$ (green) and fibre $i^{-1}(i(f_\theta))$ (olive) cross at $f_\theta$.
+
+**Choices to confirm.**
+1. $i$ is a plain arrow, not a hooked $\hookrightarrow$: restriction is surjective and not injective (the olive curve in $\mathcal F$ is a non-trivial fibre of $i$).
+2. Level sets are written $\mathcal L_F^{-1}(\mathcal L_F(f_\theta))$ and $\mathcal L^{-1}(\mathcal L(\theta))$ (the request wrote $\mathcal L_F^{-1}(f_\theta)$ and $L^{-1}(\theta)$).
+3. Labels follow `main.tex`: $\mathcal L_F$ (not $\mathcal L_{\mathcal F}$), $\Theta\subseteq\mathbb R^n$, $\Theta'\subseteq\mathbb R^m$ (draft: $m$, $m'$).
+4. The tilde of $\tilde\theta$ is a spacing `˜` in a shifted `<tspan>` (the combining U+0303 collides with 𝜃 in Inkscape). When retyping it in Inkscape, keep the tspan or redraw it.
+
+**Caption draft (b).**
+Spaces and maps: $\varphi$ sends $\Theta$ and the parameter space $\Theta'$ of a larger architecture to $\mathcal F$, $i$ restricts functions to $X'$, and the loss aggregates $\mathcal L_F$ and $\mathcal L_R$.
+In $\Theta$ and $\Theta'$, each colour shows the set of parameters reached from $\theta$ by the class of the same colour in (a); coincident sets are drawn as parallel stripes.
+A coloured dot is the point whose preimage is the set of that colour.
+(1) $G\theta$ has two components, mirror images of each other, while the more symmetric $\tilde\theta$ has a one-component orbit $G\tilde\theta$.
+(4) The level set of $\mathcal L$ crosses the fibre of $\varphi$ at $\theta$ without containing it.
+
+**Variants (2026-11-02), B chosen.** A = parameter spaces side by side on top, flow downwards (first version). B = commutative square: $\Theta'$ and $\mathcal F_{\vert X'}$ on top, $\Theta\xrightarrow{\varphi}\mathcal F$ in the middle, losses below; outline-only spaces, thin separated lines, legend with line samples. C = $\Theta$ as a full-width hero with set labels written next to each curve (no legend), $\Theta'$ and $\mathcal F_{\vert X'}$ to the right of the compact diagram; warm fills, stripes with thin gaps. All three: same content, 92 × 127.4 mm, all arrows ≥ 10 mm, validator 0 issues. B is now `make_right_final.py`; A and C were deleted as SVGs and can be regenerated with `make_right_variants.py`.
