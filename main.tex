@@ -104,7 +104,7 @@ Symmetric architectures (such as Siamese networks) are surveyed in \citep{ilina2
 \citet{zhao2025} focuses on parameter-space symmetries: transformation that change the representation of a neural network but do not modify the implemented function.
 \citet{sipiran202523scgpis} references symmetry discovery methods in 3D shapes.
 % geometric deep learning
-\citet{bronstein2021} is the reference textbook on geometric deep learning,  \citet{gerken2021,carlsson2025} study the mathematical formalism of this field and \citet{basheer2025ijdsa,habte2023} focus more specifically on equivariant convolutions, \citet{fei2024air} on 3D rotations and \citet{seo2025a} on robotics.
+\citet{bronstein2021} is the reference textbook on geometric deep learning, \citet{gerken2021,carlsson2025} study the mathematical formalism of this field and \citet{basheer2025ijdsa,habte2023} focus more specifically on equivariant convolutions, \citet{fei2024air} on 3D rotations and \citet{seo2025a} on robotics.
 \citet{rath2024air} gathers methods that integrate geometric prior knowledge to neural network such that their representations are invariant or equivariant.
 Compared to these works, we work in reverse and go broad, starting from the concept of symmetry, listing its occurrences and trying to delineate a conceptual understanding, adopting a high level point of view.
 
@@ -769,6 +769,21 @@ Finally, \emph{framework symmetries} (\ref{sec:framework-symmetries}) differ on 
 % dehmamy2021anips: achieve equivariance through Lie algebra
 % figure: draft/orbit-stability.png to reproduce or illustrate conceptually (equivariant models guarantee results don't change over an orbit)
 % Graphs, huang2023: distinguishes active and passive graph symmetries in constrat to CNNs
+\emph{Geometric Deep Learning} (GDL) \citep{bronstein2017ispm,bronstein2021} starts with a domain $\Omega$ and a signal $x\colon\Omega\to\mathbb{R}^{C}$.
+The structure of $\Omega$, in particular its symmetries, is analyzed following the legacy of Klein's Erlangen Program.
+A central idea is that an appropriate inductive bias for a learning problem comes from respecting the symmetries of $\Omega$.
+Symmetries, together with a scale-separation principle, are GDL's answer to the curse of dimensionality.
+The scope of GDL also includes unifying architectures in a common blueprint \textit{e.g.}\ Transformers as graph neural networks \citep{joshi2025}, and extending non-Euclidean geometry from the input domain to every stage of deep learning, \textit{e.g.}\ non-Euclidean representation spaces \citep{mettes2024ijcv,saezdeocarizborde2025iclr}.
+In this survey, we focus on its \emph{Equivariant Deep Learning} core, which is the most concerned with symmetries.
+Standard GDL mostly assumes exact symmetry, \textit{i.e.}\ equivariance to every $g\in G$ acting on $\Omega$.
+The deformation stability perspective \citep[Sec.~3.3]{bronstein2021} extends control to deformations $\tau\in\operatorname{Diff}(\Omega)$ near $G$, close to the setting of \Cref{sec:extent-restriction}.
+
+The promise of EDL is to design principled architectures that are sample-efficient and generalize well.
+Equivariant networks typically benefit from fewer learnable parameters and better interpretability, \textit{e.g.}\ CNN filters.
+They also offer robustness guarantees, since their response to a transformed input is dictated by the group: $f(\rho_X(g)\,x)=\rho_Y(g)\,f(x)$ for all $g\in G$.
+As for generalization, an out-of-distribution input $\rho_X(g)\,x$, with $x$ in-distribution, is handled as reliably as $x$ itself once the symmetry is imposed.
+Resorting to EDL is not automatic, however: \Cref{sec:edl-tradeoffs} discusses the trade-offs between EDL and DA, in particular the recurring question of whether the cost of exact equivariance is justified over a simpler model trained with augmentation.
+Recommended resources include surveys \citep{rath2024air,basheer2025ijdsa}, foundations \citep{borde2025,gerken2021,carlsson2025} and a historical account of the field \citep{bronstein2023tg}.
 
 \subsubsection{Achieving equivariance}
 
@@ -944,7 +959,7 @@ Beyond vision, scale--translation equivariance has been applied to raw audio \ci
 
 
 
-\subsubsection{Tradeoffs of equivariance}
+\subsubsection{Tradeoffs of equivariance}\label{sec:edl-tradeoffs}
 % last par of [vadgama2025 sec 4]
 Restricting the hypothesis class $\mathcal{H}$ to $G$-equivariant maps is a double-edged sword: it can improve sample efficiency and generalization, but it costs speed, design effort, could hinder optimization and can impose the wrong symmetry.
 We review both sides and when equivariance is worth its cost.
