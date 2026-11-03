@@ -48,7 +48,7 @@
 %% For proofs, please use the proof environment (the amsthm package is loaded by the MDPI class).
 
 %=================================================================
-\Title{Pierrick Symmetries and Neural Networks: a Leroy Survey}
+\Title{Symmetries and Neural Networks: a Survey}
 \newcommand{\orcidauthorA}{0009-0004-2050-916X}
 \newcommand{\orcidauthorB}{0000-0002-0610-9168}
 \newcommand{\orcidauthorC}{0000-0003-1847-5031}
@@ -1067,10 +1067,14 @@ Similarly to DA, FA can be applied beyond strict group-invariance settings, acco
 Another natural comparison is with equivariant models, covered in \Cref{sec:edl-tradeoffs}.
 
 \subsection{Framework Symmetries}\label{sec:framework-symmetries}
-We now turn our attention to symmetries appearing in the ``outside scope'', which either arise in the way data is piped through during training (\Cref{sec:data-ordering,sec:joint-embedding} on data ordering and joint-embedding) or reflect a limitation in downstream processing rather than a true problem constraint: criterion symmetries (\Cref{sec:criterion-symmetries}) are the irreducible loss symmetries that cannot be addressed through parameter or architectural adjustments.
+Unlike EDL and DA, which distill a problem symmetry into $\mathcal{H}$ or $f_\theta$, \emph{framework} symmetries are carried by the training pipeline, across several loci or forward calls (\Cref{fig:sym-loci}).
+Symmetries arise in the way data is piped through during training (\Cref{sec:data-ordering,sec:joint-embedding}) or reflect a limitation in downstream processing rather than a true problem constraint: criterion symmetries (\Cref{sec:criterion-symmetries}) are the irreducible loss symmetries that cannot be addressed through parameter or architectural adjustments.
+From a taxonomic viewpoint, data ordering (\Cref{sec:data-ordering}) is inherently \emph{dynamic}, as its symmetry permutes the data stream over training; joint embeddings (\Cref{sec:joint-embedding}) and criterion symmetries (\Cref{sec:criterion-symmetries}) are both \emph{prescriptive}, designing how to train.
+These symmetries can be incomplete (\Cref{sec:incomplete-symmetries}), \textit{e.g.}\ full-batch GD is $S_n$-invariant but mini-batch SGD only under a subgroup or only approximately. The works are often \emph{implicit} and the overall symmetry reading of joint embedding (\ref{sec:joint-embedding}) is ours.
+Compared to the symmetries of $\mathcal{L}$ on $\Theta$ (\Cref{sec:parameter-space-symmetries}), criterion symmetries act on $\mathcal{Y}$ and contrast by leaning towards being more implicit and prescriptive works.
 
 \subsubsection{Data Ordering}\label{sec:data-ordering}
-The previous sections engineered symmetries into the model; a complementary question is which symmetries are baked into the training procedure itself, starting with the data stream.
+We start with the symmetries baked into the training procedure by the data stream.
 Formally, view a learning algorithm as a map
 $$
 \mathcal{A} : \left ( \{\mathcal{D}_e\}_{e\in [E]},\, \theta_0 \right ) \longmapsto \theta_T,
@@ -1209,7 +1213,8 @@ Multimodal joint-embeddings highlight the question of a representational hierarc
 
 \subsubsection{Criterion Symmetries}\label{sec:criterion-symmetries}
 % wang2025: quotient loss for SE(3) + orbit loss for scale = Sim(3) overall
-The differentiable function $L:\mathcal{Y}\times\mathcal{Y}\to\mathbb{R}$ used to compare predicted logits $\hat y$ and ground-truth $y$, called here the \emph{criterion}, can be a symmetry locus.
+The differentiable function $L:\mathcal{Y}\times\mathcal{Y}\to\mathbb{R}$ used to functionally compare predictions $\hat y$ and ground-truth $y$, called here the \emph{criterion} is distinct from the loss $\mathcal{L}(\theta)=\frac{1}{n}\sum_{i=1}^{n} L(f_\theta(x_i),y_i)$ on $\Theta$: its symmetries act on predictions and targets in $\mathcal{Y}$, not on parameters.
+The two are related when a transformation $g$ of $\mathcal{Y}$ is realizable in parameter space, $f_{\tilde g\cdot\theta}=g\cdot f_\theta$ for some $\tilde g$: a criterion symmetry on predictions then induces a type of loss symmetry $\mathcal{L}(\tilde g\cdot\theta)=\mathcal{L}(\theta)$ with $f_{\tilde g\cdot\theta}\neq f_\theta$.
 We say $L$ is \emph{invariant} under a group $G$ acting on $\mathcal{Y}$ when it depends only on the target or prediction orbit,
 $$
 L(\hat y,\, y) = L(\hat y,\, g\cdot y) \quad \text{ or } \quad L(\hat y,\, y) = L(g\cdot \hat y,\, y)
