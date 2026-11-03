@@ -132,39 +132,39 @@ We propose a faceted taxonomy in \Cref{tab:taxonomy} to categorize occurrences o
         \hline
         \textbf{Criterion} & \textbf{Defining question} & \textbf{Values} & \textbf{Definition} & \textbf{Examples} \\
         \hline
-        \multirow{3}{=}{Exactness} & \multirow{3}{=}{How does the symmetry hold?} & Exact & The symmetry holds exactly, without any approximation or restriction in its application. & Geometric Deep Learning: design an equivariant layer; data augmentations such as vertical flip; parameter-space symmetries; conservation laws under GF. \\
+        \multirow{3}{=}{Exactness} & \multirow{3}{=}{Does the symmetry hold fully, on a restricted extent, or up to a tolerance?} & Exact & The symmetry holds exactly for all $g\in G$, with zero error. & Geometric Deep Learning: design an equivariant layer; data augmentations such as horizontal flip; global parameter-space symmetries (permutation, ReLU rescaling); conservation laws under gradient flow. \\
         \cline{3-5}
-        & & Extent restricted & There is a restriction on the extent of the symmetry; a subset is singled out; it is local or partial. & Symmetry-Breaking due to regularization; data augmentations such as cropping, blurring or rotation in MNIST; instance-level parameter space symmetries.\\
+        & & Extent restricted & There is a restriction on the extent of the symmetry; it holds only for $g\in S\subsetneq G$ (a subgroup, a non-closed set or a semigroup), or only on part of the domain (local, instance-level). & Symmetry-breaking due to regularization; data augmentations such as cropping and blurring (non-invertible) or rotation in MNIST ($6\leftrightarrow 9$); instance-level parameter-space symmetries.\\
         \cline{3-5}
-        & & Approximate & There is a notion of tolerance involved in the validity of the symmetry. & Soft equivariance penalty; conservation laws in discrete time; quantification of the strength of a symmetry.\\
+        & & Approximate & There is a notion of tolerance involved in the validity of the symmetry; it holds for all $g\in G$ up to a tolerance $\epsilon>0$. & Soft equivariance penalty; conservation laws in discrete time; quantification of the strength of a symmetry.\\
         \hline
         \multirow{2}{=}{Purpose} & \multirow{2}{=}{How does the work interact with the symmetry?} & Descriptive & The work seeks to understand the effect, validity, existence or consequences of a symmetry. & Understand the consequences of a parameter-space symmetry on the learning dynamics; symmetry discovery in data or models.\\
         \cline{3-5}
-        & & Prescriptive & The work provides guidelines to account for or use a symmetry. & Design an equivariant layer; extract a representative or align two parameters of the same architecture. \\
+        & & Prescriptive & The work proposes a method or guideline that enforces, exploits or removes a symmetry. & Design an equivariant layer; canonicalization (e.g.\ extract an orbit representative); align two trained networks before merging. \\
         \hline
-        \multirow{6}{=}{Object} & \multirow{6}{=}{Where does the symmetry come from, what is the symmetry locus ? (more details in \Cref{fig:sym-loci})} & Problem & The symmetry is a property of the task, independent of any model: ground truth $f^*$ or data distribution $p$. & Rotation-invariant molecular properties; symmetry discovery in data. \\
+        \multirow{6}{=}{Object} & \multirow{6}{=}{Which object carries the symmetry (its locus)? (more details in \Cref{fig:sym-loci})} & Problem & The symmetry is a property of the task, independent of any model: ground truth $f^*$ or data distribution $p$. & Rotation-invariant molecular properties; symmetry discovery in data. \\
         \cline{3-5}
-        & & Model & The symmetry acts on the hypothesis class $\mathcal{H}$ or implementation map $\varphi$. & Design an equivariant layer; neuron permutation and rescaling symmetries. \\
+        & & Model & The symmetry is a property of the architecture, valid for every parameter $\theta$: hypothesis class $\mathcal{H}$ or implementation map $\varphi$. & Design an equivariant layer; neuron permutation and rescaling symmetries. \\
         \cline{3-5}
-        & & Optimization & The symmetry acts on the learning rule: loss $\mathcal{L}$ on parameter space or optimizer $U$. & Conservation laws under GF; design an equivariant optimizer. \\
+        & & Optimization & The symmetry is a property of the learning rule: loss $\mathcal{L}$ on parameter space or optimizer $U$. & Conservation laws under gradient flow; design an equivariant optimizer. \\
         \cline{3-5}
-        & & Parameter & The symmetry holds for a fixed $\theta$: implemented function $f_\theta$ or symmetric state $g\cdot\theta=\theta$. & Measure the equivariance error of a trained network; track symmetric states along training. \\
+        & & Parameter & The symmetry is a property of a fixed parameter $\theta$ (instantiation): the actual implemented function $f_\theta$ or symmetric state $g\cdot\theta=\theta$. & Measure the equivariance error of a trained network; track symmetric states along training. \\
         \cline{3-5}
-        & & Data & The symmetry is carried by an individual data point, $g\cdot x = x$. & Symmetric inputs forcing symmetric outputs of an equivariant network. \\
+        & & Data & The symmetry is a property of an individual data point, $g\cdot x = x$. & Curie principle: symmetric inputs forcing symmetric outputs of an equivariant network. \\
         \cline{3-5}
-        & & Framework & A symmetry is the wider processing pipeline, can involve several forward calls. & Joint-embedding SSL; permutation-invariant criterion (Hungarian loss); permuting the batch ordering. \\
+        & & Framework & The symmetry is a property of the training pipeline as a whole, it can include several forward calls (criterion, data ordering, joint embeddings). & Joint-embedding self-supervised learning; permutation-invariant criterion (Hungarian loss); permuting the batch ordering. \\
         \hline
-        \multirow{2}{=}{A-priori knowledge} & \multirow{2}{=}{Is the symmetry assumed to be known?} & Known & The work starts already knowing the symmetry. & Derive the consequences of a parameter-space symmetry; design an equivariant optimizer.\\
+        \multirow{2}{=}{A priori knowledge} & \multirow{2}{=}{Is the symmetry assumed to be known?} & Known & The work starts already knowing the symmetry. & Derive the consequences of a parameter-space symmetry; design an equivariant optimizer.\\
         \cline{3-5}
         & & Unknown & The symmetry or its validity is not known, or not fully. & Symmetry discovery; use RL to learn an automated data augmentation policy; measure an equivariance error; characterize the fiber of the implementation map. \\
         \hline
-        \multirow{2}{=}{State} & \multirow{2}{=}{Is there a process evolving?} & Dynamic & The symmetry, its validity or strength varies depending on a time-based process. & Conservation laws; automated data augmentation; track the evolution of symmetric states along training.\\
+        \multirow{2}{=}{State} & \multirow{2}{=}{Does the symmetry interact with a time-indexed process?} & Dynamic & The symmetry is studied along a time-indexed process: its validity or strength varies along it, or it constrains the trajectory. & Conservation laws; automated data augmentation; tracking the evolution of symmetric states along training.\\
         \cline{3-5}
-        & & Static & The symmetry always holds in the same way. & Standard data augmentation; quotienting a symmetry in parameter-space; design an equivariant layer.\\
+        & & Static & The symmetry holds in the same way at all times, or no process is involved. & Standard data augmentation; quotienting a symmetry in parameter space; design an equivariant layer.\\
         \hline
-        \multirow{2}{=}{Explicitness} & \multirow{2}{=}{Does the work use a standard symmetry-language to formalize its thesis?} & Implicit & There is a symmetry but it is not abstracted, not presented as such. & Data augmentation; works not adopting a symmetry perspective (ex: \citep{kobayashi2024anips})\\
+        \multirow{2}{=}{Explicitness} & \multirow{2}{=}{Does the work use a standard symmetry-language to formalize its thesis?} & Implicit & There is a symmetry but it is not abstracted, not presented as such. & Intuitive data augmentation; empirical-only work; \citep{kobayashi2024anips}.\\
         \cline{3-5}
-        & & Explicit & The symmetry is abstracted or manipulated, overtly discussed and referred to. & Most works in this survey. \\
+        & & Explicit & The symmetry is abstracted, named and formalized as such. & Works stating a group action, an invariance or equivariance property (most works in this survey). \\
         \hline
     \end{tabularx}
     \small
