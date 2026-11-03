@@ -750,7 +750,7 @@ Symmetry thus acts in two ways: \emph{global} symmetry, one group acting on the 
 
 
 
-\section{Symmetry as a Design Principle}
+\section{Symmetry as a Design Principle}\label{sec:design-principle}
 
 This section gathers the methods in which a symmetry, often \emph{known} in advance, is built into a learning system.
 Here symmetry is a muse: it is recognized and taken into account to guide design, out of the desire to ``do things right''; the purpose therefore tends to be prescriptive, as best illustrated by \cref{sec:gdl} on Geometric Deep Learning, which proposes ways to distill a ground-truth problem symmetry into the hypothesis class.
@@ -1863,6 +1863,7 @@ AdamW postpones the weight-decay term $\lambda\theta_{t-1}$, adding it after the
 A mismatch between the symmetries of the model and those of the optimizer means that functionally identical parameters need not train identically.
 When the equivariance requirement \Cref{eq:equivariant-optimizer} is fulfilled however, $\theta_0\sim\tilde{\theta}_0$ implies $\theta_t\sim\tilde{\theta}_t$ for all $t$ and we may speak of \emph{the} functional trajectory unambiguously.
 One strategy to avoid the mismatch is thus to employ an optimizer equivariant to the symmetry group of the model (\Cref{sec:quotient-repr-align} present other approaches).
+This symmetry-guided view would also fit in \Cref{sec:design-principle}.
 
 \citet{neyshabur2015anips}, observing that SGD is not equivariant to the rescaling symmetry of ReLU networks repair it through paths.
 The \emph{path vector} $\pi(w)$ collects the products of weights along all input--output paths: $\pi_c(w)=\prod_{k}w_{e_k}$ for a path $c=(e_1,\dots,e_L)$ of edges.
