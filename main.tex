@@ -753,7 +753,7 @@ Symmetry thus acts in two ways: \emph{global} symmetry, one group acting on the 
 \section{Symmetry as a Design Principle}\label{sec:design-principle}
 
 This section gathers the methods in which a symmetry, often \emph{known} in advance, is built into a learning system.
-Here symmetry is a muse: it is recognized and taken into account to guide design, out of the desire to ``do things right''; the purpose therefore tends to be prescriptive, as best illustrated by \cref{sec:gdl} on Geometric Deep Learning, which proposes ways to distill a ground-truth problem symmetry into the hypothesis class.
+Here symmetry is a muse: it is recognized and taken into account to guide design, out of the desire to ``do things right''; the purpose therefore tends to be prescriptive, as best illustrated by \cref{sec:gdl} on Equivariant Deep Learning, which proposes ways to distill a ground-truth problem symmetry into the hypothesis class.
 This is in contrast with \Cref{sec:parameter-space-symmetries} where symmetries are rather unanticipated artifacts emerging from a parametrization.
 
 We cover three subsections.
@@ -1028,7 +1028,7 @@ While there is no denying that equivariant models are scientifically well-founde
 % add adversarial training ? [Goodfellow, Explaining and harnessing adversarial examples] and [Madry, Towards deep learning models resistant to adversarial attacks]
 % shorten2019jbd and mumuni2022a: surveys on DA
 % miao2023p4icml: instance-dependent DA
-Data augmentation (DA) enriches a training set by applying transformations that are known, or assumed, to leave the target label unchanged.
+Data augmentation (DA) enriches a training set by applying transformations that are known (or assumed) to leave the target label unchanged.
 Formally letting $G$ act on input space $\mathcal{X}$, the augmented risk replaces the standard empirical risk by averaging over orbits:
 $$
 \hat R_{\mathrm{aug}}(\theta)=\frac{1}{|G|}\sum_{g\in G}\hat R(\theta |g\cdot \mathcal{D}),
