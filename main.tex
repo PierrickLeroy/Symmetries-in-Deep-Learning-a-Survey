@@ -2283,7 +2283,6 @@ Notably, both \citet{krippendorf2020} and \citet{hu2025nn} rely on the assumptio
 % mention sensitivity analysis as the broader field that studies how the variation in the output of a model can be apportioned to different sources of variation in its inputs - see storm2024prl for an example of local sensitivity analysis applied to deep networks. Symmetry quantification could be likened to sensitivity analysis to specific directions in input space.
 % petrache2023 3.2 equivariance error
 % yeh2022p2icais introduce the Partition Distance, a quantitative metric for comparing their learned sharing scheme against a known ground truth (an equivariance error)
-% leroy2025 invariance energy estimated in embedding space from discrete infinitesimal curves (to be added in the last paragraph on infinitesimal methods)
 % qu2024anips: sec 5.4 cosine similarity >0.99 for atom force prediction in a scaled non-equivariant model
 % wang2022p3icml: equivariance error (def 3.1)
 % elhag2026: equivariance metrics macro and micro averaging over group orbit (eq 8, eq 9)
@@ -2308,6 +2307,8 @@ In the same vein, an equivariance error $\frac{1}{n} \sum_{i=1}^{n} \operatornam
 \citet{shen2026} instead define an \emph{equivariance error} as the share of the total loss attributable to non-equivariance, $\mathcal{L}_{\mathrm{equiv}}(\theta)/\mathcal{L}(\theta)$, and observe that for augmentation-trained non-equivariant models it drops quickly to low values ($\approx 2\%$ of the loss).\newline
 A final family quantifies sensitivity infinitesimally.
 \citet{gruver2024} use the \emph{Lie derivative} $\mathcal{L}_X f$, where the vector field $X$ along which $f$ is differentiated is precisely an infinitesimal symmetry generator, yielding a hyperparameter-free local equivariance error that quantifies local sensitivity in the symmetry direction.
+\citet{leroy2025} instead estimate, in the embedding space $\mathcal{Z}$, the unit tangents $\hat v(z)$ of discrete curves $t\mapsto f(\alpha_t x)$ traced by a one-parameter attribute action $\alpha_t$ resulting from interpretable attribute modifications (e.g. ageing a person on an image).
+They define an \emph{invariance energy} expressing a misalignement in neighbouring tangents, i.e.\ a folding of $\mathcal{Z}$, rather than as a vanishing derivative.
 The nullspace methods of \Cref{par:identification-anchor} used for identification can serve as quantification: \citet{moskalev2023} (LieGG) read off a \emph{symmetry variance} $\mathcal{V}(\mathcal{E}) = \sigma_{\min}(\mathcal{E})^2/|D|$ characterizing how close the network is to admitting an invariant direction in data space, and, against a known generator, a \emph{symmetry bias} measuring how faithfully that symmetry is respected.
 \citet{hu2025nn} (LieSD) push the comparison to ground truth further with a \emph{space error} and an \emph{orthogonality error}.
 The proposed space error is $E_{\mathrm{space}} = \min_{X} \|VX - V^*\|_F^2 + \min_{Y} \|V^*Y - V\|_F^2$ which encodes the mutual expressibility of the spans of the true ($V^\star$) and recovered ($V$) generators bases.
