@@ -757,7 +757,7 @@ Here symmetry is a muse: it is recognized and taken into account to guide design
 This is in contrast with \Cref{sec:parameter-space-symmetries} where symmetries are rather unanticipated artifacts emerging from a parametrization.
 
 We cover three subsections.
-The first two are Equivariant Deep Learning (EDL, \ref{sec:gdl}) and Data Augmentation (DA, \ref{sec:data-augmentation}) which both work at the interface between problem and model symmetries with the goal of distilling the first into the second.
+The first two are Equivariant Deep Learning (EDL, \ref{sec:gdl}) and Data Augmentation (DA, \ref{sec:data-augmentation}) which both work seek to distill problem symmetries.
 They roughly split along the explicitness axis, with EDL tending to be more formalized and group theoretic than DA.
 \emph{Equivariant architectures} encode the symmetry \emph{explicitly} in the hypothesis class, so that invariance or equivariance holds by construction for every parameter setting.
 Architecture-agnostic, DA instead enforces the symmetry \emph{implicitly} through input-space transformations $\mathcal X \to \mathcal X$, encouraging but not guaranteeing invariance through orbit-averaged training.
@@ -1028,14 +1028,15 @@ While there is no denying that equivariant models are scientifically well-founde
 % add adversarial training ? [Goodfellow, Explaining and harnessing adversarial examples] and [Madry, Towards deep learning models resistant to adversarial attacks]
 % shorten2019jbd and mumuni2022a: surveys on DA
 % miao2023p4icml: instance-dependent DA
-Data augmentation (DA) enriches a training set by applying transformations that are known (or assumed) to leave the target label unchanged.
+Data augmentation (DA) shares the goal of EDL, distilling a symmetry of the ground truth $f^*$ into $f_\theta$, but from the \emph{problem} side: rather than constraining $\mathcal{H}$, it enriches the training set by applying transformations known (or assumed) to leave the target label unchanged.
 Formally letting $G$ act on input space $\mathcal{X}$, the augmented risk replaces the standard empirical risk by averaging over orbits:
 $$
 \hat R_{\mathrm{aug}}(\theta)=\frac{1}{|G|}\sum_{g\in G}\hat R(\theta |g\cdot \mathcal{D}),
 $$
-with the hope of encouraging the learned function to be approximately invariant to those transformations (for a continuous group, an expectation is taken over a distribution on $G$).
-Compared to designing an equivariant architecture, DA is attractive in several practical scenarios: it can be applied on top of any pretrained model without architectural changes, making it well-suited to fine-tuning; it requires no group-theoretic implementation, lowering the barrier for rapid prototyping; it naturally accommodates complex or poorly characterized transformations (\textit{e.g.} variations in illumination, viewpoint, or background in images) not easily amenable to an algebraic description and it handles approximate or partial symmetries (see \Cref{sec:incomplete-symmetries}) without additional formalism.
-On the downside, covering a continuous symmetry group is impossible and materialized augmentation increase storage and compute requirements proportionally to the number of samples drawn per group orbit.
+with the hope of encouraging $f_\theta$ to be approximately invariant to those transformations (for a continuous group, an expectation is taken over a distribution on $G$).
+DA is declarative: it states which transformations should not matter, not how $f_\theta$ realizes the invariance, accommodating transformations lacking an algebraic description (\textit{e.g.}\ illumination, viewpoint or background changes); the symmetry often stays \emph{implicit}, and even \emph{unknown a priori} when automated strategies (\Cref{par:auto-da}) learn the transformations.
+DA has further practical advantages over EDL: it applies to any pretrained model without architectural changes, suitable for fine-tuning; it requires no group-theoretic implementation, easing rapid prototyping; and it seamlessly handles extent-restricted symmetries (\Cref{sec:extent-restriction}), \textit{e.g.}\ non-invertible crops or small-angle rotations on MNIST (avoiding $6\leftrightarrow 9$), where EDL mostly assumes exactness.
+On the downside, a continuous group cannot be covered exhaustively, and materialized augmentations multiply storage and compute by the number of samples drawn per orbit.
 
 \subsubsection{Theoretical approaches}
 \citet{chen2020} propose a group-theoretic framework for DA and formally connect orbit averaging with lower generalization error.
@@ -1058,13 +1059,12 @@ A practical advantage shared by all these approaches is interpretability: learne
 One limitation, however, is that materializing augmentations requires an explicit parametric form for the transformations.
 \citet{shoshan2021} partly circumvent this in the face-generation setting by showing that a scalar attribute predictor (\textit{e.g.} age) provides sufficient supervision for a GAN to learn to manipulate that attribute in a controllable way without a closed-form group action.
 
-\subsubsection{DA in Relation to Other Symmetry-Aware Methods}
-Feature Averaging (FA) is another strategy for incorporating symmetries by averaging model outputs over a set of transformed inputs, effectively symmetrizing the model.
+\subsubsection{DA in relation to Feature Averaging}
+Feature Averaging (FA) is another symmetry-aware strategy for incorporating symmetries by averaging model outputs over a set of transformed inputs, effectively symmetrizing the model.
 Theoretically, \citet{dao2019p3icml} show that DA can be approximated in first-order by FA, while \citet{maass2024} establish, in the infinite-width limit, that DA and FA induce identical gradient flow dynamics when the activation functions respect the group action.
 Despite this asymptotic equivalence, \citet{lyle2020} prove, via PAC-Bayes bounds, that FA yields strictly lower generalization error than DA for convex losses, suggesting FA is preferable when applicable.
 Similarly to DA, FA can be applied beyond strict group-invariance settings, accommodating approximate or partial symmetries.
-Comparing DA to equivariant architectures, \citet{nordenfors2024} show that the relative advantage depends on a compatibility condition between the spaces of admissible and equivariant layers: when it holds, the two strategies share the same set of equivariant stationary points.
-Empirically, \citet{shen2026} find that DA rapidly learn 3D rotation equivariance with negligible efficiency gap attributable to lack of strict equivariance.
+Another natural comparison is with equivariant models, covered in \Cref{sec:edl-tradeoffs}.
 
 \subsection{Framework Symmetries}\label{sec:framework-symmetries}
 We now turn our attention to symmetries appearing in the ``outside scope'', which either arise in the way data is piped through during training (\Cref{sec:data-ordering,sec:joint-embedding} on data ordering and joint-embedding) or reflect a limitation in downstream processing rather than a true problem constraint: criterion symmetries (\Cref{sec:criterion-symmetries}) are the irreducible loss symmetries that cannot be addressed through parameter or architectural adjustments.
