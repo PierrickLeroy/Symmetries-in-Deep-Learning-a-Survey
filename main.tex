@@ -1346,8 +1346,10 @@ One deep-learning component can carry multiple symmetries, and the same symmetry
 We order the invariance conditions from the strongest to the weakest.
 
 \paragraph{(SS) Symmetric States}
-A parameter $\theta$ is in a symmetric state \citep{simsek2021,ziyin2025} if there exists a nontrivial group $G$ such that $g\cdot\theta=\theta$ for all $g\in G$.
-The prototypical example is permutation: $\theta$ is fixed by the transposition of neurons $i$ and $j$ exactly when the two neurons carry identical incoming and outgoing weights.
+Let $G$ act faithfully on $\Theta$.
+A parameter $\theta$ is in a \emph{symmetric state} \citep{simsek2021,ziyin2025} if its stabilizer (\Cref{def:orbit-stabilizer}) is nontrivial, $G_\theta=\{g\in G : g\cdot\theta=\theta\}\neq\{e\}$.
+Since $G_{g\cdot\theta}=gG_\theta g^{-1}$, being symmetric is a property of the orbit, and a larger stabilizer means a smaller orbit $G\cdot\theta\cong G/G_\theta$ (\Cref{thm:orbit-stabilizer}), as depicted on \Cref{fig:param-space-symmetries} b: the orbit of the more symmetric $\tilde \theta$ is smaller compared to the orbit of $\theta$.
+For example, with the group of permutations, $\theta$ is unchanged when permuting neurons $i$ and $j$ exactly when the two neurons carry identical incoming and outgoing weights.
 
 \paragraph{(PS) Parameter-Space Symmetries}
 % a symmetric state for conjugation appears in [ravanbakhsh2017p3icml] see thread at LLM_saved-outputs/responses-saved/weight-tying_sym-state.md
