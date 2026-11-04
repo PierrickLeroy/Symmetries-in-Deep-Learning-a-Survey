@@ -1324,18 +1324,23 @@ Not every permutation symmetry in a loss calls for special treatment.
 Passing from a triplet loss to the InfoNCE / multi-negative losses \citep{oord2018a} introduces a permutation symmetry over the negative samples, but the loss is manifestly symmetric in them (a plain sum over negatives) and hence requires no alignment or assignment step.
 \end{Remark}
 
-\section{Loss Landscape and Parameter-Space: Symmetries Puzzles}\label{sec:parameter-space-symmetries}
+\section{Loss Landscape and Parameter Space: Symmetries Puzzles}\label{sec:parameter-space-symmetries}
 % zhao2025: indicate overlaps
-
+In \Cref{sec:design-principle}, a symmetry carried by the problem or the training framework, is deliberately built into the learning system.
+Here, the group acts on the parameter space $\Theta$, and symmetries are rather unanticipated artifacts of the parametrization.
 Neural networks are parametrized functions: the \emph{implementation} (or \emph{realization}) map
 \begin{equation}\label{eq:implementation-map}
     \varphi:\Theta\to\mathcal{F}, \qquad \varphi(\theta)=f_\theta,
 \end{equation}
-relates the parameter space $\Theta$ and the function space $\mathcal F$, through an architecture that takes $\theta$ as input (left implicit here).
+relates $\Theta$ and the function space $\mathcal F$, through an architecture (left implicit) that takes $\theta$ as input.
 Frequently $\varphi$ is not injective, i.e.\ \emph{non-identifiable}: distinct parameters can yield the same function.
-% $\mathcal{L}:\Theta\to\mathbb{R}$ is the training objective.
-This section studies what changes once we recognize that parameters are not unique descriptions of the functions they implement, and consider the whole fiber of $\varphi$ (or level set of $L$) corresponding to a given function (or loss value).
-In parameter space, symmetries are mostly a source of confusion, either directly (identifiability) or indirectly, e.g.\ through their consequences on learning dynamics.
+A transformation $g$ of $\Theta$ can then be a symmetry of three loci (\Cref{fig:sym-loci}): the most studied implementation map, $\varphi(g\cdot\theta)=\varphi(\theta)$ (model); the loss or optimizer, $\mathcal L(g\cdot\theta)=\mathcal L(\theta)$ or $U(g\cdot\theta)=g\cdot U(\theta)$ (optimization); a single parameter, $g\cdot\theta=\theta$ (symmetric state).
+Parameter and functional spaces are jointly visualized in \Cref{fig:param-space-symmetries} b, in particular through the orbits, fibers and level-sets they contain.
+\Cref{sec:classifications-param-space-symmetries} breaks down the object axis of the taxonomy \ref{tab:taxonomy} specifically for the parameter space.
+\Cref{sec:descr-param-space-symmetries} is also \emph{descriptive}: it catalogs the symmetries and their consequences (identifiability, conservation laws, learning dynamics), where they mostly appear as a source of confusion.
+\Cref{sec:bug-or-feature} is in contrast \emph{prescriptive}: it gathers guidance to account for, remove or exploit them.
+\Cref{sec:adjacent-fields} closes with weight-space learning and singular learning theory.
+Almost all works treat these symmetries \emph{explicitly}.
 
 \subsection{Classifications}\label{sec:classifications-param-space-symmetries}
 
@@ -1345,6 +1350,9 @@ The first axis forms a hierarchy: each class of transformations contains the pre
 The second axis depends on scope: what is allowed to enter the definition of a transformation, and on which objects (parameters, data, architecture) conditions may be imposed.
 \Cref{tab:param-double-entry} references works discussing parameter-space symmetries and the components in which they appear.
 One deep-learning component can carry multiple symmetries, and the same symmetry can appear in different components.
+
+We propose in \Cref{fig:param-space-symmetries} a schematic description of the two axes, as transformations leaving invariant: (1) the parameter $\theta$ itself, (2) the function $f_\theta$, (3) a loss depending on $\theta$ only through $f_\theta$, (4) a loss with regularizer $\mathcal{L}(\theta)=\mathcal{L}_F(f_\theta)+\mathcal{L}_R(\theta)$, (5) the restriction $f_\theta|_S$ for a subset $S\subsetneq\mathcal{X}$ of the data, and (6) $f_\theta$ for $\theta$ in a subset $U\subsetneq\Theta$.
+
 
 \subsubsection{Hierarchical Axis}\label{sec:hierarchy-param-space-symmetries}
 
@@ -1424,8 +1432,6 @@ Note that $\Omega(S,V)$ is not a group but a groupoid (cf.\ \Cref{sec:extent-res
 \paragraph{Architectural Symmetry}
 An \emph{architectural} symmetry is allowed to change the architecture: if the parameter space is $\mathbb{R}^n$, we admit actions $G\times\mathbb{R}^n\to\mathbb{R}^m$ with $m\neq n$ into a different architecture, \emph{mutatis mutandis}.
 Neuron splitting is the prototype: duplicating a neuron and sharing its outgoing weights maps a width-$r$ network to a functionally identical width-$(r+1)$ one---creating a symmetric state in the enlarged architecture.
-
-We propose in \Cref{fig:param-space-symmetries} a schematic description of the two axes, as transformations leaving invariant: (1) the parameter $\theta$ itself, (2) the function $f_\theta$, (3) a loss depending on $\theta$ only through $f_\theta$, (4) a loss with regularizer $\mathcal{L}(\theta)=\mathcal{L}_F(f_\theta)+\mathcal{L}_R(\theta)$, (5) the restriction $f_\theta|_S$ for a subset $S\subsetneq\mathcal{X}$ of the data, and (6) $f_\theta$ for $\theta$ in a subset $U\subsetneq\Theta$.
 
 \paragraph{Extensions}\label{sec:param-catalog-extension}
 A transformation may act on more than the weights: the quiver representation formalism $(W,f)$ of \citet{armenta2021a} includes both weights and activation functions.
