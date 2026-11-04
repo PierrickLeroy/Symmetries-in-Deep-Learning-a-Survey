@@ -1471,6 +1471,7 @@ This part focuses on understanding the symmetries themselves: its purpose is \em
 
 \subsubsection{Catalog}\label{sec:catalog-param-space-symmetries}
 We list the main parameter-space symmetries starting with discrete, then continuous ones, and finally report approaches unifying multiple symmetries.
+\Cref{tab:param-double-entry} collects symmetries and their source in a double-entry table where cells contain references.
 
 \paragraph{Permutation}
 The permutation of units within a layer is a ubiquitous parameter-space symmetry.
@@ -1647,8 +1648,9 @@ A group $G$ of parameter-space symmetries only guarantees the inclusion of orbit
 \begin{equation*}
     \varphi^{-1}\big(\{\varphi(\theta)\}\big)=G\cdot\theta.
 \end{equation*}
-An identifiability result thus certifies that a list of known symmetries is exhaustive and instance-level symmetries of \Cref{sec:scope-param-space-symmetries} are possible local failure points.
-Identifiability also underlies what can, in principle, be recovered about the weights by querying a black-box model.
+An identifiability result thus certifies that a list of known symmetries is exhaustive.
+Instance-level symmetries of \Cref{sec:scope-param-space-symmetries} are possible local failure points to general exhaustivity.
+Identifiability underlies what can in principle be recovered about the weights by querying a black-box model.
 
 Early results concern sigmoidal networks and are quite rigid.
 For smooth nonlinear activations $\sigma$, works by \citet{albertini1993,fefferman1993anips} revealed that the architecture and weights are generically determined up to permutations (and sign flips for odd activation such as $\mathrm{tanh}$).
@@ -1704,7 +1706,9 @@ Non-identifiability is carried by \emph{subnetworks}, parameters where the outgo
 \subsubsection{Conservation Laws (CL) and Conserved Quantities (CQ)}\label{sec:conservation-laws}
 
 The continuous symmetries of \Cref{sec:catalog-param-space-symmetries} do more than shape the loss landscape: they constrain the training trajectories themselves.
-Since the loss is constant along a symmetry orbit, the gradient has a null component in the orbit direction, and this null direction can integrate---in analogy with Noether's theorem in mechanics---into a \emph{conservation law}: a function of the parameters whose value, the \emph{conserved quantity}, is fixed at initialization and retained throughout training.
+Since the loss is constant along a symmetry orbit, there are direction along which the gradient has null projection.
+In analogy with Noether's theorem in mechanics, this integrates into a \emph{conservation law}: a function of the parameters whose value, the \emph{conserved quantity}, is fixed at initialization and retained throughout training.
+We briefly explain the emerging mechanism of CL, then report literature.
 
 \paragraph{From Continuous Symmetry to Conservation Law}
 A function $h:\Theta\to\mathbb{R}$ is \emph{conserved} by a flow $\dot\theta=\chi(\theta)$ if $h(\theta(t))=h(\theta(0))$ for every trajectory and every $t$; equivalently, if $\langle\nabla h(\theta),\chi(\theta)\rangle=0$ for all $\theta$.
@@ -1726,7 +1730,7 @@ The Poincar\'e lemma states that on a simply connected domain---such as a standa
     \xi^\flat \text{ closed} \iff \exists\, C:\Theta\to\mathbb{R} \text{ such that } \nabla C=\xi,
 \end{equation*}
 and by properties of the exterior derivative, closedness reduces to the symmetry of the Jacobian $\partial\xi(\theta)$.
-Taking concrete examples from \citep{kunin2020} in the catalog of \Cref{sec:catalog-param-space-symmetries}, the translation generator $\xi=\boldsymbol{1}_{\mathcal{A}}$ integrates to $C(\theta)=\langle\theta,\boldsymbol{1}_{\mathcal{A}}\rangle$; the scale generator to $\lVert\theta_{\mathcal{A}}\rVert^2$; the rescale generator to $\lVert\theta_{\mathcal{A}_1}\rVert^2-\lVert\theta_{\mathcal{A}_2}\rVert^2$. See \citep{kunin2020,zhao2023a,marcotte2023,ziyin2024a} for more details and \citet[Prop.~52]{gegenfurtner2026} for an example of a continuous symmetry that induces no conserved quantity.
+Taking concrete examples from \citep{kunin2020}, the translation generator $\xi=\boldsymbol{1}_{\mathcal{A}}$ integrates to $C(\theta)=\langle\theta,\boldsymbol{1}_{\mathcal{A}}\rangle$; the scale generator to $\lVert\theta_{\mathcal{A}}\rVert^2$; the rescale generator to $\lVert\theta_{\mathcal{A}_1}\rVert^2-\lVert\theta_{\mathcal{A}_2}\rVert^2$. See \citep{kunin2020,zhao2023a,marcotte2023,ziyin2024a} for more details and \citet[Prop.~52]{gegenfurtner2026} for an example of a continuous symmetry that induces no conserved quantity.
 
 \paragraph{Conservation Laws in the Literature}
 
@@ -1792,9 +1796,9 @@ As a consequence, linear networks with the product lifting are not intrinsically
 
 \subsubsection{Learning Dynamics}\label{sec:learning-dynamics}
 % yang2025: permutation equivariant optimizers preserve neuron parameter's manifold topology for small enough LR
-Conservation laws (\Cref{sec:conservation-laws}) showed continuous symmetries constraining training trajectories.
+The previous part on CL showed a specific way continuous symmetries constrain training trajectories.
 This section widens the view to the interplay between symmetries---discrete ones included---and the learning dynamics.
-Symmetric states (\Cref{sec:hierarchy-param-space-symmetries}) populate the landscape with critical manifolds or attractive sets, and symmetries further interact with regularization, overparametrization, and discretization.
+We cover symmetric states (\ref{sec:hierarchy-param-space-symmetries}) which populate the landscape with critical manifolds or attractive sets, and interactions of symmetries with regularization, overparametrization, and discretization.
 
 \paragraph{Symmetric States Structure the Landscape}
 In the context of matrix factorization, \citet{li2018} show for a function $f:\mathbb{R}^m\to\mathbb{R}$ invariant under a group $G$, that whenever the group directions span the whole space, $\operatorname{Span}\{g(x)-x \mid g\in G,\ x\in\mathbb{R}^m\}=\mathbb{R}^m$, every fixed point of the group ($g(x_G)=x_G$ for all $g\in G$, i.e.\ a symmetric state) is a critical point of $f$.
@@ -1845,7 +1849,7 @@ A Lagrangian formulation reveals that symmetries of $\mathcal{L}$ do not necessa
 Accounting for discretization can be interpreted as producing an adaptive momentum effect similar to RMSProp for normalization layers.
 
 \paragraph{Overparametrization}
-\citet{simsek2021} also observe \citep{brea2019} that for a minimal MLP of widths $(r_1^{*},\dots,r_L^{*})$ achieving zero loss, adding a single hidden neuron to every layer connects the $\prod_l r_l^{*}!$ disconnected permutation-equivalent minima.
+Similarly to \citet{brea2019}, \citet{simsek2021} observe that for a minimal MLP of widths $(r_1^{*},\dots,r_L^{*})$ achieving zero loss, adding a single hidden neuron to every layer connects the $\prod_l r_l^{*}!$ disconnected permutation-equivalent minima.
 They count two types of subspaces: $G(r,m)$, the number of \emph{symmetry-induced critical subspaces} obtained by expanding critical points of width-$r$ sub-architectures into the width-$m$ network, and $T(r^{*},m)$, the number of affine subspaces composing the global-minima manifold, where the minimal width $r^{*}$ measures the degree of overparametrization.
 Either count can dominate, depending on the regime: under mild overparametrization the saddle subspaces $G(r,m)$ dominate which intuitively means more strictly-positive-loss saddle volume, hence harder optimization.
 \citet{sareen2026} assess the dynamical effect of overparametrizing by neuron splitting: splitting acts as a diagonal preconditioning of the Hessian, and minima measures such as the pseudo-determinant $\prod_{i:\lambda_i>0}\lambda_i$ increase under splitting (corresponding to a volume decrease) though the overall impact on optimization remains unclear.
