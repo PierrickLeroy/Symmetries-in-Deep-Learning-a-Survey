@@ -1331,7 +1331,7 @@ Passing from a triplet loss to the InfoNCE / multi-negative losses \citep{oord20
 \section{Loss Landscape and Parameter Space: Symmetries Puzzles}\label{sec:parameter-space-symmetries}
 % zhao2025: indicate overlaps
 In \Cref{sec:design-principle}, a symmetry carried by the problem or the training framework, is deliberately built into the learning system.
-Here, the group acts on the parameter space $\Theta$, and symmetries are rather unanticipated artifacts of the parametrization.
+Here, the group acts on the parameter space $\Theta$, and symmetries are rather unanticipated artifacts of the parametrization, often source of confusion.
 Neural networks are parametrized functions: the \emph{implementation} (or \emph{realization}) map
 \begin{equation}\label{eq:implementation-map}
     \varphi:\Theta\to\mathcal{F}, \qquad \varphi(\theta)=f_\theta,
@@ -1341,22 +1341,19 @@ Frequently $\varphi$ is not injective, i.e.\ \emph{non-identifiable}: distinct p
 A transformation $g$ of $\Theta$ can then be a symmetry of three loci (\Cref{fig:sym-loci}): the most studied implementation map, $\varphi(g\cdot\theta)=\varphi(\theta)$ (model); the loss or optimizer, $\mathcal L(g\cdot\theta)=\mathcal L(\theta)$ or $U(g\cdot\theta)=g\cdot U(\theta)$ (optimization); a single parameter, $g\cdot\theta=\theta$ (symmetric state).
 Parameter and functional spaces are jointly visualized in \Cref{fig:param-space-symmetries} b, in particular through the orbits, fibers and level-sets they contain.
 \Cref{sec:classifications-param-space-symmetries} breaks down the object axis of the taxonomy \ref{tab:taxonomy} specifically for the parameter space.
-\Cref{sec:descr-param-space-symmetries} is also \emph{descriptive}: it catalogs the symmetries and their consequences (identifiability, conservation laws, learning dynamics), where they mostly appear as a source of confusion.
+\Cref{sec:descr-param-space-symmetries} is also \emph{descriptive}: it catalogs the symmetries and their consequences (identifiability, conservation laws, learning dynamics).
 \Cref{sec:bug-or-feature} is in contrast \emph{prescriptive}: it gathers guidance to account for, remove or exploit them.
 \Cref{sec:adjacent-fields} closes with weight-space learning and singular learning theory.
 Almost all works treat these symmetries \emph{explicitly}.
 
 \subsection{Classifications}\label{sec:classifications-param-space-symmetries}
-
-Symmetries acting on the parameters can be given related but non-equivalent definitions.
-Before describing the transformations and their consequences (\Cref{sec:descr-param-space-symmetries}), we organize these definitions along two axes, partly overlapping with the classification of \citet{zhao2025}.
-The first axis forms a hierarchy: each class of transformations contains the previous one.
-The second axis depends on scope: what is allowed to enter the definition of a transformation, and on which objects (parameters, data, architecture) conditions may be imposed.
+Before describing the actual transformations and their consequences (\Cref{sec:descr-param-space-symmetries}), we precise definitions along two axes, partly overlapping with the classification of \citet{zhao2025}.
+The first axis forms a hierarchy and covers a chain of implications in \Cref{fig:sym-loci}: parameter (symmetric state) $\to$ (model) implementation map $\to$ optimization (loss).
+The second axis depends on scope and covers what is allowed to enter the definition of a transformation, and on which objects (parameters, data, architecture) conditions may be imposed: it is made of variations of the functional symmetry of the implementation map $\varphi$.
 \Cref{tab:param-double-entry} references works discussing parameter-space symmetries and the components in which they appear.
 One deep-learning component can carry multiple symmetries, and the same symmetry can appear in different components.
 
-We propose in \Cref{fig:param-space-symmetries} a schematic description of the two axes, as transformations leaving invariant: (1) the parameter $\theta$ itself, (2) the function $f_\theta$, (3) a loss depending on $\theta$ only through $f_\theta$, (4) a loss with regularizer $\mathcal{L}(\theta)=\mathcal{L}_F(f_\theta)+\mathcal{L}_R(\theta)$, (5) the restriction $f_\theta|_S$ for a subset $S\subsetneq\mathcal{X}$ of the data, and (6) $f_\theta$ for $\theta$ in a subset $\Theta_0\subsetneq\Theta$.
-
+We propose in \Cref{fig:param-space-symmetries} a schematic description of the two axes, as transformations leaving invariant: (1) the parameter $\theta$ itself, (2) the function $f_\theta=\varphi(\theta)$, (3) a loss depending on $\theta$ only through $f_\theta$, (4) a general loss e.g. with regularizer $\mathcal{L}(\theta)=\mathcal{L}_F(f_\theta)+\mathcal{L}_R(\theta)$, (5) the restriction $f_\theta|_S$ for a subset $S\subsetneq\mathcal{X}$ of the data, and (6) $f_\theta$ for $\theta$ in a subset $\Theta_0\subsetneq\Theta$.
 
 \subsubsection{Hierarchical Axis}\label{sec:hierarchy-param-space-symmetries}
 
@@ -1434,7 +1431,7 @@ Note that $\Omega(S,V)$ is not a group but a groupoid (cf.\ \Cref{sec:extent-res
 \citet{zhao2023a} provide another example: a \emph{nonlinear} data-dependent action $G\times(\Theta\times\mathcal{X})\to\Theta\times\mathcal{X}$ in which the transformation of the weights is itself a function of the input $x$: the output is preserved at $x$ only (batch size one), but the action is defined for the whole $GL(h,\mathbb{R})$.
 
 \paragraph{Architectural Symmetry}\label{sec:architectural-sym}
-An \emph{architectural} symmetry is allowed to change the architecture: if the parameter space is $\mathbb{R}^n$, we admit actions $G\times\mathbb{R}^n\to\mathbb{R}^m$ with $m\neq n$ into a different architecture, \emph{mutatis mutandis}.
+An \emph{architectural} symmetry is allowed to change the architecture: if the parameter space is $\mathbb{R}^n$, we admit actions $G\times\mathbb{R}^n\to\mathbb{R}^m$ with $m\neq n$ (see fig~\ref{fig:param-space-symmetries} b) into a different architecture, \emph{mutatis mutandis}.
 Neuron splitting is the prototype: duplicating a neuron and sharing its outgoing weights maps a width-$r$ network to a functionally identical width-$(r+1)$ one---creating a symmetric state in the enlarged architecture.
 
 \paragraph{Extensions}\label{sec:param-catalog-extension}
