@@ -1358,7 +1358,7 @@ We propose in \Cref{fig:param-space-symmetries} a schematic description of the t
 
 \subsubsection{Hierarchical Axis}\label{sec:hierarchy-param-space-symmetries}
 
-We order the invariance conditions from the strongest to the weakest.
+We expose the definition following a natural inclusion order.
 
 \paragraph{(SS) Symmetric States}
 Let $G$ act faithfully on $\Theta$.
@@ -1366,7 +1366,7 @@ A parameter $\theta$ is in a \emph{symmetric state} \citep{simsek2021,ziyin2025}
 Since $G_{g\cdot\theta}=gG_\theta g^{-1}$, being symmetric is a property of the orbit, and a larger stabilizer means a smaller orbit $G\cdot\theta\cong G/G_\theta$ (\Cref{thm:orbit-stabilizer}), as depicted on \Cref{fig:param-space-symmetries} b: the orbit of the more symmetric $\tilde \theta$ is smaller compared to the orbit of $\theta$.
 For example, with the group of permutations, $\theta$ is unchanged when permuting neurons $i$ and $j$ exactly when the two neurons carry identical incoming and outgoing weights.
 
-\paragraph{(PS) Parameter-Space Symmetries}
+\paragraph{(PS) Parameter-Space Symmetries}\label{sec:PS_param-space-sym}
 % a symmetric state for conjugation appears in [ravanbakhsh2017p3icml] see thread at LLM_saved-outputs/responses-saved/weight-tying_sym-state.md
 $G$ is a group of parameter-space symmetries if $f_{g\cdot\theta}=f_\theta$ for all $g\in G$ i.e.\ if
 \begin{equation*}
@@ -1376,17 +1376,20 @@ the set $\varphi^{-1}(\{\varphi(\theta)\})$ being called the \emph{fiber} of $\t
 This notion is sometimes referred to as \emph{observational equivalence}, \emph{non-identifiability} in statistics or \emph{reparametrization} invariance.
 When the action of $G$ is transitive on fibers, capturing all the redundancy of the parametrization, $G$ is called \emph{complete} and $\theta$ is identifiable up to $G$ \citep{zhao2025}.
 
-\paragraph{(LS) Loss-Level Symmetries} $G$ is a loss symmetry if orbits remain within level sets of the loss,
+\paragraph{(LS) Loss-Level Symmetries}
+$G$ is a loss symmetry if orbits remain within level sets of the loss,
 \begin{equation*}
     g\cdot\theta \in \mathcal{L}^{-1}\big(\{\mathcal{L}(\theta)\}\big) \qquad \forall g \in G.
 \end{equation*} 
 Regularization and criterion symmetries (\Cref{sec:criterion-symmetries}) are two ways in which loss-level symmetries can exceed parameter-space symmetries, and the \emph{Q-symmetries} of \citet{ziyin2024a} formalize this notion.
 
+\vspace{3mm}
+
 The three conditions form a chain of implications for $g$,
 \begin{equation}\label{eq:param-symmetry-hierarchy}
-    \underbrace{g\cdot\theta=\theta}_{(SS)} \implies \underbrace{f_{g\cdot\theta}=f_\theta}_{(PS)} \implies \underbrace{\mathcal{L}(g\cdot\theta)=\mathcal{L}(\theta)}_{(LS)},
+    \underbrace{g\cdot\theta=\theta}_{(SS)} \implies \underbrace{f_{g\cdot\theta}=f_\theta}_{(PS)} \overset{\star}{\implies} \underbrace{\mathcal{L}(g\cdot\theta)=\mathcal{L}(\theta)}_{(LS)},
 \end{equation}
-where the first implication is immediate and the second holds whenever the objective factors through the implementation map, $\mathcal{L}=\mathcal{L}_F\circ\varphi$, as does any unregularized empirical risk.
+where the first implication is immediate and the second ($\star$) holds whenever the objective factors through the implementation map, $\mathcal{L}=\mathcal{L}_F\circ\varphi$; requiring in particular an unregularized loss.
 Neither implication reverses.
 
 \begin{Example}[Loss-level symmetry by regularization]\label{ex:loss-level-symmetry-regularization}
@@ -1406,20 +1409,19 @@ Neither implication reverses.
 \end{Remark}
 
 \subsubsection{Scope Axis}\label{sec:scope-param-space-symmetries}
+The scope axis starts from the functional symmetry (PS) of $\varphi$ (model locus, \ref{sec:PS_param-space-sym}) and varies where the invariance must hold and what the transformation may act on: holding only on a subset of $\Theta$ or $\mathcal X$ makes the symmetry \emph{extent-restricted} (\Cref{tab:taxonomy}).
 
-The second axis fixes what may enter the definition of a transformation and where the invariance condition is required to hold.
-
-\paragraph{General Parameter-Space Symmetries.}
-A \emph{general} parameter-space symmetry holds for every $\theta\in\Theta$ of a fixed architecture.
+\paragraph{General PS}
+To be unequivocal we call \emph{general} a PS symmetry which holds for every $\theta\in\Theta$ of a fixed architecture.
 The positive rescaling of ReLU networks, $(w_{\mathrm{in}}, w_{\mathrm{out}})\mapsto(\lambda w_{\mathrm{in}}, w_{\mathrm{out}}/\lambda)$ with $\lambda>0$ at each hidden neuron, is the classical example.
 
-\paragraph{Instance-Level Symmetries.}
+\paragraph{Instance-Level PS}
 An \emph{instance-level} or \emph{hidden} \citep{grigsby2023p4icml} symmetry holds on a subset of $\Theta$.
 These are local obstruction to the completeness of the group $G$.
-An example is a neuron in a second hidden layer of a ReLU network whose incoming weights and bias are strictly negative.
-Its preactivation is strictly negative so its incoming parameters can be perturbed (staying negative) and its outgoing weights modified arbitrarily without changing $f_\theta$.
+An example is a neuron in a second hidden layer of a ReLU network whose incoming weights and bias are all non-positive.
+Its preactivation is thus non-positive as well so its incoming parameters can be perturbed (staying non-positive) and its outgoing weights modified arbitrarily without changing $f_\theta$.
 
-\paragraph{Data-Dependent Symmetries.}
+\paragraph{Data-Dependent PS}
 A \emph{data-dependent} symmetry preserves the function on a subset of the data: $f_{g\cdot\theta}|_S=f_\theta|_S$ for some $S\subset\mathcal{X}$.
 We give an example based on activation patterns.
 For a shallow ReLU network $f_{(U,V)}(x)=U\sigma(Vx)$ with $V\in\mathbb{R}^{h\times n}$ and $U\in\mathbb{R}^{m\times h}$, fix an activation pattern $A\subseteq[h]$ of the hidden layer and let $C_A:=\{z\in\mathbb{R}^h : z_i>0 \text{ for } i\in A\}$.
@@ -1431,13 +1433,13 @@ acts on $(U,V)$ by $(U_A, V_A)\mapsto(U_AM^{-1}, MV_A)$, where $V_A$ (resp.\ $U_
 Note that $\Omega(S,V)$ is not a group but a groupoid (cf.\ \Cref{sec:extent-restriction}).
 \citet{zhao2023a} provide another example: a \emph{nonlinear} data-dependent action $G\times(\Theta\times\mathcal{X})\to\Theta\times\mathcal{X}$ in which the transformation of the weights is itself a function of the input $x$: the output is preserved at $x$ only (batch size one), but the action is defined for the whole $GL(h,\mathbb{R})$.
 
-\paragraph{Architectural Symmetry}\label{sec:architectural-sym}
+\paragraph{Architectural PS}\label{sec:architectural-sym}
 An \emph{architectural} symmetry is allowed to change the architecture: if the parameter space is $\mathbb{R}^n$, we admit actions $G\times\mathbb{R}^n\to\mathbb{R}^m$ with $m\neq n$ (see fig~\ref{fig:param-space-symmetries} b) into a different architecture, \emph{mutatis mutandis}.
 Neuron splitting is the prototype: duplicating a neuron and sharing its outgoing weights maps a width-$r$ network to a functionally identical width-$(r+1)$ one---creating a symmetric state in the enlarged architecture.
 
 \paragraph{Extensions}\label{sec:param-catalog-extension}
 A transformation may act on more than the weights: the quiver representation formalism $(W,f)$ of \citet{armenta2021a} includes both weights and activation functions.
-This allows them to extend symmetries to activation functions; for example rescaling with a negative number $\tau_v<0$ is a symmetry of a ReLU layer if the activation $\max (0, x)$ becomes $\tau_v\min(0, 1/\tau_v x)$.
+This allows to incorporate transformation of activation functions in the symmetry definition; for example rescaling with a negative number $\tau_v<0$ is a symmetry of a ReLU layer if the activation $\max (0, x)$ becomes $\tau_v\min(0, 1/\tau_v x)$.
 Moreover in the hierarchical axis, the classification error could be argued as a further level below the loss.
 Since the prediction is an argmax over the outputs of $f_\theta$, any transformation preserving the top class at each input preserves the error while altering the loss.
 The error landscape studied by \citet{pittorino2022jsm} possesses more symmetries than the loss landscape.
