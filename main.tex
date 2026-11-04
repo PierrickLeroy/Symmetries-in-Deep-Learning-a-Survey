@@ -119,7 +119,11 @@ We propose a faceted taxonomy in \Cref{tab:taxonomy} to categorize occurrences o
 \begin{figure}[!tbp]
     \centering
     \includegraphics[width=\textwidth]{images/figure_sym-loci.pdf}
-    \caption{Loci of symmetry, a refinement of the \emph{Object} axis of the taxonomy (\Cref{tab:taxonomy}). Each box is an object on which a symmetry can act, with its defining relation for $g\in G$. Loci are grouped by the level at which the object is defined, from the most abstract (problem) to the most concrete (data point). Framework symmetries involve several loci or several forward calls. Arrows indicate that a symmetry of one locus pertains to a symmetry of another.}
+    \caption{Loci of symmetry, a refinement of the \emph{Object} axis of the taxonomy (\Cref{tab:taxonomy}).
+    Each box is an object on which a symmetry can act, with its defining relation.
+    Solid arrows indicate necessity, dashed arrows another type of interaction e.g. a design choice.
+    Architectural symmetries (\ref{sec:architectural-sym}) are not shown.
+    }
     \label{fig:sym-loci}
 \end{figure}
 
@@ -1351,7 +1355,7 @@ The second axis depends on scope: what is allowed to enter the definition of a t
 \Cref{tab:param-double-entry} references works discussing parameter-space symmetries and the components in which they appear.
 One deep-learning component can carry multiple symmetries, and the same symmetry can appear in different components.
 
-We propose in \Cref{fig:param-space-symmetries} a schematic description of the two axes, as transformations leaving invariant: (1) the parameter $\theta$ itself, (2) the function $f_\theta$, (3) a loss depending on $\theta$ only through $f_\theta$, (4) a loss with regularizer $\mathcal{L}(\theta)=\mathcal{L}_F(f_\theta)+\mathcal{L}_R(\theta)$, (5) the restriction $f_\theta|_S$ for a subset $S\subsetneq\mathcal{X}$ of the data, and (6) $f_\theta$ for $\theta$ in a subset $U\subsetneq\Theta$.
+We propose in \Cref{fig:param-space-symmetries} a schematic description of the two axes, as transformations leaving invariant: (1) the parameter $\theta$ itself, (2) the function $f_\theta$, (3) a loss depending on $\theta$ only through $f_\theta$, (4) a loss with regularizer $\mathcal{L}(\theta)=\mathcal{L}_F(f_\theta)+\mathcal{L}_R(\theta)$, (5) the restriction $f_\theta|_S$ for a subset $S\subsetneq\mathcal{X}$ of the data, and (6) $f_\theta$ for $\theta$ in a subset $\Theta_0\subsetneq\Theta$.
 
 
 \subsubsection{Hierarchical Axis}\label{sec:hierarchy-param-space-symmetries}
@@ -1429,7 +1433,7 @@ acts on $(U,V)$ by $(U_A, V_A)\mapsto(U_AM^{-1}, MV_A)$, where $V_A$ (resp.\ $U_
 Note that $\Omega(S,V)$ is not a group but a groupoid (cf.\ \Cref{sec:extent-restriction}).
 \citet{zhao2023a} provide another example: a \emph{nonlinear} data-dependent action $G\times(\Theta\times\mathcal{X})\to\Theta\times\mathcal{X}$ in which the transformation of the weights is itself a function of the input $x$: the output is preserved at $x$ only (batch size one), but the action is defined for the whole $GL(h,\mathbb{R})$.
 
-\paragraph{Architectural Symmetry}
+\paragraph{Architectural Symmetry}\label{sec:architectural-sym}
 An \emph{architectural} symmetry is allowed to change the architecture: if the parameter space is $\mathbb{R}^n$, we admit actions $G\times\mathbb{R}^n\to\mathbb{R}^m$ with $m\neq n$ into a different architecture, \emph{mutatis mutandis}.
 Neuron splitting is the prototype: duplicating a neuron and sharing its outgoing weights maps a width-$r$ network to a functionally identical width-$(r+1)$ one---creating a symmetric state in the enlarged architecture.
 
@@ -1445,7 +1449,7 @@ The error landscape studied by \citet{pittorino2022jsm} possesses more symmetrie
     \centering
     \includegraphics[width=\linewidth]{images/param-space-symmetries.pdf}
 \end{adjustwidth}
-    \caption{\textbf{(a)} Inclusion of transformations applicable to (1) symmetric states $\left \{g: g\theta=\theta\right \}$; (2) general functional symmetry $\left \{g: f_\theta = f_{g\theta} \right \}$; (3) loss symmetry  when the loss factors through the implementation map $\left \{g:\mathcal{L}(f_{g\theta})=\mathcal{L}(f_{\theta})\right \}$; (4) general loss symmetry $\left \{g:\mathcal{L}(g\theta)=\mathcal{L}(\theta) \right \}$; (5) data-dependent functional symmetry $\left \{g: {(f_{g\theta})}_{\vert X'}={(f_{\theta})}_{\vert X'}\right \}$ for $X'\subsetneq \mathcal{X}$; (6) instance-dependent functional symmetry $\left \{g: \theta\in U \Rightarrow f_{g\theta}=f_\theta \right \}$ for $U\subsetneq \Theta$.
+    \caption{\textbf{(a)} Inclusion of transformations applicable to (1) symmetric states $\left \{g: g\theta=\theta\right \}$; (2) general functional symmetry $\left \{g: f_\theta = f_{g\theta} \right \}$; (3) loss symmetry  when the loss factors through the implementation map $\left \{g:\mathcal{L}(f_{g\theta})=\mathcal{L}(f_{\theta})\right \}$; (4) general loss symmetry $\left \{g:\mathcal{L}(g\theta)=\mathcal{L}(\theta) \right \}$; (5) data-dependent functional symmetry $\left \{g: {(f_{g\theta})}_{\vert X'}={(f_{\theta})}_{\vert X'}\right \}$ for $X'\subsetneq \mathcal{X}$; (6) instance-dependent functional symmetry $\left \{g: \theta\in \Theta_0 \Rightarrow f_{g\theta}=f_\theta \right \}$ for $\Theta_0\subsetneq \Theta$.
     Each class is illustrated on an exemplar network $\mathcal{N}$ whose setup is shown at the top of the panel.
     Note that (3) and (4) can intersect (e.g. neuron permutations in an MLP with $\ell_p$ regularization for (4)), but none is included in the other.
     The illustration is not exhaustive: data-dependent and instance symmetries can act at the loss level or be combined.
@@ -1766,7 +1770,7 @@ For a batch $Z=(z_1,\dots,z_k)$ of inputs, the \emph{evaluation map} $E_Z:\Theta
 where $\partial E_Z$ denotes the Jacobian of the evaluation map, counts degrees of freedom of $f_\theta$ under infinitesimal perturbations of $\theta$.
 For ReLU networks, the functional dimension is upper bounded by the parameter count minus one degree of freedom per hidden neuron, accounting for the rescaling symmetries.
 Crucially, the functional dimension is inhomogeneous across parameter space, dropping with instance-level symmetries which inflate the fiber.
-\citet{grillo2026} further define its upper bound as the \emph{expected functional dimension}, $\dim(\Theta/\!\sim)$, the dimension of the parameter space quotiented by permutations and rescalings, and prove that every ReLU architecture (with input and hidden widths at least $2$) contains an open set $U\subseteq\Theta$ of parameters attaining it.
+\citet{grillo2026} further define its upper bound as the \emph{expected functional dimension}, $\dim(\Theta/\!\sim)$, the dimension of the parameter space quotiented by permutations and rescalings, and prove that every ReLU architecture (with input and hidden widths at least $2$) contains an open set of parameters in $\Theta$ attaining it.
 
 \paragraph{Polynomial Networks and Attention}
 \citet{henry2025} study \emph{lightning self-attention}, $X\mapsto VXX^{\top}K^{\top}QX$, a normalization-free variant of self-attention that is polynomial in its weights.
