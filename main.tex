@@ -1347,11 +1347,12 @@ Parameter and functional spaces are jointly visualized in \Cref{fig:param-space-
 Almost all works treat these symmetries \emph{explicitly}.
 
 \subsection{Classifications}\label{sec:classifications-param-space-symmetries}
-Before describing the actual transformations and their consequences (\Cref{sec:descr-param-space-symmetries}), we precise definitions along two axes, partly overlapping with the classification of \citet{zhao2025}.
-The first axis forms a hierarchy and covers a chain of implications in \Cref{fig:sym-loci}: parameter (symmetric state) $\to$ (model) implementation map $\to$ optimization (loss).
-The second axis depends on scope and covers what is allowed to enter the definition of a transformation, and on which objects (parameters, data, architecture) conditions may be imposed: it is made of variations of the functional symmetry of the implementation map $\varphi$.
-\Cref{tab:param-double-entry} references works discussing parameter-space symmetries and the components in which they appear.
-One deep-learning component can carry multiple symmetries, and the same symmetry can appear in different components.
+Before describing the actual transformations and their consequences (\Cref{sec:descr-param-space-symmetries}), we organize their definitions along two axes, partly overlapping with the classification of \citet{zhao2025}.
+The first axis forms a hierarchy and follows a chain of implications between loci of \Cref{fig:sym-loci}: parameter (symmetric state) $\to$ model (implementation map) $\to$ optimization (loss).
+The second axis concerns scope: what may enter the definition of a transformation, and on which objects (parameters, data, architecture) conditions may be imposed.
+It consists of variants of the functional symmetry of $\varphi$, which become \emph{extent-restricted} (\Cref{tab:taxonomy}) when restricted to a subset of $\Theta$ or $\mathcal X$.
+\Cref{tab:param-double-entry} references works discussing parameter-space symmetries and their source, i.e.\ the ingredient (architecture, layer, activation, loss or optimizer) producing them.
+One source can produce multiple symmetries, and the same symmetry can arise from different sources.
 
 We propose in \Cref{fig:param-space-symmetries} a schematic description of the two axes, as transformations leaving invariant: (1) the parameter $\theta$ itself, (2) the function $f_\theta=\varphi(\theta)$, (3) a loss depending on $\theta$ only through $f_\theta$, (4) a general loss e.g. with regularizer $\mathcal{L}(\theta)=\mathcal{L}_F(f_\theta)+\mathcal{L}_R(\theta)$, (5) the restriction $f_\theta|_S$ for a subset $S\subsetneq\mathcal{X}$ of the data, and (6) $f_\theta$ for $\theta$ in a subset $\Theta_0\subsetneq\Theta$.
 
@@ -1562,7 +1563,7 @@ The scaling $D\theta^+_v$ with $D$ a diagonal matrix whose diagonal is strictly 
     \renewcommand{\arraystretch}{1.2}
     \begin{tabularx}{\textheight}{|>{\raggedright\arraybackslash\bfseries}p{2.0cm}|*{10}{>{\raggedright\arraybackslash}X|}}
         \hline
-        \textbf{Component} & \textbf{Permutation} & \textbf{Rescaling} & \textbf{Sign flip} & \textbf{Scale} & \textbf{Translation} & \textbf{Orthogonal} & \textbf{$GL(n)$} & \textbf{Cross-\-architectural} & \textbf{Data-\-dependent} & \textbf{Instance / hidden} \\
+        \textbf{Source} & \textbf{Permutation} & \textbf{Rescaling} & \textbf{Sign flip} & \textbf{Scale} & \textbf{Translation} & \textbf{Orthogonal} & \textbf{$GL(n)$} & \textbf{Cross-\-architectural} & \textbf{Data-\-dependent} & \textbf{Instance / hidden} \\
         \hline
         Feedforward networks & \citep{hecht-nielsen1990anc,brea2019,tatro2020,entezari2022,ainsworth2023,jordan2023,navon2023p4icml,chen2024jsm,lim2024,nurisso2024a,kalogeropoulos2024,simsek2021,zhang2025p4icml,ziyin2025,godfrey2022,ziyin2024} & \citep{ziyin2024a,ziyin2025a,ziyin2025} & \citep{ziyin2025,ziyin2024} & \citep{ziyin2024a,ziyin2025a,ziyin2025} & \citep{ziyin2025} & \citep{ziyin2024a,ziyin2025a,ziyin2025,ziyin2024} &  & \citep{fukumizu1996nn} & \citep{zhao2023a} &  \\
         \hline
@@ -1609,7 +1610,7 @@ The scaling $D\theta^+_v$ with $D$ a diagonal matrix whose diagonal is strictly 
         Optimizers & \citep{yang2025} & \citep{neyshabur2015anips,meng2019,huang2017} &  & \citep{zhuang2022tmlr,badrinarayanan2015,kingma2015,yi2022ptcuai} &  & \citep{bamler2018p3icml} & \citep{amari1998nc,zhao2023,zhao2024,yen2025iclr,kristiadi2023anips} &  &  &  \\
         \hline
     \end{tabularx}
-    \caption{Double-entry table of parameter-space symmetries: architectural components and objects (rows) against the type of symmetry acting on them (columns).}
+    \caption{Double-entry table of parameter-space symmetries: source (rows: architecture, layer, activation, loss or optimizer) against type of symmetry (columns). Most sources yield symmetries of $\varphi$ (model locus of \Cref{fig:sym-loci}); losses and optimizers yield symmetries of $\mathcal L$ or $U$ (optimization locus).}
     \label{tab:param-double-entry}
 \end{sidewaystable}
 
