@@ -1867,18 +1867,12 @@ The last two are \emph{dynamic}.
 Finally, \Cref{sec:exploit-symmetry-feature} seeks to turn the bug into a feature.
 
 \subsubsection{Quotient, Representative and Alignment}\label{sec:quotient-repr-align}
-
-Rather than adapting to symmetries, a branch of works aims at taking the symmetries out of the picture altogether.
+Keeping the symmetries of $\varphi$ in the model, a branch of works takes them out of its \emph{representation} by identifying $\theta$ with every $g\cdot\theta$, i.e.\ working modulo the orbit relation $\theta\sim\theta' \iff \theta'=g\cdot\theta$ for some $g\in G$.
 Working with equivalence classes or with canonical elements thereof uncovers patterns that symmetries could otherwise hide and sidesteps the optimizer mismatch of \Cref{sec:symmetry-optimization}.
 We report on three strategies.
 \emph{Quotienting} constructs a representation of the equivalence classes themselves: orbits become points of the quotient space $\Theta/\!\sim$.
 \emph{Representative extraction} selects a particular element inside each class, that is, a section of the quotient map $\Theta\to\Theta/\!\sim$ picking one point in each fiber.
 \emph{Alignment} is a pairwise version of representative extraction: the chosen representatives are not absolute but depend on the relation between two parameter instances.
-As an illustration, consider circles randomly placed in the plane but such that they don't overlap.
-Two points are defined to be equivalent when they lie on the same circle, so that the equivalence classes are precisely the circles.
-Quotienting represents each circle, for instance the center--radius pair in $\mathbb{R}^2\times\mathbb{R}_{>0}$.
-Representative extraction distinguishes one point on each circle, for instance the point of highest $y$-coordinate (with the random placement assumption, these coordinates are unique).
-Alignment selects $2$ points simultaneously when $2$ circles are compared: it could return the two points---one on each circle---minimizing the distance between them.
 
 \paragraph{Quotiented Parameter Spaces}
 \citet{meng2019} push the path perspective of \citet{neyshabur2015anips} one step further: they optimize ReLU networks directly in a space of invariant coordinates, the path values $\pi_c(w)$ of \Cref{sec:symmetry-optimization}.
