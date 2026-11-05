@@ -2344,6 +2344,20 @@ $$
 $$
 For an hypothesis class, it becomes $\operatorname{Stab}_\epsilon(\mathcal{H})=\cap_{h\in \mathcal{H}}\operatorname{Stab}_\epsilon(h)$.
 The exactness axis can be read as an algebraic criterion: the symmetry is \emph{exact} if $\operatorname{Stab}_0(f)=G$, \emph{approximate} if $\operatorname{Stab}_0(f)\neq G=\operatorname{Stab}_\epsilon(f)$ for a small $\epsilon>0$ (\Cref{sec:soft-equivariance}) and \emph{extent-restricted} if $\operatorname{Stab}_\epsilon(f)=S\subsetneq G$ (\Cref{sec:extent-restriction}).
+\Cref{fig:exactness-rotation} illustrates the three cases for rotations of a 2D image.
+
+\begin{figure}[!tbp]
+    \centering
+    \includegraphics[width=\textwidth]{images/exactness-rotation.pdf}
+    \caption{The exactness axis for rotations $G=SO(2)$ of a 2D image, $R_\theta$ denoting the rotation by $\theta\in(-\pi,\pi]$ and $\rho_Y$ being trivial (invariance).
+    Top: each image on its disk domain $D\subset\mathbb{R}^2$; the green arrow spans $\operatorname{Stab}_\epsilon(f)$ and is wavy when the symmetry only holds up to $\epsilon$.
+    Bottom: equivariance error $\operatorname{ee}(f,\theta)$ (blue) against the tolerance $\epsilon$ (dashed), and $\operatorname{Stab}_\epsilon(f)$ (green bar).
+    In (\textbf{a}) and (\textbf{c}), $f\colon D\to\mathbb{R}^3$ is the image itself (colour coordinates), so that $\operatorname{ee}(f,\theta)=\sup_{u\in D}\lVert f(R_\theta u)-f(u)\rVert_\infty$.
+    (\textbf{a}) Exact: a constant-colour annulus is invariant under every rotation.
+    (\textbf{b}) Extent-restricted: $f$ maps an image to the smooth logits of a digit classifier, and the error $\lVert f(R_\theta\cdot x)-f(x)\rVert_\infty$ is evaluated at the image $x$ of a 6 (schematic curve). The prediction is preserved only on $S=[-\pi/2,\pi/2]$, whose endpoints (faint 6s turned by $\pm\pi/2$) are ambiguous, and the 6 becomes a 9 at $\theta=\pi$.
+    (\textbf{c}) Approximate: the colour varies with the polar angle $\varphi$ as $c(\varphi)=c_0+v\cos\varphi$, $c_0,v\in\mathbb{R}^3$, hence $\operatorname{ee}(f,\theta)=2\lVert v\rVert_\infty\lvert\sin(\theta/2)\rvert\le\epsilon$ on all of $G$, while it vanishes only at $\theta=0$.}
+    \label{fig:exactness-rotation}
+\end{figure}
 
 Incomplete symmetries are dual to symmetry discovery (\Cref{sec:sym-disco}).
 Discovery is additive, it accumulates evidence \emph{for} a transformation being a symmetry, whereas this section examines how assumed symmetries fail---a form of \emph{negative discovery}.
