@@ -2185,7 +2185,7 @@ While the polynomial setting is restrictive, it still approximates a broad class
 The previous sections typically assumed \emph{known} symmetries; here the symmetry is a priori \emph{unknown}, to be recovered or its validity assessed rather than imposed (\Cref{sec:design-principle}) or understood (\Cref{sec:parameter-space-symmetries}).
 Quantification works (\Cref{sec:sym-quantification}) are in effect a mix of \emph{known} and \emph{unknown}: the transformation is given, and how well $f_\theta$ respects it is what is measured.
 Symmetry discovery seeks the triplet $(G,\rho_X,\rho_Y)$, i.e.\ a group and its actions such that $f(\rho_X(g)\,x)=\rho_Y(g)\,f(x)$ for all $g\in G$; the map $f$ sets the locus and splits the two subsections along the object axis (\Cref{fig:sym-loci}).
-\Cref{sec:sym-disc-from-data} is at the \emph{problem} level: $f$ is the ground truth $f^*$ (or, for invariance, the data distribution $p$), observed only through a finite dataset.
+\Cref{sec:sym-disc-from-data} is mostly at the \emph{problem} level: $f$ is the ground truth $f^*$ (or, for invariance, the data distribution $p$), observed only through a finite dataset.
 Its motivation is practical: supplying the a priori knowledge that equivariant design requires (symmetry bottleneck, \Cref{par:sym-bottleneck}), gaining performance, or simply getting insight on a dataset.
 \Cref{sec:sym-extract-model} is at the \emph{parameter} level: $f=f_\theta$ for a trained, hence fixed, $\theta$; but unlike in \Cref{sec:parameter-space-symmetries}, $G$ acts on $\mathcal X$ and $\mathcal Y$, not on $\Theta$.
 Its motivation is more theoretical: the symmetries a network implicitly learns reveal its behavior and inductive biases.
@@ -2199,16 +2199,19 @@ As a whole, the section is mainly \emph{descriptive}.
 % seems that some GAN objective assume distribution invariance
 % maybe cohen2014
 % wang2024p4icml discovery by seeing how soft equivariance method reacts to the data 
-In this part, the symmetry is carried by the ground truth $f^*$ or the data distribution $p$, and must be identified from finitely many samples.
-This can be contrasted on the explicitness axis of the taxonomy (\cref{tab:taxonomy}) with automated DA (\Cref{par:auto-da}), where an augmentation policy only produces training examples.
+In this part, the symmetry is carried by the ground truth $f^*$ or, less frequently, the data distribution $p$ or a single data point, and must be identified from finitely many samples.
+This can be contrasted on the explicitness axis (\Cref{tab:taxonomy}) with automated DA (\Cref{par:auto-da}), where an augmentation policy only produces training examples, leaving the symmetry \emph{implicit}.
 Discovery instead makes the symmetry \emph{explicit}, as an interpretable, reusable object for a downstream inductive bias, augmentation or diagnostic.
-Some works merge it with EDL into a single pipeline that discovers and enforces the symmetry, the model becoming more equivariant as evidence for it accumulates \citep{benton2020anips,ouderaa2022,otto2025,escriche2025}.
-For invariance, given samples $x_1,\dots,x_n\sim p$, one seeks a group $G$ acting on $\mathcal X$ such that $g_\#p=p$ for all $g\in G$, with $g_\#p:=p\circ g^{-1}$ the pushforward.
+Some works incorporate EDL into a single pipeline that discovers and enforces the symmetry, the model becoming more equivariant as evidence for it accumulates \citep{benton2020anips,ouderaa2022,otto2025,escriche2025}.
+Formally, given samples $(x_i,y_i)\sim p$, one seeks a group $G$ acting by $g\cdot(x,y)=(\rho_X(g)x,\rho_Y(g)y)$.
+Generative approaches test the stronger condition $p\circ g^{-1}=p$, which also constrains the marginal $p_X$; most works, however, target only the equivariance of $f^*$, $f^*(\rho_X(g)x)=\rho_Y(g)f^*(x)$.
 Since the trivial group $\{e\}$ always qualifies, works add regularizers favoring large groups or entropy maximization to rule it out \citep{benton2020anips,yang2023p4icml,escriche2025}.
+
  
 % Seminal works: highnam1985,wolter1985tvc (the problem is not new)
 \subsubsection{Seminal works}
-The problem of detecting symmetries from finite data is not new; in the 1980s \citet{highnam1985} and \citet{wolter1985tvc} provided algorithms for finding all rotational and reflective symmetries of planar and three-dimensional point sets.
+The problem of detecting symmetries from finite data is not new and early work extract the symmetries of one shape (data locus), not of a distribution or a target function.
+\citet{highnam1985} and \citet{wolter1985tvc} provided algorithms for finding all rotational and reflective symmetries of planar and three-dimensional point sets.
 An early machine learning approach appeared in \citet{rao1998anips}, who framed symmetry discovery in visual perception as learning Lie group operators from infinitesimally transformed image patches via an unsupervised Bayesian algorithm.
 
 \subsubsection{Discrete vs continuous symmetry learning}
