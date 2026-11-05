@@ -1931,11 +1931,10 @@ Finally for ReLU classifiers, \citet{pittorino2022jsm} combine representative ex
 On the resulting geometry, geodesics replace linear interpolation paths, and distances, barriers and flatness are closer to a functional meaning as we see next in  \Cref{sec:measurements-param-space}.
 
 \subsubsection{Measurements in Parameter Space}\label{sec:measurements-param-space}
-
-Evaluations about $f_\theta$ e.g. generalization measures, should not depend on the specific $\theta$ realizing it~\citep{dinh2017}.
+Evaluations about $f_\theta$ such as generalization measures should not depend on the specific $\theta$ realizing it~\citep{dinh2017}.
 Concretely, a measurement $\mathcal M:\Theta^k\to\mathbb R$ taking $k$ parameters as input should factor through a well-defined induced measurement on the quotient, $(\Theta/\!\sim)^k\to\mathbb R$, or through the realization map $\varphi:\Theta\to\mathcal F$ as a measurement of functions, $\mathcal F^k\to\mathbb R$.
 Parameter-space symmetries are thus an invariance desideratum for any measurement built from $\theta$, similarly to the equivariant metanetworks of \Cref{sec:adjacent-fields}.
-We focus on two such measurements: barrier values in (linear) mode connectivity, and flatness of the loss landscape.
+We focus on two such measurements: barriers in (linear) mode connectivity, and flatness of the loss landscape.
 
 \begin{Remark}
     Other measurements of $\theta$ face the same requirement.
@@ -2049,8 +2048,7 @@ with $\rho$ a radius hyperparameter and $p\in[1,\infty]$ and \citet{kwon2021p3ic
 where $T_w^{-1}$ is a normalization operator responsible for cancelling the effect of rescaling on sharpness. For ReLU networks, $T_w=\operatorname{diag}(|w_1|, \dots, |w_k|)$ is a valid choice. Adaptive sharpness is shown to better correlate with generalization.
 
 \subsubsection{Optimization}\label{sec:symmetry-optimization}
-Parameter-space symmetries impact the landscape but also its traversal through the optimizer and its update rule.
-This section reviews prescriptions regarding optimization.
+Moving from \emph{static} measurements to \emph{dynamic} training, we turn to symmetries of the loss $\mathcal L$ and of the update rule $U$ (optimization locus): the obstacles they create and their remedies.
 
 \paragraph{Symmetry-Induced Obstacles}
 A first obstacle type is analytical.
@@ -2092,7 +2090,7 @@ The apparent non-invariance of GD then stems from the metric left implicitlt Euc
 They restore equivariance with a preconditioning matrix $P$---which they show cannot be restricted to diagonal matrices---applied as a right preconditioner in the low $r$-dimensional row space (i.e., $\nabla_A\mathcal{L}\,P$ instead of $P\,\nabla_A\mathcal{L}$), for efficiency.
 
 \subsubsection{Exploit the Symmetry Feature}\label{sec:exploit-symmetry-feature}
-Some works try to see symmetries as resource rather than a nuisance, findings symmetry levers to accelerate convergence or perform pruning.
+Some works try to see symmetries as resource rather than a nuisance, findings symmetry levers for instance to accelerate training or perform pruning.
 
 \paragraph{Overparametrization}
 In linear networks $\Phi^N=\{\mathbf{x}\mapsto W_N\cdots W_1\mathbf{x}\}$ \citet{arora2018p3icml} study the dynamics of $W_e:=W_N\dots W_1$ under gradient descent and find that overparametrization by depth acts as a preconditioner combining adaptive learning rate and momentum-like effects.
