@@ -2366,13 +2366,11 @@ The two further intertwine: in partial equivariance the subset $S\subseteq G$ on
 \subsection{Symmetry Breaking}\label{sec:symmetry-breaking-dl}
 % bamler2018p3icml
 Symmetry Breaking (SB) names the situation in which an object carries less symmetry than before, expected or possible: a loss of symmetry relative to a group of interest $G$.
-The term does not have a unique meaning and two questions can help disambiguate it.
-First, where is the symmetry lost: between hypothesis and ground-truth functions, in the data distribution, or along training?
-Second, \emph{whether} the breaking can be intentional (a modelling choice) or unintended (a by-product of design), which is close in spirit to the purpose axis.
-\Cref{table:symmetry-breaking} answers the first question, which structures this subsection.
-\emph{Functional} SB is a mismatch between the symmetry of the target $f$ and that of the hypothesis class; \emph{distributional} SB is non-uniformity of the data density along orbits; and \emph{dynamical} SB happens along training, with $G$ acting on $\Theta$, and concerns the loss $\mathcal L$, the optimizer $U$ or the symmetric states of $\theta_t$.
+The term does not have a unique meaning.
+We propose to disambiguate and structures this subsection as summarized in \Cref{table:symmetry-breaking} depending on where the symmetry is lost.
+\emph{Functional} SB is a mismatch between the symmetries of the ground-truth $f$ and that of the hypothesis class; \emph{distributional} SB is non-uniformity of the data density along orbits; and \emph{dynamical} SB happens along training, with $G$ acting on $\Theta$.
 
-To precise these notions, let us consider two works.
+To precise the first two meanings, we illustrate with two works.
 The pointwise categorization of \citet{wang2023a} contrasts functional and distributional meanings.
 For a point $x$ and a transformation $g$: writing $p$ for the data density, they call $g$ at $x$ \emph{correct} when $p(gx)>0$ and $f(gx)=gf(x)$ (the digit $0$ under a $180^\circ$ rotation), \emph{incorrect} when $p(gx)>0$ but $f(gx)\neq gf(x)$ (the digit $6$ sent to $9$), and \emph{extrinsic} when $p(gx)=0$, i.e.\ $g$ carries $x$ off the data support (a rotated $4$).
 Incorrect equivariance is functional SB, whereas extrinsic equivariance falls in distributional SB.
