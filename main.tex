@@ -2437,13 +2437,12 @@ This bound is informative when the true map $f^*$ \emph{is} equivariant---it inf
 Here however, the ``pose'' is not interpretable, closer to the random node features of GNNs than to positional encoding.
 
 \subsubsection{Distributional Symmetry Breaking}\label{sec:distributional-sb}
-Distributional SB is a property of the pair $(f^*, p)$.
-Letting $G$ be the symmetry group of $f^*$, it happens when $p(x)\neq p(\rho_X(g)x)$ for some $g\in G$.
+Distributional SB is a property of the pair $(f^*, p)$ which occurs when $p(\rho_X(g)x)\neq p(x)$ for some $g\in \operatorname{Sym}(f^*)$ and $x\in\mathcal{X}$.
 In words, orbits do not carry constant density.
-Performances can be affected even if $f^*$ is perfectly equivariant because a model with the correct equivariance is by construction blind to orbit-position cues, that a non-equivariant model can exploit as a shortcut: whenever these features are consistent between train and test, they become \emph{spurious but useful} correlations.
-Accordingly, it has been observed that on \emph{canonically presented} data (a density far from uniform on orbits) a plain model can outperform an equivariant one carrying the correct symmetry~\citep{lawrence2026,rygiel2026}.
+Performance can be affected even when $f^*$ is equivariant: a model with the correct equivariance is by construction blind to orbit-position cues, which a non-equivariant model can exploit as a shortcut; whenever these cues are consistent between train and test sets, they become \emph{spurious but useful} correlations.
+Accordingly, it has been observed that on canonically presented data (a density far from uniform on orbits), a plain model can outperform an equivariant one carrying the correct symmetry~\citep{lawrence2026,rygiel2026}.
 A second reason (not found in the literature) could be that some functions are simpler to express on canonicalized inputs.
-An example: the distance between $x,y\in\mathbb{R}^2$ needs a single hidden unit provided a canonical preprocessing composed of a translation moving $x$ to $0$ and a rotation until $y_2=0$ and $y_1\geq 0$.
+For example, computing the $SE(2)$-invariant distance between $x,y\in\mathbb{R}^2$ needs a single hidden unit after canonicalization by a translation moving $x$ to $0$, then a rotation until $y_2=0$ and $y_1\geq 0$ since it then equals $y_1$.
 
 On the theoretical side, \citet{lawrence2026} prove for invariant ridge regression that the correctly-invariant model can generalize worse than an unconstrained one under distributional SB and \citet{chen2020} quantify the effect for data augmentation by relaxing exact to approximate distributional invariance $X\approx_d gX$, with the degree of non-invariance measured by an optimal-transport distance $\mathcal{W}_1$.
 The resulting risk bounds carry uncertainty terms $\pm\,\mathbb{E}_g\,\mathcal{W}_1(f(gx),f(x))$ compared to the distributionally invariant case that widen as the symmetry bias grows.
