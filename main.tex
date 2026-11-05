@@ -2352,21 +2352,21 @@ The two further intertwine: in partial equivariance the subset $S\subseteq G$ on
 
 \subsection{Symmetry Breaking}\label{sec:symmetry-breaking-dl}
 % bamler2018p3icml
-
-Symmetry Breaking (SB) (def. \ref{def:symmetry-breaking}) names the situation in which an object carries \emph{less} symmetry than before, expected or possible: some object loses symmetry relative to a certain group of interest $G$.
+Symmetry Breaking (SB) names the situation in which an object carries less symmetry than before, expected or possible: a loss of symmetry relative to a group of interest $G$.
 The term does not have a unique meaning and two questions can help disambiguate it.
-First, \emph{which} object breaks the symmetry---the ground-truth function, the data distribution, or the parameterization together with its learning dynamics.
-Second, \emph{whether} the breaking can be intentional (a modelling choice) or unintended (a by-product of design).
-\Cref{table:symmetry-breaking} organizes the literature along the first axis, which we adopt as the structure of this subsection: \emph{functional} SB is a mismatch between the symmetry of the target $f$ and that of the hypothesis class; \emph{distributional} SB is non-uniformity of the data density along orbits; and \emph{parameter-space} SB concerns symmetries of the loss and of the training dynamics.
+First, the locus of symmetry; is it the ground-truth function, the data distribution, or the parameterization together with its learning dynamics ?
+Second, \emph{whether} the breaking can be intentional (a modelling choice) or unintended (a by-product of design), which close in spirit to the purpose axis.
+\Cref{table:symmetry-breaking} organizes the section along the object axis, which we adopt as the structure of this subsection.
+\emph{Functional} SB is a mismatch between the symmetry of the target $f$ and that of the hypothesis class; \emph{distributional} SB is non-uniformity of the data density along orbits; and \emph{parameter-space} SB concerns symmetries of the loss and of the training dynamics.
 
 To precise these notions, let us consider two works providing a contrast.
 The pointwise categorization of \citet{wang2023a} contrasts functional and distributional meanings.
-For a point $x$ and a transformation $g$: writing $p$ for the data density, they call $g$ at $x$ \emph{correct} when $p(gx)>0$ and $f(gx)=gf(x)$ (the digit $0$ under a $180^\circ$ rotation), \emph{incorrect} when $p(gx)>0$ but $f(gx)\neq gf(x)$ (the digit $6$ sent to $9$), and \emph{extrinsic} when $p(gx)=0$, i.e.\ $g$ carries $x$ off the data manifold (a rotated $4$).
-Incorrect equivariance is a pointwise instance of functional breaking, whereas extrinsic equivariance is a localized occurence of distributional breaking.
-The functional meaning is itself composite.
-A useful example is the case of $SE(3)$-equivariant \emph{Rapidash} model of \citet{vadgama2025}.
-This models has typed inputs (scalars and vectors) and supports \emph{Equivariance breaking} by treating a vector input as a tuple of scalars, deliberately assimilating quantities that transform differently under $G$.
-It also supports \emph{pose-informed} breaking, achieved by supplying an extra token $Z$ encoding a reference frame while joint equivariance $f(gX,gZ)=g\,f(X,Z)$ is retained.
+For a point $x$ and a transformation $g$: writing $p$ for the data density, they call $g$ at $x$ \emph{correct} when $p(gx)>0$ and $f(gx)=gf(x)$ (the digit $0$ under a $180^\circ$ rotation), \emph{incorrect} when $p(gx)>0$ but $f(gx)\neq gf(x)$ (the digit $6$ sent to $9$), and \emph{extrinsic} when $p(gx)=0$, i.e.\ $g$ carries $x$ off the data support (a rotated $4$).
+Incorrect equivariance is functional SB, whereas extrinsic equivariance falls in distributional SB.
+Functional breaking can arise from multiple ways, a useful illustration is the $SE(3)$-equivariant \emph{Rapidash} model of \citet{vadgama2025}.
+This models has typed inputs (scalars and vectors) that transform differently under $G$.
+Equivariance can then be deliberately broken by treating vectors as tuples of scalars.
+The model also supports \emph{pose-informed} breaking, achieved by supplying an extra token $Z$ encoding a reference frame while joint equivariance $f(gX,gZ)=g\,f(X,Z)$ is retained.
 
 \begin{table}[ht]
     \centering
