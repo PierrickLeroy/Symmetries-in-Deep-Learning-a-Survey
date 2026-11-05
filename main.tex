@@ -1393,7 +1393,7 @@ Neither implication reverses.
 
 \begin{Example}[Loss-level symmetry by regularization]\label{ex:loss-level-symmetry-regularization}
     A level set of $\mathcal{L}$ can carry non-constant $f_\theta$ when $\mathcal{L}$ does not factor through $\varphi$.
-    For example, with a regularizer $\mathcal{L}(\theta)=\mathcal{L}_F(f_\theta)+\mathcal{L}_R(\theta)$, the second implication of \Cref{eq:param-symmetry-hierarchy} itself fails: a functional symmetry has no reason to preserve $\mathcal{L}_R$ (\Cref{sec:optim-sb}) and there might be a direction $v$ where the two parts compensate i.e. $D_v\mathcal{L}_F=-D_v\mathcal{L}_R\neq 0$, with $D_v$ the directional derivative.
+    For example, with a regularizer $\mathcal{L}(\theta)=\mathcal{L}_F(f_\theta)+\mathcal{L}_R(\theta)$, the second implication of \Cref{eq:param-symmetry-hierarchy} itself fails: a functional symmetry has no reason to preserve $\mathcal{L}_R$ (\Cref{sec:dynamical-sb}) and there might be a direction $v$ where the two parts compensate i.e. $D_v\mathcal{L}_F=-D_v\mathcal{L}_R\neq 0$, with $D_v$ the directional derivative.
     Moving infinitesimally along $v$ stays in the level set yet changes the function.
     As a further illustration: following from $\theta$ a continuous symmetry (2) decreasing $\mathcal{L}_R$ yields $\theta'$ with $f_{\theta'}=f_\theta$ and $\mathcal{L}(\theta')<\mathcal{L}(\theta)$.
     Then, degrading the model by gradient ascent until the loss climbs back to $\mathcal{L}(\theta)$ produces $\theta''$ with $\mathcal{L}(\theta'')=\mathcal{L}(\theta)$ but $f_{\theta''}\neq f_\theta$.
@@ -1754,7 +1754,7 @@ For stacked architectures, they frame conservation laws by blocks $h_k:\Theta_k\
 % \paragraph{Beyond Idealized Gradient Flow}
 Training heuristics perturb the conservation mechanism.
 \citet{kunin2020} derive a modified gradient flow accounting for finite learning rate, momentum and weight decay, under which CL break.
-With weight decay $\lambda$, for instance, the translation law decays as $\langle\theta(t),\mathbb{1}_{\mathcal{A}}\rangle=e^{-\lambda t}\,c$ with $c=\langle\theta(0),\mathbb{1}_{\mathcal{A}}\rangle$ the quantity conserved when $\lambda=0$ (see \Cref{sec:optim-sb}).
+With weight decay $\lambda$, for instance, the translation law decays as $\langle\theta(t),\mathbb{1}_{\mathcal{A}}\rangle=e^{-\lambda t}\,c$ with $c=\langle\theta(0),\mathbb{1}_{\mathcal{A}}\rangle$ the quantity conserved when $\lambda=0$ (see \Cref{sec:dynamical-sb}).
 \citet{marcotte2025p4icml} prove that weight decay does not create new laws---showing that any law under weight decay maps to a law without it---; that Adam-like optimizers typically break them, and discretization induces a drift of order $O(\tau^2 k)$ after $k$ steps of size $\tau$, so laws hold approximately for small learning rates.
 Instead, \citet{saul2023} restore CL: they derive a \emph{weight-balancing flow} under which a balanced network stays exactly balanced while (under assumptions) still descending the regularized loss (see \Cref{sec:quotient-repr-align}).
 Gradient noise breaks conservation in a more structured way.
@@ -1856,7 +1856,7 @@ Either count can dominate, depending on the regime: under mild overparametrizati
 \subsection{Prescription for Parameter-Space Symmetries}\label{sec:bug-or-feature}
 
 Having described parameter-space symmetries and consequences, we turn to the \emph{prescriptive} question: how can the ``symmetry bug'' be fixed? Or can it even be exploited?
-A direct fix is to intervene to remove symmetries altogether \citep{lim2024,ziyin2024b}, a form of symmetry breaking covered in \Cref{sec:optim-sb}.
+A direct fix is to remove symmetries altogether, from the model \citep{lim2024} or from the loss \citep{ziyin2024b} (\Cref{sec:mode-connectivity,sec:dynamical-sb} respectively).
 Beyond this radical fix, the literature below works with symmetries and, as in \Cref{sec:descr-param-space-symmetries}, split along the state axis.
 The first two are mostly \emph{static} and concern the model locus, i.e.\ the functional symmetry $\varphi(g\cdot\theta)=\varphi(\theta)$.
 \Cref{sec:quotient-repr-align} removes the redundancy from the representation of $\theta$ through quotients $\Theta/\!\sim$, canonical representatives or pairwise alignment; one branch embeds this in Riemannian gradient descent, yet each normalization needs only the current $\theta$, not its history.
@@ -1988,7 +1988,9 @@ and the invariance to continuous symmetries of \Cref{eq:barrier-height} breaks d
 To begin, without alignment LMC can occur when the two endpoints are produced with a common grounding.
 \citet{frankle2020p3icml} separates training only after the $k$-th iteration by adding distinct SGD noise.
 The two outcomes have a non-negligible linear barrier only for $k>0$, typically a short initial phase of training is sufficient.
-\citet{lim2024} obtain the same effect architecturally: under their symmetry-removal procedure (\Cref{sec:optim-sb}), independently trained networks are forced to be compatible and interpolate linearly with low barrier.
+\citet{lim2024} obtain the same effect architecturally by removing the symmetries from the model.
+They build \emph{asymmetric} networks, either through an untrainability mask $W\mapsto M\odot W+(1-M)\odot W_{fixed}$ whose rows are nonzero and distinct (the networks remaining universal approximators) or through a non-elementwise activation.
+Independently trained networks are then forced to be compatible and interpolate linearly with low barrier, with smoother loss landscapes.
 LMC up to permutation encompasses more natural settings.
 \citet{entezari2022} conjecture that, permutations accounted for, most SGD solutions have LMC.
 As empirical support, they show that sampling $\theta_0,\theta_1$ with SGD and drawing a random permutation $\pi$, the barrier $B(\theta_0,\theta_1)$ between independent solutions and the barrier $B(\theta_0,\pi\cdot\theta_0)$ within a single orbit follow similar distributions, as if independent runs differed only by a permutation.
@@ -2365,10 +2367,10 @@ The two further intertwine: in partial equivariance the subset $S\subseteq G$ on
 % bamler2018p3icml
 Symmetry Breaking (SB) names the situation in which an object carries less symmetry than before, expected or possible: a loss of symmetry relative to a group of interest $G$.
 The term does not have a unique meaning and two questions can help disambiguate it.
-First, the locus of symmetry; is it the ground-truth function, the data distribution, or the learning rule and trajectory it generates?
+First, where is the symmetry lost: between hypothesis and ground-truth functions, in the data distribution, or along training?
 Second, \emph{whether} the breaking can be intentional (a modelling choice) or unintended (a by-product of design), which is close in spirit to the purpose axis.
-\Cref{table:symmetry-breaking} organizes the section along the object axis, which we adopt as the structure of this subsection.
-\emph{Functional} SB is a mismatch between the symmetry of the target $f$ and that of the hypothesis class; \emph{distributional} SB is non-uniformity of the data density along orbits; and \emph{optimization} SB concerns the loss $\mathcal L$, the optimizer $U$ or the symmetric states.
+\Cref{table:symmetry-breaking} answers the first question, which structures this subsection.
+\emph{Functional} SB is a mismatch between the symmetry of the target $f$ and that of the hypothesis class; \emph{distributional} SB is non-uniformity of the data density along orbits; and \emph{dynamical} SB happens along training, with $G$ acting on $\Theta$, and concerns the loss $\mathcal L$, the optimizer $U$ or the symmetric states of $\theta_t$.
 
 To precise these notions, let us consider two works.
 The pointwise categorization of \citet{wang2023a} contrasts functional and distributional meanings.
@@ -2389,10 +2391,11 @@ The model also supports \emph{pose-informed} breaking, achieved by supplying an 
         \hline
         Distributional & data density $p$ & $p(x)\neq p(\rho_X(g)x)$ & \citep{lawrence2026,rygiel2026,chen2020,urbano2026} \\
         \hline
-        Optimization & loss $\mathcal{L}$, optimizer $U$, state $\theta_t$ & $U(g\cdot\theta)\neq g\cdot U(\theta)$ & \citep{kunin2020,tanaka2021,ziyin2025,arjevani2023} \\
+        Dynamical & loss $\mathcal{L}$, optimizer $U$, state $\theta_t$ & not unique & \citep{kunin2020,tanaka2021,ziyin2025,arjevani2023} \\
         \hline
     \end{tabularx}
-    \caption{Three meanings of symmetry breaking according to which object carries less symmetry than the group of interest for the considered problem.}
+    \caption{Three meanings of symmetry breaking, according to where a symmetry of the group of interest $G$ is lost: in the target, in the data density, or along training.
+    For the dynamical row, the conditions can be $G_{\theta_t}$ changing or broken conservation laws.}
     \label{table:symmetry-breaking}
 \end{table}
 
@@ -2475,13 +2478,11 @@ Distributional SB may act only at some levels of a feature hierarchy: on MNIST, 
 A depth-limited equivariant model could exploit the low-level symmetry without paying for the high-level asymmetry \citep[Fig.~2c]{weiler2019anips}.
 This perspective is supported by \citet{elsayed2020p3icml} who report that breaking equivariance only in the later layers is best-performing on MNIST, CIFAR-10 and CelebA compared to breaking it in earlier layers and equivariant architectures.
 
-\subsubsection{Optimization Symmetry Breaking}\label{sec:optim-sb}
-% kobayashi2024anips: The L_2 penalty breaks \mathrm{GL}_r\downarrow O(r).
-% Regularizers break the implication that functional symmetry implies loss symmetry -> compare with the section on parameter-space symmetries to avoid redundancies
-We now focus on parameter-spaces, for which the term ``spontaneous'' is sometimes borrowed from physics to describe the lack of intent of SB.
+\subsubsection{Dynamical Symmetry Breaking}\label{sec:dynamical-sb}
+We now focus on parameter space $\Theta$ along training, for which the term ``spontaneous'' is sometimes borrowed from physics to describe the lack of intent of SB.
 \Cref{sec:parameter-space-symmetries} develops these symmetries, we record here only SB aspects.
 
-\paragraph{Gradient Flow and Practical Optimization}
+\paragraph{Spontaneous SB}
 Gradient Flow (GF) overstates how much symmetry survives training.
 \citet{kunin2020} derive a \emph{modified} gradient flow accounting for finite learning rate, momentum and weight decay, under which the conservation laws implied by parameter-space symmetries are broken.
 A simple example: a quantity conserved under GF instead decays as $\langle\theta(t),\mathbb{I}_{\mathcal{A}}\rangle=e^{-\lambda t}\langle\theta(0),\mathbb{I}_{\mathcal{A}}\rangle$, where $\lambda$ is the weight decay.
@@ -2497,22 +2498,17 @@ The inverse of SB is also studied and was coined \emph{symmetry restoration}~\ci
 For example, a symmetric state for the permutation symmetry occurs when two neurons $i$ and $j$ are isomorphic in the computational graph and have exactly the same input and output weights--being virtually indistinguishable.
 $\Delta^G$, specifically evaluated for the pair $(i,j)$ simply yields $\| \theta_i - \theta_j \|_2^2$.\
 The distance $\Delta^G$, in practice used with a threshold, unveils a non-trivial symmetry dynamics both through spaces (layers) and time (iteration).
+Finally, \citet{arjevani2023} identify a principle of least SB: for a shallow ReLU network $f_\theta(x)=\mathbf 1^\top\operatorname{ReLU}(Wx)$ with a teacher of isotropy $S_d$, spurious minima reached by SGD have strictly smaller isotropy $S_p\times S_q$ with $p+q=d$, yet these are maximal proper subgroups: they break the teacher's symmetry as little as possible.
 
-\paragraph{Designed Symmetry Breaking in Parameter Space}
-Since symmetries can slow optimization, cap effective capacity \citep{ziyin2024b}, or obscure landscape analysis \citep{lim2024}, works remove parameter-symmetries \emph{on purpose}, to study counterfactually or improve training.
-\citet{ziyin2024b} propose \emph{syre}, a model-agnostic scheme that anchors a random static bias at initialization, $\mathcal{L}_r(\theta)=\mathcal{L}(\theta+\theta_0)+\gamma\|\theta\|^2$, with the penalty upgraded to $\gamma\,\theta^\top D\theta$, $D_{ii}\sim\operatorname{Unif}(1-\epsilon,1+\epsilon)$, to also discard continuous symmetries.
-\citet{lim2024} instead build \emph{asymmetric} networks, either through an untrainability mask $W\mapsto M\odot W+(1-M)\odot W_{fixed}$ whose rows are nonzero and distinct (the networks remaining universal approximators) or through a non-elementwise activation.
-They observe that the resulting models enjoy direct linear mode connectivity, smoother loss landscapes and better weight-space learnability.
+\paragraph{Designed SB}
+Since symmetries can slow optimization and trap training at low-capacity symmetric saddles, \citet{ziyin2024b} remove them purposefully with \emph{syre}, a model-agnostic scheme that anchors a random static bias at initialization, $\mathcal{L}_r(\theta)=\mathcal{L}(\theta+\theta_0)+\gamma\|\theta\|^2$, with the penalty upgraded to $\gamma\,\theta^\top D\theta$, $D_{ii}\sim\operatorname{Unif}(1-\epsilon,1+\epsilon)$, to also discard continuous symmetries.
 
-\vspace{5mm}
-
-Finally, \citet{arjevani2023} identify a principle of \emph{least} SB: for a shallow ReLU network $f_\theta(x)=\mathbf 1^\top\operatorname{ReLU}(Wx)$ with a teacher of isotropy $S_d$, spurious minima have strictly smaller isotropy $S_p\times S_q$ with $p+q=d$, yet these are \emph{maximal} proper subgroups: they break the teacher's symmetry as little as possible.
 
 \subsection{Extent restriction: beyond groups}\label{sec:extent-restriction}
 % Add deformation stability [bronstein2021] which is about diffeomorphisms
-We organize this section based on the \emph{algebraic structure} of the set $S$ of transformations i.e.\ by which of the group axioms (closure, identity, inverses) $S$ retains.
+We organize this section based on the algebraic structure of the set $S$ of transformations i.e.\ by which of the group axioms (closure, identity, inverses) $S$ retains.
 \Cref{table:extent-restriction} classifies the main cases along this axis.
-The $\pm 90^\circ$ case makes the boundary between the first two rows of \Cref{table:extent-restriction} (\Cref{sec:subgroups,sec:non-closed-subsets}): as an interval of rotations, $S=[-90^\circ,90^\circ]$ is non-closed since $90^\circ\!\circ\!90^\circ=180^\circ\notin S$, whereas $\{0^\circ,90^\circ,180^\circ,270^\circ\}=C_4$ \emph{is} a subgroup.
+The $\pm 90^\circ$ case makes the boundary between the first two rows of \Cref{table:extent-restriction} (\Cref{sec:subgroups,sec:non-closed-subsets}): as an interval of rotations, $S=[-90^\circ,90^\circ]$ is non-closed since $90^\circ\!\circ\!90^\circ=180^\circ\notin S$, whereas $\{0^\circ,90^\circ,180^\circ,270^\circ\}=C_4$ is a subgroup.
 
 \begin{table}[ht]
     \centering
