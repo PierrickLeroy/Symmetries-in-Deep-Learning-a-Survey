@@ -111,8 +111,7 @@ Compared to these works, we work in reverse and go broad, starting from the conc
 
 
 \subsection{Taxonomy and paper organization}
-% add walkthrough linking taxonomy, loci figure and the manuscript's headers
-
+\pnote{TODO: add walkthrough linking taxonomy, loci figure and the manuscript's headers}
 We propose a faceted taxonomy in \Cref{tab:taxonomy} to categorize occurrences of symmetries in works.
 \Cref{fig:sym-loci} further details the \emph{Object} axis of the taxonomy.
 
@@ -2183,29 +2182,16 @@ For example, the dimension of the closure of the neuromanifold is maximal (equal
 While the polynomial setting is restrictive, it still approximates a broad class of functions, and represents an idealized yet analytically tractable middleground similarly to infinite-width regimes.
 
 \section{Symmetry as an Unknown: Symmetry Discovery}
+The previous sections typically assumed \emph{known} symmetries; here the symmetry is a priori \emph{unknown}, to be recovered or its validity assessed rather than imposed (\Cref{sec:design-principle}) or understood (\Cref{sec:parameter-space-symmetries}).
+Quantification works (\Cref{sec:sym-quantification}) are in effect a mix of \emph{known} and \emph{unknown}: the transformation is given, and how well $f_\theta$ respects it is what is measured.
+Symmetry discovery seeks the triplet $(G,\rho_X,\rho_Y)$, i.e.\ a group and its actions such that $f(\rho_X(g)\,x)=\rho_Y(g)\,f(x)$ for all $g\in G$; the map $f$ sets the locus and splits the two subsections along the object axis (\Cref{fig:sym-loci}).
+\Cref{sec:sym-disc-from-data} is at the \emph{problem} level: $f$ is the ground truth $f^*$ (or, for invariance, the data distribution $p$), observed only through a finite dataset.
+Its motivation is practical: supplying the a priori knowledge that equivariant design requires (symmetry bottleneck, \Cref{par:sym-bottleneck}), gaining performance, or simply getting insight on a dataset.
+\Cref{sec:sym-extract-model} is at the \emph{parameter} level: $f=f_\theta$ for a trained, hence fixed, $\theta$; but unlike in \Cref{sec:parameter-space-symmetries}, $G$ acts on $\mathcal X$ and $\mathcal Y$, not on $\Theta$.
+Its motivation is more theoretical: the symmetries a network implicitly learns reveal its behavior and inductive biases.
+As a whole, the section is mainly \emph{descriptive}.
 
-The previous sections typically assumed the symmetries at play were known, here we take the opposite stance where the symmetry is to be inferred or its validity assessed rather than imposed or understood.
-
-Symmetry discovery refers to the problem of automatically learning or identifying symmetries present in data or learned by neural networks, without requiring (full) prior knowledge of what those symmetries are.
-The core motivation is twofold:
-\begin{enumerate}
-    \item \textbf{Practical}: Overcome partly the symmetry bottleneck (\Cref{par:sym-bottleneck}) or obtain performance improvements by leveraging previously unidentified symmetries in real-world dataset (data symmetries).
-    \item \textbf{Theoretical}: Understanding what symmetries a network implicitly learns provides insights into its behavior and learned inductive biases.
-\end{enumerate}
-
-In full generality, the object to identify is a triple $(G, \rho_X, \rho_Y)$, where the equivariance constraint is :
-\begin{equation}
-    f(\rho_X(g) x) = \rho_Y(g) f(x) \quad \forall g \in G.
-\end{equation}
-$\rho_X$ and $\rho_Y$ are representations of the same abstract group $G$, but they can be entirely different---same symmetry, different actions.
-$f$ is the predictor $f_\theta$ in the case of symmetry extraction from a trained network and the unknown ground truth function $y^*$ in the case of symmetry discovery from data.
-% works are not always explicit about finding \rho_X, \rho_Y in the triple $(G, \rho_X, \rho_Y)$
-
-In the first part of this section, we look at symmetry discovery in data, then proceed with learned symmetries.
-
-
-\subsection{Symmetry Discovery from Data}\label{sec:sym-disc-from-data}
-
+\subsection{Symmetry Discovery at the problem level}\label{sec:sym-disc-from-data}
 % hu2025nn seems similar to krippendorf2020
 % add: ko2024anips
 % non-linear SD: yang2024p4icml, shaw2024
@@ -2267,7 +2253,7 @@ Despite the appeal of symmetry discovery as a path around the symmetry bottlenec
 Furthermore, \citet{yang2023p4icml} observe, and \citet{finzi2021anips} formalize, that enforcing the \emph{wrong} symmetry group (too large, small, or simply incorrect) can be harmful.
 
 
-\subsection{Symmetry Extraction from Learned Models}
+\subsection{Symmetry Extraction from Learned Models}\label{sec:sym-extract-model}
 In this part we report the main techniques used to detect, measure, and identify symmetries that a neural network has learned, as opposed to symmetries that were \emph{enforced} by design: extraction refers to a post-hoc or diagnostic operation on a trained model.
 
 
@@ -2301,7 +2287,7 @@ In practice the approximate nullspace is extracted from the right-singular vecto
 Assembling these constraints into a coefficient matrix, the zero singular values again count the Lie-algebra dimension and singular vectors are the generators.\newline
 Notably, both \citet{krippendorf2020} and \citet{hu2025nn} rely on the assumption that a sufficiently trained network absorbs the symmetry present in its data, so identifying the model's symmetry doubles as \emph{discovery} of the data's symmetry, closing the loop with \Cref{sec:sym-disc-from-data}.
 
-\subsubsection{Quantification}
+\subsubsection{Quantification}\label{sec:sym-quantification}
 % mention sensitivity analysis as the broader field that studies how the variation in the output of a model can be apportioned to different sources of variation in its inputs - see storm2024prl for an example of local sensitivity analysis applied to deep networks. Symmetry quantification could be likened to sensitivity analysis to specific directions in input space.
 % petrache2023 3.2 equivariance error
 % yeh2022p2icais introduce the Partition Distance, a quantitative metric for comparing their learned sharing scheme against a known ground truth (an equivariance error)
