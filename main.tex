@@ -2181,7 +2181,7 @@ The program laid out by \citet{marchetti2025a} translates deep learning question
 For example, the dimension of the closure of the neuromanifold is maximal (equal to the number of parameters) if and only if the model is finitely identifiable for homogeneous PNNs \citep{usevich2025}.
 While the polynomial setting is restrictive, it still approximates a broad class of functions, and represents an idealized yet analytically tractable middleground similarly to infinite-width regimes.
 
-\section{Symmetry as an Unknown: Symmetry Discovery}
+\section{Symmetry as an Unknown: Symmetry Discovery}\label{sec:sym-disco}
 The previous sections typically assumed \emph{known} symmetries; here the symmetry is a priori \emph{unknown}, to be recovered or its validity assessed rather than imposed (\Cref{sec:design-principle}) or understood (\Cref{sec:parameter-space-symmetries}).
 Quantification works (\Cref{sec:sym-quantification}) are in effect a mix of \emph{known} and \emph{unknown}: the transformation is given, and how well $f_\theta$ respects it is what is measured.
 Symmetry discovery seeks the triplet $(G,\rho_X,\rho_Y)$, i.e.\ a group and its actions such that $f(\rho_X(g)\,x)=\rho_Y(g)\,f(x)$ for all $g\in G$; the map $f$ sets the locus and splits the two subsections along the object axis (\Cref{fig:sym-loci}).
@@ -2296,7 +2296,7 @@ Notably, both \citet{krippendorf2020} and \citet{hu2025nn} rely on the assumptio
 % wang2022p3icml: equivariance error (def 3.1)
 % elhag2026: equivariance metrics macro and micro averaging over group orbit (eq 8, eq 9)
 Once one knows or assumes \emph{which} symmetry a model should carry, the natural follow-up is \emph{how much} of it the model has actually learned.
-The works below share a common template: a transformation (or its infinitesimal generator) is assumed to be given, and one measures a notion of sensitivity of the model under it, assessing how well invariance or equivariance is respected.\newline
+The works below share a common template: a transformation (or its infinitesimal generator) is assumed to be given, and one measures a notion of sensitivity of the model under it, assessing how well invariance or equivariance is respected; for this reason it could also belong to \Cref{sec:incomplete-symmetries}.\newline
 For seminal works, \citet{goodfellow2009anips} define a neuron-level \emph{invariance score} $S(i) = L(i)/G(i)$, where the \emph{local firing rate} $L(i)$ is the fraction of transformed versions of a maximally activating input $z$ that still excite neuron $i$, and the \emph{global firing rate} $G(i) = \mathbb{E}_{x\sim P}[f_i(x)]$ measures indiscriminate firing under a random sampling $P$.
 A neuron scores high only if it tracks transformations of its preferred stimulus while staying silent on generic inputs because the denominator enforces selectivity.
 A network-level score averages $S(i)$ over only the top-$p$ fraction of neurons in a layer, which permits a \emph{modular} detection in which one subpopulation specialises to rotation, another to translation or illumination.
@@ -2327,23 +2327,27 @@ The orthogonality error is $E_{\mathrm{orth}} = \sum_{i=1}^{D-1} \sum_{j=i+1}^{D
 
 \section{Incomplete Symmetries}\label{sec:incomplete-symmetries}
 % ha2017: hypernetworks in RNN break weight-sharing through time
-The previous section treated the symmetry as an object to discover; here we treat it as one that is \emph{imperfect}, not exact or ephemeral.
-It may hold only on part of the group, only up to a tolerance, or only until the data distribution or the training dynamics erodes it.
-Two sets of questions organize the material.
-The firsts---\emph{why} and \emph{when} a symmetry breaks---are the subject of symmetry breaking (\Cref{sec:symmetry-breaking-dl}).
-The remaining two subsections ask \emph{how} the symmetry is weakened and is organized along the exactness axis of \Cref{tab:taxonomy}: \Cref{sec:extent-restriction} restricts its extent while \Cref{sec:soft-equivariance} make it approximate.
+Quantification (\Cref{sec:sym-quantification}) measured how far a trained $f_\theta$ is from a symmetry; this section is a continuation and gathers symmetries that are \emph{inexact}: not \emph{exact} along the exactness axis of \Cref{tab:taxonomy}.
+They span several loci (\Cref{fig:sym-loci}), though the \emph{model} locus ($\mathcal{H}$) is the most investigated.
+Symmetry breaking (\Cref{sec:symmetry-breaking-dl}) is mostly \emph{descriptive}, cataloguing failure modes: why and when an expected symmetry is lost.
+The two remaining subsections are more prescriptive, explaining how to weaken a symmetry.
+They split along the exactness axis one level down: an \emph{extent-restricted} symmetry holds exactly only on a subset $S\subsetneq G$ (\Cref{sec:extent-restriction}), an \emph{approximate} one holds on all of $G$ up to a tolerance $\epsilon>0$ (\Cref{sec:soft-equivariance}).
 
-The intuition behind the types of two relaxations can be contrasted through the \emph{$\epsilon$-stabilizer} introduced by \citet{petrache2023}.
+The two relaxations are contrasted by the \emph{$\epsilon$-stabilizer} of \citet{petrache2023}.
 Let $G$ be a candidate group of transformations and write the equivariance error of a map $f$ under $G$ as:
-$$\operatorname{ee}\colon\mathcal{F}\times G\to[0,+\infty),\qquad \operatorname{ee}(f,g)=\big\|\rho_Y(g)^{-1}f(\rho_X(g)\,\cdot)-f\big\|_\infty.$$
-The $\epsilon$-stabilizer at tolerance $\epsilon\geq 0$ keeps only the transformations that preserve $f$ up to $\epsilon$,
-$$\operatorname{Stab}_\epsilon(f)=\{g\in G:\ \operatorname{ee}(f,g)\le\epsilon\},$$
-which can be analogously defined at the level of the hypothesis class $\mathcal{F}$ by $\operatorname{Stab}_\epsilon(\mathcal{F})=\cap_{f\in \mathcal{F}}\operatorname{Stab}_\epsilon(f)$.
-Partial and approximate equivariance are then separated by an algebraic criterion: the symmetry is \emph{approximate} when $\operatorname{Stab}_\epsilon(f)$ is a subgroup of $G$ (\Cref{sec:soft-equivariance}) and \emph{partial} when it is not (\Cref{sec:non-closed-subsets}).
+$$
+    \operatorname{ee}\colon\mathcal{F}\times G\to[0,+\infty),\qquad \operatorname{ee}(f,g)=\big\|\rho_Y(g)^{-1}f(\rho_X(g)\,\cdot)-f\big\|_\infty.
+$$
+The $\epsilon$-stabilizer at tolerance $\epsilon\geq 0$ keeps the transformations that preserve $f$ up to $\epsilon$:
+$$
+    \operatorname{Stab}_\epsilon(f)=\{g\in G:\ \operatorname{ee}(f,g)\le\epsilon\}.
+$$
+For an hypothesis class, it becomes $\operatorname{Stab}_\epsilon(\mathcal{H})=\cap_{h\in \mathcal{H}}\operatorname{Stab}_\epsilon(h)$.
+The exactness axis can be read as an algebraic criterion: the symmetry is \emph{exact} if $\operatorname{Stab}_0(f)=G$, \emph{approximate} if $\operatorname{Stab}_0(f)\neq G=\operatorname{Stab}_\epsilon(f)$ for a small $\epsilon>0$ (\Cref{sec:soft-equivariance}) and \emph{extent-restricted} if $\operatorname{Stab}_\epsilon(f)=S\subsetneq G$ (\Cref{sec:extent-restriction}).
 
-Incomplete symmetries are in this sense dual to symmetry discovery (\Cref{sec:sym-disc-from-data}).
-Discovery asks to what extent a transformation is a symmetry, it is additive, accumulating evidence for it whereas this section looks at how assumed symmetries fail---a form of \emph{negative discovery}.
-These parts are further intertwined: in partial equivariance the range $S\subseteq G$ on which the symmetry holds can be a discovery objective, while for approximate equivariance the goal is to calibrate how much deviation should tolerated.
+Incomplete symmetries are dual to symmetry discovery (\Cref{sec:sym-disco}).
+Discovery is additive, it accumulates evidence \emph{for} a transformation being a symmetry, whereas this section examines how assumed symmetries fail---a form of \emph{negative discovery}.
+The two further intertwine: in partial equivariance the subset $S\subseteq G$ on which the symmetry holds can be a discovery objective, while approximate equivariance needs to calibrate how much deviation to tolerate.
 
 
 \subsection{Symmetry Breaking}\label{sec:symmetry-breaking-dl}
@@ -2497,7 +2501,6 @@ Finally, \citet{arjevani2023} identify a principle of \emph{least} SB: for a sha
 
 \subsection{Extent restriction: beyond groups}\label{sec:extent-restriction}
 % Add deformation stability [bronstein2021] which is about diffeomorphisms
-
 We organize this section based on the \emph{algebraic structure} of the set $S$ of transformations i.e.\ by which of the group axioms (closure, identity, inverses) $S$ retains.
 \Cref{table:extent-restriction} classifies the main cases along this axis.
 The $\pm 90^\circ$ case makes the boundary between the first two rows of \Cref{table:extent-restriction} (\Cref{sec:subgroups,sec:non-closed-subsets}): as an interval of rotations, $S=[-90^\circ,90^\circ]$ is non-closed since $90^\circ\!\circ\!90^\circ=180^\circ\notin S$, whereas $\{0^\circ,90^\circ,180^\circ,270^\circ\}=C_4$ \emph{is} a subgroup.
