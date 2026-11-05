@@ -1856,54 +1856,15 @@ Either count can dominate, depending on the regime: under mild overparametrizati
 
 \subsection{Prescription for Parameter-Space Symmetries}\label{sec:bug-or-feature}
 
-Having describer parameter-space symmetries and consequences, we turn to the prescriptive question: how can the ``symmetry bug'' be fixed ? Or can it even be exploited ?
-A radical fix is to intervene on the model to remove symmetries altogether, by making the architecture asymmetric \citep{lim2024} or by anchoring a random bias \citep{ziyin2024b} as already covered in \Cref{sec:param-space-sb}.
-Outside of these drastic proposals, works have accounted for the symmetries when traversing the landscape (\Cref{sec:symmetry-optimization}), when representing the parameters (\Cref{sec:quotient-repr-align}), and when measuring them (\Cref{sec:measurements-param-space}).
-Finally, treating symmetries as a resource can accelerate convergence or guide pruning (\Cref{sec:exploit-symmetry-feature}).
-
-\subsubsection{Optimization}\label{sec:symmetry-optimization}
-
-Parameter-space symmetries impact the landscape but also its traversal through the optimizer and its update rule.
-This section reviews prescriptions regarding optimization.
-
-\paragraph{Symmetry-Induced Obstacles}
-A first obstacle type is analytical.
-In asymmetric matrix factorization, the $GL(r,\mathbb{R})$ symmetry makes the loss $(U,V)\mapsto\lVert UV^{\top}-M^{\star}\rVert_F^2$ non-smooth: along $(\alpha U,\alpha^{-1}V)$ the loss stays constant while the Lipschitz constant of its gradient blows up.
-As seen in \Cref{sec:conservation-laws}, \citet{du2018anips} contain the pathology with decreasing stepsizes under which the approximately conserved balancedness $\lVert U^{\top}U-V^{\top}V\rVert_F$ remains bounded; iterates are thereby confined to a region where smoothness holds, easing the analysis.
-A dynamical obstacle arises from weakly broken symmetry in the dynamic word embeddings of \citet{bamler2018p3icml}.
-A coupling regularizer $\psi(Z)$ breaks the per-time-step rotations $(R_1,\dots,R_T)$ down to a single global rotation $R_1=\dots=R_T$.
-However broken orbit directions are nearly flat (\emph{Goldstone modes} in spontaneous symmetry breaking in physics) and GD undergoes two phases: it first converges to an almost symmetric configuration optimizing the unregularized loss, then shifts very slowly along the approximate orbit to decrease $\psi$.
-Their \emph{Goldstone GD} decouples the two dynamics by alternating descent on the total loss with a minimization of $\psi(Z)$ restricted to the symmetry subspace, that is, over the rotations $(R_1,\dots,R_T)$.
-
-\paragraph{Optimizers Carry Their Own Symmetries}
-Equivariance of the update map is defined as any other equivariant map \citep{neyshabur2015anips,yi2022ptcuai,yen2025iclr,zhao2025,yang2025}: for $G$ acting on $\Theta$, the update $U:\Theta\to\Theta$ is equivariant to $G$ when
-\begin{equation}\label{eq:equivariant-optimizer}
-    U(g\cdot\theta)=g\cdot U(\theta)\qquad\forall g\in G,\ \theta\in\Theta.
-\end{equation}
-Optimizers have different invariance and equivariance properties.
-GD is equivariant to orthogonal reparameterizations $\theta\mapsto Q\theta$, $Q\in O(d)$; Newton's method to affine reparameterizations \citep{kristiadi2023anips}; natural gradient descent is infinitesimally invariant under any smooth invertible reparameterization \citep{amari1998nc,liang2019pticais,kristiadi2023anips,zhao2025}; Adam \citep{kingma2015} is invariant to positive diagonal scalings of the gradients.
-This last property is \emph{scale-freeness}: the iterates $\{\theta_t\}_{t\geq0}$ are unchanged when every gradient is rescaled as $\nabla\mathcal{L}(\theta_t)\gets D\nabla\mathcal{L}(\theta_t)$ for a positive diagonal matrix $D$, and it turns out to separate variants of Adam \citep{zhuang2022tmlr}.
-AdamW postpones the weight-decay term $\lambda\theta_{t-1}$, adding it after the adaptive step instead of folding it into the gradient as Adam-$\ell_2$ does, and thereby does not treat the $L_2$ penalty like the task loss.
-\citet{zhuang2022tmlr} show that this preserves scale-freeness while Adam-$\ell_2$ loses it, and argue that scale-freeness carries optimization benefits (improving conditionning).
-
-\paragraph{Equivariant Optimizers}
-A mismatch between the symmetries of the model and those of the optimizer means that functionally identical parameters need not train identically.
-When the equivariance requirement \Cref{eq:equivariant-optimizer} is fulfilled however, $\theta_0\sim\tilde{\theta}_0$ implies $\theta_t\sim\tilde{\theta}_t$ for all $t$ and we may speak of \emph{the} functional trajectory unambiguously.
-One strategy to avoid the mismatch is thus to employ an optimizer equivariant to the symmetry group of the model (\Cref{sec:quotient-repr-align} present other approaches).
-This symmetry-guided view would also fit in \Cref{sec:design-principle}.
-
-\citet{neyshabur2015anips}, observing that SGD is not equivariant to the rescaling symmetry of ReLU networks repair it through paths.
-The \emph{path vector} $\pi(w)$ collects the products of weights along all input--output paths: $\pi_c(w)=\prod_{k}w_{e_k}$ for a path $c=(e_1,\dots,e_L)$ of edges.
-Since every path crosses each neuron through one incoming and one outgoing edge, $\pi$ is rescaling-invariant, and so are the proposed $\ell_p$-path regularizer $\lVert\pi(w)\rVert_p$ and \emph{Path-SGD}, a variant of SGD with the coordinate-wise update
-\begin{equation*}
-    w_e^{(t+1)}\gets w_e^{(t)}-\frac{\eta}{\gamma_p(w^{(t)},e)}\,\frac{\partial\mathcal{L}}{\partial w_e}(w^{(t)}),
-\end{equation*}
-where $\gamma_p(w,e)$ is the squared $\ell_p$-norm of the path vector filtered to keep only paths containing edge $e$.
-\citet{kristiadi2023anips} distinguish \emph{weight-space symmetries}, which move $\theta$ while the parameter space itself does not transform, from \emph{reparameterizations} $\phi:\Theta\to\Psi$ between distinct parameter spaces regarded as Riemannian manifolds with explicit metrics.
-Under a reparameterization, transformation rules apply not only to the parameter but to every object attached to it, tangent vectors and gradients in particular.
-The apparent non-invariance of GD then stems from the metric left implicitlt Euclidean; making it explicit in the update, $\dot{\theta}=-G(\theta)^{-1}\nabla\mathcal{L}(\theta)$ makes GD invariant.
-\citet{yen2025iclr} make a similar contribution for LoRA, whose update $Z=AB^{\top}$ has $GL(r,\mathbb{R})$ symmetry with $r$ the low-rank dimension, and show that most practical optimizers (Adam, RMSProp, Shampoo, \dots) are not equivariant to it.
-They restore equivariance with a preconditioning matrix $P$---which they show cannot be restricted to diagonal matrices---applied as a right preconditioner in the low $r$-dimensional row space (i.e., $\nabla_A\mathcal{L}\,P$ instead of $P\,\nabla_A\mathcal{L}$), for efficiency.
+Having described parameter-space symmetries and consequences, we turn to the \emph{prescriptive} question: how can the ``symmetry bug'' be fixed? Or can it even be exploited?
+A direct fix is to intervene to remove symmetries altogether \citep{lim2024,ziyin2024b}, a form of symmetry breaking covered in \Cref{sec:param-space-sb}.
+Beyond this radical fix, the literature below works with symmetries and, as in \Cref{sec:descr-param-space-symmetries}, split along the state axis.
+The first two are mostly \emph{static} and concern the model locus, i.e.\ the functional symmetry $\varphi(g\cdot\theta)=\varphi(\theta)$.
+\Cref{sec:quotient-repr-align} removes the redundancy from the representation of $\theta$ through quotients $\Theta/\!\sim$, canonical representatives or pairwise alignment; one branch embeds this in Riemannian gradient descent, yet each normalization needs only the current $\theta$, not its history.
+\Cref{sec:measurements-param-space} requires measurements on $\Theta$, such as mode-connectivity barriers and flatness, to factor through $\Theta/\!\sim$; historically driven by intuition, symmetries can be treated more \emph{implicitly}.
+The last two are \emph{dynamic}.
+\Cref{sec:symmetry-optimization} moves to the optimization locus, the loss $\mathcal L$ and update rule $U$, e.g.\ with equivariant optimizers.
+Finally, \Cref{sec:exploit-symmetry-feature} seeks to turn the bug into a feature.
 
 \subsubsection{Quotient, Representative and Alignment}\label{sec:quotient-repr-align}
 
@@ -2093,8 +2054,50 @@ with $\rho$ a radius hyperparameter and $p\in[1,\infty]$ and \citet{kwon2021p3ic
 \end{equation*}
 where $T_w^{-1}$ is a normalization operator responsible for cancelling the effect of rescaling on sharpness. For ReLU networks, $T_w=\operatorname{diag}(|w_1|, \dots, |w_k|)$ is a valid choice. Adaptive sharpness is shown to better correlate with generalization.
 
-\subsubsection{Exploit the Symmetry Feature}\label{sec:exploit-symmetry-feature}
+\subsubsection{Optimization}\label{sec:symmetry-optimization}
+Parameter-space symmetries impact the landscape but also its traversal through the optimizer and its update rule.
+This section reviews prescriptions regarding optimization.
 
+\paragraph{Symmetry-Induced Obstacles}
+A first obstacle type is analytical.
+In asymmetric matrix factorization, the $GL(r,\mathbb{R})$ symmetry makes the loss $(U,V)\mapsto\lVert UV^{\top}-M^{\star}\rVert_F^2$ non-smooth: along $(\alpha U,\alpha^{-1}V)$ the loss stays constant while the Lipschitz constant of its gradient blows up.
+As seen in \Cref{sec:conservation-laws}, \citet{du2018anips} contain the pathology with decreasing stepsizes under which the approximately conserved balancedness $\lVert U^{\top}U-V^{\top}V\rVert_F$ remains bounded; iterates are thereby confined to a region where smoothness holds, easing the analysis.
+A dynamical obstacle arises from weakly broken symmetry in the dynamic word embeddings of \citet{bamler2018p3icml}.
+A coupling regularizer $\psi(Z)$ breaks the per-time-step rotations $(R_1,\dots,R_T)$ down to a single global rotation $R_1=\dots=R_T$.
+However broken orbit directions are nearly flat (\emph{Goldstone modes} in spontaneous symmetry breaking in physics) and GD undergoes two phases: it first converges to an almost symmetric configuration optimizing the unregularized loss, then shifts very slowly along the approximate orbit to decrease $\psi$.
+Their \emph{Goldstone GD} decouples the two dynamics by alternating descent on the total loss with a minimization of $\psi(Z)$ restricted to the symmetry subspace, that is, over the rotations $(R_1,\dots,R_T)$.
+
+\paragraph{Optimizers Carry Their Own Symmetries}
+Equivariance of the update map is defined as any other equivariant map \citep{neyshabur2015anips,yi2022ptcuai,yen2025iclr,zhao2025,yang2025}: for $G$ acting on $\Theta$, the update $U:\Theta\to\Theta$ is equivariant to $G$ when
+\begin{equation}\label{eq:equivariant-optimizer}
+    U(g\cdot\theta)=g\cdot U(\theta)\qquad\forall g\in G,\ \theta\in\Theta.
+\end{equation}
+Optimizers have different invariance and equivariance properties.
+GD is equivariant to orthogonal reparameterizations $\theta\mapsto Q\theta$, $Q\in O(d)$; Newton's method to affine reparameterizations \citep{kristiadi2023anips}; natural gradient descent is infinitesimally invariant under any smooth invertible reparameterization \citep{amari1998nc,liang2019pticais,kristiadi2023anips,zhao2025}; Adam \citep{kingma2015} is invariant to positive diagonal scalings of the gradients.
+This last property is \emph{scale-freeness}: the iterates $\{\theta_t\}_{t\geq0}$ are unchanged when every gradient is rescaled as $\nabla\mathcal{L}(\theta_t)\gets D\nabla\mathcal{L}(\theta_t)$ for a positive diagonal matrix $D$, and it turns out to separate variants of Adam \citep{zhuang2022tmlr}.
+AdamW postpones the weight-decay term $\lambda\theta_{t-1}$, adding it after the adaptive step instead of folding it into the gradient as Adam-$\ell_2$ does, and thereby does not treat the $L_2$ penalty like the task loss.
+\citet{zhuang2022tmlr} show that this preserves scale-freeness while Adam-$\ell_2$ loses it, and argue that scale-freeness carries optimization benefits (improving conditionning).
+
+\paragraph{Equivariant Optimizers}
+A mismatch between the symmetries of the model and those of the optimizer means that functionally identical parameters need not train identically.
+When the equivariance requirement \Cref{eq:equivariant-optimizer} is fulfilled however, $\theta_0\sim\tilde{\theta}_0$ implies $\theta_t\sim\tilde{\theta}_t$ for all $t$ and we may speak of \emph{the} functional trajectory unambiguously.
+One strategy to avoid the mismatch is thus to employ an optimizer equivariant to the symmetry group of the model (\Cref{sec:quotient-repr-align} present other approaches).
+This symmetry-guided view would also fit in \Cref{sec:design-principle}.
+
+\citet{neyshabur2015anips}, observing that SGD is not equivariant to the rescaling symmetry of ReLU networks repair it through paths.
+The \emph{path vector} $\pi(w)$ collects the products of weights along all input--output paths: $\pi_c(w)=\prod_{k}w_{e_k}$ for a path $c=(e_1,\dots,e_L)$ of edges.
+Since every path crosses each neuron through one incoming and one outgoing edge, $\pi$ is rescaling-invariant, and so are the proposed $\ell_p$-path regularizer $\lVert\pi(w)\rVert_p$ and \emph{Path-SGD}, a variant of SGD with the coordinate-wise update
+\begin{equation*}
+    w_e^{(t+1)}\gets w_e^{(t)}-\frac{\eta}{\gamma_p(w^{(t)},e)}\,\frac{\partial\mathcal{L}}{\partial w_e}(w^{(t)}),
+\end{equation*}
+where $\gamma_p(w,e)$ is the squared $\ell_p$-norm of the path vector filtered to keep only paths containing edge $e$.
+\citet{kristiadi2023anips} distinguish \emph{weight-space symmetries}, which move $\theta$ while the parameter space itself does not transform, from \emph{reparameterizations} $\phi:\Theta\to\Psi$ between distinct parameter spaces regarded as Riemannian manifolds with explicit metrics.
+Under a reparameterization, transformation rules apply not only to the parameter but to every object attached to it, tangent vectors and gradients in particular.
+The apparent non-invariance of GD then stems from the metric left implicitlt Euclidean; making it explicit in the update, $\dot{\theta}=-G(\theta)^{-1}\nabla\mathcal{L}(\theta)$ makes GD invariant.
+\citet{yen2025iclr} make a similar contribution for LoRA, whose update $Z=AB^{\top}$ has $GL(r,\mathbb{R})$ symmetry with $r$ the low-rank dimension, and show that most practical optimizers (Adam, RMSProp, Shampoo, \dots) are not equivariant to it.
+They restore equivariance with a preconditioning matrix $P$---which they show cannot be restricted to diagonal matrices---applied as a right preconditioner in the low $r$-dimensional row space (i.e., $\nabla_A\mathcal{L}\,P$ instead of $P\,\nabla_A\mathcal{L}$), for efficiency.
+
+\subsubsection{Exploit the Symmetry Feature}\label{sec:exploit-symmetry-feature}
 Some works try to see symmetries as resource rather than a nuisance, findings symmetry levers to accelerate convergence or perform pruning.
 
 \paragraph{Overparametrization}
@@ -2163,7 +2166,7 @@ For transformers, \citet{tran2025iclr} identify the symmetry group of multi-head
 under the assumption $D_k,D_v\le D$ that keys and values project to a lower dimension.
 They then propose Transformer-NFN equivariant under $G\times S_D\times S_{D_A}$, including permutation symmetries of the transformer outside attention ($D_A$ is the width of the downstream network) but leaving aside some symmetries.
 
-A converse move is also possible: by removing symmetries in the model, \citet{lim2024} finds improved weight-space learnability.
+Note that the converse move is also possible: by removing symmetries in the model, the method of \citet{lim2024} finds improved weight-space learnability.
 Finally, \emph{hypernetworks} \citep{ha2017} are a conceptual opposite, mapping a code $z$ to the parameters $\theta=g(z)$ of a target network.
 Parameter-space symmetries then appear in the codomain of the hypernetwork forward map $g:\mathcal Z\to \Theta$, and $g$ selects a point arbitrarily inside the fiber $\varphi^{-1}(f_\theta)$.
 
