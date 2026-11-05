@@ -2270,7 +2270,7 @@ These existence results leave open \emph{when} learning succeeds, a question tha
 In the lazy (NTK) regime, \citet{perin2025} prove a negative result: generalization to a held-out orbit point is governed entirely by local kernel geometry through the spectral ratio $\epsilon_s = \lambda_N^{-1}/\langle\lambda^{-1}\rangle$ (class separation versus orbit density), with no mechanism to transport a symmetry.
 Concretely, they illustrate that rotation poses seen only on some classes cannot be extrapolated to other classes with missing poses in the training set: if not hard-coded; the symmetry is not discovered.
 This places symmetry learning in the feature-learning regime.
-In the active (feature-learning) regime, \citet{jacot2025} establish a positive counterpart: depth lets a network learn compositions $f^\ast = h \circ g$, and when the target is $G$-invariant the inner map $g$ can play the role of a quotient map $\mathbb{R}^{d_{\mathrm{in}}} \to \mathbb{R}^{d_{\mathrm{in}}}/G$.
+In the active (feature-learning) regime, \citet{jacot2025} establish a positive counterpart: depth lets a network learn compositions $f_\theta = h \circ g$, and when the target is $G$-invariant the inner map $g$ can play the role of a quotient map $\mathbb{R}^{d_{\mathrm{in}}} \to \mathbb{R}^{d_{\mathrm{in}}}/G$.
 In summary representational mechanisms are directly shown \citep{olah2020d,barenboim2021sp} while precise feasibility depends on conditions such as depth-enabled compositionality or learning regime \citep{perin2025,jacot2025}.
 
 \subsubsection{Identification}\label{sec:disco-identification}
@@ -2366,18 +2366,18 @@ The two further intertwine: in partial equivariance the subset $S\subseteq G$ on
 \subsection{Symmetry Breaking}\label{sec:symmetry-breaking-dl}
 % bamler2018p3icml
 Symmetry Breaking (SB) names the situation in which an object carries less symmetry than before, expected or possible: a loss of symmetry relative to a group of interest $G$.
-The term does not have a unique meaning.
-We propose to disambiguate and structures this subsection as summarized in \Cref{table:symmetry-breaking} depending on where the symmetry is lost.
-\emph{Functional} SB is a mismatch between the symmetries of the ground-truth $f$ and that of the hypothesis class; \emph{distributional} SB is non-uniformity of the data density along orbits; and \emph{dynamical} SB happens along training, with $G$ acting on $\Theta$.
+The term is ambiguous; \Cref{table:symmetry-breaking} disambiguates it by where symmetry is lost.
+\emph{Functional} SB sits between the problem and model loci: the ground truth $f^*$ is less symmetric than the hypothesis class $\mathcal{H}$.
+\emph{Distributional} SB stays at the problem locus, between $f^*$ and the data density $p$: $f^*$ may be equivariant while $p$ is non-uniform along orbits.
+Both are \emph{static}, with $G$ acting on $\mathcal{X},\mathcal{Y}$.
+\emph{Dynamical} SB is \emph{dynamic} as the name indicates, with $G$ acting on $\Theta$: symmetry is lost along training.
 
-To precise the first two meanings, we illustrate with two works.
-The pointwise categorization of \citet{wang2023a} contrasts functional and distributional meanings.
-For a point $x$ and a transformation $g$: writing $p$ for the data density, they call $g$ at $x$ \emph{correct} when $p(gx)>0$ and $f(gx)=gf(x)$ (the digit $0$ under a $180^\circ$ rotation), \emph{incorrect} when $p(gx)>0$ but $f(gx)\neq gf(x)$ (the digit $6$ sent to $9$), and \emph{extrinsic} when $p(gx)=0$, i.e.\ $g$ carries $x$ off the data support (a rotated $4$).
+The pointwise categorization of \citet{wang2023a} contrasts the two static meanings.
+They call $g$ \emph{correct} at a point $x$ when $p(gx)>0$ and $f^*(gx)=gf^*(x)$ (the digit $0$ under a $180^\circ$ rotation), \emph{incorrect} when $p(gx)>0$ but $f^*(gx)\neq gf^*(x)$ (the digit $6$ sent to $9$), and \emph{extrinsic} when $p(gx)=0$, i.e.\ $g$ carries $x$ off the data support (a rotated $4$).
 Incorrect equivariance is functional SB, whereas extrinsic equivariance falls in distributional SB.
-Functional breaking can arise from multiple ways, a useful illustration is the $SE(3)$-equivariant \emph{Rapidash} model of \citet{vadgama2025}.
-This models has typed inputs (scalars and vectors) that transform differently under $G$.
-Equivariance can then be deliberately broken by treating vectors as tuples of scalars.
-The model also supports \emph{pose-informed} breaking, achieved by supplying an extra token $Z$ encoding a reference frame while joint equivariance $f(gX,gZ)=g\,f(X,Z)$ is retained.
+Functional SB can be induced in several ways, as illustrated by the $SE(3)$-equivariant \emph{Rapidash} model of \citet{vadgama2025}.
+This model has typed inputs (scalars and vectors) which transform differently under $G$, and treating vectors as tuples of scalars breaks equivariance deliberately breaks the symmetry of $\mathcal{H}$.
+The model also supports \emph{pose-informed} breaking, by supplying an extra token $Z$ encoding a reference frame while joint equivariance $f_\theta(gX,gZ)=g\,f_\theta(X,Z)$ is retained.
 
 \begin{table}[ht]
     \centering
@@ -2385,7 +2385,7 @@ The model also supports \emph{pose-informed} breaking, achieved by supplying an 
         \hline
         \textbf{Type} & \textbf{Broken object} & \textbf{Condition} & \textbf{Refs} \\
         \hline
-        Functional & target $f$ vs.\ class $\mathcal{H}$ & $\operatorname{Sym}(f)\subsetneq\operatorname{Sym}(h)$ for $h\in \mathcal{H}$ & \citep{wang2023a,zhang2019p3icml,smidt2021prr,lawrence2024,goel2025} \\
+        Functional & target $f^*$ vs.\ class $\mathcal{H}$ & $\operatorname{Sym}(f^*)\subsetneq\operatorname{Sym}(h)$ for $h\in \mathcal{H}$ & \citep{wang2023a,zhang2019p3icml,smidt2021prr,lawrence2024,goel2025} \\
         \hline
         Distributional & data density $p$ & $p(x)\neq p(\rho_X(g)x)$ & \citep{lawrence2026,rygiel2026,chen2020,urbano2026} \\
         \hline
@@ -2397,13 +2397,13 @@ The model also supports \emph{pose-informed} breaking, achieved by supplying an 
     \label{table:symmetry-breaking}
 \end{table}
 
-\subsubsection{Functional Symmetry Breaking}
-Functional SB is a property of the pair $(f,\mathcal{H})$: the target $f$ is \emph{less} equivariant than hypotheses in the model class,
+\subsubsection{Functional Symmetry Breaking}\label{sec:functional-sb}
+Functional SB is a property of the pair $(f^*,\mathcal{H})$: the target $f^*$ is \emph{less} equivariant than hypotheses in the model class,
 \begin{align}
-\operatorname{Sym}(f)\subsetneq\operatorname{Sym}(h)=G\quad&\text{for all }h\in\mathcal{H},\\
-&\text{equivalently}\quad \exists\,x,g:\ f(\rho_X(g)x)\neq\rho_Y(g)f(x).
+\operatorname{Sym}(f^*)\subsetneq\operatorname{Sym}(h)=G\quad&\text{for all }h\in\mathcal{H},\\
+&\text{equivalently}\quad \exists\,x,g:\ f^*(\rho_X(g)x)\neq\rho_Y(g)f^*(x).
 \end{align}
-It is an \emph{overspecification} of equivariance and coincides pointwise with the \emph{incorrect equivariance} of \citet{wang2023a}, and its magnitude is measured by the equivariance error $\|f\|_{\mathrm{EE}}$ of \Cref{eq:equiv-error-approximate}.
+It is an \emph{overspecification} of equivariance and coincides pointwise with the \emph{incorrect equivariance} of \citet{wang2023a}, and its magnitude is measured by the equivariance error $\|f^*\|_{\mathrm{EE}}$ of \Cref{eq:equiv-error-approximate}.
 It appears in standard architectures: \citet{zhang2019p3icml} show that the subsampling hidden inside strided convolutions and max-pooling silently destroys shift-equivariance, since it violates the Nyquist--Shannon condition $f_s>f_{\max}$ for lossless sampling of a band-limited signal.
 \citet{zhang2019p3icml} propose a low-pass (blur) filtering before subsampling to partially restore it.
 Imposing an exact $G$ on a task that lacks it carries an unavoidable cost, which \citet{wang2023a} make precise through error lower bounds: for invariant classification the accuracy is capped by the best per-orbit choice, $\operatorname{err}(f_\theta)\ge\int_F k(Gx)\,dx$ with $k(Gx)$ representing the best choice on $Gx$ and $F$--so-called \emph{fundamental domain}--is used to decompose $X$ as $X=\cup_{x\in F}Gx$.
@@ -2416,7 +2416,7 @@ Reducing equivariance is a generic remedy, whether by input-injection (below) or
 A sub-instance of functional breaking arises when a symmetric input must produce a less symmetric output.
 This is forbidden for a deterministic equivariant map by \emph{Curie's principle}: if $f$ is $G$-equivariant then $\operatorname{Stab}(x)\subseteq\operatorname{Stab}(f(x))$, since $g\in\operatorname{Stab}(x)\Rightarrow\rho_Y(g)f(x)=f(\rho_X(g)x)=f(x)$.
 Simply put, no equivariant $f$ can map a square to a rectangle.
-The obstruction occurs when the task demands $\operatorname{Stab}(f(x))\subsetneq\operatorname{Stab}(x)$.
+The obstruction occurs when the task demands $\operatorname{Stab}(f^*(x))\subsetneq\operatorname{Stab}(x)$.
 
 \citet{smidt2021prr} seeks to discover the causes of the obstruction and uses equivariant model as a ``symmetry compiler''.
 Starting with an equivariant model, they augment the input $x\mapsto x\oplus x'$ with a learnable auxiliary $x'$ optimized by the same gradient $\partial L/\partial x'$ as the weights. 
@@ -2432,13 +2432,15 @@ One generic technique to overcome functional SB (already used in \Cref{sec:curie
 \citet{lawrence2024} concatenate $x\mapsto x\oplus\tilde g\,v$ with $v$ learnable and $\tilde g$ a pose sampled uniformly over compatible ones.
 Because the function $(x,\tilde g)\mapsto x\oplus\tilde g\,v$ is equivariant, an equivariant model in $x$ can be extended to one in $(x,\tilde g)$.
 They stress the importance of this joint equivariance, proving the bound: $R(f)-R(\bar f) = \|f^{\perp}\|_{\mathbb{P}(X,Z)}^{2}$, where $\bar f$ and $f^\perp$ are respectively the equivariant and non-equivariant part of $f$.
-This bound is informative when the true map $f^\star$ \emph{is} equivariant---it informs that non joint-equivariance leads to a risk excess.
+This bound is informative when the true map $f^*$ \emph{is} equivariant---it informs that non joint-equivariance leads to a risk excess.
 \citet{goel2025} turn the mechanism into a subgroup selector (cf.\ \Cref{sec:subgroups}): from a backbone $h_\theta:\mathcal{X}\times V\to\mathcal{Y}$ equivariant to a large group $G$, concatenating $v$ to the input with $\operatorname{Stab}(v)=H$ yields $f_\theta(x)=h_\theta(x,v)$ that is exactly $H$-equivariant provided $h_\theta$ is injective in $v$.
 Here however, the ``pose'' is not interpretable, closer to the random node features of GNNs than to positional encoding.
 
 \subsubsection{Distributional Symmetry Breaking}\label{sec:distributional-sb}
 Distributional SB is a property of the data distribution,
-$$p(x)\neq p(\rho_X(g)x)\quad\text{for some }g,$$
+$$
+    p(x)\neq p(\rho_X(g)x)\quad\text{for some }g,
+$$
 that is, orbits do not carry constant density.
 Note that the ground-truth map may be perfectly equivariant.
 It can hurt performances because a model with the \emph{correct} equivariance is by construction blind to orbit-position cues---informally, the ice floe behind the penguin---that a non-equivariant model can exploit as a shortcut.
@@ -2461,7 +2463,7 @@ The metric is defined as:
 $$m(p_X):=\operatorname{Acc}_{\mathrm{NN}}(p_X, \bar p_X)=\mathbb{E}_{x\sim \operatorname{Unif}(p_X, \bar p_X)}\big[\operatorname{Acc}(\mathrm{NN}(x))\big],$$
 where $\mathrm{NN}$ is a neural network.
 A second \emph{task-useful} metric then asks whether the bias is label-informative, as a ratio $L_G/L$ comparing a network that predicts the label from a random-but-equivariant canonical pose against a baseline.
-Given a canonicalization function $c:\mathcal{X}\to G$, the losses are defined as $L=\mathbb{E}_x\big[\mathbb{1}(\mathrm{NN}(c(x))=f(x))\big]$ and $L_G=\mathbb{E}_x\big[\mathbb{1}(\mathrm{NN}(c(gx))=gf(x))\big]$. Here $\mathrm{NN}:G\to\mathcal{Y}$ is another model, trained to predict the label from the pose.
+Given a canonicalization function $c:\mathcal{X}\to G$, the losses are defined as $L=\mathbb{E}_x\big[\mathbb{I}(\mathrm{NN}(c(x))=f^*(x))\big]$ and $L_G=\mathbb{E}_x\big[\mathbb{I}(\mathrm{NN}(c(gx))=gf^*(x))\big]$. Here $\mathrm{NN}:G\to\mathcal{Y}$ is another model, trained to predict the label from the pose.
 They report that standard benchmarks (QM9, ModelNet40) are notably symmetry-biased.
 \citet{urbano2026} instead estimate the orbit density directly with a class--pose IE (invariant--equivariant) autoencoder.
 
@@ -2625,7 +2627,7 @@ In one sentence: \emph{a relaxed architecture trained with a soft penalty yields
 \subsubsection{Why tolerate}
 The governing principle is that the model's symmetry should match the data's, so that hard-coding an exact symmetry is detrimental when the data does not reflect it exactly \citep{zhou2021,finzi2021anips,elsayed2020p3icml}.
 
-\citet{wang2022p3icml} make the cost precise: a strictly equivariant $f_\theta$ approximating an approximately equivariant target $f$ must commit an error $\exists x_0\in \mathcal{X},\ \|f(x_0)-f_\theta(x_0)\|\ge \tfrac12\|f\|_{\mathrm{EE}}$, lower-bounded by the target's own functional symmetry breaking measured in terms of the equivariance error (\Cref{eq:equiv-error-approximate}).
+\citet{wang2022p3icml} make the cost precise: a strictly equivariant $f_\theta$ approximating an approximately equivariant target $f^*$ must commit an error $\exists x_0\in \mathcal{X},\ \|f^*(x_0)-f_\theta(x_0)\|\ge \tfrac12\|f^*\|_{\mathrm{EE}}$, lower-bounded by the target's own functional symmetry breaking measured in terms of the equivariance error (\Cref{eq:equiv-error-approximate}).
 The constraint also propagates to the latent space: \citet{ali2026} prove that a strictly equivariant real-analytic encoder cannot collapse orbits (under gradient descent) i.e. $\dim E_\theta(O_x)=|O_x|$ and that exact equivariance forces a copy of the regular representation into the latent space, $\exists (V,\tilde\rho),\ \rho_Z(g)|_V\simeq\tilde\rho(g)$; only geometric compression is possible, not true quotienting.
 Consequently the optimal level of equivariance has been framed as a trade-off, neither full nor absent.
 This is established for example as a bias--variance sweet spot over a lattice of groups \citep{huang2023} and as a unique optimum in the approximation--generalization analysis of \citet{petrache2023} (\Cref{sec:soft-equivariance}), with empirical support in \citep{wang2022p3icml,wang2024p4icml} and through methods that learn the level automatically \citep{ouderaa2022}.

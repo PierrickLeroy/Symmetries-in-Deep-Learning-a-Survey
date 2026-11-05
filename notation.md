@@ -35,6 +35,7 @@ $$f(\rho_X(g)\,x) = \rho_Y(g)\,f(x).$$
 | Output / target space | $\mathcal{Y}$ | |
 | Latent / embedding space | $\mathcal{Z}$ | |
 | Dataset | $\mathcal{D}$ | |
+| Ground truth (target map of the problem) | $f^*$ | Never $f$, $f^\star$ or $f^\ast$; plain $f$ is a generic map, $f_\theta$ the implemented function |
 | Hypothesis class | $\mathcal{H}$ | |
 | Function space | $\mathcal{F}$ | |
 | Continuous $G$-equivariant maps $\mathcal{X}\to\mathcal{Y}$ | $C_G(\mathcal{X},\mathcal{Y})$ | Invariant case: trivial action on $\mathcal{Y}$, e.g. $C_G(\mathcal{X},\mathbb{R})$. Topology of uniform convergence on compact sets unless stated; closure written $\overline{\mathcal{H}}$ (not `\bar`) |
