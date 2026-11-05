@@ -2295,7 +2295,7 @@ Notably, both \citet{krippendorf2020} and \citet{hu2025nn} rely on the assumptio
 % qu2024anips: sec 5.4 cosine similarity >0.99 for atom force prediction in a scaled non-equivariant model
 % wang2022p3icml: equivariance error (def 3.1)
 % elhag2026: equivariance metrics macro and micro averaging over group orbit (eq 8, eq 9)
-Once one knows \emph{which} symmetry a model carries, the natural follow-up is \emph{how much} of it the model has actually learned.
+Once one knows or assumes \emph{which} symmetry a model should carry, the natural follow-up is \emph{how much} of it the model has actually learned.
 The works below share a common template: a transformation (or its infinitesimal generator) is assumed to be given, and one measures a notion of sensitivity of the model under it, assessing how well invariance or equivariance is respected.\newline
 For seminal works, \citet{goodfellow2009anips} define a neuron-level \emph{invariance score} $S(i) = L(i)/G(i)$, where the \emph{local firing rate} $L(i)$ is the fraction of transformed versions of a maximally activating input $z$ that still excite neuron $i$, and the \emph{global firing rate} $G(i) = \mathbb{E}_{x\sim P}[f_i(x)]$ measures indiscriminate firing under a random sampling $P$.
 A neuron scores high only if it tracks transformations of its preferred stimulus while staying silent on generic inputs because the denominator enforces selectivity.
