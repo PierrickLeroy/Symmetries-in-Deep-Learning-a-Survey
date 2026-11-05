@@ -2236,7 +2236,7 @@ A layer's equivariance can be determined by which weight entries are shared, so 
 They prove that this factorization can represent equivariance to any finite group.
 \citet{yeh2022p2icais} directly optimize over partitions of weight indices.
 
-\subsubsection{Other estimation strategies}
+\subsubsection{Discovery from classifiers and other approaches}
 \citet{krippendorf2020} bet on the fact that a classifier trained on symmetric data will collapse symmetry-related inputs to nearby positions in the embedding layer and exploit this by performing linear regression on pairs of proximate embedding points to extract infinitesimal generators, effectively reading the symmetry off the network's representations.
 \citet{vanderwilk2018anips} incorporate invariance desiderata directly into the prior of a Gaussian Process by constructing an invariant kernel that averages over an orbit of transformations; the parameters of these transformations are then learned end-to-end by maximizing the marginal likelihood, which naturally penalizes complexity and avoids overfitting to spurious symmetries.
 \citet{wieser2020anips} employ an autoencoder framework in which the latent space is partitioned into a property-sensitive and a property-invariant subspace, with a mutual information regularizer enforcing that the invariant subspace carries no information about a target quantity.
