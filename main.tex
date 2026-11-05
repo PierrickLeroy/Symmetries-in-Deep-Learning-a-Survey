@@ -2251,23 +2251,27 @@ Furthermore, \citet{yang2023p4icml} observe, and \citet{finzi2021anips} formaliz
 
 
 \subsection{Symmetry Extraction from Learned Models}\label{sec:sym-extract-model}
-In this part we report the main techniques used to detect, measure, and identify symmetries that a neural network has learned, as opposed to symmetries that were \emph{enforced} by design: extraction refers to a post-hoc or diagnostic operation on a trained model.
+Moving from the problem or data to the \emph{parameter} locus, extraction refers to a post-hoc diagnostic on a trained network: the symmetries are those of the implemented function $f_\theta$ at a given $\theta$.
+\Cref{sec:disco-capability} first asks whether a network not hard-coding $G$ can learn it at all, i.e.\ whether a symmetry of $f^*$ or $p$ transfers to $f_\theta$ (\Cref{fig:sym-loci}), which requires an expressive enough architecture and that such features are learnable.
+\Cref{sec:disco-identification} is discovery proper, with the least a priori knowledge: $\theta$ is studied in isolation and the group, or its Lie-algebra generators, is read off $f_\theta$.
+\Cref{sec:sym-quantification} starts with more a priori knowledge: the transformation is given, and what is measured is the tolerance $\epsilon$ up to which $f_\theta$ respects it, i.e.\ the degree of \emph{approximate} symmetry.
 
 
-\subsubsection{Capability}
+\subsubsection{Capability}\label{sec:disco-capability}
 % lenc2014a: if the linear map exists but only one transformation at a time
-Before measuring \emph{how much} symmetry a model has acquired, one can ask the more basic question: can a network whose architecture does \emph{not} hard-code a group $G$ incorporate, represent or learn symmetries at all, and under what conditions?
-\citet{olah2020d} give a \emph{mechanistic} demonstration: by inspecting circuits---human-interpretable subgraphs of a trained convolutional network---they find with a combination of activation maximization and visual intepretation, clusters of ``equivariant'' neurons that respond to transformed variants (rotation, hue, scale) of the same feature.
+Before asking \emph{which} or \emph{how much} symmetry a model has acquired, a more basic question is: can a network whose architecture does \emph{not} hard-code a group $G$ incorporate, represent or learn symmetries at all, and under what conditions?
+\citet{olah2020d} give a mechanistic demonstration by inspecting \emph{circuits} (human-interpretable subgraphs) of a trained convolutional network.
+They find with a combination of activation maximization and visual intepretation, clusters of ``equivariant'' neurons that respond to transformed variants (rotation, hue, scale) of the same feature.
 They then show how downstream circuits combine them to synthesize invariant units at deeper layers, i.e.\ invariance can be built compositionally from equivariant parts.
-\citet{barenboim2021sp} give a \emph{decodability} argument: a network trained on a symmetry-agnostic decoy task nonetheless encodes the symmetry class of the data in its penultimate representations, which a secondary classifier recovers ($O(2)$, $\mathbb{Z}_2$, $T$, $T_n$ or $\emptyset$) largely above chance: symmetry is thus learned in the absence of any explicit symmetry label, since a structure that can be decoded must have been represented.\newline
+\citet{barenboim2021sp} give a decodability argument: a network trained on a symmetry-agnostic decoy task nonetheless encodes the symmetry class of the data in its penultimate representations, which a secondary classifier recovers ($O(2)$, $\mathbb{Z}_2$, $T$, $T_n$ or $\emptyset$) largely above chance: symmetry is thus learned in the absence of any explicit symmetry label, since a structure that can be decoded must have been represented.\newline
 These existence results leave open \emph{when} learning succeeds, a question that can be envisioned through training regimes.
-In the lazy (NTK) regime, \citet{perin2025} prove a negative result: generalization to a held-out orbit point is governed entirely by \emph{local} kernel geometry through the spectral ratio $\epsilon_s = \lambda_N^{-1}/\langle\lambda^{-1}\rangle$ (class separation versus orbit density), with no mechanism to transport a symmetry.
+In the lazy (NTK) regime, \citet{perin2025} prove a negative result: generalization to a held-out orbit point is governed entirely by local kernel geometry through the spectral ratio $\epsilon_s = \lambda_N^{-1}/\langle\lambda^{-1}\rangle$ (class separation versus orbit density), with no mechanism to transport a symmetry.
 Concretely, they illustrate that rotation poses seen only on some classes cannot be extrapolated to other classes with missing poses in the training set: if not hard-coded; the symmetry is not discovered.
 This places symmetry learning in the feature-learning regime.
-In the active (feature-learning) regime, \citet{jacot2025} establish a positive counterpart: depth lets a network learn \emph{compositions} $f^\ast = h \circ g$, and when the target is $G$-invariant the inner map $g$ can play the role of a quotient map $\mathbb{R}^{d_{\mathrm{in}}} \to \mathbb{R}^{d_{\mathrm{in}}}/G$.
+In the active (feature-learning) regime, \citet{jacot2025} establish a positive counterpart: depth lets a network learn compositions $f^\ast = h \circ g$, and when the target is $G$-invariant the inner map $g$ can play the role of a quotient map $\mathbb{R}^{d_{\mathrm{in}}} \to \mathbb{R}^{d_{\mathrm{in}}}/G$.
 In summary representational mechanisms are directly shown \citep{olah2020d,barenboim2021sp} while precise feasibility depends on conditions such as depth-enabled compositionality or learning regime \citep{perin2025,jacot2025}.
 
-\subsubsection{Identification}\label{par:identification-anchor}
+\subsubsection{Identification}\label{sec:disco-identification}
 Beyond proving that neural networks can represent symmetries, another challenge is to identify the symmetry a trained model has internalised: to recover the group acting on the data, or for continuous groups the Lie-algebra generators.
 Two types of methods are (1) to read the symmetry off the network's \emph{representations} or more locally (2) off its \emph{gradients}.\newline
 The representational approach inspects what the trained model has stored.
@@ -2314,7 +2318,7 @@ A final family quantifies sensitivity infinitesimally.
 \citet{gruver2024} use the \emph{Lie derivative} $\mathcal{L}_X f$, where the vector field $X$ along which $f$ is differentiated is precisely an infinitesimal symmetry generator, yielding a hyperparameter-free local equivariance error that quantifies local sensitivity in the symmetry direction.
 \citet{leroy2025} instead estimate, in the embedding space $\mathcal{Z}$, the unit tangents $\hat v(z)$ of discrete curves $t\mapsto f(\alpha_t x)$ traced by a one-parameter attribute action $\alpha_t$ resulting from interpretable attribute modifications (e.g. ageing a person on an image).
 They define an \emph{invariance energy} expressing a misalignement in neighbouring tangents, i.e.\ a folding of $\mathcal{Z}$, rather than as a vanishing derivative.
-The nullspace methods of \Cref{par:identification-anchor} used for identification can serve as quantification: \citet{moskalev2023} (LieGG) read off a \emph{symmetry variance} $\mathcal{V}(\mathcal{E}) = \sigma_{\min}(\mathcal{E})^2/|D|$ characterizing how close the network is to admitting an invariant direction in data space, and, against a known generator, a \emph{symmetry bias} measuring how faithfully that symmetry is respected.
+The nullspace methods of \Cref{sec:disco-identification} used for identification can serve as quantification: \citet{moskalev2023} (LieGG) read off a \emph{symmetry variance} $\mathcal{V}(\mathcal{E}) = \sigma_{\min}(\mathcal{E})^2/|D|$ characterizing how close the network is to admitting an invariant direction in data space, and, against a known generator, a \emph{symmetry bias} measuring how faithfully that symmetry is respected.
 \citet{hu2025nn} (LieSD) push the comparison to ground truth further with a \emph{space error} and an \emph{orthogonality error}.
 The proposed space error is $E_{\mathrm{space}} = \min_{X} \|VX - V^*\|_F^2 + \min_{Y} \|V^*Y - V\|_F^2$ which encodes the mutual expressibility of the spans of the true ($V^\star$) and recovered ($V$) generators bases.
 The orthogonality error is $E_{\mathrm{orth}} = \sum_{i=1}^{D-1} \sum_{j=i+1}^{D} |\langle v_i, v_j \rangle|$ and computes a notion of redundancy among recovered generators $v_i$.
