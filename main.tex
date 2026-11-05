@@ -2199,18 +2199,12 @@ As a whole, the section is mainly \emph{descriptive}.
 % seems that some GAN objective assume distribution invariance
 % maybe cohen2014
 % wang2024p4icml discovery by seeing how soft equivariance method reacts to the data 
-
-% Introduction on symmetry discovery: what it is and why is it relevant.
-We review works aiming to identify the transformations under which a dataset is invariant or equivariant.
-The goal is therefore to infer a group $G$ and its action on data such that a target function $\phi$ satisfies \Cref{def:invariance} or \Cref{def:equivariance}, purely from a finite number of observations.
-
-% ---- Relation to automated DA and GDL ----
-Symmetry discovery is conceptually related to automated DA (\Cref{par:auto-da}), but with the distinction that automated augmentation policies produce new training examples while symmetry discovery methods place emphasis on the extraction of the symmetry itself as an interpretable, reusable object that can be injected into a model's inductive bias, used for augmentation or simply as a diagnostic.
-Similarly, the field is related to geometric deep learning and equivariant layer design as several works simultaneously discover and enforce symmetries so that the model becomes more equivariant as evidence for the symmetry accumulates \citep{benton2020anips,ouderaa2022,otto2025,escriche2025}.
-
-% A simple mathematical statement to formalize the problem.
-Formally, in the simpler case of invariance detection, given a dataset $\{x_i\}_{i=1}^n \subset \mathcal{X}$ drawn from a distribution $p$, symmetry discovery seeks a set of transformations $\mathcal{T} = \{T_g : \mathcal{X} \to \mathcal{X} \mid g \in G\}$ such that $p$ is invariant under $\mathcal{T}$, i.e.\ $T_g \# p = p$ for all $g \in G$, where $T_g \# p$ denotes the pushforward of $p$ under $T_g$.
-The discovered group should be non-trivial: the identity is always a valid solution leading some works to actively incorporate mechanisms such as volume-preservation constraints, or entropy maximizers to avoid this degenerate outcome \citep{benton2020anips,yang2023p4icml,escriche2025}.
+In this part, the symmetry is carried by the ground truth $f^*$ or the data distribution $p$, and must be identified from finitely many samples.
+This can be contrasted on the explicitness axis of the taxonomy (\cref{tab:taxonomy}) with automated DA (\Cref{par:auto-da}), where an augmentation policy only produces training examples.
+Discovery instead makes the symmetry \emph{explicit}, as an interpretable, reusable object for a downstream inductive bias, augmentation or diagnostic.
+Some works merge it with EDL into a single pipeline that discovers and enforces the symmetry, the model becoming more equivariant as evidence for it accumulates \citep{benton2020anips,ouderaa2022,otto2025,escriche2025}.
+For invariance, given samples $x_1,\dots,x_n\sim p$, one seeks a group $G$ acting on $\mathcal X$ such that $g_\#p=p$ for all $g\in G$, with $g_\#p:=p\circ g^{-1}$ the pushforward.
+Since the trivial group $\{e\}$ always qualifies, works add regularizers favoring large groups or entropy maximization to rule it out \citep{benton2020anips,yang2023p4icml,escriche2025}.
  
 % Seminal works: highnam1985,wolter1985tvc (the problem is not new)
 \subsubsection{Seminal works}
@@ -2233,18 +2227,18 @@ A line of work frames symmetry discovery as learning not only the group but also
 In the context of dynamic environments where observations are paired with transformations, \citet{quessard2020anips} addresses disentanglement by a sparsity regularizer that encourages each symmetry generator to act on as few latent dimensions as possible, thereby identifying a block-diagonal structure in the representation.
 \citet{sanborn2022} introduce Bispectral Neural Networks, which learn a Fourier basis for compact groups and \citet{ennes2025fcm} tackle the problem from a geometric perspective: given a point cloud sampled from orbits of a compact Lie group, their \textit{LieDetect} algorithm estimates the Lie algebra via a PCA-like operator and projects onto the closest valid Lie algebra for a set of candidate groups ($SO(2)$, $T^d$, $SU(2)$, $SO(3)$), with theoretical stability guarantees given in terms of Wasserstein distances.
 
+\subsubsection{Parameter-Sharing Schemes}
+A layer's equivariance can be determined by which weight entries are shared, so the problem of symmetry discovery can be framed as learning the partition of weights into equivalence classes; factorizing the weight space into a \textit{structural component} (the parameter-sharing scheme) and a \textit{value component} (the actual shared parameters).
+\citet{zhou2021} operationalize this idea via a reparameterization $\mathrm{vec}(W) = Uv$, where the sharing matrix $U$ is optimized in a meta-learning outer loop while $v$ (value) adapts per task.
+They prove that this factorization can represent equivariance to any finite group.
+\citet{yeh2022p2icais} directly optimize over partitions of weight indices.
+
 \subsubsection{Other estimation strategies}
 \citet{krippendorf2020} bet on the fact that a classifier trained on symmetric data will collapse symmetry-related inputs to nearby positions in the embedding layer and exploit this by performing linear regression on pairs of proximate embedding points to extract infinitesimal generators, effectively reading the symmetry off the network's representations.
 \citet{vanderwilk2018anips} incorporate invariance desiderata directly into the prior of a Gaussian Process by constructing an invariant kernel that averages over an orbit of transformations; the parameters of these transformations are then learned end-to-end by maximizing the marginal likelihood, which naturally penalizes complexity and avoids overfitting to spurious symmetries.
 \citet{wieser2020anips} employ an autoencoder framework in which the latent space is partitioned into a property-sensitive and a property-invariant subspace, with a mutual information regularizer enforcing that the invariant subspace carries no information about a target quantity.
 \citet{dehmamy2021anips} introduce Lie Algebra Convolutional Networks (L-conv), whose layers make the Lie algebra basis itself a learnable parameter allowing discovery at a non-negligible computational cost.
 \citet{ouderaa2024} take a physics-inspired approach via Noether's theorem: they parameterize symmetries as quadratic conserved quantities of a Hamiltonian system and learn them by maximizing a variational lower bound.
-
-\subsubsection{Parameter-Sharing Schemes}
-A layer's equivariance can be determined by which weight entries are shared, so the problem of symmetry discovery can be framed as learning the partition of weights into equivalence classes; factorizing the weight space into a \textit{structural component} (the parameter-sharing scheme) and a \textit{value component} (the actual shared parameters).
-\citet{zhou2021} operationalize this idea via a reparameterization $\mathrm{vec}(W) = Uv$, where the sharing matrix $U$ is optimized in a meta-learning outer loop while $v$ (value) adapts per task.
-They prove that this factorization can represent equivariance to any finite group.
-\citet{yeh2022p2icais} directly optimize over partitions of weight indices.
 
 \subsubsection{Caveats}
 % could add benton2020anips,miao2023p4icml as additional papers supporting that imposing a wrong symmetry can affect performance
