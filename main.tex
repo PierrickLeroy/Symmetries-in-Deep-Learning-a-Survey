@@ -2485,11 +2485,10 @@ Because \Cref{sec:parameter-space-symmetries} develops these symmetries, we reco
 \paragraph{Gradient Flow and Practical Optimization}
 Gradient Flow (GF) overstates how much symmetry survives training.
 \citet{kunin2020} derive a \emph{modified} gradient flow accounting for finite learning rate, momentum and weight decay, under which the conservation laws implied by parameter-space symmetries are broken.
-As a consequence, conservation laws are also broken.
 A simple example: a quantity conserved under GF instead decays as $\langle\theta(t),\mathbb{I}_{\mathcal{A}}\rangle=e^{-\lambda t}\langle\theta(0),\mathbb{I}_{\mathcal{A}}\rangle$, where $\lambda$ is the weight decay.
-\citet{tanaka2021} show, through a Lagrangian formulation with the loss as potential energy $V$ and the learning rule as kinetic energy $T$, that a symmetry of the loss need not be a symmetry of the \emph{dynamics}: parameter symmetries fix $V$ by definition.
-This can be seen from the Lagrangian $\mathcal{L}=T-V$ where $T=\frac{1}{2} m \dot q^2$ is the kinetic energy and $V$ the potential energy. Parameter-space symmetries leave $V$ invariant by definition, however $T$ is not necessarily invariant.
-They give the example of a scaling transformation where $\dot q^2$ transforms as $(1+s)\dot q^2$, thus the kinetic part is responsible for breaking the symmetry of $\mathcal{L}$, and alteration of the trajectory.
+\citet{tanaka2021} show, through a Lagrangian formulation with the loss as potential energy $V$ and the learning rule as kinetic energy $T$, that a symmetry of the loss need not be a symmetry of the \emph{dynamics}.
+This can be seen from the Lagrangian $\mathfrak L = T-V$ where $T=\frac{1}{2} m \dot q^2$ is the kinetic energy and $V$ the potential energy. Parameter-space symmetries leave $V$ invariant by definition, however $T$ is not necessarily invariant.
+They give the example of a scaling transformation where $\dot q^2$ transforms as $(1+s)\dot q^2$, thus the kinetic part is responsible for breaking the symmetry of $\mathfrak L$, and alteration of the trajectory.
 This \emph{kinetic SB} is surprisingly shown to turn normalization layers into an implicit RMSProp-like adaptive optimizer.
 \citet{ziyin2025a} reach similar conclusions from an entropic perspective: with stochastic minibatches and finite steps the descent follows $\dot\theta=-\eta(\nabla \mathcal{L}+\gamma\theta+\nabla S)$, whose \emph{entropic} term $S(\theta)=-\tfrac14\mathbb{E}_B\|\sqrt{\Lambda}\,\mathbb{E}_{x\in B}\nabla \ell(x,\theta)\|^2$ can be invariant only to orthogonal symmetries.
 Additionally, when the learning rate $\Lambda$ is matrix-valued (common optimizers like Adam) with $\Lambda\neq\alpha I$, only to \emph{discrete} ones: stochasticity systematically breaks continuous symmetries.
