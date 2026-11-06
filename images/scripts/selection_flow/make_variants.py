@@ -7,6 +7,8 @@ Left to right: identification (monitoring, keyword search, dedicated tools; one 
 Units: 1 user unit = 1 mm. Text stays <text> (TeX Gyre Pagella to match mathpazo, LM Mono for files and prompts),
 so it is editable in Inkscape. Text widths are measured with the real font files to size boxes and wrap prompts.
 Usage: python3 make_variants.py OUTDIR     (writes selection-flow_variant_{A,B}.svg and .png previews)
+       python3 make_variants.py --final    (writes variant B as survey/images/selection-flow.{svg,pdf})
+Re-running --final overwrites selection-flow.svg / .pdf, including Inkscape edits made to them.
 """
 import os
 import subprocess
@@ -402,7 +404,19 @@ INKSCAPE_ENV = {k: v for k, v in os.environ.items()
 INKSCAPE_ENV["XDG_DATA_DIRS"] = "/usr/local/share:/usr/share"
 
 
+def final():
+    """Write the chosen variant (B) as survey/images/selection-flow.{svg,pdf}, used by main.tex (fig:selection-flow)."""
+    svg = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "selection-flow.svg"))
+    with open(svg, "w", encoding="utf-8") as fh:
+        fh.write(variant_B())
+    subprocess.run(["inkscape", svg, "--export-type=pdf", "-o", svg[:-4] + ".pdf"], env=INKSCAPE_ENV,
+                   capture_output=True, text=True, check=True)
+    print(svg[:-4] + ".pdf")
+
+
 def main(outdir):
+    if outdir == "--final":
+        return final()
     os.makedirs(outdir, exist_ok=True)
     for k, fn in (("A", variant_A), ("B", variant_B)):
         svg = os.path.join(outdir, f"selection-flow_variant_{k}.svg")

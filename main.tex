@@ -29,6 +29,13 @@
 \titleformat{\paragraph}[runin]{\fontsize{10}{10}\selectfont\bfseries}{}{0pt}{}[.]
 \titlespacing{\paragraph}{0pt}{12pt}{1em}
 \usepackage{rotating} % landscape (sideways) tables
+\usepackage{listings} % verbatim prompts (appendix), with line breaking
+\definecolor{promptbg}{HTML}{FEF8EC}    % same orange tint as the prompt bubbles of fig:selection-flow
+\definecolor{promptframe}{HTML}{E69F00}
+\lstdefinestyle{prompt}{basicstyle=\ttfamily\footnotesize, columns=fullflexible, keepspaces=true,
+  escapeinside={(*}{*)}, % used to draw tab characters (TSV column separators) as arrows
+  breaklines=true, breakatwhitespace=true, frame=single, rulecolor=\color{promptframe},
+  backgroundcolor=\color{promptbg}, framesep=4pt, xleftmargin=4pt, xrightmargin=4pt}
 % The MDPI text block is offset to the right by \extralength (the margin column),
 % so sideways floats, which are centred on \textwidth, inherit that offset.
 % Shifting the reference point left by \extralength/2 re-centres them on the paper.
@@ -81,8 +88,19 @@ This initial collection was completed by keyword searches on Scopus and Google S
 
 A reference is discarded if it does not satisfy at least one of the following criteria: (A) it is published in a peer-reviewed venue; (B) it is highly cited (more than 50 citations on Google Scholar); (C) it is recent (published less than two years ago).
 Criterion (C) exists because the field is fast-moving and a citation/peer-review threshold alone would systematically remove emerging work.
-Following this protocol, $408$ works were identified, out of which $322$ are cited in the present version.
+Following this protocol (\Cref{fig:selection-flow}), $408$ works were identified, out of which $322$ are cited in the current version.
 \Cref{fig:corpus-stats} summarizes the corpus: its distribution over publication years, and the pace at which it was assembled.
+
+\begin{figure}[ht]
+\begin{adjustwidth}{-\extralength}{0cm}
+    \centering
+    \includegraphics[width=\linewidth]{images/selection-flow.pdf}
+\end{adjustwidth}
+    \caption{Selection of the corpus and construction of its knowledge base.
+    Works are identified by monitoring (daily research, references of other works, recommendations, Scholar Inbox), keyword search (Google Scholar, Semantic Scholar) and dedicated tools (Research Rabbit, Google Scholar Labs, Connected Papers, LLMs), then screened on criteria (A)--(C).
+    Each retained work is converted to Markdown, then summarized and indexed by an LLM (abridged prompts, full versions in \Cref{app:prompts}); the summaries support the coding of the corpus along the axes of \Cref{tab:taxonomy} by the typed language model $\mathrm{jev-1.13.0}$.}
+    \label{fig:selection-flow}
+\end{figure}
 
 \begin{figure}[ht]
     \centering
@@ -95,7 +113,7 @@ Following this protocol, $408$ works were identified, out of which $322$ are cit
 \end{figure}
 
 \paragraph{AI statement}
-A knowledge base of the retained references was maintained, with a standardized processing of each entry.
+A knowledge base of the retained references was maintained, with a standardized processing of each entry (\Cref{app:prompts}).
 The processing consists in the automated extraction of the following categories: summary, key definitions, background notions, theoretical results, empirical results, methodology and limitations.
 This knowledge base was used for indexing and interactive exploration of the corpus.
 Language models were used to polish writing.
@@ -2716,6 +2734,7 @@ CL & Conservation Law \\
 CQ & Conserved Quantity \\
 DA & Data Augmentation \\
 GDL & Geometric Deep Learning \\
+LLM & Large Language Model \\
 SB & Symmetry Breaking \\
 GF & Gradient Flow \\
 GD & Gradient Descent \\
@@ -2727,6 +2746,21 @@ SGD & Stochastic Gradient Descent
 \appendixtitles{yes}
 \appendixstart
 \appendix
+
+\section{Prompts}\label{app:prompts}
+The knowledge base of \Cref{fig:selection-flow} is built by the two prompts below, run once per work and in this order.
+In both, \texttt{\{\}} stands for the citation key of the work, $\to$ for a tab character, and the trailing options set the model and its reasoning effort.
+
+\subsection{Summary prompt}
+\begin{lstlisting}[style=prompt]
+"Open and read the folder raw/{}, particularly the main paper raw/{}/{}.md and summarize it to a file summaries/{}.md following the structure: \
+SUMMARY, KEY DEFINITIONS AND BACKGROUND NOTIONS, RESULTS (theoretical if any, empirical if any), METHODOLOGY, LIMITATIONS, THOUGHTS, ONE-LINE TL;DR" --model claude-sonnet-5 --effort high
+\end{lstlisting}
+
+\subsection{Indexing prompt}
+\begin{lstlisting}[style=prompt]
+"Read summaries/{} and add a line to index.tsv according to the column headers: citation_key(*\,$\to$\,*)Title(*\,$\to$\,*)Links(*\,$\to$\,*)Keywords(*\,$\to$\,*)Short comment" --model claude-sonnet-5 --effort medium
+\end{lstlisting}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
