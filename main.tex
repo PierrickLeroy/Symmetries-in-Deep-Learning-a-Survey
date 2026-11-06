@@ -2756,6 +2756,28 @@ SUMMARY, KEY DEFINITIONS AND BACKGROUND NOTIONS, RESULTS (theoretical if any, em
 "Read summaries/{} and add a line to index.tsv according to the column headers: citation_key(*\,$\to$\,*)Title(*\,$\to$\,*)Links(*\,$\to$\,*)Keywords(*\,$\to$\,*)Short comment" --model claude-sonnet-5 --effort medium
 \end{lstlisting}
 
+\section{Gaps from coded corpus}\label{app:gaps}
+The corpus is coded with one value per axis of \Cref{tab:taxonomy}, or ``not applicable'' (\Cref{fig:selection-flow}).
+For two distinct axes $A\neq B$, with values $a$ of $A$ and $b$ of $B$, we keep the $N_{AB}$ works for which the value is different from ``not applicable''.
+Then, we count the works coded $a$ ($n_a$), $b$ ($n_b$) and both ($n_{ab}$).
+Under an independence assumption, the expected count is $E_{ab}=n_a n_b/N_{AB}$.
+The \emph{lift}
+\begin{equation}
+    L_{ab}=\frac{n_{ab}}{E_{ab}}
+\end{equation}
+compares the observed count to the independent baseline (\Cref{fig:lift-heatmap}) with $L_{ab}<1$ flagging an under-represented combination.
+A low lift doesn't necessarily imply a gap.
+
+\begin{figure}[ht]
+\begin{adjustwidth}{-\extralength}{0cm}
+    \raggedleft
+    \includegraphics[width=0.8\linewidth]{images/cooccurrence_lift_heatmap.pdf}
+\end{adjustwidth}
+    \caption{Co-occurrence lift $L_{ab}$ (\Cref{app:gaps}) between values of distinct axes of \Cref{tab:taxonomy}; pairs within one axis are left blank.
+    Blue cells ($L_{ab}<1$) are under-represented combinations, red cells ($L_{ab}>1$) over-represented ones; the color scale is centered at independence, $L_{ab}=1$.}
+    \label{fig:lift-heatmap}
+\end{figure}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % \input{unfinished-thoughts}
