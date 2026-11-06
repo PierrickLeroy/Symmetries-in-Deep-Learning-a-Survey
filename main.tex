@@ -2778,6 +2778,48 @@ A low lift doesn't necessarily imply a gap.
     \label{fig:lift-heatmap}
 \end{figure}
 
+\Cref{tab:gaps} extracts from \Cref{fig:lift-heatmap} the pairs that are most under-represented in the corpus.
+
+\begin{table}[ht]
+    \centering
+    % Column widths: edit freely; keep their sum below about 0.9\textwidth (the rest goes to padding and rules).
+    \newcommand{\colwidthA}{0.3\textwidth}
+    \newcommand{\colwidthB}{0.6\textwidth}
+    \begin{tabular}{|>{\raggedright\arraybackslash}p{\colwidthA}|>{\raggedright\arraybackslash}p{\colwidthB}|}
+        \hline
+        \textbf{Pair} & \textbf{Comment} \\
+        \hline
+        (Exact, Framework) & - \\
+        \hline
+        (Optimization, Static) & discouraged by the taxonomy\\
+        \hline
+        (Model, Unknown) & universal approximators contradicts equivariance \\
+        \hline
+        (Problem, Implicit) & - \\
+        \hline
+        (Framework, Explicit) & candidate \\
+        \hline
+        (Approximate, Optimization) & - \\
+        \hline
+        (Exact, Implicit) & - \\
+        \hline
+        (Prescriptive, Optimization) & candidate \\
+        \hline
+        (Data, Explicit) & - \\
+        \hline
+        (Model, Dynamic) & candidate \\
+        \hline
+        (Exact, Data) & possibly explained by extent restriction of $\varphi$\\
+        \hline
+        (Optimization, Implicit) & - \\
+        \hline
+        (Exact, Parameter) & possibly explained by extent restriction of $\varphi$\\
+        \hline
+    \end{tabular}
+    \caption{Candidate gaps: pairs of values $(a,b)$ of distinct axes of \Cref{tab:taxonomy} with lift $L_{ab}<0.6$ (\Cref{app:gaps,fig:lift-heatmap}), by increasing lift. Comments indicate possible explanation for the low lift value.}
+    \label{tab:gaps}
+\end{table}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % \input{unfinished-thoughts}
