@@ -111,21 +111,12 @@ Compared to these works, we work in reverse and go broad, starting from the conc
 
 
 \subsection{Taxonomy and paper organization}
-\pnote{TODO: add walkthrough linking taxonomy, loci figure and the manuscript's headers}
 We propose a faceted taxonomy in \Cref{tab:taxonomy} to categorize occurrences of symmetries in works.
 \Cref{fig:sym-loci} further details the \emph{Object} axis of the taxonomy.
-
-\begin{figure}[!tbp]
-    \centering
-    \includegraphics[width=\textwidth]{images/figure_sym-loci.pdf}
-    \caption{Loci of symmetry, a refinement of the \emph{Object} axis of the taxonomy (\Cref{tab:taxonomy}).
-    Each box is an object on which a symmetry can act, with its defining relation.
-    Solid arrows indicate necessity, dashed arrows another type of interaction e.g. a design choice.
-    Architectural symmetries (\ref{sec:architectural-sym}) are not shown.
-    }
-    \label{fig:sym-loci}
-\end{figure}
-
+\Cref{sec:design-principle} \emph{prescriptively} builds in \emph{known} symmetries (\Cref{tab:taxonomy}); in \Cref{fig:sym-loci}, equivariant architectures follow the arrow $f^*\dashrightarrow\mathcal{H}$, data augmentation $f^*\dashrightarrow f_\theta$, and framework symmetries fill the bottom row.
+\Cref{sec:parameter-space-symmetries} covers the boxes where $G$ acts on $\Theta$, not on $\mathcal{X},\mathcal{Y}$.
+\Cref{sec:sym-disco} discovers \emph{unknown} symmetries at the problem ($f^*$, $p$) or parameter ($f_\theta$) locus.
+\Cref{sec:incomplete-symmetries} follows the exactness axis away from \emph{exact}: broken, \emph{extent-restricted} and \emph{approximate} symmetries.
 
 \begin{sidewaystable}[p]
     \centering
@@ -175,9 +166,16 @@ We propose a faceted taxonomy in \Cref{tab:taxonomy} to categorize occurrences o
     \label{tab:taxonomy}
 \end{sidewaystable}
 
-% Description of the table axes: approximate if it holds to first order but not strictly (\textit{e.g.} due to noise), incomplete for a restriction (\textit{e.g.} subset of the group
-% Partial vs approximate terminology from \cite{petrache2023}
-
+\begin{figure}[!tbp]
+    \centering
+    \includegraphics[width=\textwidth]{images/figure_sym-loci.pdf}
+    \caption{Loci of symmetry, a refinement of the \emph{Object} axis of the taxonomy (\Cref{tab:taxonomy}).
+    Each box is an object on which a symmetry can act, with its defining relation.
+    Solid arrows indicate necessity, dashed arrows another type of interaction e.g. a design choice.
+    Architectural symmetries (\ref{sec:architectural-sym}) are not shown.
+    }
+    \label{fig:sym-loci}
+\end{figure}
 
 
 \section{Background: Mathematical Foundations of Symmetry}
