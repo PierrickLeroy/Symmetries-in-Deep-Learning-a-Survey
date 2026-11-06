@@ -133,7 +133,7 @@ We propose a faceted taxonomy in \Cref{tab:taxonomy} to categorize occurrences o
     \renewcommand{\arraystretch}{1.3}
     \begin{tabularx}{\textheight}{|>{\raggedright\arraybackslash}p{1.5cm}|>{\raggedright\arraybackslash}p{3.6cm}|>{\raggedright\arraybackslash}p{2cm}|>{\RaggedRight\arraybackslash}X|>{\RaggedRight\arraybackslash}X|}
         \hline
-        \textbf{Criterion} & \textbf{Defining question} & \textbf{Values} & \textbf{Definition} & \textbf{Examples} \\
+        \textbf{Axis} & \textbf{Defining question} & \textbf{Values} & \textbf{Definition} & \textbf{Examples} \\
         \hline
         \multirow{3}{=}{Exactness} & \multirow{3}{=}{Does the symmetry hold fully, on a restricted extent, or up to a tolerance?} & Exact & The symmetry holds exactly for all $g\in G$, with zero error. & Geometric Deep Learning: design an equivariant layer; data augmentations such as horizontal flip; global parameter-space symmetries (permutation, ReLU rescaling); conservation laws under gradient flow. \\
         \cline{3-5}
@@ -171,11 +171,11 @@ We propose a faceted taxonomy in \Cref{tab:taxonomy} to categorize occurrences o
         \hline
     \end{tabularx}
     \small
-    \caption{Criteria proposed to categorize occurrences of symmetries in a deep learning context. Each criterion answers a defining question and takes one of a small set of values.}
+    \caption{Axes proposed to categorize occurrences of symmetries in a deep learning context. Each axis answers a defining question and takes one of a small set of values.}
     \label{tab:taxonomy}
 \end{sidewaystable}
 
-% Description of the table criteria: approximate if it holds to first order but not strictly (\textit{e.g.} due to noise), incomplete for a restriction (\textit{e.g.} subset of the group
+% Description of the table axes: approximate if it holds to first order but not strictly (\textit{e.g.} due to noise), incomplete for a restriction (\textit{e.g.} subset of the group
 % Partial vs approximate terminology from \cite{petrache2023}
 
 
@@ -221,7 +221,7 @@ In \Cref{def:equivalence} for our deep learning context, $\mathcal{X}$ could be 
 \end{Example}
 
 \begin{Example}[Observationally equivalent parameters]\label{ex:equivalence_observational}
-    If $\mathcal{X}$ a parameter space, $\mathcal{Y}$ the hypothesis space and $\phi$ is the implementation map, then the sets given by the equivalence relation $\phi$ are the observationally equivalent parameters (see \Cref{sec:parameter-space-symmetries}).
+    If $\mathcal{X}$ a parameter space, $\mathcal{Y}$ the hypothesis space and $\varphi$ is the implementation map, then the sets given by the equivalence relation $\phi$ are the observationally equivalent parameters (see \Cref{sec:parameter-space-symmetries}).
 \end{Example}
 
 \begin{Definition}[Invariance]\label{def:invariance}
