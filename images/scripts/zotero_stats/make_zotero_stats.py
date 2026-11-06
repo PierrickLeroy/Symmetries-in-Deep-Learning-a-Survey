@@ -118,12 +118,12 @@ def phases(added, export):
     n1 = int((added <= PROJECT_START).sum())
     n2 = int(((added > PROJECT_START) & (added <= PHASE3_START)).sum())
     n3 = int((added > PHASE3_START).sum())
-    r2 = n2 / months(PROJECT_START, PHASE3_START)
-    r3 = n3 / months(PHASE3_START, export)
+    m2, m3 = months(PROJECT_START, PHASE3_START), months(PHASE3_START, export)
+    r2, r3 = n2 / m2, n3 / m3
     print(f"phase 1: {n1} works at {PROJECT_START.date()}")
     print(f"phase 2: +{n2} works in {months(PROJECT_START, PHASE3_START):.1f} months ({r2:.1f}/month)")
     print(f"phase 3: +{n3} works in {months(PHASE3_START, export):.1f} months ({r3:.1f}/month), total {len(added)}")
-    return n1, n2, n3, r2, r3
+    return n1, n2, n3, m2, m3
 
 
 def cumulative(added, export):
@@ -156,7 +156,7 @@ def phase_label(ax, x, y, k, *lines, ha="left"):
 
 
 def plot_progress(ax, added, export, variant):
-    n1, n2, n3, r2, r3 = phases(added, export)
+    n1, n2, n3, m2, m3 = phases(added, export)
     t, y = cumulative(added, export)
     x0, x1 = PROJECT_START - pd.Timedelta(days=45), export + pd.Timedelta(days=25)
     ymax = 50 * np.ceil((len(added) + 25) / 50)
@@ -172,9 +172,10 @@ def plot_progress(ax, added, export, variant):
     if variant == "A":
         # Each label sits in the empty space next to the part of the curve it describes.
         phase_label(ax, PROJECT_START + 30 * d, n1 - 32, 1, "Initial bulk", rf"{n1} works, Jul 2024")
-        phase_label(ax, PROJECT_START + 120 * d, 262, 2, "Passive monitoring", rf"$\approx${r2:.0f} works/month")
+        phase_label(ax, PROJECT_START + 120 * d, 262, 2, "Passive monitoring",
+                    rf"+{n2} works over {m2:.0f} months")
         phase_label(ax, PHASE3_START - 40 * d, 420, 3, "Active writing,", "gap filling",
-                    rf"$\approx${r3:.0f} works/month", ha="right")
+                    rf"+{n3} works over {m3:.0f} months", ha="right")
     else:
         # Numbered badges on the curve, explained by a key in the empty upper-left corner.
         def on_curve(x):
@@ -184,8 +185,8 @@ def plot_progress(ax, added, export, variant):
         badge(ax, xm, on_curve(xm) + 30, 2)
         x3 = PHASE3_START + (export - PHASE3_START) * 0.4
         badge(ax, x3 - 38 * d, on_curve(x3) + 5, 3)
-        key = [rf"Initial bulk: {n1} works (Jul 2024)", rf"Passive monitoring: $\approx${r2:.0f} works/month",
-               rf"Writing, gap filling: $\approx${r3:.0f} works/month"]
+        key = [rf"Initial bulk: {n1} works (Jul 2024)", rf"Monitoring: +{n2} works in {m2:.0f} months",
+               rf"Writing: +{n3} works in {m3:.0f} months"]
         for i, line in enumerate(key):
             yk = ymax - 25 - i * 0.075 * ymax
             badge(ax, PROJECT_START, yk, i + 1)
