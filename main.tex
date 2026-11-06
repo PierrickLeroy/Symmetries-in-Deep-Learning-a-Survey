@@ -98,15 +98,16 @@ This knowledge base was used for indexing and interactive exploration of the cor
 Language models were used to polish writing.
 
 \subsection{Related work}
-Previous works have studied the literature on symmetries in a deep learning context.
-Symmetric architectures (such as Siamese networks) are surveyed in \citep{ilina2022sa}.
+Previous works have studied the literature on symmetries in deep learning.
+\citet{ilina2022sa} surveys symmetric architectures such as Siamese networks.
 \citet{zhao2025} focuses on parameter-space symmetries.
-\citet{sipiran202523scgpis} references symmetry discovery methods in 3D shapes.
-\citet{bronstein2021} is the reference textbook on geometric deep learning, \citet{gerken2021,carlsson2025} study the mathematical formalism of the field and \citet{basheer2025ijdsa,habte2023} focus more specifically on equivariant convolutions, \citet{fei2024air} on 3D rotations and \citet{seo2025a} on robotics.
-\citet{rath2024air} gathers methods that integrate geometric prior knowledge to neural network such that their representations are invariant or equivariant.
-\citet{shorten2019jbd,mumuni2022a} are surveys on data augmentation.
-Compared to these works, we start from the concept of symmetry and try to go broad.
-We list occurrences of the concept and trying to delineate a conceptual understanding, adopting a high level point of view.
+\citet{sipiran202523scgpis} reviews symmetry detection methods for 3D shapes.
+\citet{bronstein2021} is the reference textbook on geometric deep learning, and \citet{gerken2021,carlsson2025} study its mathematical formalism.
+More specialized works focus on equivariant convolutions \citep{basheer2025ijdsa,habte2023}, 3D rotations \citep{fei2024air} and $SE(3)$-equivariant robot learning \citep{seo2025a}.
+\citet{rath2024air} reviews methods that integrate geometric prior knowledge into neural networks so that their representations are invariant or equivariant.
+\citet{shorten2019jbd,mumuni2022a} survey data augmentation.
+Each of these works focuses on a few objects carrying the symmetry (mostly the model) or on one application domain.
+In contrast, we start from the concept of symmetry and go broad: we list its occurrences across deep learning, from the problem to the training framework, and organize them in a faceted taxonomy (\Cref{tab:taxonomy}) for a high-level, conceptual understanding.
 
 
 
