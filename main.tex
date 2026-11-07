@@ -1716,9 +1716,9 @@ With the normalization restored, single-layer fibers are generically singletons.
 For networks with monomial activation $z\mapsto z^{r}$, \citet{usevich2025} study \emph{Finite Identifiability} (FI) at generic $\theta$: whether $\{\eta\in\Theta : f_\eta=f_\theta,\ \eta\nsim\theta\}$ is finite, where $\sim$ denotes equivalence up to permutations and rescalings.
 They prove a local-to-global theorem: if every shallow sub-architecture $\big(\min\{d_0,\dots,d_{l-1}\},d_l,d_{l+1}\big)$ is FI, so is the full network.
 Thus, pyramidal architectures ($d_0\ge\dots\ge d_{L-1}\ge2$) and networks having degree growing linearly with the width ($r_l\ge 2d_l-1$) are FI.
-\citet{shahverdi2026} treat generic polynomial activations for which the rescaling symmetry disappears and their relation to the neuromanifold $\mathcal{M}=\{f_{\theta} \mid \theta \in \Theta \}$: generic MLP fibers are finite and therefore $\dim\mathcal{M}=\dim\Theta$.
+\citet{shahverdi2026} treat generic polynomial activations, for which the rescaling symmetry disappears, and their relation to the neuromanifold $\mathcal{M}=\{f_{\theta} \mid \theta \in \Theta \}$: generic MLP fibers are finite and therefore $\dim\mathcal{M}=\dim\Theta$.
 Moreover, generic CNN parametrizations are one-to-one.
-Non-identifiability is carried by \emph{subnetworks}, parameters where the outgoing weights of some neurons vanish ($|A_i|$ deactivated neurons in layer $i$): \emph{strict} (incoming weights vanish too) subnetworks have fibers of dimension at least $\sum_{i=1}^{L-1}|A_i|d_{i-1}$ and generate the singular locus of the neuromanifold, a locus the loss landscape of MLPs is biased towards.
+Non-identifiability is carried by \emph{subnetworks}, parameters where the outgoing weights of some neurons vanish ($|A_i|$ deactivated neurons in layer $i$): strict subnetworks (with vanishing incoming weights too) have fibers of dimension at least $\sum_{i=1}^{L-1}|A_i|d_{i-1}$ and generate the singular locus of the neuromanifold, which could be an attractive region of training~\citep{marchetti2025a}.
 
 \subsubsection{Conservation Laws (CL) and Conserved Quantities (CQ)}\label{sec:conservation-laws}
 
@@ -2790,7 +2790,7 @@ A low lift doesn't necessarily imply a gap.
         \hline
         (Optimization, Static) & discouraged by the taxonomy\\
         \hline
-        (Model, Unknown) & universal approximators contradicts equivariance \\
+        (Model, Unknown) & candidate \\
         \hline
         (Problem, Implicit) & - \\
         \hline
