@@ -805,7 +805,7 @@ As for generalization, an out-of-distribution input $\rho_X(g)\,x$, with $x$ in-
 Resorting to EDL is not automatic, however: \Cref{sec:edl-tradeoffs} discusses the trade-offs between EDL and DA, in particular the recurring question of whether the cost of exact equivariance is justified over a simpler model trained with augmentation.
 Recommended resources include surveys \citep{rath2024air,basheer2025ijdsa}, foundations \citep{borde2025,gerken2021,carlsson2025} and a historical account of the field \citep{bronstein2023tg}.
 
-\subsubsection{Achieving equivariance}
+\subsubsection{Achieving equivariance}\label{sec:edl-achieving-equiv}
 
 Methods to design equivariant architectures generally intertwine equivariant linear maps with suitable non-linearities.
 
@@ -1013,7 +1013,7 @@ Multiplied by throughput, it gives the loss reduction per second, whose deficit 
 \citet[app.~A]{elhag2026} give qualitative support: GATr's loss landscape near its minimum is rougher than a standard Transformer's.
 
 Third, misspecification: baking in the wrong prior can degrade performance \citep{yang2023p4icml,finzi2021anips,benton2020anips,miao2023p4icml}; for instance, \citet{weiler2019anips} report, as expected, that $D_n$ performs worse than $C_n$ on rotated (unreflected) MNIST.
-\citet{wang2023a} prove an error lower bound for \emph{incorrect} equivariance, whereas \citet{wang2022b} report that equivariant models can still outperform unconstrained ones when the imposed symmetry is \emph{extrinsic} (\Cref{sec:symmetry-breaking-dl}).
+\citet{wang2023a} prove an error lower bound for incorrect equivariance, whereas \citet{wang2022b} report that equivariant models can still outperform unconstrained ones when the imposed symmetry is \emph{extrinsic} (\Cref{sec:symmetry-breaking-dl}).
 
 \paragraph{The symmetry bottleneck}\label{par:sym-bottleneck}
 Equivariant neural network methods demand \textit{a priori} knowledge of the data's symmetries before they can be hard coded to the architecture.
@@ -1079,7 +1079,7 @@ A practical advantage shared by all these approaches is interpretability: learne
 One limitation, however, is that materializing augmentations requires an explicit parametric form for the transformations.
 \citet{shoshan2021} partly circumvent this in the face-generation setting by showing that a scalar attribute predictor (\textit{e.g.} age) provides sufficient supervision for a GAN to learn to manipulate that attribute in a controllable way without a closed-form group action.
 
-\subsubsection{DA in relation to Feature Averaging}
+\subsubsection{DA in relation to Feature Averaging}\label{sec:da-fa}
 Feature Averaging (FA) is another symmetry-aware strategy for incorporating symmetries by averaging model outputs over a set of transformed inputs, effectively symmetrizing the model.
 Theoretically, \citet{dao2019p3icml} show that DA can be approximated in first-order by FA, while \citet{maass2024} establish, in the infinite-width limit, that DA and FA induce identical gradient flow dynamics when the activation functions respect the group action.
 Despite this asymptotic equivalence, \citet{lyle2020} prove, via PAC-Bayes bounds, that FA yields strictly lower generalization error than DA for convex losses, suggesting FA is preferable when applicable.
@@ -1279,7 +1279,7 @@ When the loss is not invariant but the task is, several targets $\{g\cdot y:g\in
 The following works address this problem.
 
 \paragraph{Orbit and quotient losses}
-A sensible approach is to evaluate the loss on the quotient $\mathcal{Y}/G$ by minimizing over the group, the canonical form being the \emph{orbit loss}
+A sensible approach is treat the loss as a function on the quotient $\mathcal{Y}/G$ using an \emph{orbit loss} to minimize over the group:
 $$
 L_{\mathrm{orbit}}(\hat y,\, y) = \inf_{g\in G}\, L(\hat y,\, g\cdot y).
 $$
@@ -2458,7 +2458,7 @@ Here however, the ``pose'' is not interpretable, closer to the random node featu
 Distributional SB is a property of the pair $(f^*, p)$ which occurs when $p(\rho_X(g)x)\neq p(x)$ for some $g\in \operatorname{Sym}(f^*)$ and $x\in\mathcal{X}$.
 In words, orbits do not carry constant density.
 Performance can be affected even when $f^*$ is equivariant: a model with the correct equivariance is by construction blind to orbit-position cues, which a non-equivariant model can exploit as a shortcut; whenever these cues are consistent between train and test sets, they become \emph{spurious but useful} correlations.
-Accordingly, it has been observed that on canonically presented data (a density far from uniform on orbits), a plain model can outperform an equivariant one carrying the correct symmetry~\citep{lawrence2026,rygiel2026}.
+Accordingly, it has been observed that on canonically presented data (a Dirac-like density, far from uniform on orbits), a plain model can outperform an equivariant one carrying the correct symmetry~\citep{lawrence2026,rygiel2026}.
 A second reason (not found in the literature) could be that some functions are simpler to express on canonicalized inputs.
 For example, computing the $SE(2)$-invariant distance between $x,y\in\mathbb{R}^2$ needs a single hidden unit after canonicalization by a translation moving $x$ to $0$, then a rotation until $y_2=0$ and $y_1\geq 0$ since it then equals $y_1$.
 
@@ -2693,15 +2693,7 @@ For encoder--decoder models \citet{ali2026} decompose this into three terms---in
 
 \subsection{Loose Ends and Outlook}
 
-\subsubsection{Further Occurrences}
-
-\subsubsection{What Comes After Group Symmetry?}
-
-\subsubsection{Underexplored Areas}
-
-\subsection{Pipelines}
-
-\subsection{Choosing a Symmetry-Aware Strategy}
+\subsection{Underexplored Areas}
 
 \subsection{Conclusions}
 
