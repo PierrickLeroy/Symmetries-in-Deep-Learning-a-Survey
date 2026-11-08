@@ -2692,6 +2692,30 @@ For encoder--decoder models \citet{ali2026} decompose this into three terms---in
 \section{Discussion}
 
 \subsection{Loose Ends and Outlook}
+We gather here some occurrences of symmetry that did not enter the main narrative.
+
+\paragraph{Label-dependence}
+Class-specific \citep{urbano2026} or instance-specific, pointwise \citep{wang2023a,miao2023p4icml} refinements require $f^*(g\cdot x)=f^*(x)$ only for $g$ in a subset $S_{f^*(x)}$ or $S_x$ of $G$, a data-dependent extent restriction (\Cref{sec:extent-restriction}, \Cref{fig:sym-loci}).
+Different classes or instances then carry different symmetries: changing the color of a leaf from green to yellow preserves its class, whereas the same change turns a lime into a lemon.
+Disentangled representations \citep{higgins2018}, and the more specific class--pose decompositions \citep{winter2022anips,marchetti2023p2icais} in which the latent space is split into invariant and equivariant parts for a given group, have an information-theoretic extension: an embedding $Z=[Z_Y,Z_\perp]$ with $I(Z_\perp;Y)=0$, so that $Z_\perp$ parametrizes the transformations under which $Y$ is invariant.
+This goes beyond disentanglement since it accounts for a label-informative distributional SB (\Cref{sec:distributional-sb}) and extends beyond groups to complex transformations \citep{wieser2020anips}.
+
+\paragraph{Framework symmetries}
+Symmetrization is mentioned in several places (\Cref{sec:edl-achieving-equiv,sec:quotient-repr-align,sec:distributional-sb}) but never unified.
+It gathers post-hoc or ad-hoc methods that make a module equivariant, such as canonicalization \citep{kaba2023p4icml,urbano2026,ciuclea2025,kalogeropoulos2024} and frame averaging \citep{puny2021}, an efficient version of the feature averaging of \Cref{sec:da-fa}.
+Some paradigms induce symmetries.
+In federated learning, the FedAvg update $\theta=\sum_k \frac{n_k}{n}\theta_k$ \citep{mcmahan2017p2icais} is invariant to relabeling the clients $k$; in asynchronous training, stale gradients can be applied, so the result depends on their arrival order, as in \Cref{sec:data-ordering}.
+In reinforcement learning, self-play \citep{silver2017,zhang2025a} trains agents in competition with duplicates of themselves, close to the branch symmetry of joint embeddings (\Cref{sec:joint-embedding}).
+Generative models and joint-embedding predictive architectures (JEPA) were not covered.
+Evaluations and explanations should respect symmetries too.
+In the spirit of the feature-matrix dissimilarity $\mu(X,Y)$ of \citet{godfrey2022}, invariant to the permutations and rescalings of ReLU networks (\Cref{sec:quotient-repr-align}), explanations should be equivariant to the same group as the model \citep{crabbe2023}, and self-interpretable models can produce explanations that respect equivariances \citep{wang2021anips}.
+In NLP, semantic-preservation tests \citep{ribeiro2020p5amacl,zarza2026,bianchi2022pnpfwebn} ask a transformation such as a paraphrase to preserve $\phi$-equivalence (\Cref{def:equivalence}), with $\phi$ the model or a text property.
+
+\paragraph{Other}
+In NLP still, symmetries and asymmetries of language are studied: translation-invariant co-occurrences shape word representations~\citep{karkada2026} and reversing language learning achieves worse performance although the best achievable loss is invariant \citep{papadopoulos2024}.
+Complex symmetries remain largely open.
+Non-linear symmetries can be discovered as linear actions in a latent space \citep{yang2024p4icml}.
+A 3D rotation of an object seen as a 2D image has no well-defined action \citep{park2022p3icml,wang2022b} and similarly in context: a bounding box should rotate with its object while the global scene stays unrotated \citep{yu2022}.
 
 \subsection{Underexplored Areas}
 

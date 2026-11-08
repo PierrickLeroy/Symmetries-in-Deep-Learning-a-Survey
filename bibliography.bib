@@ -1666,6 +1666,25 @@
   file = {/home/pierrick/GoogleDrive/zotero-library/2024/Fei/fei2024air.pdf}
 }
 
+@article{finkel2025as,
+  title = {Activation Degree Thresholds and Expressiveness of Polynomial Neural Networks},
+  author = {Finkel, Bella and Rodriguez, Jose Israel and Wu, Chenxi and Yahl, Thomas},
+  year = 2025,
+  journal = {Algebraic Statistics},
+  volume = {16},
+  number = {2},
+  eprint = {2408.04569},
+  primaryclass = {cs.LG},
+  pages = {113--130},
+  issn = {2693-3004, 2693-2997},
+  doi = {10.2140/astat.2025.16.113},
+  urldate = {2026-11-07},
+  abstract = {We study the expressive power of deep polynomial neural networks through the geometry of their neurovariety. We introduce the notion of the activation degree threshold of a network architecture to express when the dimension of the neurovariety achieves its theoretical maximum. We prove the existence of the activation degree threshold for all polynomial neural networks without width-one bottlenecks and demonstrate a universal upper bound that is quadratic in the width of largest size. In doing so, we prove the high activation degree conjecture of Kileel, Trager, and Bruna. Certain structured architectures have exceptional activation degree thresholds, making them especially expressive in the sense of their neurovariety dimension. In this direction, we prove that polynomial neural networks with equi-width architectures are maximally expressive by showing their activation degree threshold is one.},
+  archiveprefix = {arXiv},
+  keywords = {/on halt},
+  file = {/home/pierrick/GoogleDrive/zotero-library/2025/Finkel/finkel2025as.pdf}
+}
+
 @inproceedings{finzi2020p3icml,
   title = {Generalizing {{Convolutional Neural Networks}} for {{Equivariance}} to {{Lie Groups}} on {{Arbitrary Continuous Data}}},
   booktitle = {Proceedings of the 37th {{International Conference}} on {{Machine Learning}}},
@@ -2141,7 +2160,7 @@
   title = {Gauge {{Equivariant Mesh CNNs}}: {{Anisotropic}} Convolutions on Geometric Graphs},
   shorttitle = {Gauge {{Equivariant Mesh CNNs}}},
   booktitle = {International {{Conference}} on {{Learning Representations}}},
-  author = {Haan, Pim De and Weiler, Maurice and Cohen, Taco and Welling, Max},
+  author = {{de Haan}, Pim and Weiler, Maurice and Cohen, Taco and Welling, Max},
   year = 2020,
   urldate = {2026-10-31},
   abstract = {A common approach to define convolutions on meshes is to interpret them as a graph and apply graph convolutional networks (GCNs). Such GCNs utilize isotropic kernels and are therefore insensitive to the relative orientation of vertices and thus to the geometry of the mesh as a whole. We propose Gauge Equivariant Mesh CNNs which generalize GCNs to apply anisotropic gauge equivariant kernels. Since the resulting features carry orientation information, we introduce a geometric message passing scheme defined by parallel transporting features over mesh edges. Our experiments validate the significantly improved expressivity of the proposed model over conventional GCNs and other methods.},
@@ -3460,6 +3479,21 @@
   file = {/home/pierrick/GoogleDrive/zotero-library/2020/Maron/maron2020p3icml 1.pdf;/home/pierrick/GoogleDrive/zotero-library/2020/Maron/maron2020p3icml.pdf}
 }
 
+@inproceedings{mcmahan2017p2icais,
+  title = {Communication-{{Efficient Learning}} of {{Deep Networks}} from {{Decentralized Data}}},
+  booktitle = {Proceedings of the 20th {{International Conference}} on {{Artificial Intelligence}} and {{Statistics}}},
+  author = {McMahan, Brendan and Moore, Eider and Ramage, Daniel and Hampson, Seth and y Arcas, Blaise Aguera},
+  year = 2017,
+  pages = {1273--1282},
+  publisher = {PMLR},
+  issn = {2640-3498},
+  urldate = {2026-11-08},
+  abstract = {Modern mobile devices have access to a wealth of data suitable for learning models, which in turn can greatly improve the user experience on the device. For example, language models can improve speech recognition and text entry, and image models can automatically select good photos. However, this rich data is often privacy sensitive, large in quantity, or both, which may preclude logging to the data center and training there using conventional approaches.  We advocate an alternative that leaves the training data distributed on the mobile devices, and learns a shared model by aggregating locally-computed updates. We term this decentralized approach Federated Learning.  We present a practical method for the federated learning of deep networks based on iterative model averaging, and conduct an extensive empirical evaluation, considering five different model architectures and four datasets. These experiments demonstrate the approach is robust to the unbalanced and non-IID data distributions that are a defining characteristic of this setting. Communication costs are the principal constraint, and we show a reduction in required communication rounds by 10-100x as compared to synchronized stochastic gradient descent.},
+  langid = {english},
+  keywords = {/on halt},
+  file = {/home/pierrick/GoogleDrive/zotero-library/2017/McMahan/mcmahan2017p2icais 1.pdf;/home/pierrick/GoogleDrive/zotero-library/2017/McMahan/mcmahan2017p2icais.pdf}
+}
+
 @inproceedings{mehr20182iccvpr,
   title = {Manifold {{Learning}} in {{Quotient Spaces}}},
   booktitle = {2018 {{IEEE}}/{{CVF Conference}} on {{Computer Vision}} and {{Pattern Recognition}}},
@@ -3853,18 +3887,21 @@
   file = {/home/pierrick/GoogleDrive/zotero-library/2026/Pacini/pacini2026.pdf}
 }
 
-@misc{papadopoulos2024,
+@inproceedings{papadopoulos2024,
   title = {Arrows of {{Time}} for {{Large Language Models}}},
+  booktitle = {Proceedings of the 41st {{International Conference}} on {{Machine Learning}}},
   author = {Papadopoulos, Vassilis and Wenger, J{\'e}r{\'e}mie and Hongler, Cl{\'e}ment},
   year = 2024,
-  number = {arXiv:2401.17505},
   eprint = {2401.17505},
   primaryclass = {cs},
-  publisher = {arXiv},
+  pages = {39509--39528},
+  publisher = {PMLR},
+  issn = {2640-3498},
   doi = {10.48550/arXiv.2401.17505},
   urldate = {2024-12-18},
   abstract = {We study the probabilistic modeling performed by Autoregressive Large Language Models (LLMs) through the angle of time directionality, addressing a question first raised in (Shannon, 1951). For large enough models, we empirically find a time asymmetry in their ability to learn natural language: a difference in the average log-perplexity when trying to predict the next token versus when trying to predict the previous one. This difference is at the same time subtle and very consistent across various modalities (language, model size, training time, ...). Theoretically, this is surprising: from an information-theoretic point of view, there should be no such difference. We provide a theoretical framework to explain how such an asymmetry can appear from sparsity and computational complexity considerations, and outline a number of perspectives opened by our results.},
   archiveprefix = {arXiv},
+  langid = {english},
   keywords = {/unread,LLM,neurips 2024,NLP},
   file = {/home/pierrick/GoogleDrive/zotero-library/2024/Papadopoulos/papadopoulos2024.pdf}
 }
@@ -4688,6 +4725,22 @@
   archiveprefix = {arXiv},
   keywords = {/read},
   file = {/home/pierrick/GoogleDrive/zotero-library/2021/Shoshan/shoshan2021 1.pdf;/home/pierrick/GoogleDrive/zotero-library/2021/Shoshan/shoshan2021.pdf}
+}
+
+@misc{silver2017,
+  title = {Mastering {{Chess}} and {{Shogi}} by {{Self-Play}} with a {{General Reinforcement Learning Algorithm}}},
+  author = {Silver, David and Hubert, Thomas and Schrittwieser, Julian and Antonoglou, Ioannis and Lai, Matthew and Guez, Arthur and Lanctot, Marc and Sifre, Laurent and Kumaran, Dharshan and Graepel, Thore and Lillicrap, Timothy and Simonyan, Karen and Hassabis, Demis},
+  year = 2017,
+  number = {arXiv:1712.01815},
+  eprint = {1712.01815},
+  primaryclass = {cs.AI},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.1712.01815},
+  urldate = {2026-11-08},
+  abstract = {The game of chess is the most widely-studied domain in the history of artificial intelligence. The strongest programs are based on a combination of sophisticated search techniques, domain-specific adaptations, and handcrafted evaluation functions that have been refined by human experts over several decades. In contrast, the AlphaGo Zero program recently achieved superhuman performance in the game of Go, by tabula rasa reinforcement learning from games of self-play. In this paper, we generalise this approach into a single AlphaZero algorithm that can achieve, tabula rasa, superhuman performance in many challenging domains. Starting from random play, and given no domain knowledge except the game rules, AlphaZero achieved within 24 hours a superhuman level of play in the games of chess and shogi (Japanese chess) as well as Go, and convincingly defeated a world-champion program in each case.},
+  archiveprefix = {arXiv},
+  keywords = {/on halt},
+  file = {/home/pierrick/GoogleDrive/zotero-library/2017/Silver/silver2017.pdf}
 }
 
 @misc{simsek2021,
@@ -5547,21 +5600,21 @@
   urldate = {2026-06-26},
   abstract = {Motivated by the vast success of deep convolutional networks, there is a great interest in generalizing convolutions to non-Euclidean manifolds. A major complication in comparison to flat spaces is that it is unclear in which alignment a convolution kernel should be applied on a manifold. The underlying reason for this ambiguity is that general manifolds do not come with a canonical choice of reference frames (gauge). Kernels and features therefore have to be expressed relative to arbitrary coordinates. We argue that the particular choice of coordinatization should not affect a network's inference -- it should be coordinate independent. A simultaneous demand for coordinate independence and weight sharing is shown to result in a requirement on the network to be equivariant under local gauge transformations (changes of local reference frames). The ambiguity of reference frames depends thereby on the G-structure of the manifold, such that the necessary level of gauge equivariance is prescribed by the corresponding structure group G. Coordinate independent convolutions are proven to be equivariant w.r.t. those isometries that are symmetries of the G-structure. The resulting theory is formulated in a coordinate free fashion in terms of fiber bundles. To exemplify the design of coordinate independent convolutions, we implement a convolutional network on the M\"obius strip. The generality of our differential geometric formulation of convolutional networks is demonstrated by an extensive literature review which explains a large number of Euclidean CNNs, spherical CNNs and CNNs on general surfaces as specific instances of coordinate independent convolutions.},
   archiveprefix = {arXiv},
-  keywords = {/read,survey/gdl/local-sym},
+  keywords = {/textbook,survey/gdl/local-sym},
   file = {/home/pierrick/GoogleDrive/zotero-library/2021/Weiler/weiler2021.pdf}
 }
 
-@phdthesis{weiler2026,
+@book{weiler2026,
   title = {Equivariant and {{Coordinate Independent Convolutional Networks}}: {{A Gauge Field Theory}} of {{Neural Networks}}},
   shorttitle = {Equivariant and {{Coordinate Independent Convolutional Networks}}},
   author = {Weiler, Maurice and Forr{\'e}, Patrick and Verlinde, Erik and Welling, Max},
   year = 2026,
+  publisher = {WORLD SCIENTIFIC},
   doi = {10.1142/14143},
   urldate = {2026-05-05},
   isbn = {978-981-98-0662-1},
   langid = {english},
-  school = {WORLD SCIENTIFIC},
-  keywords = {/read,survey/gdl/local-sym},
+  keywords = {/textbook,survey/gdl/local-sym},
   file = {/home/pierrick/GoogleDrive/zotero-library/2026/Weiler/weiler2026.pdf}
 }
 
@@ -6031,6 +6084,22 @@
   langid = {english},
   keywords = {/read},
   file = {/home/pierrick/GoogleDrive/zotero-library/2019/Zhang/zhang2019p3icml.pdf}
+}
+
+@misc{zhang2025a,
+  title = {A {{Survey}} on {{Self}}-Play {{Methods}} in {{Reinforcement Learning}}},
+  author = {Zhang, Ruize and Xu, Zelai and Ma, Chengdong and Yu, Chao and Tu, Wei-Wei and Tang, Wenhao and Huang, Shiyu and Ye, Deheng and Ding, Wenbo and Yang, Yaodong and Wang, Yu},
+  year = 2025,
+  number = {arXiv:2408.01072},
+  eprint = {2408.01072},
+  primaryclass = {cs.AI},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2408.01072},
+  urldate = {2026-11-08},
+  abstract = {Self-play, a learning paradigm where agents iteratively refine their policies by interacting with historical or concurrent versions of themselves or other evolving agents, has shown remarkable success in solving complex non-cooperative multi-agent tasks. Despite its growing prominence in multi-agent reinforcement learning (MARL), such as Go, poker, and video games, a comprehensive and structured understanding of self-play remains lacking. This survey fills this gap by offering a comprehensive roadmap to the diverse landscape of self-play methods. We begin by introducing the necessary preliminaries, including the MARL framework and basic game theory concepts. Then, it provides a unified framework and classifies existing self-play algorithms within this framework. Moreover, the paper bridges the gap between the algorithms and their practical implications by illustrating the role of self-play in different non-cooperative scenarios. Finally, the survey highlights open challenges and future research directions in self-play.},
+  archiveprefix = {arXiv},
+  keywords = {/on halt},
+  file = {/home/pierrick/GoogleDrive/zotero-library/2025/Zhang/zhang2025a.pdf}
 }
 
 @inproceedings{zhang2025p4icml,
