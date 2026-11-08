@@ -2478,7 +2478,7 @@ where $\mathrm{NN}$ is a neural network.
 A second \emph{task-useful} metric then asks whether the bias is label-informative, as a ratio $L_G/L$ comparing a network that predicts the label from a random-but-equivariant canonical pose against a baseline.
 Given a canonicalization function $c:\mathcal{X}\to G$, the losses are defined as $L=\mathbb{E}_x\big[\mathbb{I}(\mathrm{NN}(c(x))=f^*(x))\big]$ and $L_G=\mathbb{E}_x\big[\mathbb{I}(\mathrm{NN}(c(gx))=gf^*(x))\big]$. Here $\mathrm{NN}:G\to\mathcal{Y}$ is another model, trained to predict the label from the pose.
 They report that standard benchmarks (QM9, ModelNet40) are notably symmetry-biased.
-\citet{urbano2026} instead estimate the orbit density directly with a class--pose IE (invariant--equivariant) autoencoder.
+\citet{urbano2026} instead estimate the orbit density directly with a class--pose IE (invariant--equivariant) autoencoder\citep{winter2022anips}.
 
 \paragraph{Two extremes}
 % kalogeropoulos2024: use canonicalization to design ScaleInv
