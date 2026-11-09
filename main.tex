@@ -2821,6 +2821,19 @@ In both, \texttt{\{\}} stands for the citation key of the work, $\to$ for a tab 
 
 \section{Automated taxonomy}\label{app:automated-taxonomy}
 
+\subsection{Validation of the coding}\label{app:coding-validation}
+Each work $w$ of the corpus is coded from its summary by the typed-output model \texttt{jev-1.13.0} (Jev), with one call per work.
+For each axis $c$ of \Cref{tab:taxonomy}, with value set $V_c$, we add a default value ``not applicable'' (NA), so that a work is not forced into a value of an axis it does not concern.
+Jev returns a probability distribution $q_{w,c}$ on $V_c\cup\{\mathrm{NA}\}$.
+Its choice is then $\hat v_{w,c}=\operatorname{arg\,max}_{v}q_{w,c}(v)$.
+NA stays rare: over the $408$ coded works, it accounts for $165$ of the $2448$ choices ($6.7\%$), with fluctuations depending on the axis.
+$11$ works are NA on every axis, on inspection they consist of deep learning works with no symmetry content or methodological references with the exception of one work \citep{xu2024vj} introducing a data shuffling scheme which is about data-ordering (framework symmetry) but very implicit.
+
+To verify the coding, we annotated by hand $12$ randomly selected works following our intent for the taxonomy, which gives a value $v^*_{w,c}$ for each work and axis.
+We keep the pairs for which neither our annotation nor Jev's choice is NA, for a total of $62$ annotations and the agreement rate between Jev and our annotations is $93.5\%$.
+This verification is not exact, and neither is the classification itself: a work can belong to several values of an axis.
+This is one of the reasons why we also record the probabilities $q_{w,c}$, which keep track of such split cases.
+We illustrate on one of the disagreements which is a close calls between two sensible values: \citet{brea2019} study paths whose endpoints are obtained by the permutation symmetry of the architecture (\emph{Model}) through a particular symmetric state (\emph{Parameter}): we chose \emph{Parameter}, Jev chose \emph{Model}.
 
 
 
