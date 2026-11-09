@@ -2826,7 +2826,7 @@ Each work $w$ of the corpus is coded from its summary by the typed-output model 
 For each axis $c$ of \Cref{tab:taxonomy}, with value set $V_c$, we add a default value ``not applicable'' (NA), so that a work is not forced into a value of an axis it does not concern.
 Jev returns a probability distribution $q_{w,c}$ on $V_c\cup\{\mathrm{NA}\}$.
 Its choice is then $\hat v_{w,c}=\operatorname{arg\,max}_{v}q_{w,c}(v)$.
-NA stays rare: over the $408$ coded works, it accounts for $165$ of the $2448$ choices ($6.7\%$), with fluctuations depending on the axis.
+NA stays rare: over the $408$ coded works, it accounts for $165$ of the $2448$ choices ($6.7\%$), with fluctuations depending on the axis (\Cref{fig:taxonomy-choices}).
 $11$ works are NA on every axis, on inspection they consist of deep learning works with no symmetry content or methodological references with the exception of one work \citep{xu2024vj} introducing a data shuffling scheme which is about data-ordering (framework symmetry) but very implicit.
 
 To verify the coding, we annotated by hand $12$ randomly selected works following our intent for the taxonomy, which gives a value $v^*_{w,c}$ for each work and axis.
@@ -2835,7 +2835,60 @@ This verification is not exact, and neither is the classification itself: a work
 This is one of the reasons why we also record the probabilities $q_{w,c}$, which keep track of such split cases.
 We illustrate on one of the disagreements which is a close calls between two sensible values: \citet{brea2019} study paths whose endpoints are obtained by the permutation symmetry of the architecture (\emph{Model}) through a particular symmetric state (\emph{Parameter}): we chose \emph{Parameter}, Jev chose \emph{Model}.
 
+\subsection{Validation of the taxonomy axes}\label{app:taxonomy-validation}
+A taxonomy is useful if each axis separates the corpus and if distinct axes carry distinct information.
+We check both on the coded corpus.
 
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{images/taxonomy-choices.pdf}
+    \caption{Number of works coded with each value, for each axis of \Cref{tab:taxonomy} (\Cref{app:coding-validation}); NA in grey.
+    Colors only distinguish the values within one axis.}
+    \label{fig:taxonomy-choices}
+\end{figure}
+
+\paragraph{Each axis splits the corpus}
+No axis assigns the same value to all works, and every value is taken by at least $16$ works (\Cref{fig:taxonomy-choices}).
+The balance varies among axes and the least split axis is \emph{A priori knowledge}, with $303$ of $372$ works ($81.5\%$) coded \emph{Known}.
+
+\paragraph{Axes are dependent but weakly}
+At the level of axes, each axis is a categorical variable over the corpus.
+For two axes $A\neq B$, with $r$ and $k$ values, we keep the $N_{AB}$ works that are not NA on either axis and count the works coded $a$ ($n_a$), $b$ ($n_b$) and both ($n_{ab}$).
+With $E_{ab}=n_a n_b/N_{AB}$ the count expected under independence, Cramér's V is
+\begin{equation}
+    V_{AB}=\sqrt{\frac{\chi^2/N_{AB}}{\min(r,k)-1}}\in[0,1],
+    \qquad
+    \chi^2=\sum_{a,b}\frac{(n_{ab}-E_{ab})^2}{E_{ab}}.
+\end{equation}
+It vanishes if and only if the observed counts equal the independent ones, and equals $1$ if and only if the value on one axis determines the value on the other.
+We report a bias-corrected estimator of $V_{AB}$, as the plain one is biased upward on finite samples (\Cref{fig:taxonomy-cramersV}).
+All $15$ pairs have $V_{AB}<0.42$, with median $0.18$.
+A $\chi^2$ test of independence rejects at level $0.05$ for $10$ pairs, but with $N_{AB}$ between $364$ and $388$ it detects weak dependencies; $V_{AB}$ measures their strength.
+The strongest pairs involve \emph{Object}, with \emph{State} and \emph{Explicitness} ($0.41$).
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/taxonomy-cramersV.pdf}
+    \caption{Bias-corrected Cramér's V between the axes of \Cref{tab:taxonomy}, on the works that are not NA on either axis.
+    Stars give the $p$-value of a $\chi^2$ test of independence.}
+    \label{fig:taxonomy-cramersV}
+\end{figure}
+
+At the level of values, we use the probabilities $q_{w,c}(v)$ of the $17$ values (NA excluded, as it is high for off-topic works on every axis at once).
+For $v\in V_c$ and $v'\in V_{c'}$ with $c\neq c'$, we compute the Spearman correlation $\rho$ between $\left(q_{w,c}(v)\right)_w$ and $\left(q_{w,c'}(v')\right)_w$ over the $408$ works, robust to the concentration of probabilities near $0$ and $1$ (\Cref{fig:taxonomy-Pcorrelations}).
+Pairs within one axis are excluded, as $\sum_{v}q_{w,c}(v)=1$ forces negative correlations.
+Over the $114$ remaining pairs, the median of $|\rho|$ is $0.19$, $82$ pairs have $|\rho|<0.3$ and only $4$ have $|\rho|>0.5$.
+The largest, $\rho=0.59$ between \emph{Model} and \emph{Known}, together with the associations of \emph{Known} with \emph{Exact} and \emph{Explicit}, form the profile of works that build a known exact symmetry into an architecture (\Cref{sec:design-principle}), the largest group of the corpus.
+Moderate correlations are also interpretable: \emph{Optimization} with \emph{Dynamic} ($\rho=0.44$), as symmetries of the learning rule are studied along training, and \emph{Framework} with \emph{Implicit} ($\rho=0.43$), as symmetries of the training pipeline are seldom formalized as such.
+
+\begin{figure}[ht]
+\begin{adjustwidth}{-\extralength}{0cm}
+    \centering
+    \includegraphics[width=\linewidth]{images/taxonomy-Pcorrelations.pdf}
+\end{adjustwidth}
+    \caption{Spearman correlation, over the $408$ works, between the probabilities $q_{w,c}(v)$ of values of distinct axes of \Cref{tab:taxonomy}; blocks within one axis are left blank.}
+    \label{fig:taxonomy-Pcorrelations}
+\end{figure}
 
 \section{Gaps from coded corpus}\label{app:gaps}
 The corpus is coded with one value per axis of \Cref{tab:taxonomy}, or ``not applicable'' (\Cref{fig:selection-flow}).
