@@ -2802,6 +2802,8 @@ SGD & Stochastic Gradient Descent
 \appendixstart
 \appendix
 
+\pagebreak
+
 \section{Prompts}\label{app:prompts}
 The knowledge base of \Cref{fig:selection-flow} is built by the two prompts below, run once per work and in this order.
 In both, \texttt{\{\}} stands for the citation key of the work, $\to$ for a tab character, and the trailing options set the model and its reasoning effort.
@@ -2817,7 +2819,7 @@ In both, \texttt{\{\}} stands for the citation key of the work, $\to$ for a tab 
     "Read summaries/{} and add a line to index.tsv according to the column headers: citation_key(*\,$\to$\,*)Title(*\,$\to$\,*)Links(*\,$\to$\,*)Keywords(*\,$\to$\,*)Short comment" --model claude-sonnet-5 --effort medium
 \end{lstlisting}
 
-
+\pagebreak
 
 \section{Automated taxonomy}\label{app:automated-taxonomy}
 
@@ -2874,17 +2876,9 @@ We also report at the level of values, where we use the probabilities $q_{w,c}(v
     \label{fig:taxonomy-Pcorrelations}
 \end{figure}
 
+\pagebreak
+
 \section{Gaps from coded corpus}\label{app:gaps}
-The corpus is coded with one value per axis of \Cref{tab:taxonomy}, or ``not applicable'' (\Cref{fig:selection-flow}).
-For two distinct axes $A\neq B$, with values $a$ of $A$ and $b$ of $B$, we keep the $N_{AB}$ works for which the value is different from ``not applicable''.
-Then, we count the works coded $a$ ($n_a$), $b$ ($n_b$) and both ($n_{ab}$).
-Under an independence assumption, the expected count is $E_{ab}=n_a n_b/N_{AB}$.
-The \emph{lift}
-\begin{equation}
-    L_{ab}=\frac{n_{ab}}{E_{ab}}
-\end{equation}
-compares the observed count to the independent baseline (\Cref{fig:lift-heatmap}) with $L_{ab}<1$ flagging an under-represented combination.
-A low lift doesn't necessarily imply a gap.
 
 \begin{figure}[ht]
 \begin{adjustwidth}{-\extralength}{0cm}
@@ -2895,8 +2889,6 @@ A low lift doesn't necessarily imply a gap.
     Blue cells ($L_{ab}<1$) are under-represented combinations, red cells ($L_{ab}>1$) over-represented ones; the color scale is centered at independence, $L_{ab}=1$.}
     \label{fig:lift-heatmap}
 \end{figure}
-
-\Cref{tab:gaps} extracts from \Cref{fig:lift-heatmap} the pairs that are most under-represented in the corpus.
 
 \begin{table}[ht]
     \centering
@@ -2938,9 +2930,23 @@ A low lift doesn't necessarily imply a gap.
     \label{tab:gaps}
 \end{table}
 
+The corpus is coded with one value per axis of \Cref{tab:taxonomy}, or ``not applicable'' (\Cref{fig:selection-flow}).
+For two distinct axes $A\neq B$, with values $a$ of $A$ and $b$ of $B$, we keep the $N_{AB}$ works for which the value is different from ``not applicable''.
+Under an independence assumption, the expected count is $E_{ab}=n_a n_b/N_{AB}$, where $n_a$, $n_b$, $N_{AB}$ are defined as in \Cref{app:taxonomy-validation}.
+The \emph{lift}
+\begin{equation}
+    L_{ab}=\frac{n_{ab}}{E_{ab}}
+\end{equation}
+compares the observed count to the independent baseline (\Cref{fig:lift-heatmap}) with $L_{ab}<1$ flagging an under-represented combination.
+A low lift doesn't necessarily imply a gap.
+\Cref{tab:gaps} extracts from \Cref{fig:lift-heatmap} the pairs that are most under-represented in the corpus.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % \input{unfinished-thoughts}
+\newpage
+
+\newpage
 
 \begin{adjustwidth}{-\extralength}{0cm}
 
