@@ -73,20 +73,33 @@
 \setlength{\headheight}{20pt}
 \begin{document}
 
+
+
+
 \section{Introduction}
 
-\pnote{write at the end}
+
+\subsection{Related work}
+Previous works have studied the literature on symmetries in deep learning.
+\citet{ilina2022sa} surveys symmetric architectures such as Siamese networks.
+\citet{zhao2025} focuses on parameter-space symmetries.
+\citet{sipiran202523scgpis} reviews symmetry detection methods for 3D shapes.
+\citet{bronstein2021} is the reference textbook on geometric deep learning, and \citet{gerken2021,carlsson2025} study its mathematical formalism.
+More specialized works focus on equivariant convolutions \citep{basheer2025ijdsa,habte2023}, 3D rotations \citep{fei2024air} and $SE(3)$-equivariant robot learning \citep{seo2025a}.
+\citet{rath2024air} reviews methods that integrate geometric prior knowledge into neural networks so that their representations are invariant or equivariant.
+\citet{shorten2019jbd,mumuni2022a} survey data augmentation.
+Each of these works focuses on a few objects carrying the symmetry (mostly the model) or on one application domain.
+In contrast, we start from the concept of symmetry and go broad: we list its occurrences across deep learning, from the problem to the training framework including symmetries that are unknown or incomplete, and organize them in a faceted taxonomy across subfields (\Cref{tab:taxonomy}), linking and contrasting them for a high-level, structuralist understanding.
 
 \section{Materials and Methods}
 
 \subsection{Methodology}
-The starting point of this survey is a stack of papers gathered over two years of research on such topics.
-This initial collection was completed by keyword searches on Scopus and Google Scholar, and by AI-assisted literature exploration tools (Research Rabbit, Google Scholar Labs, Elicit and Connected Papers).
-
-A reference is discarded if it does not satisfy at least one of the following criteria: (A) it is published in a peer-reviewed venue; (B) it is highly cited (more than 50 citations on Google Scholar); (C) it is recent (published less than two years ago).
+The corpus was collected over a two years period, starting from an initial collection progressively expanded and completed in the final phase.
+The selection process is described on \Cref{fig:selection-flow}
+A reference is discarded if it does not satisfy at least one of the following criteria: (A) it is published in a peer-reviewed venue; (B) it is highly cited (more than 50 citations on Google Scholar); (C) it is recent (made available less than two years ago).
 Criterion (C) exists because the field is fast-moving and a citation/peer-review threshold alone would systematically remove emerging work.
-Following this protocol (\Cref{fig:selection-flow}), $408$ works were identified, out of which $322$ are cited in the current version.
-\Cref{fig:corpus-stats} summarizes the corpus: its distribution over publication years, and the pace at which it was assembled.
+Following this protocol, $408$ works were identified, out of which $322$ are cited in the current version.
+\Cref{fig:corpus-stats} summarizes the corpus: it reports the distribution over publication years, and the pace at which it was assembled.
 
 \begin{figure}[ht]
 \begin{adjustwidth}{-\extralength}{0cm}
@@ -109,30 +122,15 @@ Following this protocol (\Cref{fig:selection-flow}), $408$ works were identified
     \label{fig:corpus-stats}
 \end{figure}
 
-\paragraph{AI statement}
-A knowledge base of the retained references was maintained, with a standardized processing of each entry (\Cref{app:prompts}).
-The processing consists in the automated extraction of the following categories: summary, key definitions, background notions, theoretical results, empirical results, methodology and limitations.
-This knowledge base was used for indexing and interactive exploration of the corpus.
-Language models were used to polish writing.
-
-\subsection{Related work}
-Previous works have studied the literature on symmetries in deep learning.
-\citet{ilina2022sa} surveys symmetric architectures such as Siamese networks.
-\citet{zhao2025} focuses on parameter-space symmetries.
-\citet{sipiran202523scgpis} reviews symmetry detection methods for 3D shapes.
-\citet{bronstein2021} is the reference textbook on geometric deep learning, and \citet{gerken2021,carlsson2025} study its mathematical formalism.
-More specialized works focus on equivariant convolutions \citep{basheer2025ijdsa,habte2023}, 3D rotations \citep{fei2024air} and $SE(3)$-equivariant robot learning \citep{seo2025a}.
-\citet{rath2024air} reviews methods that integrate geometric prior knowledge into neural networks so that their representations are invariant or equivariant.
-\citet{shorten2019jbd,mumuni2022a} survey data augmentation.
-Each of these works focuses on a few objects carrying the symmetry (mostly the model) or on one application domain.
-In contrast, we start from the concept of symmetry and go broad: we list its occurrences across deep learning, from the problem to the training framework including symmetries that are unknown or incomplete, and organize them in a faceted taxonomy across subfields (\Cref{tab:taxonomy}), linking and contrasting them for a high-level, structuralist understanding.
-
-
-
 \subsection{Taxonomy and paper organization}
 We propose a faceted taxonomy in \Cref{tab:taxonomy} to categorize occurrences of symmetries in works.
 \Cref{fig:sym-loci} further details the \emph{Object} axis of the taxonomy.
-\Cref{sec:design-principle} \emph{prescriptively} builds in \emph{known} symmetries (\Cref{tab:taxonomy}); in \Cref{fig:sym-loci}, equivariant architectures follow the arrow $f^*\dashrightarrow\mathcal{H}$, data augmentation $f^*\dashrightarrow f_\theta$, and framework symmetries fill the bottom row.
+This taxonomy was used to code the corpus using the typed-output model $\texttt{jev-1.13.0}$ to provide a $6$ dimensional classification for each paper or a $17$ dimensional vector of coordinates in $[0,1]$ when recording the probabilities output associated with each choice.
+The coded corpus was used as an organizing tool to cement the ordering of section and subsection, to position and contrast them.
+\Cref{app:automated-taxonomy} gives additional details on the coding of the corpus, our method to validate both the coding and the taxonomy and the way we leverage it to analyze the corpus.
+The choice of a typed-output model instead of a standard LLMs is motivated by the fact that a typed-output matches our requirement for the task (a discrete set of categorical answers) while being significantly faster and cost-effective: this allowed us to proceed by iterations.
+
+At a high level, the taxonomy maps onto the sections as follows: \Cref{sec:design-principle} \emph{prescriptively} builds in \emph{known} symmetries (\Cref{tab:taxonomy}); in \Cref{fig:sym-loci}, equivariant architectures follow the arrow $f^*\dashrightarrow\mathcal{H}$, data augmentation $f^*\dashrightarrow f_\theta$, and framework symmetries fill the bottom row.
 \Cref{sec:parameter-space-symmetries} covers the boxes where $G$ acts on $\Theta$, not on $\mathcal{X},\mathcal{Y}$.
 \Cref{sec:sym-disco} discovers \emph{unknown} symmetries at the problem ($f^*$, $p$) or parameter ($f_\theta$) locus.
 \Cref{sec:incomplete-symmetries} follows the exactness axis away from \emph{exact}: broken, \emph{extent-restricted} and \emph{approximate} symmetries.
@@ -196,20 +194,21 @@ We propose a faceted taxonomy in \Cref{tab:taxonomy} to categorize occurrences o
     \label{fig:sym-loci}
 \end{figure}
 
+\paragraph{AI statement}
+AI tools were used in multiple stages but all works in the corpus were however carefully selected, added and reviewed by humans.
+A knowledge base of the retained references was maintained, with a standardized processing of each entry (\Cref{app:prompts}).
+It was used for indexing and interactive exploration of the corpus.
+Language models were additionally used to polish writing.
+
+
+
 
 \section{Background: Mathematical Foundations of Symmetry}
-% Conservation laws ?
-% Core notions
+% Move background on conservation laws here ?
 % \cite{borde2025,carlsson2025,chen2020,2023tg,bronstein2021}
-In \Cref{sec:what-is-sym}, we start with a lightweight introduction to the main concepts, made precise in the subsequent subsections.
-These introduce only the machinery used later in the survey: groups, actions, orbits, stabilizers and quotients (\Cref{sec:group-theory-backbone}), used throughout and in particular for parameter-space symmetries; representations and intertwiners (\Cref{subsec:representation-theory}); Lie groups and Lie algebras (\Cref{subsubsec:lie-groups}), for continuous symmetries, symmetry discovery and conservation laws; compactness, Haar measure and the Peter--Weyl theorem (\Cref{subsec:compactness-peter-weyl}) and harmonic analysis (\Cref{subsec:harmonic-analysis}), which underlie equivariant architectures; and homogeneous spaces and bundles (\Cref{subsec:homogeneous-spaces,subsec:manifold-gauge-theory}), the domains of equivariant and gauge-equivariant convolutions.
-
-
+\Cref{sec:what-is-sym} focus on the notion of symmetry, the following subsections introduce the machinery used throughout the survey: groups, actions, orbits...
 
 \subsection{What is a Symmetry?}\label{sec:what-is-sym}
-
-% reasons symmetry appears: (a) it's present in the problem, (b) it emerges from the architecture or training procedure
-
 A \textit{symmetry} is a transformation that leaves an object as a whole unchanged, it is statement about identity.
 \textit{Invariance} is a broader, functional term that refers to the situation where a property of an object does not change under a transformation.
 Symmetry can be defined by invariance by saying that an object has a symmetry if its identity is invariant under a specific transformation.
@@ -2807,14 +2806,21 @@ In both, \texttt{\{\}} stands for the citation key of the work, $\to$ for a tab 
 
 \subsection{Summary prompt}
 \begin{lstlisting}[style=prompt]
-"Open and read the folder raw/{}, particularly the main paper raw/{}/{}.md and summarize it to a file summaries/{}.md following the structure: \
-SUMMARY, KEY DEFINITIONS AND BACKGROUND NOTIONS, RESULTS (theoretical if any, empirical if any), METHODOLOGY, LIMITATIONS, THOUGHTS, ONE-LINE TL;DR" --model claude-sonnet-5 --effort high
+    "Open and read the folder raw/{}, particularly the main paper raw/{}/{}.md and summarize it to a file summaries/{}.md following the structure: \
+    SUMMARY, KEY DEFINITIONS AND BACKGROUND NOTIONS, RESULTS (theoretical if any, empirical if any), METHODOLOGY, LIMITATIONS, THOUGHTS, ONE-LINE TL;DR" --model claude-sonnet-5 --effort high
 \end{lstlisting}
 
 \subsection{Indexing prompt}
 \begin{lstlisting}[style=prompt]
-"Read summaries/{} and add a line to index.tsv according to the column headers: citation_key(*\,$\to$\,*)Title(*\,$\to$\,*)Links(*\,$\to$\,*)Keywords(*\,$\to$\,*)Short comment" --model claude-sonnet-5 --effort medium
+    "Read summaries/{} and add a line to index.tsv according to the column headers: citation_key(*\,$\to$\,*)Title(*\,$\to$\,*)Links(*\,$\to$\,*)Keywords(*\,$\to$\,*)Short comment" --model claude-sonnet-5 --effort medium
 \end{lstlisting}
+
+
+
+\section{Automated taxonomy}\label{app:automated-taxonomy}
+
+
+
 
 \section{Gaps from coded corpus}\label{app:gaps}
 The corpus is coded with one value per axis of \Cref{tab:taxonomy}, or ``not applicable'' (\Cref{fig:selection-flow}).
