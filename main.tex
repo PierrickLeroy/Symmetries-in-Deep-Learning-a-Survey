@@ -2854,37 +2854,21 @@ The balance varies among axes and the least split axis is \emph{A priori knowled
 \paragraph{Axes are dependent but weakly}
 At the level of axes, each axis is a categorical variable over the corpus.
 For two axes $A\neq B$, with $r$ and $k$ values, we keep the $N_{AB}$ works that are not NA on either axis and count the works coded $a$ ($n_a$), $b$ ($n_b$) and both ($n_{ab}$).
-With $E_{ab}=n_a n_b/N_{AB}$ the count expected under independence, Cramér's V is
-\begin{equation}
-    V_{AB}=\sqrt{\frac{\chi^2/N_{AB}}{\min(r,k)-1}}\in[0,1],
-    \qquad
-    \chi^2=\sum_{a,b}\frac{(n_{ab}-E_{ab})^2}{E_{ab}}.
-\end{equation}
-It vanishes if and only if the observed counts equal the independent ones, and equals $1$ if and only if the value on one axis determines the value on the other.
-We report a bias-corrected estimator of $V_{AB}$, as the plain one is biased upward on finite samples (\Cref{fig:taxonomy-cramersV}).
-All $15$ pairs have $V_{AB}<0.42$, with median $0.18$.
-A $\chi^2$ test of independence rejects at level $0.05$ for $10$ pairs, but with $N_{AB}$ between $364$ and $388$ it detects weak dependencies; $V_{AB}$ measures their strength.
-The strongest pairs involve \emph{Object}, with \emph{State} and \emph{Explicitness} ($0.41$).
+$E_{ab}=n_a n_b/N_{AB}$ is the expected count under independence, we report Cramér's V for all pairs on \Cref{fig:taxonomy-cramersV}: all $15$ pairs have $V_{AB}<0.44$, with median $0.19$.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.8\textwidth]{images/taxonomy-cramersV.pdf}
-    \caption{Bias-corrected Cramér's V between the axes of \Cref{tab:taxonomy}, on the works that are not NA on either axis.
-    Stars give the $p$-value of a $\chi^2$ test of independence.}
+    \caption{Cramér's V between the axes of \Cref{tab:taxonomy}, on the works that are not NA on either axis.}
     \label{fig:taxonomy-cramersV}
 \end{figure}
 
-At the level of values, we use the probabilities $q_{w,c}(v)$ of the $17$ values (NA excluded, as it is high for off-topic works on every axis at once).
-For $v\in V_c$ and $v'\in V_{c'}$ with $c\neq c'$, we compute the Spearman correlation $\rho$ between $\left(q_{w,c}(v)\right)_w$ and $\left(q_{w,c'}(v')\right)_w$ over the $408$ works, robust to the concentration of probabilities near $0$ and $1$ (\Cref{fig:taxonomy-Pcorrelations}).
-Pairs within one axis are excluded, as $\sum_{v}q_{w,c}(v)=1$ forces negative correlations.
-Over the $114$ remaining pairs, the median of $|\rho|$ is $0.19$, $82$ pairs have $|\rho|<0.3$ and only $4$ have $|\rho|>0.5$.
-The largest, $\rho=0.59$ between \emph{Model} and \emph{Known}, together with the associations of \emph{Known} with \emph{Exact} and \emph{Explicit}, form the profile of works that build a known exact symmetry into an architecture (\Cref{sec:design-principle}), the largest group of the corpus.
-Moderate correlations are also interpretable: \emph{Optimization} with \emph{Dynamic} ($\rho=0.44$), as symmetries of the learning rule are studied along training, and \emph{Framework} with \emph{Implicit} ($\rho=0.43$), as symmetries of the training pipeline are seldom formalized as such.
+We also report at the level of values, where we use the probabilities $q_{w,c}(v)$ of the $17$ values (NA excluded) and compute the Spearman correlation over the $408$ works (\Cref{fig:taxonomy-Pcorrelations}).
 
 \begin{figure}[ht]
 \begin{adjustwidth}{-\extralength}{0cm}
-    \centering
-    \includegraphics[width=\linewidth]{images/taxonomy-Pcorrelations.pdf}
+    \raggedleft
+    \includegraphics[width=0.8\linewidth]{images/taxonomy-Pcorrelations.pdf}
 \end{adjustwidth}
     \caption{Spearman correlation, over the $408$ works, between the probabilities $q_{w,c}(v)$ of values of distinct axes of \Cref{tab:taxonomy}; blocks within one axis are left blank.}
     \label{fig:taxonomy-Pcorrelations}
