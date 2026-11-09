@@ -2876,7 +2876,35 @@ We also report at the level of values, where we use the probabilities $q_{w,c}(v
     \label{fig:taxonomy-Pcorrelations}
 \end{figure}
 
-\pagebreak
+\subsection{Example of analysis}\label{app:taxonomy-analysis}
+We report two ways we used the coded corpus to support the framing of the survey: the complementary \emph{segment} and \emph{choic views}.
+The segment view selects a section, subsection or subsubsection $s$, gathers its $n_s$ citations, of works $w_1,\dots,w_{n_s}$ (a work cited twice counts twice), and plots, for each value $v\in V_c$ of each axis $c$, the mean
+\begin{equation}
+    \bar q_{s,c}(v)=\frac{1}{n_s}\sum_{i=1}^{n_s}q_{w_i,c}(v)
+\end{equation}
+with its $95\%$ $t$-interval (\Cref{fig:taxonomy-segment-view}).
+The \emph{choice view} does the converse: it selects a set of values and plots their means for every segment of a given level (\Cref{fig:taxonomy-choice-view}).
+For instance, \Cref{sec:sym-disco} is the only section where \emph{Unknown} dominates, as expected for symmetry discovery.
+
+\begin{figure}[ht]
+\begin{adjustwidth}{-\extralength}{0cm}
+    \raggedleft
+    \includegraphics[width=0.8\linewidth]{images/taxonomy-segment-4.pdf}
+\end{adjustwidth}
+    \caption{Segment view of \Cref{sec:design-principle}: mean probability of each value and confidence interval.}
+    \label{fig:taxonomy-segment-view}
+\end{figure}
+
+\begin{figure}[ht]
+\begin{adjustwidth}{-\extralength}{0cm}
+    \raggedleft
+    \includegraphics[width=0.8\linewidth]{images/taxonomy-segment-Known-Unknown.pdf}
+\end{adjustwidth}
+    \caption{Choice view of the values \emph{Known} and \emph{Unknown} of the axis \emph{A priori knowledge} at the section level: mean probability over the citations of each section with confidence intervals.}
+    \label{fig:taxonomy-choice-view}
+\end{figure}
+
+\clearpage
 
 \section{Gaps from coded corpus}\label{app:gaps}
 
