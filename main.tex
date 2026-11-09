@@ -1799,7 +1799,7 @@ Following the criterion of \citet{marcotte2023}, a necessary condition is that s
 \end{equation*}
 where $\ell_{(x,y)}$ is the per-example loss and $\ell^G_{(x,y)}$ its average over the orbit of the symmetry group $G$.
 This yields a negative result: for finite groups and analytic non-polynomial losses of the form $L(\hat y,y)=f(\langle\hat y,y\rangle)$ (e.g.\ the logistic loss), no additional conservation law exists.
-However on networks whose function decouples parameters from data as $f_\theta(x)=M(\theta)T(x)$ (called tensorizable networks e.g.\ polynomial networks): the discrete data symmetry lifts to a continuous parameter-space symmetry with MSE loss, for which a CL holds approximately under gradient descent.
+However on networks whose function decouples parameters from data as $f_\theta(x)=M(\theta)T(x)$ (called tensorizable networks e.g.\ polynomial networks), the discrete data symmetry lifts to a continuous parameter-space symmetry with MSE loss, for which a CL holds approximately under gradient descent.
 
 % \paragraph{Intrinsic Dynamics on the Quotient}
 Finally, conservation laws govern when the symmetry can be factored out of the dynamics altogether.
@@ -2717,7 +2717,54 @@ Complex symmetries remain largely open.
 Non-linear symmetries can be discovered as linear actions in a latent space \citep{yang2024p4icml}.
 A 3D rotation of an object seen as a 2D image has no well-defined action \citep{park2022p3icml,wang2022b} and similarly in context: a bounding box should rotate with its object while the global scene stays unrotated \citep{yu2022}.
 
-\subsection{Underexplored Areas}
+\subsection{Underexplored areas and possible gaps}
+We collect possible future investigations.
+
+\Cref{tab:gaps} (\Cref{app:gaps}) lists the low-lift pairs (a measure of under-representation) of the coded corpus, among which the following could be plausible candidates.
+
+\paragraph{(Framework, Explicit)}
+The design of learning systems could be formalized through symmetry principles as our reading of joint embeddings in \Cref{sec:joint-embedding}.
+More broadly, framework and data are the values of the object axis with the fewest works in the corpus.
+
+\paragraph{(Prescriptive, Optimization)}
+Symmetries in parameter space form an active field, which is still mostly descriptive.
+The use of conserved quantities as interpretable training descriptors could be explored, since they influence training~\citep{tarmoun2021p3icml}.
+The descriptive side is however unfinished: conserved quantities of transformers are only partially derived for multi-head attention and remain open for normalization layers and max-pooling \citep{marcotte2025p4icml}.
+The interaction with data augmentation beyond MSE and tensorizable architectures \citep{galley2026}, whether Noether-like frameworks capture all conservation laws, and how these relate to implicit bias \citep{zhao2025} are not well understood.
+
+\paragraph{(Model, Dynamic)}
+The low lift may reflect the relatively few works on training equivariant models (though recent exist~\citep{nordenfors2024,pertigkiozoglou2024,elhag2026}), limited software and hardware efficiency, or missing end-of-training metrics such as scaling laws.
+On when to build equivariance, arguments do not disagree but are not fully aligned either \citep{lippmann2025iclr,brehmer2025,shen2026,vadgama2025,rygiel2026,vandegeijn2025}.
+It is unclear whether FLOPs are a good criterion, as equivariant models win per nominal FLOP but reach a lower hardware throughput \citep{brehmer2025}, and to what degree expressive equivariant networks are efficiently trainable \citep{pacini2026,elbaz2025}.
+\citet{lawrence2026} hypothesize that locally equivariant features may help even on globally aligned datasets.
+Since non-equivariant models can learn symmetries, discover-then-enforce strategies \citep{escriche2025,otto2025} could be cost-effective: an unconstrained prototype is trained, its equivariance error quantified (\Cref{sec:sym-quantification}), and hard-to-learn symmetries then hard-coded.
+
+\paragraph{(Model, Unknown)}
+Whether fibers equal orbits, i.e.\ the reverse inclusion $\varphi^{-1}(\varphi(\theta))\subseteq G\cdot\theta$ (\Cref{sec:parameter-identifiability}), matters for the zero-loss manifold and weight-space learning.
+Results exist in special cases \citep{phuong2019,bona-pellissier2023,marchetti2025a,gegenfurtner2026,usevich2025}, so the current goal is to pin down the exact conditions of identifiability.
+\citet{shahverdi2026} prove that the generic fiber is finite for generic polynomial activations of large degree, but whether it contains only neuron permutations is open, and \citet{usevich2025} conjecture that finite identifiability implies global identifiability for homogeneous polynomial networks.
+Two other directions are (1) complete architectures, e.g.\ a full transformer with normalization, softmax and MLPs \citep{tran2025iclr,zhang2025p4icml}, where \citet{henry2025} conjecture that normalization makes deep self-attention generically identifiable; and (2) going beyond generic $\theta$ (model locus) to the instance level (parameter locus) \citep{grigsby2023p4icml,grillo2026}, for instance the volume of parameters identifiable up to permutation and rescaling \citep{grillo2026}.
+
+\vspace{5mm}
+
+The cell \emph{(Prescriptive, Implicit)} contains $44$ works which could provide empirical recommendations to be understood, explained or formalized as historically batch normalization \citep{ioffe2015p3icml} introduced a scale invariance whose effect is still not fully understood, and SAM \citep{foret2021} did not respect parameter-space symmetries until corrected by \citet{kwon2021p3icml}.
+
+\paragraph{Towards more general groups}
+Symmetry discovery could move beyond connected or compact Lie groups and linear actions \citep{ennes2025fcm,escriche2025}, universality results beyond point-wise activations and permutation representations \citep{pacini2026}, and new structures such as groupoids or category-theoretic frameworks could be explored \citep{sareen2026,basheer2025ijdsa}.
+Not all groups have been conquered by EDL, where most results concern finite groups, compact groups and semidirect products $\mathbb{R}^n\rtimes K$ with $K$ compact.
+Restricting the extent of a symmetry (\Cref{sec:extent-restriction}) is also an active area \citep{goel2025,urbano2026}.
+Whether and how networks abstract dataset symmetries outside the lazy regime remains open \citep{perin2025,jacot2025}.
+The discretization gap \citep{ennes2025fcm,ali2026} should also be answered: when is a finite subgroup $H\le G$ a good surrogate for a continuous group $G$, i.e.\ how large can $\sup_{g\in G}\lVert f(\rho_X(g)x)-\rho_Y(g)f(x)\rVert$ be for $f$ only $H$-equivariant?
+
+\paragraph{In parameter space}
+Equivariance seems less explored than invariance, e.g.\ $f_{\alpha\theta}=\alpha^L f_\theta$ for $\alpha>0$ in a bias-free ReLU network with $L$ layers.
+Input symmetries realized in parameter space have started to be studied \citep{galley2026}, whereas approximate parameter-space symmetries, e.g.\ rescaling with GeLU or Swish in place of ReLU, remain open \citep{ziyin2025a}.
+The effect of extent restriction on training dynamics has been investigated for specific parameter configurations \citep{ziyin2025}, less for data-dependent symmetries.
+For minibatches, writing $S_B(\theta)=\{g: f_{g\cdot\theta}|_B=f_\theta|_B\}$ for a batch $B$, we have $B\subseteq B'\Rightarrow S_{B'}(\theta)\subseteq S_B(\theta)$, so smaller batches carry more symmetries, in line with the batch-dependent functional dimension of \citet{elisendagrigsby2025aim}.
+
+\paragraph{From parameters to functions}
+A further goal is to infer properties of $\mathcal{F}$ from $\Theta$ (\Cref{sec:measurements-param-space}).
+For example, mode connectivity carries over to function space (\Cref{sec:mode-connectivity}), but what does a low linear barrier after alignment $\min_{g\in G}B(\theta_0,g\cdot\theta_1)\approx 0$ (\Cref{eq:linear-barrier}) mean for $f_{\theta_0}$ and $f_{\theta_1}$?
 
 \subsection{Conclusions}
 
