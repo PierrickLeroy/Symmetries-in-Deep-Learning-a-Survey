@@ -21,25 +21,21 @@ The concept of symmetry has a variety of applications and extend beyond mathemat
 
 ## Deep learning
 
-Deep learning is very powerful but learning in high dimension suffers from the curse of dimensionality and therefore needs structure which symmetry can provide.
-
-Networks themselves are overparametrized and their training is non-convex.
-It is generally not well understood why training works and what gets learned.
-Here symmetries provide a double answer by analysing them it might be possible to eliminate redundancies (make parameter spaces more identifiable), but they can also make training more explicit, uncovering implicit bias or constraints (conservation laws)
-
-Symmetries are transformations that leave something unchanged (or changed in a way we understand).
-As such, "Symmetry is a complexity-reducing concept; seek it everywhere." (quote from Alan Perlis, originally in a programming context)
-symmetry is a way to make precise the notion of ``understanding'': with invariance we understand what does not play a role; with equivariance we understand how it plays a role
+Deep learning is now the dominant approach in vision, language, the sciences and many use cases.
+A model results from a pipeline (data and their augmentations, architecture, loss, optimizer, training protocol), whose components evolve and are often adopted because they work thus progress has been largely empirical, though not only.
+The resulting models are hard to interpret, and the subfields studying them (vision, graph learning, self-supervised learning, learning theory, scientific ML) have developed separate vocabulary and practices.
 
 ## Symmetries and deep learning
 
-Deep learning is not very interpretablen symmetry has a role of organizing principle as in GDL.
+Symmetry recurs at each stage of the deep learning pipeline.
+Some symmetries are imposed on purpose: an equivariant layer, a contrastive loss, an augmentation policy, while others appear without being asked for: hidden neurons can be permuted without changing the function, batch normalization makes the loss scale invariant, and predicting sets is invariant to the order of predictions.
+Some symmetries are not known in advance and must be discovered and many hold only approximately or on part of the domain.
+Working explicitly with a symmetry can turn a heuristic into a precise statement: invariance says what plays no role, equivariance how it plays a role.
+The same notion can also play opposite roles: a prior on data but a confounder on parameters.
 
-Symmetries touch on many aspects of deep learning: equivariant layers, augmentation, architectural, criterion, neuron permutations, discovery, but they does not have a single: often a prior in data, they become confounders in parameters
 These occurrences are studied by separate communities and existing surveys each cover one object or domain (details in Related work).
 
 ## Objective
-
 
 Symmetry as the starting point
 In contrast, we start from the concept of symmetry and go broad: we list its occurrences across deep learning, from the problem to the training framework including symmetries that are unknown or incomplete, and organize them in a faceted taxonomy across subfields (\Cref{tab:taxonomy}), linking and contrasting them for a high-level, structuralist understanding.
@@ -91,3 +87,13 @@ One caveat, the exposition is a choice among several possibilities; some segment
 Opposite notions exist such as asymmetry, the absence or violation of symmetry,  or antisymmetry (asymmetric relation: $x\sim y \implies y\nsim x$, antisymmetric relation: $(x\sim y \wedge y\sim x)\implies x=y$).
 
 One notable achievement is the classification of finite simple groups, a $50$ year collective endeavor.
+
+Deep learning is very powerful but learning in high dimension suffers from the curse of dimensionality and therefore needs structure which symmetry can provide.
+
+Networks themselves are overparametrized and their training is non-convex.
+It is generally not well understood why training works and what gets learned.
+Here symmetries provide a double answer by analysing them it might be possible to eliminate redundancies (make parameter spaces more identifiable), but they can also make training more explicit, uncovering implicit bias or constraints (conservation laws)
+
+Symmetries are transformations that leave something unchanged (or changed in a way we understand).
+As such, "Symmetry is a complexity-reducing concept; seek it everywhere." (quote from Alan Perlis, originally in a programming context)
+symmetry is a way to make precise the notion of ``understanding'': with invariance we understand what does not play a role; with equivariance we understand how it plays a role
