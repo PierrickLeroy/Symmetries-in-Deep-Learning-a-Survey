@@ -1,0 +1,1628 @@
+% Snapshot of the "Mathematical background" section of main.tex (lines 335-805),
+% taken on 2026-11-10 before rewriting that section from scratch.
+% Standalone: compile from this folder with `latexmk -pdf math-background_2026-11-10.tex`.
+% References to other sections of the survey will show as "??".
+\documentclass[11pt]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{hyperref}
+\usepackage{cleveref}
+
+% Theorem-like environments provided by the MDPI class in main.tex
+\theoremstyle{plain}
+\newtheorem{Theorem}{Theorem}[section]
+\newtheorem{Proposition}{Proposition}[section]
+\newtheorem{Lemma}{Lemma}[section]
+\theoremstyle{definition}
+\newtheorem{Definition}{Definition}[section]
+\newtheorem{Example}{Example}[section]
+\crefname{Theorem}{Theorem}{Theorems}
+\crefname{Proposition}{Proposition}{Propositions}
+\crefname{Lemma}{Lemma}{Lemmas}
+\crefname{Definition}{Definition}{Definitions}
+\crefname{Example}{Example}{Examples}
+
+\newcommand{\pnote}[1]{\textcolor{red}{PL: #1}}
+
+\begin{document}
+
+\section{Background: Mathematical Foundations of Symmetry (25/09)}\label{sec:background}
+% Group Theory, the algebraic backbone: Group (closure, associativity, identity, inverses), group action (orbits, stabilizers, free vs. transitive actions)
+\subsection{Group Theory: The Algebraic Backbone}
+\label{sec:group-theory-backbone}
+
+The precise language of symmetry is group theory.
+We recall here the minimal apparatus needed: the group axioms, and the theory of group actions, with an emphasis on the orbit--stabilizer picture that recurs throughout.
+
+\subsubsection{Groups}\label{subsec:groups}
+
+\begin{Definition}[Group]\label{def:group}
+A \emph{group} is a pair $(G, \cdot)$ consisting of a set $G$ and a binary
+operation $\cdot : G \times G \to G$ satisfying:
+    \begin{enumerate}[label=(G\arabic*), leftmargin=*, labelsep=0.5em]
+        \item \textbf{Closure.} For all $g, h \in G$, $g \cdot h \in G$.
+        \item \textbf{Associativity.} For all $g, h, k \in G$,
+        \[
+            (g \cdot h) \cdot k = g \cdot (h \cdot k).
+        \]
+        \item \textbf{Identity.} There exists $e \in G$ such that
+        \[
+            e \cdot g = g \cdot e = g \qquad \text{for all } g \in G.
+        \]
+        \item \textbf{Inverses.} For every $g \in G$ there exists
+        $g^{-1} \in G$ such that
+        \[
+            g \cdot g^{-1} = g^{-1} \cdot g = e.
+        \]
+    \end{enumerate}
+\end{Definition}
+
+Closure is often stated separately, as above, but is already implicit in the
+requirement that $\cdot$ be a map into $G$; we retain it for emphasis, since
+in practice (e.g.\ when $G$ arises as a subset of a larger ambient set, such
+as permutations of a fixed set or invertible matrices) closure is the axiom
+that must be checked first. The identity $e$ is unique, and each inverse
+$g^{-1}$ is unique, both by a standard cancellation argument from (G2)--(G4).
+If in addition $g \cdot h = h \cdot g$ for all $g,h \in G$, the group is
+\emph{abelian}; otherwise it is \emph{non-abelian}.
+
+\begin{Example}
+\label{ex:groups}
+Groups relevant to the constructions in this survey include:
+\begin{itemize}
+    \item The \emph{symmetric group} $S_n$ of permutations of
+    $\{1, \dots, n\}$ under composition---non-abelian for $n \geq 3$, and the
+    natural home for neuron-permutation symmetries of a network layer.
+    \item The \emph{general linear group} $GL(n, \mathbb{R})$ of invertible
+    $n \times n$ real matrices under multiplication, and its subgroup the
+    \emph{orthogonal group} $O(n) = \{ A \in GL(n,\mathbb{R}) : A^\top A = I \}$.
+    \item The multiplicative group $\mathbb{R}_{>0}$ of positive reals,
+    relevant to positive rescaling symmetries in ReLU networks
+    (cf.\ \Cref{sec:parameter-space-symmetries} where such rescalings act
+    on a layer's incoming/outgoing weights).
+    \item Direct and semidirect products (explained later in this work) of the above, e.g.\
+    $S_n \ltimes \mathbb{R}_{>0}^n$, capturing the combined permutation and
+    positive-scaling symmetries of a hidden layer.
+\end{itemize}
+\end{Example}
+
+A \emph{subgroup} $H \leq G$ is a subset closed under $\cdot$ and inverses
+and containing $e$; equivalently, $H$ is itself a group under the restriction
+of $\cdot$. A map $\varphi : G \to G'$ between groups is a
+\emph{homomorphism} if $\varphi(g h) = \varphi(g)\varphi(h)$ for all
+$g, h \in G$; it is an \emph{isomorphism} if additionally bijective, in which
+case $G$ and $G'$ are structurally indistinguishable as groups.
+
+\subsubsection{Group Actions}
+\label{subsec:group-actions}
+
+Groups become tools for organizing geometric or combinatorial structure once
+they are allowed to \emph{act} on a set.
+
+\begin{Definition}[Group action]\label{def:group-action}
+A (left) \emph{action} of a group $G$ on a set $\mathcal{X}$ is a map
+$\alpha : G \times \mathcal{X} \to \mathcal{X}$, written $\alpha(g,x) = g \cdot x$, such that
+\begin{enumerate}[label=(A\arabic*), leftmargin=*, labelsep=0.5em]
+    \item $e \cdot x = x$ for all $x \in \mathcal{X}$;
+    \item $g \cdot (h \cdot x) = (gh) \cdot x$ for all $g, h \in G$,
+    $x \in \mathcal{X}$.
+\end{enumerate}
+Equivalently, an action is a homomorphism $G \to \operatorname{Sym}(\mathcal{X})$, the group
+of bijections of $\mathcal{X}$, sending $g \mapsto (x \mapsto g \cdot x)$.
+\end{Definition}
+
+Two invariants attached to a point $x \in \mathcal{X}$ organize the geometry of an
+action.
+
+\begin{Definition}[Orbit and stabilizer]
+\label{def:orbit-stabilizer}
+For $x \in \mathcal{X}$, the \emph{orbit} of $x$ under $G$ is
+\[
+    G \cdot x \;=\; \{\, g \cdot x : g \in G \,\} \subseteq \mathcal{X},
+\]
+and the \emph{stabilizer} of $x$ is the subgroup
+\[
+    G_x \;=\; \{\, g \in G : g \cdot x = x \,\} \leq G.
+\]
+\end{Definition}
+
+Orbits partition $\mathcal{X}$ into equivalence classes under the relation
+$x \sim y \iff y \in G \cdot x$, and the quotient set $\mathcal{X} / G$ of orbits is
+the natural object classifying $\mathcal{X}$ \emph{up to symmetry}---the set-theoretic
+precursor of the weight-space quotients used later to remove permutation and
+scaling redundancy from parameter spaces. The stabilizer $G_x$ measures the
+symmetry \emph{fixing} a given representative, and the two invariants are
+linked by the following basic but central fact.
+
+Before stating the theorem, it is worth isolating the coset construction
+that appears in its statement, since it arises itself as the orbit set of a
+natural action.
+
+\begin{Example}[Cosets as orbits]
+\label{ex:cosets-as-orbits}
+Let $H \leq G$ and let $H$ act on the set $\mathcal{X} = G$ via
+\[
+    \beta(h,x) = x h, \qquad h \in H,\ x \in G.
+\]
+Composing two such maps gives $\beta(h_2, \beta(h_1,x)) = (x h_1) h_2 = x(h_1 h_2) = \beta(h_1 h_2, x)$,
+so this is a \emph{right} action of $H$ on $G$---the composition order is
+reversed relative to the left-action convention of
+\Cref{def:group-action}. It is transcribed into a left action in
+the sense of \Cref{def:group-action} by setting
+$h \cdot x := x h^{-1}$ instead, at the cost of an inverse; either
+convention produces the same orbits. Taking $\beta$ as written, the orbit of
+a point $x \in G$ is
+\[
+    H \cdot x \;=\; \{\, xh : h \in H \,\} \;=:\; xH,
+\]
+and the stabilizer is trivial: $xh = x$ forces $h = e$ by cancellation, so
+$H_x = \{e\}$ for every $x \in G$---the action is free. The orbit $xH$ is
+called the \emph{left coset} of $H$ represented by $x$.
+\end{Example}
+
+\begin{Definition}[Left coset]
+\label{def:left-coset}
+For a subgroup $H \leq G$ and $x \in G$, the \emph{left coset} of $H$
+represented by $x$ is
+\[
+    xH \;:=\; \{\, xh : h \in H \,\} \subseteq G.
+\]
+The left cosets of $H$ are precisely the orbits of the action in
+\Cref{ex:cosets-as-orbits}, and hence partition $G$; the set of all
+left cosets is denoted $G/H$. Since that action is free, the map
+$h \mapsto xh$ is a bijection $H \xrightarrow{\sim} xH$ for every $x$, so all
+left cosets share the cardinality $|H|$. Consequently, when $G$ is finite,
+\[
+    |G| \;=\; [G:H]\,|H|, \qquad [G:H] := |G/H|,
+\]
+where $[G:H]$ is the \emph{index} of $H$ in $G$---this is Lagrange's
+theorem, an immediate corollary of \Cref{thm:orbit-stabilizer} below
+applied to $\mathcal{X} = G$ with $H$ in place of $G$.
+\end{Definition}
+
+With this in hand, the set $G/G_x$ appearing in the theorem below is simply
+the set of left cosets of the stabilizer subgroup $G_x \leq G$, in the sense
+of \Cref{def:left-coset}.
+
+\begin{Theorem}[Orbit--Stabilizer Theorem]
+\label{thm:orbit-stabilizer}
+Let $G$ act on $\mathcal{X}$ and fix $x \in \mathcal{X}$. The map $g G_x \mapsto g \cdot x$ is a
+well-defined bijection between the set of left cosets $G / G_x$ and the
+orbit $G \cdot x$. Consequently, if $G$ is finite,
+\[
+    |G \cdot x| \;=\; [G : G_x] \;=\; \frac{|G|}{|G_x|}.
+\]
+\end{Theorem}
+
+Two extremal regimes of behavior are of particular interest.
+
+\begin{Definition}[Free and transitive actions]
+\label{def:free-transitive}
+An action of $G$ on $\mathcal{X}$ is:
+\begin{itemize}
+    \item \emph{free} if $G_x = \{e\}$ for every $x \in \mathcal{X}$, i.e.\ only the
+    identity fixes any point ($g \cdot x = x \implies g = e$);
+    \item \emph{transitive} if $\mathcal{X}$ consists of a single orbit, i.e.\ for all
+    $x, y \in \mathcal{X}$ there exists $g \in G$ with $g \cdot x = y$.
+\end{itemize}
+An action that is both free and transitive is \emph{simply transitive} (or
+\emph{regular}): for every pair $x, y \in \mathcal{X}$ there is a \emph{unique}
+$g \in G$ with $g \cdot x = y$. In this case $\mathcal{X}$ is a $G$-\emph{torsor}, and
+the choice of any basepoint $x_0 \in \mathcal{X}$ identifies $\mathcal{X} \cong G$ as $G$-sets via
+$g \mapsto g \cdot x_0$---though this identification depends on the
+basepoint and carries no group structure of its own on $\mathcal{X}$.
+\end{Definition}
+
+Freeness and transitivity are logically independent: an action can be free
+without being transitive (e.g.\ $\mathbb{Z}$ acting on itself by translation
+has trivial stabilizers but, if $\mathcal{X}$ is taken larger than a single orbit,
+fails transitivity), transitive without being free (e.g.\ $S_n$ acting on
+$\{1,\dots,n\}$ is transitive but $G_x \cong S_{n-1}$ is nontrivial for
+$n \geq 2$), neither, or both. When the action is free, the Orbit--Stabilizer
+Theorem collapses to $|G \cdot x| = |G|$: every orbit is a faithful copy of
+$G$ itself, with no internal symmetry to quotient by---the situation one
+seeks when a group action is meant to model \emph{pure redundancy} (e.g.\
+positive rescalings acting freely on the nonzero weights of a ReLU unit) with
+no additional accidental coincidences.
+
+Finally, an action is \emph{faithful} if the homomorphism
+$G \to \operatorname{Sym}(\mathcal{X})$ of \Cref{def:group-action} is injective,
+equivalently $\bigcap_{x \in \mathcal{X}} G_x = \{e\}$; free actions are automatically
+faithful, but not conversely. Faithfulness is the natural minimality
+condition ensuring $G$ is not acting with redundant, indistinguishable
+elements---a standing assumption whenever a symmetry group is identified
+\emph{as} a subgroup of $\operatorname{Sym}(\mathcal{X})$ rather than merely mapped into it.
+
+
+
+
+% Discrete (permutation, cyclic...) vs continuous/Lie (Euclidean, Lorentz...) groups
+
+\subsubsection{Discrete versus Continuous (Lie) Groups}
+\label{subsec:discrete-vs-lie}
+
+The groups of \Cref{ex:groups} split naturally along a second axis,
+orthogonal to the abelian/non-abelian distinction: whether $G$ itself carries
+a topology (indeed a smooth manifold structure) compatible with the group
+operations, or is merely a set with no such structure to speak of. This
+distinction determines whether the tools available are combinatorial
+(orbit-counting, coset enumeration) or differential (tangent spaces, flows,
+one-parameter subgroups), and both regimes recur throughout this survey.
+
+\subsubsection{Discrete groups}
+\label{subsubsec:discrete-groups}
+
+\begin{Definition}[Discrete group]
+\label{def:discrete-group}
+A group $G$ is \emph{discrete} if it is equipped with the discrete topology
+(every subset is open), or, informally, if $G$ is finite or countable with
+no accumulation structure relating distinct elements. Equivalently, the only
+continuous paths $\gamma : [0,1] \to G$ are the constant ones.
+\end{Definition}
+
+\begin{Example}[Discrete groups]
+\label{ex:discrete-groups}
+\begin{itemize}
+    \item The \emph{symmetric group} $S_n$ (\Cref{ex:groups}) is
+    finite, of order $n!$, and non-abelian for $n \geq 3$; it acts on
+    $\{1,\dots,n\}$ by permutation, and this action is transitive but---as
+    already noted---not free.
+    \item The \emph{cyclic group} $\mathbb{Z}/n\mathbb{Z}$, the integers
+    modulo $n$ under addition, is the prototypical finite abelian group; more
+    generally $\mathbb{Z}$ itself, under addition, is an infinite discrete
+    abelian group. Every element of $\mathbb{Z}/n\mathbb{Z}$ is a power of a
+    single generator, the defining property of \emph{cyclicity}.
+    \item Finite subgroups of $O(n)$, such as the dihedral groups
+    (symmetries of a regular polygon) or the point groups of crystallography,
+    sit discretely inside a continuous ambient group
+    (\Cref{subsubsec:lie-groups} below) while remaining discrete as groups
+    in their own right.
+\end{itemize}
+\end{Example}
+
+For discrete $G$, orbits under an action are typically studied by direct
+enumeration, and \Cref{thm:orbit-stabilizer} is often used
+computationally: $|G\cdot x|$ and $|G_x|$ are counted independently and
+cross-checked against $|G|$. This is the regime relevant, e.g., to
+neuron-permutation symmetries $S_n \curvearrowright \mathbb{R}^{n}$ acting on
+a layer's units.
+
+\subsubsection{Continuous (Lie) groups}
+\label{subsubsec:lie-groups}
+
+\begin{Definition}[Lie group]
+\label{def:lie-group}
+A \emph{Lie group} is a group $G$ that is simultaneously a smooth manifold,
+such that the multiplication map $G \times G \to G$, $(g,h) \mapsto gh$, and
+the inversion map $G \to G$, $g \mapsto g^{-1}$, are both smooth. Unlike a
+discrete group, $G$ then admits nontrivial continuous paths through the
+identity, and the tangent space $\mathfrak{g} = T_e G$ at the identity---the
+\emph{Lie algebra} of $G$---linearizes the group structure infinitesimally.
+\end{Definition}
+
+\begin{Example}[Lie groups]
+\label{ex:lie-groups}
+\begin{itemize}
+    \item The \emph{general linear group} $GL(n,\mathbb{R})$
+    (\Cref{ex:groups}) is an open subset of $\mathbb{R}^{n^2}$ under
+    the determinant-nonvanishing condition, hence an $n^2$-dimensional Lie
+    group; its Lie algebra $\mathfrak{gl}(n,\mathbb{R})$ is all of
+    $\mathbb{R}^{n^2}$ under the matrix commutator.
+    \item The \emph{Euclidean group} $E(n) = O(n) \ltimes \mathbb{R}^n$
+    consists of all distance-preserving transformations of
+    $\mathbb{R}^n$---rotations, reflections, and translations---and is the
+    Symmetry group of ordinary (flat, positive-definite) Euclidean geometry.
+    Its subgroup $SE(n) = SO(n) \ltimes \mathbb{R}^n$ of orientation-preserving
+    Isometries are the group of rigid motions.
+    \item The \emph{Lorentz group} $O(1,n)$ (or $O(n,1)$, depending on sign
+    convention) is the analogue of $O(n)$ for Minkowski space
+    $\mathbb{R}^{1,n}$, i.e.\ the group of linear maps preserving the
+    indefinite quadratic form $-t^2 + x_1^2 + \cdots + x_n^2$ rather than the
+    positive-definite Euclidean one; together with translations, it generates
+    the \emph{Poincar\'e group}, the symmetry group of Minkowski spacetime.
+    Its noncompactness (boosts are unbounded) already distinguishes its
+    representation theory sharply from that of the compact group $O(n)$.
+    \item The multiplicative group $\mathbb{R}_{>0}$ and the orthogonal group
+    $O(n)$ of \Cref{ex:groups} are themselves Lie groups of dimension
+    $1$ and $\binom{n}{2}$ respectively, and their (semidirect) product
+    actions on network weight layers---mentioned there in the discrete
+    permutation context---are properly continuous, Lie-theoretic actions.
+\end{itemize}
+\end{Example}
+
+For a Lie group $G$ acting smoothly on a manifold $\mathcal{X}$, orbits
+$G \cdot x$ need not be discrete sets but are themselves immersed
+submanifolds of $\mathcal{X}$, and \Cref{thm:orbit-stabilizer} upgrades from a
+counting statement to a statement about diffeomorphism: when the action is
+proper, $G \cdot x \cong G / G_x$ as smooth manifolds, with $G_x \leq G$ now
+a closed (possibly positive-dimensional) Lie subgroup rather than a finite
+index-computing subgroup. This differential refinement of the
+orbit--stabilizer picture is the one in play whenever continuous rescaling
+or rotation symmetries---rather than discrete permutation
+symmetries---are quotiented out of a parameter space, as in
+\Cref{sec:parameter-space-symmetries}.
+
+
+% Subgroups, direct products, semidirect products
+
+\subsection{Subgroups, Direct Products, and Semidirect Products}
+\label{subsec:subgroups-products}
+
+Having distinguished discrete from continuous groups, we now record the
+standard constructions for building new groups out of old ones---constructions
+already used implicitly above, e.g.\ in writing $E(n) = O(n) \ltimes
+\mathbb{R}^n$ or $S_n \ltimes \mathbb{R}_{>0}^n$ for the combined permutation
+and rescaling symmetries of a layer.
+
+\subsubsection{Subgroups}
+\label{subsubsec:subgroups}
+
+\begin{Definition}[Subgroup, revisited]
+\label{def:subgroup}
+A subset $H \subseteq G$ is a \emph{subgroup}, written $H \leq G$, if
+$e \in H$ and $H$ is closed under the group operation and inversion:
+$h_1, h_2 \in H \implies h_1 h_2 \in H$ and $h \in H \implies h^{-1} \in H$.
+Equivalently, $H$ is nonempty and $h_1 h_2^{-1} \in H$ for all
+$h_1, h_2 \in H$ (the one-step subgroup criterion). Under the restriction of
+$\cdot$, $H$ then satisfies (G1)--(G4) of \Cref{def:group} in its
+own right.
+\end{Definition}
+
+A subgroup $N \leq G$ is \emph{normal}, written $N \trianglelefteq G$, if it
+is invariant under conjugation: $g N g^{-1} = N$ for every $g \in G$,
+equivalently $g n g^{-1} \in N$ for all $g \in G, n \in N$. Normality is
+exactly the condition under which the coset space $G/N$ of
+\Cref{def:left-coset} inherits a group structure from $G$, via
+$(g_1 N)(g_2 N) := (g_1 g_2) N$---this is well defined precisely because
+conjugation cannot move a coset representative out of $N$. The resulting
+group $G/N$ is the \emph{quotient group}. Normal subgroups will reappear
+below as the fixed piece in a semidirect product, and are the group-theoretic
+analogue of the weight-space quotients used to remove symmetry redundancy
+elsewhere in this survey.
+
+\begin{Example}
+\label{ex:subgroups}
+$SO(n) \trianglelefteq O(n)$ (rotations inside all orthogonal
+transformations, of index $2$, with $O(n)/SO(n) \cong \mathbb{Z}/2\mathbb{Z}$
+recording orientation); the alternating group
+$A_n \trianglelefteq S_n$ (even permutations, likewise of index $2$); and the
+translation subgroup $\mathbb{R}^n \trianglelefteq E(n)$ inside the Euclidean
+group. By contrast, a copy of $O(n) \leq E(n)$ fixing the origin is a
+subgroup but \emph{not} normal for $n \geq 1$: conjugating a rotation about
+the origin by a nontrivial translation produces a rotation about a different
+point, which is not in that particular copy of $O(n)$.
+\end{Example}
+
+\subsubsection{Direct products}
+\label{subsubsec:direct-products}
+
+\begin{Definition}[Direct product]
+\label{def:direct-product}
+Given groups $G_1, G_2$, the \emph{direct product} $G_1 \times G_2$ is the
+group with underlying set $G_1 \times G_2$ and componentwise operation
+\[
+    (g_1, g_2) \cdot (g_1', g_2') = (g_1 g_1',\, g_2 g_2').
+\]
+Both factors sit inside the product as normal subgroups,
+$G_1 \times \{e_2\} \trianglelefteq G_1 \times G_2$ and
+$\{e_1\} \times G_2 \trianglelefteq G_1 \times G_2$, and elements from the
+two factors commute with one another: $(g_1,e_2)(e_1,g_2) = (g_1,g_2) =
+(e_1,g_2)(g_1,e_2)$.
+\end{Definition}
+
+The direct product is the construction that applies when two symmetries act
+\emph{independently}, with no interaction between the factors. It is,
+however, too rigid for many of the situations of interest: when one
+symmetry's action is itself permuted or twisted by the other, a direct
+product cannot express the coupling, and one instead needs the semidirect
+product below.
+
+\subsubsection{Semidirect products}
+\label{subsubsec:semidirect-products}
+
+Suppose $N$ and $H$ are groups and $H$ acts on $N$ \emph{by automorphisms},
+i.e.\ there is a homomorphism $\varphi : H \to \operatorname{Aut}(N)$ (so each
+$\varphi(h) : N \to N$ is itself a group isomorphism, not merely a bijection
+as in \Cref{def:group-action}).
+
+\begin{Definition}[Semidirect product]
+\label{def:semidirect-product}
+The \emph{semidirect product} $N \rtimes_\varphi H$ is the group with
+underlying set $N \times H$ and operation
+\[
+    (n_1, h_1) \cdot (n_2, h_2) \;=\; \bigl(n_1 \, \varphi(h_1)(n_2),\; h_1 h_2 \bigr).
+\]
+This satisfies the group axioms (G1)--(G4) with identity $(e_N, e_H)$ and
+inverse $(n,h)^{-1} = (\varphi(h^{-1})(n^{-1}), h^{-1})$; the verification of
+(G2) is exactly where the requirement that $\varphi(h)$ be an automorphism
+(rather than an arbitrary bijection) is used. The subset
+$N \times \{e_H\}$ is a normal subgroup isomorphic to $N$, the subset
+$\{e_N\} \times H$ is a subgroup isomorphic to $H$ (normal iff $\varphi$ is
+trivial, in which case $N \rtimes_\varphi H$ degenerates to the direct
+product $N \times H$), and every element factors uniquely as a product of
+one element from each.
+\end{Definition}
+
+\begin{Example}[Semidirect products already in use]\label{ex:semidirect-products}
+\phantom{u}
+\begin{itemize}
+    \item \textbf{The Euclidean group.} $E(n) = \mathbb{R}^n \rtimes_\varphi
+    O(n)$, where $\varphi : O(n) \to \operatorname{Aut}(\mathbb{R}^n)$ sends a
+    matrix $A$ to its defining linear action $v \mapsto Av$. Concretely,
+    composing two rigid motions $(v_1, A_1)$ then $(v_2,A_2)$ (translate by
+    $v_1$, rotate by $A_1$, then translate by $v_2$, rotate by $A_2$) gives
+    $(v_2, A_2)(v_1,A_1) = (v_2 + A_2 v_1,\ A_2 A_1)$---the rotation
+    $A_2$ twists the first translation $v_1$ before the two compose, which
+    is exactly the semidirect (as opposed to direct) product structure. The
+    Poincar\'e group $\mathbb{R}^{1,n} \rtimes O(1,n)$ mentioned in
+    \Cref{subsubsec:lie-groups} has the identical shape, with $O(1,n)$ in
+    place of $O(n)$.
+    \item \textbf{Layer symmetries.} The combined permutation and
+    positive-rescaling symmetry of a hidden layer's units,
+    $S_n \ltimes \mathbb{R}_{>0}^n$, is the semidirect product with
+    $\varphi : S_n \to \operatorname{Aut}(\mathbb{R}_{>0}^n)$ the permutation
+    action on coordinates: a permutation $\sigma \in S_n$ acts on a scaling
+    tuple $(\lambda_1,\dots,\lambda_n) \in \mathbb{R}_{>0}^n$ by
+    $\sigma \cdot (\lambda_i) = (\lambda_{\sigma^{-1}(i)})$, reordering which
+    unit gets which scale factor before the scalings themselves compose
+    coordinatewise. This is the group whose action on weight space underlies
+    the quotient constructions of
+    \Cref{sec:parameter-space-symmetries}.
+    \item \textbf{Dihedral groups revisited.} $D_n \cong \mathbb{Z}/n\mathbb{Z}
+    \rtimes \mathbb{Z}/2\mathbb{Z}$, with the order-$2$ factor acting on the
+    cyclic factor by inversion, $\varphi(-1)(k) = -k$; this exhibits the
+    discrete symmetry group of \Cref{ex:discrete-groups} itself as a
+    semidirect product, showing the construction is not confined to the
+    continuous setting.
+\end{itemize}
+\end{Example}
+
+The direct/semidirect distinction is precisely the question of whether the
+two symmetry types present in a problem interact: wherever a rescaling
+symmetry and a permutation symmetry (or a rotation and a translation) must be
+composed in a fixed order with one twisting the other, the semidirect
+product---not the direct product---is the group that actually acts.
+
+
+
+% Compactness and Peter-Weyl theorem guaranteeing reducibility, non-compact groups are more difficult: no reducibility of representations, Haar measure
+
+\subsection{Compactness, the Peter--Weyl Theorem, and the Non-Compact Case}
+\label{subsec:compactness-peter-weyl}
+
+The discrete/continuous dichotomy of \Cref{subsec:discrete-vs-lie} is not
+the only one that matters for representation theory: among Lie groups, a
+further split---compact versus non-compact---determines whether
+representations behave as tamely as in the finite case or exhibit genuinely
+new phenomena. This subsection makes that distinction precise.
+
+\subsubsection{Compact groups}
+\label{subsubsec:compact-groups}
+
+\begin{Definition}[Compact group]
+\label{def:compact-group}
+A Lie group $G$ is \emph{compact} if it is compact as a topological space,
+i.e.\ every open cover of $G$ admits a finite subcover, equivalently (since
+$G$ is a manifold, hence metrizable) every sequence in $G$ has a convergent
+subsequence.
+\end{Definition}
+
+\begin{Example}[Compact and non-compact groups already introduced]
+\label{ex:compactness}
+The orthogonal group $O(n)$ (\Cref{ex:groups}) is compact: it is a
+closed and bounded subset of $\mathbb{R}^{n^2}$, boundedness following from
+$A^\top A = I \implies \sum_{i,j} A_{ij}^2 = n$. Its subgroup $SO(n)$ is
+likewise compact, and finite groups such as $S_n$ or $\mathbb{Z}/n\mathbb{Z}$
+are trivially compact. By contrast, $GL(n,\mathbb{R})$, $\mathbb{R}_{>0}$,
+the translation group $\mathbb{R}^n \leq E(n)$, and the Lorentz group
+$O(1,n)$ (\Cref{subsubsec:lie-groups}) are all non-compact: each contains
+sequences with no convergent subsequence (e.g.\ dilations $\lambda \to
+\infty$ in $\mathbb{R}_{>0}$, or Lorentz boosts approaching the speed of
+light in $O(1,n)$). Consequently $E(n)$ and the Poincar\'e group, being
+semidirect products with a non-compact factor, are themselves non-compact,
+even though their rotational part $O(n)$, resp.\ $O(1,n)$'s maximal compact
+subgroup, is not the source of the non-compactness.
+\end{Example}
+
+\subsubsection{Haar measure}
+\label{subsubsec:haar-measure}
+
+Representation theory on a Lie group requires a way to integrate functions
+on $G$ that is compatible with the group structure.
+
+\begin{Theorem}[Existence of Haar measure]
+\label{thm:haar-measure}
+On every locally compact topological group $G$ (in particular, every Lie
+group) there exists a nonzero, regular Borel measure $\mu$, unique up to
+positive scalar, that is \emph{left-invariant}:
+\[
+    \mu(gS) = \mu(S) \qquad \text{for all } g \in G \text{ and Borel } S \subseteq G.
+\]
+This $\mu$ is the \emph{(left) Haar measure} of $G$.
+\end{Theorem}
+
+In general $\mu$ need not also be right-invariant; groups for which it is
+(automatically true for compact and for abelian $G$) are called
+\emph{unimodular}. The decisive fact for what follows is:
+
+\begin{Proposition}
+\label{prop:compact-haar-finite}
+If $G$ is compact, its Haar measure $\mu$ has finite total mass,
+$\mu(G) < \infty$, and may be normalized to a left- and right-invariant
+probability measure, $\mu(G) = 1$.
+\end{Proposition}
+
+If $G$ is non-compact, no such normalization is possible: $\mu(G) = \infty$
+necessarily (e.g.\ Lebesgue measure on $\mathbb{R}^n \leq E(n)$, or the
+non-compact directions of $O(1,n)$), and integration over all of $G$ ceases
+to make sense for a constant function. This single fact is the root cause of
+the divergence in behavior described next.
+
+\subsubsection{The Peter--Weyl theorem: compact groups are fully reducible}
+\label{subsubsec:peter-weyl}
+
+Fix a finite-dimensional (or, more generally, unitary) representation
+$\rho : G \to GL(V)$, i.e.\ a homomorphism into the invertible linear maps of
+a vector space $V$ (an action of $G$ on $V$ in the sense of
+\Cref{def:group-action}, compatible with the linear structure). A
+subspace $W \subseteq V$ is \emph{invariant} if $\rho(g)W \subseteq W$ for
+all $g \in G$; $\rho$ is \emph{irreducible} if its only invariant subspaces
+are $0$ and $V$, and \emph{completely reducible} if $V$ decomposes as a
+direct sum of irreducible invariant subspaces.
+
+\begin{Theorem}[Peter--Weyl]
+\label{thm:peter-weyl}
+Let $G$ be a compact (Lie) group. Then:
+\begin{enumerate}
+    \item Every continuous unitary representation of $G$ on a Hilbert space
+    decomposes as a direct sum (in general, a Hilbert-space direct sum) of
+    finite-dimensional irreducible unitary representations.
+    \item Every finite-dimensional representation of $G$ is equivalent to a
+    unitary one, and hence---by (1)---is completely reducible.
+    \item The matrix coefficients of the irreducible unitary representations
+    of $G$ span a dense subspace of $L^2(G,\mu)$ (with $\mu$ the normalized
+    Haar measure of \Cref{prop:compact-haar-finite}), giving an
+    orthogonal (Peter--Weyl) decomposition
+    \[
+        L^2(G,\mu) \;\cong\; \bigoplus_{\pi \in \widehat{G}} V_\pi \otimes V_\pi^*,
+    \]
+    the sum ranging over the set $\widehat{G}$ of (isomorphism classes of)
+    irreducible unitary representations of $G$.
+\end{enumerate}
+\end{Theorem}
+
+The mechanism behind part (2) is the \emph{unitarizability trick}: given any
+representation $\rho$ of a compact $G$ on an inner product space $(V,
+\langle\cdot,\cdot\rangle)$, average the inner product itself over $G$ using
+the finite Haar measure,
+\[
+    \langle v, w \rangle_G \;:=\; \int_G \langle \rho(g)v,\, \rho(g)w \rangle \, d\mu(g),
+\]
+which converges precisely because $\mu(G) < \infty$, and is by construction
+$G$-invariant, making $\rho$ unitary with respect to $\langle\cdot,\cdot\rangle_G$.
+Once $\rho$ is unitary, the orthogonal complement of any invariant subspace
+is again invariant, and complete reducibility follows by induction on
+$\dim V$. Compactness therefore does not merely simplify representation
+theory---it is the single hypothesis that makes the averaging argument, and
+hence \Cref{thm:peter-weyl} in its entirety, possible.
+
+\subsubsection{Non-compact groups: no such guarantee}
+\label{subsubsec:noncompact-representations}
+
+When $G$ is non-compact, \Cref{prop:compact-haar-finite} fails
+($\mu(G) = \infty$), the averaging trick above no longer converges, and both
+conclusions of \Cref{thm:peter-weyl} can genuinely fail.
+
+\begin{itemize}
+    \item \textbf{Complete reducibility can fail.} A finite-dimensional
+    representation of a non-compact $G$ need not be unitarizable, and an
+    invariant subspace need not admit an invariant complement. The
+    prototypical example is the standard action of $\mathbb{R}$ (as the
+    subgroup of upper unitriangular matrices) on $\mathbb{R}^2$ via
+    $t \cdot (x,y) = (x + ty,\, y)$: the line $y = 0$ is invariant, but no
+    invariant complementary line exists, so this representation is
+    reducible yet \emph{not} completely reducible---a phenomenon that
+    cannot occur for a compact group by \Cref{thm:peter-weyl}.
+    \item \textbf{Irreducible unitary representations are typically
+    infinite-dimensional.} For non-compact, non-abelian semisimple groups
+    such as the Lorentz group $O(1,n)$, essentially all irreducible unitary
+    representations (beyond trivial finite-dimensional ones on which the
+    noncompact directions act trivially) are infinite-dimensional, organized
+    into families---principal series, complementary series, discrete series
+    (when they exist)---rather than a single discrete spectrum $\widehat{G}$
+    as in part (3) of \Cref{thm:peter-weyl}. The Peter--Weyl
+    decomposition of $L^2(G,\mu)$ itself must be replaced by a
+    \emph{direct integral} over these families,
+    \[
+        L^2(G,\mu) \;\cong\; \int_{\widehat{G}}^{\oplus} V_\pi \otimes V_\pi^* \, d\nu(\pi),
+    \]
+    with $\nu$ a Plancherel measure on the (now typically continuous)
+    unitary dual $\widehat{G}$---the substance of Harish-Chandra's
+    representation theory of semisimple Lie groups, and considerably harder
+    than the compact case.
+\end{itemize}
+
+The practical consequence for constructions elsewhere in this survey is
+this: whenever a symmetry group acting on a parameter or feature space is
+compact (finite permutation groups, $O(n)$, $SO(n)$), invariant
+decompositions and averaged inner products are available essentially for
+free via \Cref{thm:peter-weyl}; whenever it is non-compact (scaling
+groups $\mathbb{R}_{>0}$, translation groups, the full Euclidean or Lorentz
+groups), no such decomposition is automatic, and invariance must instead be
+built by hand---e.g.\ by restricting to a compact subgroup, passing to a
+homogeneous space with a genuinely invariant (rather than merely
+quasi-invariant) measure, or working with unbounded, possibly
+infinite-dimensional representations directly.
+
+% Give an example of a simple group, reference a textbook
+
+\subsubsection{Simple groups: an example}
+\label{subsubsec:simple-groups}
+
+The normal subgroups introduced in \Cref{subsubsec:subgroups} single out a
+distinguished class of groups: those admitting none.
+
+\begin{Definition}[Simple group]
+\label{def:simple-group}
+A group $G$ is \emph{simple} if $G \neq \{e\}$ and the only normal subgroups
+of $G$ are $\{e\}$ and $G$ itself.
+\end{Definition}
+
+Simple groups are the group-theoretic analogue of prime numbers: every
+finite group can be built from simple groups by a finite sequence of
+extensions (a \emph{composition series}), so that classifying finite simple
+groups amounts to classifying the irreducible building blocks out of which
+all finite groups are assembled. Abelian simple groups are easy to
+classify---$\mathbb{Z}/p\mathbb{Z}$ for $p$ prime, since any nontrivial
+proper subgroup of an abelian group is automatically normal, so simplicity
+forces the group to have no nontrivial proper subgroups at all. The first
+genuinely non-abelian example is the following.
+
+\begin{Example}[$A_5$ is simple]
+\label{ex:A5-simple}
+The alternating group $A_5$ (even permutations of $\{1,\dots,5\}$,
+$|A_5| = 60$) introduced alongside $A_n \trianglelefteq S_n$ in
+\Cref{ex:subgroups} is the smallest non-abelian simple group. A
+standard proof examines the conjugacy classes of $A_5$, of sizes
+$1, 15, 20, 12, 12$, and shows that no proper nonempty union of these class
+sizes summing to a divisor of $60$ (other than $\{1\}$ and the full set)
+exists---since a normal subgroup must be a union of conjugacy classes
+(including $\{e\}$) whose total size divides $|A_5|$ by
+\Cref{thm:orbit-stabilizer}, this rules out every candidate normal
+subgroup besides $\{e\}$ and $A_5$ itself. Geometrically, $A_5$ is also the
+rotation group of the icosahedron/dodecahedron, giving a second,
+more visual route to the same conclusion via its action on the $5$
+inscribed cubes of a dodecahedron.
+
+Simplicity of $A_5$ is what obstructs solving the general quintic by
+radicals: Galois theory reduces solvability-by-radicals to the
+\emph{solvability} of a certain group (existence of a composition series
+with abelian factors), and a simple non-abelian composition factor such as
+$A_5$ blocks this, in sharp contrast to $S_n$ for $n \leq 4$, whose
+composition series bottoms out entirely in abelian pieces. A detailed proof
+of simplicity of $A_5$, together with its role in this Galois-theoretic
+obstruction, can be found in Dummit and Foote,
+\emph{Abstract Algebra}~\citep{dummit2003}, \S 3.5 and \S 6.4 (in various
+editions, in the sections on simple groups and Galois theory,
+respectively).
+\end{Example}
+
+The classification of \emph{all} finite simple groups---completed over
+several decades by dozens of authors and running, across all contributing
+papers, to an estimated ten thousand journal pages---identifies $A_5$ as the
+smallest member of the infinite family of alternating groups $A_n$
+($n \geq 5$), one of eighteen infinite families (together with cyclic groups
+of prime order, the alternating groups, and sixteen families of groups of
+Lie type) plus twenty-six sporadic exceptions. This classification lies far
+outside the scope of the present survey; we record it here only to situate
+$A_5$ as the first, and most tractable, instance of a phenomenon that is in
+general extraordinarily deep.
+
+%
+\subsection{Representation Theory}
+\label{subsec:representation-theory}
+
+We now assemble the representation-theoretic vocabulary used implicitly in
+\Cref{subsubsec:peter-weyl}--\Cref{subsubsec:noncompact-representations}
+into a self-contained toolkit, since it is this vocabulary---not the group
+axioms themselves---that is invoked directly wherever equivariance and
+invariance are built into a model architecture later in this survey.
+
+\subsubsection{Linear representations}
+\label{subsubsec:linear-representations}
+
+\begin{Definition}[Linear representation]
+\label{def:linear-representation}
+A \emph{linear representation} of a group $G$ on a vector space $V$ (over
+$\mathbb{R}$ or $\mathbb{C}$) is a group homomorphism
+\[
+    \rho : G \longrightarrow GL(V),
+\]
+i.e.\ a map satisfying $\rho(g_1 g_2) = \rho(g_1)\rho(g_2)$ and
+$\rho(e) = \operatorname{id}_V$ for all $g_1, g_2 \in G$---equivalently (as already
+noted in \Cref{subsubsec:peter-weyl}), a group action of $G$ on $V$
+(\Cref{def:group-action}) through \emph{linear} bijections of $V$
+rather than arbitrary bijections of a set. We write $\dim \rho := \dim V$,
+and call $\rho$ \emph{unitary} if $V$ carries a $G$-invariant inner product,
+i.e.\ $\rho(g) \in U(V)$ for all $g$.
+\end{Definition}
+
+Two representations $\rho_1 : G \to GL(V_1)$, $\rho_2 : G \to GL(V_2)$ are
+\emph{equivalent} (or isomorphic) if there is a linear isomorphism
+$T : V_1 \to V_2$ intertwining the actions,
+$T \rho_1(g) = \rho_2(g) T$ for all $g \in G$; such a $T$ is called an
+\emph{intertwiner}, or a \emph{$G$-equivariant map}, and the representation
+theory of $G$ is, at bottom, the classification of representations up to
+this notion of equivalence.
+
+\begin{Example}[Representations already encountered]
+\label{ex:representations-recap}
+The \emph{defining representation} of $O(n)$ on $\mathbb{R}^n$ (matrices
+acting on column vectors, \Cref{ex:groups}) is a linear
+representation in this sense; the \emph{regular representation} of a finite
+group $G$ on $\mathbb{C}[G] = \bigoplus_{g \in G} \mathbb{C}\, g$, defined by
+$\rho(g)\bigl(\sum_h c_h\, h\bigr) = \sum_h c_h\,(gh)$, encodes $G$ acting on
+itself by left multiplication (the free action of
+\Cref{ex:cosets-as-orbits} with $H = G$, linearized); and the
+\emph{trivial representation} $\rho(g) = \operatorname{id}_V$ for all $g$ is
+present inside every representation as the subspace of $G$-fixed vectors.
+\end{Example}
+
+\subsubsection{Irreducibility and reducibility for compact groups}
+\label{subsubsec:irreps-recap}
+
+Irreducibility and complete reducibility were already defined in
+\Cref{subsubsec:peter-weyl} in order to state the Peter--Weyl theorem; we
+restate them here as the central organizing notions of the subject proper.
+
+\begin{Definition}[Irreducible representation]
+\label{def:irrep}
+A representation $\rho : G \to GL(V)$ is \emph{irreducible} (an
+\emph{irrep}) if $V \neq 0$ and $V$ has no $G$-invariant subspace other than
+$0$ and $V$. It is \emph{completely reducible} if $V$ is a direct sum of
+irreducible invariant subspaces.
+\end{Definition}
+
+For $G$ compact, \Cref{thm:peter-weyl} guarantees that every
+finite-dimensional representation is completely reducible, and organizes the
+whole of $L^2(G)$ into the discrete direct sum indexed by the unitary dual
+$\widehat{G}$; this is the structural fact that recent work on
+group-equivariant deep learning leans on directly, decomposing feature
+spaces into isotypic (irrep-indexed) components in order to constrain
+network layers to be exactly $G$-equivariant by design rather than by
+regularization---see, e.g., the treatment of spherical CNNs and Clebsch--Gordan
+decompositions in \citep{kondor2018p3icml} and the general group-equivariant
+convolutional framework of \citep{cohen2014}, both of which exploit
+compactness of the relevant symmetry group ($SO(3)$, or finite groups such as
+the rotation/reflection group of a square lattice, respectively) precisely
+to invoke the Peter--Weyl decomposition of \Cref{subsubsec:peter-weyl}. As
+emphasized in \Cref{subsubsec:noncompact-representations}, this guarantee
+evaporates once $G$ is non-compact, which is exactly why equivariant
+architectures for non-compact symmetry groups (translations, positive
+rescalings) require separate, ad hoc constructions rather than a single
+unified decomposition.
+
+\subsubsection{Tensor algebra}
+\label{subsubsec:tensor-algebra}
+
+Representations combine via the usual multilinear-algebra operations, each
+of which is again a representation.
+
+\begin{Definition}[Operations on representations]
+\label{def:tensor-operations}
+Given representations $\rho_1 : G \to GL(V_1)$ and $\rho_2 : G \to GL(V_2)$:
+\begin{itemize}
+    \item The \emph{direct sum} $\rho_1 \oplus \rho_2$ acts on
+    $V_1 \oplus V_2$ by $(\rho_1 \oplus \rho_2)(g)(v_1,v_2) =
+    (\rho_1(g)v_1,\, \rho_2(g)v_2)$.
+    \item The \emph{tensor product} $\rho_1 \otimes \rho_2$ acts on
+    $V_1 \otimes V_2$ by
+    $(\rho_1 \otimes \rho_2)(g) = \rho_1(g) \otimes \rho_2(g)$, i.e.\
+    $(\rho_1\otimes\rho_2)(g)(v_1 \otimes v_2) = \rho_1(g)v_1 \otimes \rho_2(g)v_2$,
+    extended linearly.
+    \item The \emph{dual representation} $\rho_1^*$ acts on
+    $V_1^* = \operatorname{Hom}(V_1,\mathbb{C})$ by
+    $(\rho_1^*(g)\varphi)(v) = \varphi(\rho_1(g)^{-1} v)$, the inverse
+    ensuring $\rho_1^*$ is itself a homomorphism rather than an
+    anti-homomorphism.
+    \item Iterating the tensor product gives the full \emph{tensor algebra}
+    $T(V) = \bigoplus_{k \geq 0} V^{\otimes k}$ of a representation
+    $\rho: G \to GL(V)$, on which $G$ acts on each graded piece
+    $V^{\otimes k}$ via $\rho^{\otimes k}$; its symmetric and antisymmetric
+    quotients $\operatorname{Sym}^k(V)$ and $\Lambda^k(V)$ are likewise
+    $G$-representations, obtained by restricting $\rho^{\otimes k}$ to the
+    (anti)symmetric subspace of $V^{\otimes k}$.
+\end{itemize}
+\end{Definition}
+
+Unlike direct sum, the tensor product of two irreducibles is typically
+\emph{not} irreducible: for $G$ compact, complete reducibility
+(\Cref{thm:peter-weyl}) guarantees $\rho_1 \otimes \rho_2$ decomposes
+as a direct sum of irreps,
+\[
+    \rho_1 \otimes \rho_2 \;\cong\; \bigoplus_{\pi \in \widehat{G}} N_{\pi}^{\rho_1,\rho_2}\; \pi,
+\]
+with nonnegative integer multiplicities $N_\pi^{\rho_1,\rho_2}$; determining
+these multiplicities explicitly (the \emph{Clebsch--Gordan problem}, e.g.\
+for $G = SO(3)$ as used in \citep{kondor2018p3icml}) is itself a substantial
+part of the representation theory of any given compact group.
+
+\subsubsection{Schur's lemma}
+\label{subsubsec:schurs-lemma}
+
+The following elementary but pivotal fact controls exactly which
+intertwiners between irreducibles can exist, and underlies both the
+uniqueness statement in Peter--Weyl and the practical computation of
+Clebsch--Gordan multiplicities above.
+
+\begin{Lemma}[Schur]
+\label{lem:schur}
+Let $\rho_1 : G \to GL(V_1)$ and $\rho_2 : G \to GL(V_2)$ be irreducible
+representations over $\mathbb{C}$, and let $T : V_1 \to V_2$ be an
+intertwiner, $T\rho_1(g) = \rho_2(g) T$ for all $g \in G$. Then:
+\begin{enumerate}
+    \item Either $T = 0$, or $T$ is an isomorphism (so $\rho_1 \cong \rho_2$).
+    \item If $\rho_1 = \rho_2 = \rho$ (so $T : V \to V$), then
+    $T = \lambda\, \operatorname{id}_V$ for some scalar $\lambda \in \mathbb{C}$.
+\end{enumerate}
+\end{Lemma}
+
+\begin{proof}[Proof sketch]
+For (1): $\ker T \subseteq V_1$ is a $G$-invariant subspace, since
+$\rho_1(g)v \in \ker T$ whenever $v \in \ker T$ (as $T\rho_1(g)v =
+\rho_2(g)Tv = 0$); irreducibility of $\rho_1$ forces $\ker T \in \{0, V_1\}$.
+Symmetrically, $\operatorname{im}\, T \subseteq V_2$ is $G$-invariant, so
+irreducibility of $\rho_2$ forces $\operatorname{im}\, T \in \{0, V_2\}$. Excluding
+the trivial map leaves $\ker T = 0$ and $\operatorname{im}\, T = V_2$, i.e.\ $T$ is
+an isomorphism. For (2): since $\mathbb{C}$ is algebraically closed, $T$ has
+an eigenvalue $\lambda$; then $T - \lambda\,\operatorname{id}_V$ is again an
+intertwiner of $\rho$ with itself, but now with nontrivial kernel, so by (1)
+it must be the zero map, giving $T = \lambda\,\operatorname{id}_V$.
+\end{proof}
+
+Part (2) is the source of the diagonal, isotypic block structure exploited
+whenever a $G$-equivariant linear layer is constructed for compact $G$: any
+linear map commuting with the $G$-action on an isotypic component (a direct
+sum of copies of one irrep $\pi$) is forced by Schur's lemma to act as a
+single scalar (or, more generally, a small matrix indexed by the
+multiplicity space) on that component, which is precisely the parameter
+reduction---from a dense weight matrix to a handful of learnable
+scalars per irrep---underlying the equivariant convolution constructions of
+\citep{cohen2014} and the tensor-field/Clebsch--Gordan layers of
+\citep{kondor2018p3icml}.
+
+% Isotypic decomposition and its role in constraining architecture: used in weiler2019anips.md, xu2022p3icml.md, yarotsky2018r.md, gibson2024.md
+
+\subsubsection{Isotypic decomposition and its role in constraining architecture}\label{sec:isotypic-decomposition}
+
+The Peter--Weyl and Clebsch--Gordan decompositions of
+\Cref{subsubsec:irreps-recap}--\Cref{subsubsec:tensor-algebra} organize a
+representation not merely into individual irreps, but into blocks of
+\emph{repeated} irreps, and it is this coarser block structure---rather than
+the finer decomposition into individual irreducible summands, which is
+unique only up to the choice of an arbitrary basis within each block---that
+is the object directly constrained in equivariant network design.
+
+\begin{Definition}[Isotypic decomposition]
+\label{def:isotypic-decomposition}
+Let $\rho : G \to GL(V)$ be a representation of a compact group $G$, and let
+$\widehat{G}$ denote its unitary dual (\Cref{thm:peter-weyl}). For
+$\pi \in \widehat{G}$, the \emph{$\pi$-isotypic component} of $V$ is the sum
+of all irreducible invariant subspaces of $V$ isomorphic to $\pi$; it is
+canonically of the form $V_\pi \cong \pi^{\oplus m_\pi} \cong \pi \otimes
+\mathbb{C}^{m_\pi}$, where $m_\pi \in \mathbb{Z}_{\geq 0}$ is the
+\emph{multiplicity} of $\pi$ in $\rho$, and $\mathbb{C}^{m_\pi}$ (the
+\emph{multiplicity space}) carries no $G$-action at all. The
+\emph{isotypic decomposition}
+\[
+    V \;=\; \bigoplus_{\pi \in \widehat{G}} V_\pi \;=\; \bigoplus_{\pi \in \widehat{G}} \pi \otimes \mathbb{C}^{m_\pi}
+\]
+is then canonical (unlike the decomposition of each $V_\pi$ into individual
+irreducible lines, which depends on a basis choice within
+$\mathbb{C}^{m_\pi}$), since distinct isotypic components are automatically
+orthogonal and $G$-invariant, and the summands within a single $V_\pi$ are
+not individually distinguished by the $G$-action.
+\end{Definition}
+
+\begin{Proposition}[Schur blocks intertwiners]
+\label{prop:schur-blocks}
+Let $V = \bigoplus_\pi \pi \otimes \mathbb{C}^{m_\pi}$ and
+$V' = \bigoplus_\pi \pi \otimes \mathbb{C}^{m_\pi'}$ be isotypic
+decompositions of two representations of $G$. Then any $G$-equivariant
+linear map $T : V \to V'$ (\Cref{def:linear-representation})
+vanishes between non-matching isotypic components, and restricts on each
+matching component to a map of the form
+\[
+    T\big|_{V_\pi} \;=\; \operatorname{id}_\pi \otimes A_\pi, \qquad A_\pi \in \operatorname{Hom}(\mathbb{C}^{m_\pi}, \mathbb{C}^{m_\pi'}),
+\]
+i.e.\ $T$ acts as the identity on the irrep factor and as an
+\emph{arbitrary} linear map $A_\pi$ on the multiplicity space alone.
+\end{Proposition}
+
+This is precisely Schur's Lemma (\Cref{lem:schur}) applied
+componentwise: part (1) kills cross terms between inequivalent irreps, and
+part (2) forces the action on each copy of a given irrep within an isotypic
+block to be a shared scalar, leaving only the multiplicity-space map
+$A_\pi$---an $m_\pi' \times m_\pi$ matrix, independent of $\dim \pi$---as the
+free parameter. This is the entire content of the parameter-count reduction
+already flagged at the end of \Cref{subsubsec:schurs-lemma}: a general
+linear map $V \to V'$ has $\dim V \cdot \dim V'$ parameters, while the most
+general \emph{equivariant} one has only
+$\sum_\pi m_\pi m_\pi'$---independent of the (typically much larger)
+dimensions $\dim \pi$ of the irreps themselves.
+
+\begin{Example}[Isotypic decomposition constraining architecture]
+\label{ex:isotypic-architecture}
+\Cref{prop:schur-blocks} is the mechanism, in one form or
+another, behind each of the following constructions:
+\begin{itemize}
+    \item \textbf{Steerable CNNs.} Feature fields on $\mathbb{R}^2$
+    equivariant under $E(2) = \mathbb{R}^2 \rtimes O(2)$
+    (\Cref{ex:semidirect-products}) are built by assigning each
+    feature channel to an isotypic component of a chosen irrep of the
+    compact factor $O(2)$ (or a finite subgroup thereof), so that admissible
+    convolution kernels are exactly those satisfying the block-diagonal
+    constraint of \Cref{prop:schur-blocks}, reducing kernel
+    design to solving a small linear system per pair of irreps rather than
+    over the full spatial kernel~\citep{weiler2019anips}.
+    \item \textbf{Multiplicity-space architectures.} More recent
+    equivariant architectures push the isotypic viewpoint further by
+    treating the multiplicity spaces $\mathbb{C}^{m_\pi}$ themselves as the
+    sole locus of learnable, unconstrained linear structure at each layer,
+    with all cross-irrep mixing explicitly disallowed by
+    \Cref{prop:schur-blocks}, as in the architecture studied
+    in~\citep{xu2022p3icml}.
+    \item \textbf{Universality and expressivity limits.} Because
+    \Cref{prop:schur-blocks} caps the free parameters of an
+    equivariant layer at $\sum_\pi m_\pi m_\pi'$, isotypic decomposition
+    also governs what an equivariant network \emph{cannot} express;
+    quantifying this gap---how much approximation power is sacrificed by
+    imposing the isotypic block constraint relative to an unconstrained
+    network of the same width---is the subject of the universal
+    approximation analysis in~\citep{yarotsky2018r}.
+    \item \textbf{Beyond compact symmetry.} Isotypic decomposition, exactly
+    as stated, requires the Peter--Weyl guarantee of
+    \Cref{thm:peter-weyl} and hence compactness of $G$
+    (\Cref{subsubsec:noncompact-representations}); extending an isotypic-style
+    block constraint to symmetry groups with a non-compact factor (e.g.\ the
+    translation part of $E(n)$, or scaling symmetries
+    $\mathbb{R}_{>0}$) requires replacing the discrete sum over
+    $\widehat{G}$ with the direct-integral / Plancherel-measure formalism
+    of \Cref{subsubsec:noncompact-representations}, an approach pursued
+    in~\citep{gibson2024}.
+\end{itemize}
+\end{Example}
+
+\subsection{Harmonic Analysis on Groups}
+\label{subsec:harmonic-analysis}
+
+The Peter--Weyl decomposition of \Cref{subsubsec:peter-weyl} is, properly
+understood, a generalization of the Fourier transform, and the isotypic
+constructions of \Cref{sec:isotypic-decomposition} are best understood
+as \emph{spectral} constraints in this generalized sense. This subsection
+makes that identification explicit and draws out its consequences for
+learning.
+
+\subsubsection{Generalities}
+\label{subsubsec:harmonic-analysis-generalities}
+
+\begin{Definition}[Fourier transform on a compact group]
+\label{def:group-fourier-transform}
+Let $G$ be a compact group with normalized Haar measure $\mu$
+(\Cref{prop:compact-haar-finite}), and let $\widehat{G}$ be its
+unitary dual. For $f \in L^2(G,\mu)$, the \emph{(non-commutative) Fourier
+transform} of $f$ is the assignment, to each irrep $\pi \in \widehat{G}$
+(realized concretely as $\pi : G \to U(d_\pi)$ on $\mathbb{C}^{d_\pi}$), of
+the $d_\pi \times d_\pi$ matrix
+\[
+    \widehat{f}(\pi) \;:=\; \int_G f(g)\, \pi(g)^{-1} \, d\mu(g) \;\in\; \mathbb{C}^{d_\pi \times d_\pi}.
+\]
+The Peter--Weyl theorem (\Cref{thm:peter-weyl}) is exactly the
+statement that $f \mapsto \big(\widehat{f}(\pi)\big)_{\pi \in \widehat{G}}$
+is an isometric isomorphism $L^2(G,\mu) \to \bigoplus_\pi \mathbb{C}^{d_\pi
+\times d_\pi}$ (up to normalization by $d_\pi$), with inversion formula
+$f(g) = \sum_{\pi \in \widehat{G}} d_\pi \,\operatorname{tr}\bigl(\widehat{f}(\pi)\,\pi(g)\bigr)$.
+For $G$ abelian, every irrep is $1$-dimensional (Schur's lemma,
+\Cref{lem:schur}(2), applied to $\rho(h)$ commuting with $\rho(g)$ for
+all $g,h$ forces every $\rho(g)$ to be scalar), $\widehat{G}$ recovers the
+usual group of characters $\chi : G \to U(1)$, and
+\Cref{def:group-fourier-transform} reduces exactly to the
+classical Fourier transform: on $G = \mathbb{Z}/n\mathbb{Z}$ it is the
+discrete Fourier transform, and on $G = \mathbb{R}$ (non-compact, treated
+via the direct-integral formalism of
+\Cref{subsubsec:noncompact-representations} rather than a discrete sum) it
+is the ordinary Fourier transform on the line.
+\end{Definition}
+
+The essential feature that makes this transform useful, exactly as in the
+classical case, is that it diagonalizes convolution.
+
+\begin{Proposition}[Convolution theorem]
+\label{prop:convolution-theorem}
+For $f_1, f_2 \in L^2(G,\mu)$, define the \emph{convolution}
+\[
+    (f_1 * f_2)(g) \;:=\; \int_G f_1(h)\, f_2(h^{-1}g)\, d\mu(h).
+\]
+Then $\widehat{f_1 * f_2}(\pi) = \widehat{f_1}(\pi)\, \widehat{f_2}(\pi)$ for
+every $\pi \in \widehat{G}$: convolution on $G$ becomes ordinary matrix
+multiplication after Fourier transform.
+\end{Proposition}
+
+Convolution as defined here is exactly the operation with respect to which
+$G$ acts on $L^2(G,\mu)$ by left translation, $(g \cdot f)(x) = f(g^{-1}x)$,
+a special case of the \emph{regular representation} of
+\Cref{ex:representations-recap} carried over from $\mathbb{C}[G]$ to
+$L^2(G,\mu)$; \Cref{prop:convolution-theorem} therefore says that
+the regular representation is, block by block, exactly the isotypic
+decomposition of \Cref{sec:isotypic-decomposition} applied to itself,
+with each irrep $\pi$ appearing in $L^2(G,\mu)$ with multiplicity
+$m_\pi = d_\pi$ (part (3) of \Cref{thm:peter-weyl}).
+
+For $G = SO(3)$ acting on the sphere $S^2 = SO(3)/SO(2)$, this specializes
+to classical spherical harmonic analysis: the irreps of $SO(3)$ are indexed
+by $\ell = 0,1,2,\dots$ with $d_\ell = 2\ell+1$, the isotypic components of
+$L^2(S^2)$ are exactly the spans of the degree-$\ell$ spherical harmonics,
+and \Cref{prop:convolution-theorem} is the statement, familiar
+from physics, that convolution with a rotationally symmetric kernel acts
+diagonally, by a single scalar per degree $\ell$, on the spherical harmonic
+expansion of a function. A systematic treatment of this material at the
+level of generality used here is given in Folland's
+\emph{A Course in Abstract Harmonic Analysis}~\citep{folland2016}.
+
+\subsubsection{Relation to learning}
+\label{subsubsec:harmonic-analysis-learning}
+
+The relevance of this formalism to the learning constructions surveyed in
+\Cref{sec:isotypic-decomposition} is that a $G$-equivariant linear
+layer is, in these terms, nothing other than a \emph{spectral filter}.
+
+\begin{itemize}
+    \item \textbf{Group convolution as the universal equivariant linear
+    map.} Any $G$-equivariant linear map between two copies of the regular
+    representation $L^2(G,\mu)$ is necessarily convolution by some fixed
+    kernel $\kappa \in L^2(G,\mu)$, $f \mapsto \kappa * f$; this is a special
+    case of \Cref{prop:schur-blocks} in which the multiplicity
+    spaces $\mathbb{C}^{m_\pi}$ have dimension $d_\pi$ and $A_\pi$ is
+    determined by $\widehat{\kappa}(\pi)$. This is precisely the
+    group-convolutional layer of~\citep{cohen2014}: replacing ordinary
+    translation-convolution by convolution over a general (typically finite
+    or compact) symmetry group $G$ is, by
+    \Cref{prop:convolution-theorem}, automatically equivariant,
+    and the isotypic block-diagonal parameter count of
+    \Cref{sec:isotypic-decomposition} is recovered by passing to the
+    Fourier side, where the layer is literally a block-diagonal matrix
+    $\bigl(\widehat{\kappa}(\pi)\bigr)_{\pi}$.
+    \item \textbf{Learning in the spectral domain.} Because
+    \Cref{prop:convolution-theorem} makes the layer diagonal on the Fourier
+    side, architectures for compact $G$ frequently
+    parametrize their learnable kernels directly there, storing one small
+    matrix $\widehat{\kappa}(\pi)$ per
+    isotypic block---at the cost of a forward/inverse group Fourier
+    transform (or, on $S^2$, a spherical harmonic transform) at each layer
+    boundary. Spherical CNNs \citep{cohen2018} implement exactly this,
+    using a generalized FFT on $SO(3)$, and the Clebsch--Gordan networks
+    of \citet{kondor2018p3icml} go further by never leaving the spectral
+    domain at all, performing the nonlinearity itself on Fourier
+    coefficients so that no transform is needed between layers.
+    \item \textbf{Non-compact groups again lose this structure.} As
+    flagged in \Cref{subsubsec:noncompact-representations} and revisited in
+    \Cref{ex:isotypic-architecture}, once $G$ has a non-compact
+    factor (translations, positive rescalings), $\widehat{G}$ is no longer
+    a discrete index set, the sums above become direct integrals against a
+    Plancherel measure, and ``one scalar per irrep'' becomes ``one scalar per
+    point of a continuous spectral parameter'' (ordinary frequency, in the
+    translation case)---recovering exactly classical Fourier analysis on
+    $\mathbb{R}^n$ as the $G = \mathbb{R}^n$ special case of this same
+    formalism, but without the finite, enumerable spectral structure that
+    made the compact case so directly exploitable for parameter reduction.
+\end{itemize}
+
+Harmonic analysis on groups is thus the unifying language behind
+\Cref{sec:isotypic-decomposition}: an isotypic decomposition
+\emph{is} a Fourier decomposition with respect to $G$, an equivariant linear
+layer \emph{is} a (possibly group-)convolution, and Schur's lemma
+(\Cref{lem:schur}) is, in this dictionary, precisely the statement that
+convolution operators are diagonalized by the group Fourier transform.
+
+
+% Homogeneous Spaces cohen2019anips
+
+\subsection{Homogeneous Spaces}
+\label{subsec:homogeneous-spaces}
+
+The sphere $S^2 = SO(3)/SO(2)$ used to illustrate harmonic analysis in
+\Cref{subsubsec:harmonic-analysis-generalities} is an instance of a more
+general and recurring pattern: many of the spaces on which learning problems
+are naturally posed are not themselves groups, but arise as a group modulo
+a subgroup of ``directions one is willing to forget.'' This subsection makes
+that pattern precise and connects it back to the orbit--stabilizer picture
+of \Cref{subsec:group-actions}.
+
+\subsubsection{Definition and basic examples}
+\label{subsubsec:homogeneous-spaces-def}
+
+\begin{Definition}[Homogeneous space]
+\label{def:homogeneous-space}
+A \emph{homogeneous space} for a group $G$ is a set (or manifold) $\mathcal{X}$
+equipped with a \emph{transitive} action of $G$
+(\Cref{def:free-transitive}). Given a point $x_0 \in \mathcal{X}$ with
+stabilizer $H := G_{x_0} \leq G$ (\Cref{def:orbit-stabilizer}),
+transitivity means $\mathcal{X}$ is the single orbit $G \cdot x_0$, so the
+Orbit--Stabilizer Theorem (\Cref{thm:orbit-stabilizer}) upgrades from
+a statement about one orbit inside a possibly larger $\mathcal{X}$ to a statement
+identifying \emph{all} of $\mathcal{X}$:
+\[
+    \mathcal{X} \;\cong\; G / H
+\]
+as $G$-sets (and, when $G$ is a Lie group acting smoothly and properly, as
+smooth manifolds, per the remark closing
+\Cref{subsubsec:lie-groups}), via $gH \mapsto g \cdot x_0$. Different choices
+of basepoint $x_0$ give conjugate stabilizers and hence isomorphic, but not
+literally identical, coset descriptions $G/H$.
+\end{Definition}
+
+Homogeneous spaces thus sit at exactly one further level of generality above
+the $G$-torsors of \Cref{def:free-transitive}: a torsor is the
+special case $H = \{e\}$, i.e.\ a homogeneous space with trivial stabilizer,
+so that $\mathcal{X} \cong G$ itself once a basepoint is fixed. Allowing $H$ nontrivial
+is what lets $\mathcal{X}$ be genuinely smaller than $G$.
+
+\begin{Example}[Homogeneous spaces already in use]
+\label{ex:homogeneous-spaces}
+\begin{itemize}
+    \item $S^{n-1} = SO(n)/SO(n-1)$: the sphere, with $SO(n)$ acting
+    transitively by rotation and $SO(n-1)$ the stabilizer of a fixed pole
+    (rotations fixing a chosen axis)---already used implicitly for $n=3$ in
+    \Cref{subsubsec:harmonic-analysis-generalities}.
+    \item $\mathbb{R}^n = E(n) / O(n)$: Euclidean space itself, with the
+    full Euclidean group $E(n)$ of \Cref{subsubsec:semidirect-products}
+    acting transitively by rigid motion and $O(n)$ the stabilizer of the
+    origin---exhibiting $\mathbb{R}^n$ as a homogeneous, but not free
+    (hence not torsor), space for $E(n)$, in contrast to the free
+    translation action of $\mathbb{R}^n \leq E(n)$ alone.
+    \item $G/G = \{pt\}$ and $G/\{e\} = G$ are the two trivial extremes,
+    recovering the single-orbit and torsor cases respectively as special
+    instances of \Cref{def:homogeneous-space}.
+    \item More generally, \emph{Grassmannians} $\mathrm{Gr}(k,n) =
+    O(n)/(O(k)\times O(n-k))$, parametrizing $k$-dimensional subspaces of
+    $\mathbb{R}^n$, arise the same way, with the stabilizer of a fixed
+    $k$-plane splitting as a product acting separately on the plane and its
+    orthogonal complement.
+\end{itemize}
+\end{Example}
+
+\subsubsection{Role in learning}
+\label{subsubsec:homogeneous-spaces-learning}
+
+Homogeneous spaces matter for learning precisely where the isotypic and
+harmonic-analytic machinery of
+\Cref{sec:isotypic-decomposition}--\Cref{subsec:harmonic-analysis}
+needs a \emph{domain} to operate on that is not the group $G$ itself, but a
+smaller space $\mathcal{X} = G/H$ on which $G$ still acts transitively---this is
+exactly the situation for data living on a sphere, a Grassmannian, or any
+other space with less symmetry-breaking structure than the full group.
+
+\begin{itemize}
+    \item \textbf{Functions on $G/H$ as an $H$-invariant subspace of
+    functions on $G$.} Pulling back along the quotient map $G \to G/H$
+    identifies $L^2(G/H,\mu)$ with the subspace of $L^2(G,\mu)$ consisting
+    of functions invariant under right translation by $H$; under the
+    Peter--Weyl decomposition of
+    \Cref{def:group-fourier-transform}, this subspace is itself
+    isotypic-block-structured, being spanned by exactly those matrix
+    coefficients $\pi(g)_{ij}$ for which the corresponding basis vector is
+    fixed by $H$---so the harmonic analysis of $G/H$ reduces to bookkeeping
+    which irreps of $G$ contain a nonzero $H$-fixed vector, and with what
+    multiplicity.
+    \item \textbf{Equivariant networks on homogeneous spaces.} This is
+    precisely the perspective developed systematically
+    in~\citet{cohen2019anips}, which constructs the general theory of
+    convolutional layers equivariant under a group $G$ acting on data
+    supported on a homogeneous space $\mathcal{X} = G/H$ (subsuming, as special cases,
+    planar CNNs with $G = \mathbb{Z}^2 \rtimes$(point group), $H$ trivial,
+    and spherical CNNs with $G = SO(3)$, $H = SO(2)$ as in
+    \Cref{ex:homogeneous-spaces}), showing that the admissible
+    linear, equivariant maps between feature fields on $G/H$ are again
+    governed by an isotypic/Schur's-lemma constraint
+    (\Cref{prop:schur-blocks}) once the group Fourier transform
+    of \Cref{subsubsec:harmonic-analysis-generalities} is restricted to the
+    $H$-fixed subspace described above.
+    \item \textbf{Non-compact base spaces.} When $G$ has a non-compact
+    factor---e.g.\ $\mathcal{X} = \mathbb{R}^n = E(n)/O(n)$ itself---the same
+    quotient construction applies formally, but the underlying harmonic
+    analysis reverts to the direct-integral, Plancherel-measure regime of
+    \Cref{subsubsec:noncompact-representations} rather than the discrete
+    isotypic sum, exactly mirroring the compact/non-compact split already
+    emphasized throughout this section.
+\end{itemize}
+
+The upshot is that ``equivariant network for symmetry group $G$'' and
+``network operating on the homogeneous space $\mathcal{X} = G/H$'' are, in this
+framework, two descriptions of the same underlying construction: the choice
+of $\mathcal{X}$ fixes the stabilizer $H$, the stabilizer fixes which isotypic
+components of $L^2(G)$ survive restriction to $\mathcal{X}$, and Schur's lemma then
+fixes, exactly as in \Cref{sec:isotypic-decomposition}, the space of
+admissible equivariant linear layers on $\mathcal{X}$.
+
+
+% Advanced notions
+% Structures beyond groups (no inverse: semigroup)
+% Tensor algebra
+% spherical harmonics (used a lot in Euclidean neural networks)
+% Lie algebra, Exponential and logarithmic map, Infinitesimal generators
+% Manifold/Gauge Theory: fiber bundles, Principal bundle, section, steerable kernels, local symmetries, free action
+% Symmetry breaking
+
+\subsection{Advanced Notions}
+\label{sec:advanced-notions}
+
+We close this survey of the algebraic backbone with six topics that sit one
+level beyond the material developed so far: structures that weaken the group
+axioms, the analytic and infinitesimal apparatus attached to a Lie group,
+and the geometric (bundle-theoretic) language required once symmetry is
+allowed to vary from point to point rather than acting globally. Each
+connects directly to a construction already introduced.
+
+\subsubsection{Structures Beyond Groups: Semigroups and Monoids}
+\label{subsec:beyond-groups}
+
+Relaxing the group axioms of \Cref{def:group} produces weaker, but
+still useful, algebraic structures---most importantly by dropping (G4).
+
+\begin{Definition}[Semigroup and monoid]
+\label{def:semigroup-monoid}
+A \emph{semigroup} is a pair $(S,\cdot)$ satisfying only closure (G1) and
+associativity (G2): a set with an associative binary operation, but no
+requirement of an identity or of inverses. A \emph{monoid} is a semigroup
+additionally satisfying the identity axiom (G3). A group is thus a monoid in
+which every element happens to be invertible.
+\end{Definition}
+
+\begin{Example}[Semigroups and monoids arising from learning constructions]
+\label{ex:semigroups-in-learning}
+\begin{itemize}
+    \item The natural numbers $(\mathbb{N}, +)$ form a monoid but not a
+    group: $0$ is an identity, but no positive integer has an additive
+    inverse in $\mathbb{N}$.
+    \item Square matrices $\operatorname{Mat}_n(\mathbb{R})$ under multiplication
+    form a monoid (identity $I$), of which the invertible matrices
+    $GL(n,\mathbb{R})$ of \Cref{ex:groups} are precisely the
+    invertible elements---i.e.\ $GL(n,\mathbb{R})$ is the group of units of
+    the monoid $\operatorname{Mat}_n(\mathbb{R})$. Layers of a network built from
+    non-invertible linear maps (e.g.\ any layer that reduces dimension) thus
+    naturally compose as a monoid, not a group, under composition.
+    \item The rescaling symmetry $\mathbb{R}_{>0}$ of
+    \Cref{subsubsec:lie-groups} is a group, but its closure
+    $\mathbb{R}_{\geq 0}$ under multiplication (allowing the scale factor to
+    reach zero) is only a monoid: $0$ has no multiplicative inverse. This
+    matters directly for ReLU-type rescaling symmetries, where a weight
+    vector is allowed to degenerate to exactly zero along a training
+    trajectory (a ``dead unit''); the exact symmetry group
+    $\mathbb{R}_{>0}$ acting on nonzero weights extends only to a
+    monoid action once the zero locus---a lower-dimensional stratum with
+    strictly smaller stabilizer-orbit structure than
+    \Cref{thm:orbit-stabilizer} describes for a genuine group
+    action---is included.
+    \item The set $\operatorname{End}(V)$ of all linear self-maps of a vector
+    space $V$ is a monoid under composition, and every representation
+    $\rho: G \to GL(V) \subset \operatorname{End}(V)$
+    (\Cref{def:linear-representation}) is, forgetting
+    invertibility, in particular a monoid homomorphism $G \to
+    \operatorname{End}(V)$; this is the observation that lets representation
+    theory be extended, with care, to monoid and semigroup actions where
+    needed.
+\end{itemize}
+\end{Example}
+
+The loss of inverses is consequential: orbits of a semigroup action need not
+partition the underlying set into disjoint equivalence classes (since
+$x \sim y$ via $s \cdot x = y$ no longer implies $y \sim x$), so neither
+\Cref{thm:orbit-stabilizer} nor the isotypic machinery of
+\Cref{sec:isotypic-decomposition} extends verbatim; monoid and
+semigroup actions are consequently treated as a genuinely separate,
+order-theoretic (rather than group-theoretic) subject in general.
+
+\subsubsection{Tensor Algebra Revisited: Tensor Fields}
+\label{subsec:tensor-fields}
+
+The tensor algebra of a single representation
+(\Cref{def:tensor-operations}) globalizes, once $G$ acts on a
+manifold $\mathcal{X}$ rather than a single vector space, to a \emph{tensor field}: a
+choice of tensor at every point, transforming consistently under the action.
+
+\begin{Definition}[Tensor field]
+\label{def:tensor-field}
+Let $\mathcal{X}$ be a manifold with a smooth action of a Lie group $G$
+(\Cref{def:group-action}), and fix a representation
+$\rho : G \to GL(V)$. A \emph{$V$-valued tensor field of type $\rho$} is a
+smooth assignment $x \mapsto \tau(x) \in V$ (or, more generally, a section of
+the vector bundle $\mathcal{X} \times_\rho V$ associated to $\rho$, in the sense made
+precise in \Cref{subsec:manifold-gauge-theory} below) such that
+\[
+    \tau(g \cdot x) \;=\; \rho(g)\, \tau(x) \qquad \text{for all } g \in G,\ x \in \mathcal{X}.
+\]
+The tangent, cotangent, and higher tensor bundles $T\mathcal{X}$, $T^*\mathcal{X}$,
+$T^{\otimes k}\mathcal{X}$ are the special cases in which $\rho$ is the (co)tangent
+representation induced by $G$ acting on $\mathcal{X}$ by diffeomorphism, so that
+ordinary tensor fields of differential geometry are recovered as the case
+$V = T_x^{\otimes k}\mathcal{X}$.
+\end{Definition}
+
+This is the object directly manipulated in equivariant architectures that
+output more than a scalar per point: a steerable CNN feature map
+(\Cref{ex:isotypic-architecture}) is exactly a tensor field of type
+$\rho$ for $\rho$ an isotypic sum of irreps of the stabilizer, and the
+transformation law above is the pointwise instance of the global
+equivariance constraint enforced by \Cref{prop:schur-blocks}.
+
+\subsubsection{Spherical Harmonics}
+\label{subsec:spherical-harmonics}
+
+Spherical harmonics were introduced implicitly in
+\Cref{subsubsec:harmonic-analysis-generalities} as the isotypic components
+of $L^2(S^2)$; we record their defining properties explicitly, since they
+are used pervasively, by name, throughout the Euclidean-equivariant network
+literature.
+
+\begin{Definition}[Spherical harmonics]
+\label{def:spherical-harmonics}
+For $\ell = 0, 1, 2, \dots$, the space of \emph{degree-$\ell$ spherical
+harmonics} $\mathcal{H}_\ell \subset L^2(S^2)$ is the space of restrictions
+to $S^2 \subset \mathbb{R}^3$ of harmonic, degree-$\ell$ homogeneous
+polynomials on $\mathbb{R}^3$ (i.e.\ $p$ with $\Delta p = 0$ and
+$p(\lambda x) = \lambda^\ell p(x)$). It has dimension $2\ell+1$, is invariant
+under the $SO(3)$-action of \Cref{ex:homogeneous-spaces}, and is
+precisely the irrep of $SO(3)$ of ``degree $\ell$'' appearing in the
+Peter--Weyl decomposition
+\[
+    L^2(S^2) \;=\; \bigoplus_{\ell = 0}^{\infty} \mathcal{H}_\ell,
+\]
+a special case of \Cref{def:group-fourier-transform} for
+$G = SO(3)$, $X = S^2 = SO(3)/SO(2)$.
+\end{Definition}
+
+Spherical harmonics enter Euclidean-equivariant network design because they
+are simultaneously (a) an explicit, orthonormal basis diagonalizing
+rotation-equivariant linear maps on functions of direction, per
+\Cref{prop:convolution-theorem}, and (b) the natural target
+representation type for features attached to \emph{directions} (bond
+vectors, edge orientations, point-cloud relative positions) in 3D geometric
+learning problems---so that a network layer producing, say, a degree-$\ell$
+feature is by construction guaranteed to transform correctly under any
+ambient $SO(3)$ or $E(3)$ rotation, without the transformation law needing
+to be learned or enforced by a penalty term. Tensor-field networks and the
+spherical-CNN/Clebsch--Gordan constructions of \citet{kondor2018p3icml} use
+the Clebsch--Gordan coefficients of \Cref{subsubsec:tensor-algebra} exactly
+to combine features of different degrees $\ell_1, \ell_2$ into new features
+of degree $\ell_3$ while staying inside this basis throughout.
+
+\subsubsection{Lie Algebras, Exponential and Logarithmic Maps, Infinitesimal Generators}
+\label{subsec:lie-algebras}
+
+We now make precise the linearization $\mathfrak{g} = T_eG$ of a Lie group
+$G$ mentioned in passing in \Cref{def:lie-group}.
+
+\begin{Definition}[Lie algebra]
+\label{def:lie-algebra}
+The \emph{Lie algebra} of a Lie group $G$ is the tangent space
+$\mathfrak{g} := T_e G$ at the identity, equipped with the \emph{Lie
+bracket} $[\cdot,\cdot] : \mathfrak{g} \times \mathfrak{g} \to \mathfrak{g}$
+induced by the failure of left- and right-translated vector fields to
+commute (equivalently, the derivative at $e$ of the commutator map
+$(g,h) \mapsto ghg^{-1}h^{-1}$ in both variables). The bracket is bilinear,
+antisymmetric ($[X,Y] = -[Y,X]$), and satisfies the Jacobi identity
+$[X,[Y,Z]] + [Y,[Z,X]] + [Z,[X,Y]] = 0$.
+\end{Definition}
+
+\begin{Example}[Matrix Lie algebras]
+\label{ex:matrix-lie-algebras}
+For $G \leq GL(n,\mathbb{R})$ a matrix Lie group, $\mathfrak{g}$ is
+concretely realized as a linear subspace of matrices, with
+$[X,Y] = XY - YX$ the ordinary matrix commutator:
+$\mathfrak{gl}(n,\mathbb{R}) = \operatorname{Mat}_n(\mathbb{R})$ for
+$G = GL(n,\mathbb{R})$; $\mathfrak{so}(n) = \{X : X^\top = -X\}$
+(antisymmetric matrices) for $G = SO(n)$, obtained by differentiating
+$A(t)^\top A(t) = I$ at $t=0$ along a curve $A(t)$ with $A(0)=I$; and
+$\mathfrak{so}(1,n) = \{X : X^\top \eta = -\eta X\}$ for the Lorentz group
+$O(1,n)$ of \Cref{subsubsec:lie-groups}, with $\eta = \operatorname{diag}(-1,1,\dots,1)$
+the Minkowski metric, by the identical computation.
+\end{Example}
+
+\begin{Definition}[Exponential and logarithmic map]
+\label{def:exp-log-map}
+The \emph{exponential map} $\exp : \mathfrak{g} \to G$ sends $X \in
+\mathfrak{g}$ to $\gamma_X(1)$, where $\gamma_X : \mathbb{R} \to G$ is the
+unique one-parameter subgroup ($\gamma_X(s+t) = \gamma_X(s)\gamma_X(t)$)
+with $\gamma_X'(0) = X$; for matrix groups, $\exp(X) = \sum_{k \geq 0}
+X^k/k!$, the ordinary matrix exponential. $\exp$ is a local
+diffeomorphism near $0 \in \mathfrak{g}$ (and near $e \in G$), with local
+inverse the \emph{logarithmic map} $\log : G \to \mathfrak{g}$ near $e$; for
+$G$ connected and compact, $\exp$ is in fact globally surjective (though
+generally not injective), while for non-compact $G$---consistent with the
+recurring compact/non-compact split of
+\Cref{subsubsec:noncompact-representations}---surjectivity of $\exp$ can
+fail (e.g.\ not every element of $SL(2,\mathbb{R})$ is $\exp$ of a single
+element of $\mathfrak{sl}(2,\mathbb{R})$).
+\end{Definition}
+
+\begin{Definition}[Infinitesimal generators]
+\label{def:infinitesimal-generators}
+Given a representation $\rho : G \to GL(V)$
+(\Cref{def:linear-representation}) of a Lie group $G$, its
+derivative at the identity, $d\rho_e : \mathfrak{g} \to \mathfrak{gl}(V) =
+\operatorname{End}(V)$, is a Lie algebra representation (a linear map preserving
+the bracket, $d\rho_e[X,Y] = [d\rho_e X, d\rho_e Y]$), and the elements
+$d\rho_e(X)$ for $X \in \mathfrak{g}$ are the \emph{infinitesimal
+generators} of $\rho$. They recover the group representation by
+exponentiation, $\rho(\exp X) = \exp(d\rho_e(X))$, so that on a connected
+Lie group, $\rho$ is entirely determined by the (typically far more
+tractable, since linear rather than group-theoretic) data of $d\rho_e$.
+\end{Definition}
+
+This linearization is what makes symmetry constraints tractable
+computationally: enforcing exact equivariance under the full group $G$ is,
+by \Cref{def:infinitesimal-generators}, equivalent (at least
+locally, and globally when $G$ is connected) to enforcing equivariance under
+the finitely many infinitesimal generators of $\mathfrak{g}$---a Lie
+algebra, hence a linear, condition. This is the mechanism behind
+Lie-algebra-based approaches to learning approximate or exact symmetries
+directly from data, where the generators $d\rho_e(X)$ themselves (rather
+than the full nonlinear group action) are the learned or regularized
+objects.
+
+\subsubsection{Manifolds and Gauge Theory: Fiber Bundles, Principal Bundles, Local Symmetries}
+\label{subsec:manifold-gauge-theory}
+
+The final piece of geometric machinery is needed once symmetry is allowed to
+vary smoothly from point to point of a base space, rather than acting
+globally and uniformly as in every construction so far.
+
+\begin{Definition}[Fiber bundle]
+\label{def:fiber-bundle}
+A \emph{fiber bundle} is a surjective smooth map $\pi : E \to \mathcal{X}$ between
+manifolds such that every $x \in \mathcal{X}$ has a neighborhood $U$ with
+$\pi^{-1}(U) \cong U \times F$ (a \emph{local trivialization}) for a fixed
+model fiber $F$, compatibly with $\pi$. A \emph{section} of the bundle is a
+smooth map $s : \mathcal{X} \to E$ with $\pi \circ s = \operatorname{id}_X$, i.e.\ a smooth
+choice of one point of the fiber $\pi^{-1}(x)$ for each $x$; the tensor
+fields of \Cref{def:tensor-field} are exactly sections of the
+associated bundle $\mathcal{X} \times_\rho V$ mentioned there.
+\end{Definition}
+
+\begin{Definition}[Principal bundle]
+\label{def:principal-bundle}
+A \emph{principal $G$-bundle} is a fiber bundle $\pi : P \to \mathcal{X}$ with model
+fiber $G$ itself, equipped with a smooth, fiberwise, free and transitive
+right action of $G$ on $P$ (\Cref{def:free-transitive} applied
+fiberwise: each fiber $\pi^{-1}(x)$ is a $G$-torsor). Local
+trivializations correspond to local choices of section (a local ``reference
+frame,'' or \emph{gauge}), and two local sections over overlapping
+neighborhoods differ by a smooth \emph{transition function} $g_{\alpha\beta}
+: U_\alpha \cap U_\beta \to G$---the mathematical formalization of a
+\emph{local (gauge) symmetry}: the group $G$ acting freely and transitively
+on each fiber, as opposed to acting globally on all of $\mathcal{X}$ at once as in
+every construction of \Cref{sec:group-theory-backbone}--\Cref{subsec:homogeneous-spaces}.
+\end{Definition}
+
+\begin{Example}[Principal bundles in geometric learning]
+\label{ex:principal-bundles-learning}
+\begin{itemize}
+    \item The \emph{frame bundle} of a manifold $\mathcal{X}$, whose fiber over $x$ is
+    the set of ordered bases of $T_x\mathcal{X}$, is a principal $GL(n,\mathbb{R})$-bundle
+    (or principal $O(n)$-bundle, once restricted to orthonormal frames); a
+    choice of local orthonormal frame field is exactly a local gauge, and
+    changing frame at each point by a rotation is the geometric meaning of
+    the local $O(n)$ symmetry in this setting.
+    \item \textbf{Gauge-equivariant / steerable convolution on a curved
+    manifold.} Where \Cref{sec:isotypic-decomposition} constrained
+    linear maps equivariant under a \emph{global} symmetry $G$ acting on
+    flat $\mathbb{R}^n$ or a homogeneous space $G/H$, gauge-equivariant CNNs
+    replace the global $G$-action by the structure group of a principal
+    bundle over a general (possibly curved, possibly non-homogeneous)
+    manifold $\mathcal{X}$, and require that a convolution kernel, transported between
+    two local gauges related by a transition function $g_{\alpha\beta}$, be
+    equivariant under the fiberwise action of $G$ in exactly the sense of
+    \Cref{prop:schur-blocks}, applied now pointwise rather than
+    globally---this is the \emph{steerable kernel constraint} that
+    generalizes the flat steerable-CNN condition of~\citep{weiler2019anips}
+    from a homogeneous space (\Cref{subsec:homogeneous-spaces}) to an
+    arbitrary manifold equipped only with local, rather than global,
+    symmetry.
+    \item Associated vector bundles $\mathcal{X} \times_\rho V$
+    (\Cref{def:fiber-bundle}) built from a representation $\rho$
+    of the structure group $G$ of a principal bundle are exactly the
+    bundles whose sections are the tensor fields of
+    \Cref{def:tensor-field}; a gauge transformation acts on such a
+    section by $\rho$ applied fiberwise, and the free, transitive fiberwise
+    action of \Cref{def:principal-bundle} guarantees this action
+    is well defined independent of the (arbitrary) choice of local frame.
+\end{itemize}
+\end{Example}
+
+The key conceptual shift, relative to every earlier construction in this
+survey, is captured by the word \emph{local}: \Cref{subsec:group-actions}
+through \Cref{subsec:homogeneous-spaces} concerned a single group acting
+once, globally, on an entire space $\mathcal{X}$; gauge theory concerns a group acting
+independently, and freely, on each fiber over each point of $\mathcal{X}$
+separately, with the transition functions $g_{\alpha\beta}$ recording how
+these independent local actions are glued together consistently across
+overlapping patches. Equivariance in this setting is consequently a
+\emph{local}, gauge-covariant condition (transforming correctly under
+independent reparametrization of each patch) rather than a single global
+group-homomorphism condition as in \Cref{def:linear-representation}.
+
+\subsubsection{Symmetry Breaking}
+\label{subsec:symmetry-breaking}
+
+We close with the phenomenon that determines when the symmetry-respecting
+machinery of this entire section applies to a given problem \emph{at all}.
+
+\begin{Definition}[Symmetry breaking]
+\label{def:symmetry-breaking}
+Let $G$ act on a set (or space) $\mathcal{Y}$ of admissible states, models, or ground
+truths for a given problem. \emph{Symmetry breaking} occurs when the actual
+object of interest $y_0 \in \mathcal{Y}$ (a physical ground state, a trained network,
+a data distribution) has stabilizer $G_{y_0} \subsetneq G$
+(\Cref{def:orbit-stabilizer}) strictly smaller than the full
+symmetry group of the ambient problem---equivalently, the orbit
+$G \cdot y_0$ is nontrivial, so distinct elements of $G$ produce genuinely
+distinct, but equally valid, instances $g \cdot y_0$.
+\end{Definition}
+
+\begin{Example}[Symmetry breaking already implicit in this survey]\label{ex:symmetry-breaking}
+\phantom{u}
+\begin{itemize}
+    \item \textbf{Weight-space redundancy versus a trained network.} The
+    full permutation/rescaling group $S_n \ltimes \mathbb{R}_{>0}^n$
+    (\Cref{ex:semidirect-products}) acts on the space of all
+    parameterizations of a hidden layer with trivial stabilizer generically
+    (a free action, per \Cref{def:free-transitive}, away from
+    degenerate configurations); a specific trained weight vector $w_0$
+    \emph{breaks} this symmetry down to the trivial subgroup, and the orbit
+    $G \cdot w_0$ is exactly the set of functionally identical
+    reparameterizations quotiented out in
+    \Cref{sec:parameter-space-symmetries}. Here symmetry breaking is
+    generic and unwanted---the entire motivation for passing to the
+    quotient $\mathcal{Y}/G$ in the first place.
+    \item \textbf{Physical symmetry breaking.} In the physical setting that
+    originally motivates the term, a Hamiltonian invariant under the full
+    Euclidean or Lorentz group $E(n)$ or $O(1,n)$
+    (\Cref{subsubsec:lie-groups}) can admit a ground state $y_0$ invariant
+    only under a strict subgroup $H \leq G$ (e.g.\ a crystal breaking
+    continuous translation symmetry down to a discrete lattice subgroup,
+    connecting back to \Cref{ex:discrete-groups}); the set of
+    physically equivalent ground states is then the homogeneous space
+    $G/H$ of \Cref{subsec:homogeneous-spaces} itself, with $H$ playing the
+    role of the unbroken stabilizer.
+    \item \textbf{Symmetry breaking as an architectural design choice.}
+    Equivariant architectures built from the isotypic
+    (\Cref{sec:isotypic-decomposition}) or gauge-theoretic
+    (\Cref{subsec:manifold-gauge-theory}) machinery above are exactly
+    calibrated \emph{not} to break a chosen symmetry $G$ at the level of the
+    function class; whether the learned network's specific output on a
+    specific input further breaks symmetry (e.g.\ classifying a
+    rotationally ambiguous image into one class rather than a rotated
+    alternative) is then a separate, data-dependent question about the
+    orbit of that particular output under the residual symmetry of the
+    input, in the sense of \Cref{def:symmetry-breaking} applied
+    to $\mathcal{Y} = $ the space of possible outputs.
+\end{itemize}
+\end{Example}
+
+Symmetry breaking is therefore not a single phenomenon but a lens: applied
+to \emph{parameters}, it is the redundancy problem motivating the weight-space
+quotients of this survey; applied to \emph{ground states} or \emph{learned
+solutions}, it is the mechanism by which a fully symmetric problem
+nonetheless admits asymmetric, but equally valid, solutions; and in both
+cases it is measured by exactly the same orbit--stabilizer pair
+(\Cref{def:orbit-stabilizer}) introduced at the very start of this section, closing the loop back to \Cref{thm:orbit-stabilizer} as the single invariant underlying every construction surveyed here.
+
+
+
+\bibliographystyle{plainnat}
+\bibliography{../bibliography}
+
+\end{document}
