@@ -8,7 +8,7 @@ But symmetry can also be abstract and many objects can have symmetries: automorp
 
 In fact, group theory, which is the language of symmetry takes root in three different fields: the theory of algebraic equations, number theory, and geometry [wussing1984].
 Ideas underpinning the notion of group can be traced back to Euler and Lagrange in the $18$-th century.
-Legendre is credited [hon2008fststmoarsc] for seing symmetry as transformations.
+In his work on solid geometry, Legendre made the conceptual jump of of seing a symmetry as a transformation between object seen as equivalent [legendre1794,on2008fststmoarsc].
 Galois coined the term ``group'' around $1830$.
 Felix Klein published his Erlangen program in $1872$ in which group theory becomes an organizing principle: different geometries are understood through the symmetries that preserve their structures.
 Arthur Cayley ($1854$) then Heinrich Weber ($1882$) proposed an axiomatic definition of group but the universally accepted modern definition is due to Walther von Dyck, Klein's assistant.
@@ -16,31 +16,43 @@ The group axioms reflect in a natural way the idea of "a transformation that doe
 Namely, chaining two transformations that don't change produces can be seen as a transformation that doesn't change itself (closure), any transformation can be undone (inverse), in particular transformation are lossless since they do not change the object.
 Finally doing nothing can be seen as a trivial transformation (identity).
 The settled definition was then a starting point for other structures and the development of abstract algebra.
-One notable achievement is the classification of finite simple groups, a $50$ year collective endeavor.
-
-Opposite notions exist such as asymmetry (the absence or violation of symmetry) or antisymmetric relations ($x\sim y \implies y\nsim x$).
-
-Symmetries are transformations that leave something unchanged (or changed in a way we understand).
-As such, "Symmetry is a complexity-reducing concept; seek it everywhere." (quote from Alan Perlis, originally in a programming context)
-symmetry is a way to make precise the notion of ``understanding'': with invariance we understand what does not play a role; with equivariance we understand how it plays a role
 
 The concept of symmetry has a variety of applications and extend beyond mathematics to physics, chemistry, biology and even architecture and art [weyl1952,makse2025]
 
 ## Deep learning
 
-Deep learning is very powerful
+Deep learning is very powerful but learning in high dimension suffers from the curse of dimensionality and therefore needs structure which symmetry can provide.
 
-Deep learning and high dimensional is not interpretable
+Networks themselves are overparametrized and their training is non-convex.
+It is generally not well understood why training works and what gets learned.
+Here symmetries provide a double answer by analysing them it might be possible to eliminate redundancies (make parameter spaces more identifiable), but they can also make training more explicit, uncovering implicit bias or constraints (conservation laws)
 
-While we are interested by deep learning, we also include inherently related data aspects.
+Symmetries are transformations that leave something unchanged (or changed in a way we understand).
+As such, "Symmetry is a complexity-reducing concept; seek it everywhere." (quote from Alan Perlis, originally in a programming context)
+symmetry is a way to make precise the notion of ``understanding'': with invariance we understand what does not play a role; with equivariance we understand how it plays a role
 
 ## Symmetries and deep learning
 
-Deep learning is full of symmetries
-Symmetry touch on many aspects of deep learning
 Deep learning is not very interpretablen symmetry has a role of organizing principle as in GDL.
 
+Symmetries touch on many aspects of deep learning: equivariant layers, augmentation, architectural, criterion, neuron permutations, discovery, but they does not have a single: often a prior in data, they become confounders in parameters
+These occurrences are studied by separate communities and existing surveys each cover one object or domain (details in Related work).
+
 ## Objective
+
+
+Symmetry as the starting point
+In contrast, we start from the concept of symmetry and go broad: we list its occurrences across deep learning, from the problem to the training framework including symmetries that are unknown or incomplete, and organize them in a faceted taxonomy across subfields (\Cref{tab:taxonomy}), linking and contrasting them for a high-level, structuralist understanding.
+
+Broad scope
+- include related data aspects
+- we extend a Klein-like perspective from architectures to every place symmetry occurs (data, parameters, optimization, training pipeline)
+
+Contributions
+- taxonomy
+- gaps
+
+Audience
 
 Symmetries appear in different context and with different roles, which this survey tries to disentangle:
 - as an inductive prior that must be respected
@@ -67,6 +79,15 @@ Symmetry as a clarifying tool (Erlangen program).
 
 ## Narrative
 
-The story of the paper is a conceptual progression from symmetry known → symmetry used → symmetry observed in parameters whose consequence are too be understood → symmetry unknown → not completely a symmetry (broken/incomplete) Lastly, current active research and possible gaps are identified. 
+The first part is a short background on symmetries and group theory, which can be skipped for the accustomed reader.
+Then, in first approximation, the story of the paper is a conceptual progression from symmetry imposed by design to symmetry as a by-product, to unknown symmetries that have to be discovered and finally cases that are not exactly symmetries.
+Lastly, current active research and possible gaps are identified. 
 
-The exposition is a choice among several possibilities; some segments could be transferred to other places (e.g. equivariant optimizer is in the section about the parameter space but it could be in the symmetry by design section)
+One caveat, the exposition is a choice among several possibilities; some segments could be transferred to other places (e.g. equivariant optimizer is in the section about the parameter space but it could be in the symmetry by design section)
+
+
+# Cut
+
+Opposite notions exist such as asymmetry, the absence or violation of symmetry,  or antisymmetry (asymmetric relation: $x\sim y \implies y\nsim x$, antisymmetric relation: $(x\sim y \wedge y\sim x)\implies x=y$).
+
+One notable achievement is the classification of finite simple groups, a $50$ year collective endeavor.
