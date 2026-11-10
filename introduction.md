@@ -1,7 +1,6 @@
 # Introduction
 
-## Symmetries
-
+<!-- Symmetries -->
 In basic (planar) geometry there are four main types of symmetries.
 A reflection mirrors the plane around a line, a rotation spins it around a single point and translations and glide reflections shift it without any fixed point.
 But symmetry can also be abstract and many objects can have symmetries: the bijections of a set onto itself are the permutations.
@@ -17,14 +16,12 @@ This settled definition was then the starting point for other algebraic structur
 
 The concept of symmetry has a variety of applications and extend beyond mathematics to physics, chemistry, biology and even architecture and art [weyl1952,makse2025]
 
-## Deep learning
-
+<!-- Deep learning -->
 Deep learning is now the dominant approach in vision, language, the sciences and many use cases.
 A model results from a pipeline (data and their augmentations, architecture, loss, optimizer, training protocol), whose components evolve and are often adopted because they work thus progress has been largely empirical, though not only.
 The resulting models are hard to interpret, and the subfields studying them (vision, graph learning, self-supervised learning, learning theory, scientific ML) have developed separate vocabulary and practices.
 
-## Symmetries and deep learning
-
+<!-- Symmetries and deep learning -->
 Symmetry recurs at each stage of the deep learning pipeline.
 Some symmetries are imposed on purpose: an equivariant layer, a contrastive loss, an augmentation policy, while others appear without being asked for: hidden neurons can be permuted without changing the function, batch normalization makes the loss scale invariant, and predicting sets is invariant to the order of predictions.
 Some symmetries are not known in advance and must be discovered and many hold only approximately or on part of the domain.
@@ -33,8 +30,7 @@ The same notion can also play opposite roles: a prior on data but a confounder o
 
 These occurrences are studied by separate communities and existing surveys each cover one object or domain (details in Related work).
 
-## Objective
-
+<!-- Objective -->
 In contrast, we start from the concept of symmetry and go broad: with a mathematical perspective, we list where, why and how it occurs across deep learning, from the problem to the training framework, including the data side (data augmentation, symmetries of the data distribution) and symmetries that are unknown or incomplete.
 Symmetry has many faces and we try to tell them apart.
 Geometric deep learning [bronstein2021] follows Klein's Erlangen program to classify architectures by the symmetries of their domains.
@@ -47,9 +43,7 @@ By mapping these occurrences under a single perspective, we hope to foster the t
 
 The survey is intended for three audiences: researchers in one of the covered fields looking for a bird's-eye view, mathematicians looking for areas where symmetry applies, and deep learning practitioners who want to make the notion of invariance precise.
 
-
-## Narrative
-
+<!-- Narrative -->
 The first part is a short background on symmetries and group theory, which can be skipped for the accustomed reader.
 Then, in first approximation, the story of the paper is a conceptual progression from symmetry imposed by design to symmetry as a by-product, to unknown symmetries that have to be discovered and finally cases that are not exactly symmetries.
 Lastly, current active research and possible gaps are identified. 
