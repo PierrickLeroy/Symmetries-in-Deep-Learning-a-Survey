@@ -241,25 +241,26 @@ Language models were additionally used to polish writing.
 
 
 \section{Background: Mathematical Foundations of Symmetry}\label{sec:background}
-% Move background on conservation laws here ?
-% \cite{borde2025,carlsson2025,chen2020,2023tg,bronstein2021}
-\Cref{sec:what-is-sym} focus on the notion of symmetry, the following subsections introduce the machinery used throughout the survey: groups, actions, orbits...
+% Move background on conservation laws here ? Same for gauges
+% useful to write borde2025,carlsson2025,chen2020,bronstein2021
+\Cref{sec:what-is-sym} focuses on the notion of symmetry, the following subsections introduce a few standard notions, mostly from group theory used throughout the survey.
+The survey is not mathematically self-contained.
 
-\subsection{What is a Symmetry?}\label{sec:what-is-sym}
+\subsection{What is symmetry?}\label{sec:what-is-sym}
 A \textit{symmetry} is a transformation that leaves an object as a whole unchanged, it is statement about identity.
-\textit{Invariance} is a broader, functional term that refers to the situation where a property of an object does not change under a transformation.
+\textit{Invariance} is the broader, functional term that refers to the situation where a property of an object does not change under a transformation.
 Symmetry can be defined by invariance by saying that an object has a symmetry if its identity is invariant under a specific transformation.
 
 \begin{Definition}[$\phi$-equivalence, {\citep{cohen2014}}]\label{def:equivalence}
-    Let $\phi : \mathcal{X} \to \mathcal{Y}$ be a function from an input domain $\mathcal{X}$ to a codomain $\mathcal{Y}$.
+    Let $\phi : \mathcal{X} \to \mathcal{Y}$ be a function from an input space $\mathcal{X}$ to an output space $\mathcal{Y}$.
     Two elements $x, y \in \mathcal{X}$ are said to be \emph{$\phi$-equivalent}, denoted $x \sim_{\phi} y$, if
     \[
         \phi(x) = \phi(y).
     \]
-    The relation $\equiv_{\phi}$ is an equivalence relation on $\mathcal{X}$ and induces a partition of $\mathcal{X}$ into equivalence classes.
+    The relation $\sim_{\phi}$ is an equivalence relation on $\mathcal{X}$ and induces a partition of $\mathcal{X}$ into equivalence classes.
 \end{Definition}
     
-In \Cref{def:equivalence} for our deep learning context, $\mathcal{X}$ could be a vector space $\mathbb{R}^d$, a set of structured objects (images, graphs, point clouds), a function/parameter space etc; while $\mathcal{Y}$ may be a label in $\{0,1\}$ (binary classification) or $\{1,\dots,L\}$ (multiclass classification), a scalar (regression), another vector space $\mathbb{R}^e$ (feature representation) etc.
+In our deep learning context, the input space $\mathcal{X}$ could be a vector space $\mathbb{R}^d$, a set of structured objects (images, graphs, point clouds), a function/parameter space etc; while $\mathcal{Y}$ may be a label in $\{0,1\}$ (binary classification) or $\{1,\dots,L\}$ (multiclass classification), a scalar (regression), another vector space $\mathbb{R}^e$ (feature representation) etc.
 
 \begin{Example}[Image segmentation]\label{ex:image-segmentation}
     If $\mathcal{X}$ is an image, $x\in \mathcal{X}$ a pixel slot and $\mathcal{Y} = \left \{ 1\dots L\right \}$ are segmentation labels, then the sets defined by the equivalence relation are the pixels that belong to the same segmentation class.
@@ -327,13 +328,12 @@ The equivariance condition of \cref{def:equivariance} then reads (omitting paren
 
 From \Cref{eq:general-equivariance}, we see that invariance is the special case of equivariance with $\rho_Y(g)=\operatorname{id}_{\mathcal{Y}}$: $\rho_Y$ then simply maps all elements of $G$ to the identity group action.
 
-Throughout the text, we write $g\cdot x$ whenever the action is unambiguous---in particular when $G$ acts in the same way on $\mathcal{X}$ and $\mathcal{Y}$---and revert to the explicit $\rho_X(g)$, $\rho_Y(g)$ whenever the two actions must be distinguished.
-Following usage, our use of the term ``symmetry'' will be general and refer to symmetry, invariance or equivariance broadly.
+Throughout the text, we write $g\cdot x$ whenever the action is unambiguous, for example when $G$ acts in the same way on $\mathcal{X}$ and $\mathcal{Y}$, and revert to the explicit $\rho_X(g)$, $\rho_Y(g)$ whenever the two actions must be distinguished.
+Following usage, our use of the term ``symmetry'' will be general and refer to symmetry, invariance or equivariance.
 The triple $(G,\rho_X,\rho_Y)$ is the object that symmetry-discovery methods set out to recover (\Cref{sec:sym-disc-from-data}).
 
 % Groups, products, actions, orbits, stabilizers, quotients, symmetry breaking
-\subsection{Groups and Group Actions}
-\label{sec:group-theory-backbone}
+\subsection{Groups and Group Actions}\label{sec:group-theory-backbone}
 
 The precise language of symmetry is group theory.
 A group $G$ models symmetry in the abstract (internal structure), while a group action is the realization of those transformations on a specific space $\mathcal X$.
