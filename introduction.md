@@ -2,8 +2,8 @@
 
 ## Symmetries
 
-In basic (planar) geometry there are three main types of symmetries.
-A reflection mirrors the plane around a line, a rotation spins it around a single point and a translation shifts it without any fixed point.
+In basic (planar) geometry there are four main types of symmetries.
+A reflection mirrors the plane around a line, a rotation spins it around a single point and translations and glide reflections shift it without any fixed point.
 But symmetry can also be abstract and many objects can have symmetries: the bijections of a set onto itself are the permutations.
 
 In fact, group theory, which is the language of symmetry takes root in three different fields: the theory of algebraic equations, number theory, and geometry [wussing1984].
@@ -12,10 +12,8 @@ In his work on solid geometry, Legendre made the conceptual jump of of seing a s
 Galois coined the term ``group'' around $1830$.
 Felix Klein published his Erlangen program in $1872$ in which group theory becomes an organizing principle: different geometries are understood through the symmetries that preserve their structures.
 Arthur Cayley ($1854$) then Heinrich Weber ($1882$) proposed an axiomatic definition of group but the universally accepted modern definition is due to Walther von Dyck, Klein's assistant.
-The group axioms reflect in a natural way the idea of "a transformation that doesn't change".
-Namely, chaining two transformations that don't change produces can be seen as a transformation that doesn't change itself (closure), any transformation can be undone (inverse), in particular transformation are lossless since they do not change the object.
-Finally doing nothing can be seen as a trivial transformation (identity).
-The settled definition was then a starting point for other structures and the development of abstract algebra.
+The group axioms naturally capture the idea of a transformation that leaves an object unchanged: composing two such transformations gives another one (closure), doing nothing is one (identity), and each can be undone since nothing is lost (inverse); and associativity holds automatically.
+This settled definition was then the starting point for other algebraic structures and for the development of abstract algebra.
 
 The concept of symmetry has a variety of applications and extend beyond mathematics to physics, chemistry, biology and even architecture and art [weyl1952,makse2025]
 
@@ -38,8 +36,9 @@ These occurrences are studied by separate communities and existing surveys each 
 ## Objective
 
 In contrast, we start from the concept of symmetry and go broad: with a mathematical perspective, we list where, why and how it occurs across deep learning, from the problem to the training framework, including the data side (data augmentation, symmetries of the data distribution) and symmetries that are unknown or incomplete.
-Geometric deep learning [bronstein2021] follows Klein's Erlangen program to classify architectures by the symmetries of their domains; we extend this perspective from architectures to every place where symmetry occurs (data, parameters, optimization, training pipeline) and classify the occurrences themselves.
-
+Symmetry has many faces and we try to tell them apart.
+Geometric deep learning [bronstein2021] follows Klein's Erlangen program to classify architectures by the symmetries of their domains.
+We extend this perspective from architectures to every place where symmetry occurs (data, parameters, optimization, training pipeline) and classify the occurrences themselves, adhering to the words of Alan Perlis: "Symmetry is a complexity-reducing concept; seek it everywhere.".
 Our contributions are threefold:
 (i) a faceted taxonomy (\Cref{tab:taxonomy}) whose six axes locate, link and contrast occurrences of symmetry across subfields;
 (ii) an inventory of $322$ works organized along this taxonomy, underpinned by a hybrid systematic review and the coding of the corpus (\Cref{sec:materials-methods});
@@ -70,22 +69,8 @@ Networks themselves are overparametrized and their training is non-convex.
 It is generally not well understood why training works and what gets learned.
 Here symmetries provide a double answer by analysing them it might be possible to eliminate redundancies (make parameter spaces more identifiable), but they can also make training more explicit, uncovering implicit bias or constraints (conservation laws)
 
-Symmetries are transformations that leave something unchanged (or changed in a way we understand).
-As such, "Symmetry is a complexity-reducing concept; seek it everywhere." (quote from Alan Perlis, originally in a programming context)
-symmetry is a way to make precise the notion of ``understanding'': with invariance we understand what does not play a role; with equivariance we understand how it plays a role
-
 Symmetry as the starting point
 In contrast, we start from the concept of symmetry and go broad: we list its occurrences across deep learning, from the problem to the training framework including symmetries that are unknown or incomplete, and organize them in a faceted taxonomy across subfields (\Cref{tab:taxonomy}), linking and contrasting them for a high-level, structuralist understanding.
-
-Broad scope
-- include related data aspects
-- we extend a Klein-like perspective from architectures to every place symmetry occurs (data, parameters, optimization, training pipeline)
-
-Contributions
-- taxonomy
-- gaps
-
-Audience
 
 Symmetries appear in different context and with different roles, which this survey tries to disentangle:
 - as an inductive prior that must be respected
