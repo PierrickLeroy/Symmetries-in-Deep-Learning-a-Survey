@@ -88,9 +88,9 @@ Previous works have studied the literature on symmetries in deep learning.
 More specialized works focus on equivariant convolutions \citep{basheer2025ijdsa,habte2023}, 3D rotations \citep{fei2024air} and $SE(3)$-equivariant robot learning \citep{seo2025a}.
 \citet{rath2024air} reviews methods that integrate geometric prior knowledge into neural networks so that their representations are invariant or equivariant.
 \citet{shorten2019jbd,mumuni2022a} survey data augmentation.
-Each of these works focuses on a few objects carrying the symmetry (mostly the model) or on one application domain.
+Each of these works focuses on a few objects carrying the symmetry or on one application domain.
 
-\section{Materials and Methods}
+\section{Materials and Methods}\label{sec:materials-methods}
 
 \subsection{Methodology}
 The corpus was collected over a two years period, starting from an initial collection progressively expanded and completed in the final phase.
@@ -2687,7 +2687,7 @@ They prove that a small $\mathcal{L}_{\mathrm{equiv}}$ upper-bounds the approxim
 A second line directly couples an unconstrained network to an explicit equivariance loss $\mathcal{L}_{\mathrm{equiv}}(f_\theta)=\frac1n\sum_i\mathbb{E}_{g\sim G}\big[L(f_\theta(\rho_X(g)x_i),\rho_Y(g)y_i)\big]$, used to encode a symmetry into a free backbone \citep{escriche2025,elhag2026}.
 For encoder--decoder models \citet{ali2026} decompose this into three terms---input-to-latent $\operatorname{MSE}(\rho_Z(g)E(x),E(gx))$, latent-to-output $L_{\mathrm{task}}(D(\rho_Z(g)E(x)),gy)$ with $\rho_Z(g)$ a learnable per-generator matrix, and a presentation-based penalty encouraging $\rho_Z$ towards being a genuine representation, which would be for example \ $\operatorname{MSE}(\rho_Z(r)^3,I_d)$ for a $C_3$ group with rotation generator $r$.
 
-\section{Discussion}
+\section{Discussion}\label{sec:discussion}
 
 \subsection{Loose Ends and Outlook}
 We gather here some occurrences of symmetry that did not enter the main narrative.
