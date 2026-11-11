@@ -91,12 +91,12 @@ Beyond mathematics, symmetry is an important concept in physics, chemistry, biol
 % Deep learning
 Deep learning is now the dominant approach in vision, language and the sciences.
 A trained model is the output of a pipeline (data and augmentations, architecture, loss, optimizer, training protocol) whose components are often adopted because they work: progress has been largely empirical.
-The resulting models and there training dynamics are hard to interpret, and the subfields that study them (vision, graph learning, self-supervised learning, learning theory, scientific machine learning) have developed separate vocabularies and practices.
+The resulting models and there training dynamics are hard to interpret, and the subfields that study them (NLP, vision, graph learning, self-supervised learning, learning theory, scientific machine learning) have developed separate vocabularies and practices.
 
 % Symmetries and deep learning
 Symmetry recurs at each stage of this pipeline.
 Some symmetries are imposed on purpose (an equivariant layer, a contrastive loss, an augmentation policy); others appear without being asked for such as parameter-space symmetries (hidden neurons permutations, rescaling with batch normalization).
-Some are unknown in advance and must be discovered and can hold only approximately or on part of the domain.
+Some are unknown in advance and must be discovered, can hold only approximately or on part of the domain.
 Working explicitly with a symmetry can turn a heuristic into a precise statement: invariance, $f(g\cdot x)=f(x)$, says what plays no role; equivariance, $f(g\cdot x)=g\cdot f(x)$, says how it plays a role.
 The notion can play opposite roles: an inductive prior on the data, a confounder on the parameters.
 Existing surveys each cover one of these objects or one application domain (\Cref{sec:related-work}).
@@ -248,8 +248,9 @@ The survey is not mathematically self-contained.
 
 \subsection{What is symmetry?}\label{sec:what-is-sym}
 A \textit{symmetry} is a transformation that leaves an object as a whole unchanged, it is statement about identity.
-\textit{Invariance} is the broader, functional term that refers to the situation where a property of an object does not change under a transformation.
-Symmetry can be defined by invariance by saying that an object has a symmetry if its identity is invariant under a specific transformation.
+\textit{Invariance} is a broader, functional term used to qualify a property (called an \emph{invariant}) of an object that does not change under a transformation.
+For example, the area of a square is an invariant under isometries of the plane.
+Symmetry can be defined with invariance: given a list of invariants, a symmetry is a transformation that leave those invariants unchanged.
 
 \begin{Definition}[$\phi$-equivalence, {\citep{cohen2014}}]\label{def:equivalence}
     Let $\phi : \mathcal{X} \to \mathcal{Y}$ be a function from an input space $\mathcal{X}$ to an output space $\mathcal{Y}$.
@@ -259,7 +260,7 @@ Symmetry can be defined by invariance by saying that an object has a symmetry if
     \]
     The relation $\sim_{\phi}$ is an equivalence relation on $\mathcal{X}$ and induces a partition of $\mathcal{X}$ into equivalence classes.
 \end{Definition}
-    
+
 In our deep learning context, the input space $\mathcal{X}$ could be a vector space $\mathbb{R}^d$, a set of structured objects (images, graphs, point clouds), a function/parameter space etc; while $\mathcal{Y}$ may be a label in $\{0,1\}$ (binary classification) or $\{1,\dots,L\}$ (multiclass classification), a scalar (regression), another vector space $\mathbb{R}^e$ (feature representation) etc.
 
 \begin{Example}[Image segmentation]\label{ex:image-segmentation}
