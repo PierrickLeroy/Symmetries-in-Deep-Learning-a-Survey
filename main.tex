@@ -436,6 +436,55 @@ For $x_0\in \mathcal{X}$ a homogeneous space, $\mathcal{X}\cong G/G_{x_0}$, for 
 
 \subsection{Representations}\label{sec:representations}
 
+The maps $\rho_X,\rho_Y$ of \Cref{eq:representation-homomorphism} are sometimes loosely called representations.
+A representation is almost always intended as a linear action.
+This is the natural setting for networks whose layers are linear maps between feature spaces, which we use as illustration in this part.
+
+\begin{Definition}[Linear representation]\label{def:representation}
+    A \emph{(linear) representation} of a group $G$ on a real vector space $V$ is a homomorphism $\rho:G\to GL(V)$, i.e.\ an action of $G$ on $V$ (\Cref{def:group-action}) by invertible linear maps.
+\end{Definition}
+
+Given representations $\rho_V$ and $\rho_W$ of $G$ on $V$ and $W$, a linear map $\Lambda:V\to W$ is $G$-equivariant (\Cref{def:equivariance}) if and only if
+\begin{equation}\label{eq:linear-equivariance}
+    \Lambda\,\rho_V(g)=\rho_W(g)\,\Lambda\qquad\forall g\in G.
+\end{equation}
+This constraint is linear in $\Lambda$, so equivariant linear maps form a vector subspace whose dimension is the number of free parameters of an equivariant linear layer.
+
+\begin{Example}[Trivial, permutation and regular representations]\label{ex:representations-recap}
+    \phantom{u}
+    \begin{itemize}
+        \item With the \emph{trivial representation} $\rho_W(g)=\operatorname{id}_W$, \Cref{eq:linear-equivariance} states that $\Lambda$ is invariant.
+        \item With the \emph{permutation representation} $\rho_V(g)=\rho_W(g)=P_{\sigma_g}$ \Cref{eq:linear-equivariance} reads $\Lambda_{\sigma_g(i)\sigma_g(j)}=\Lambda_{ij}$ and weights are tied along the orbits of $G$ on index pairs $(i,j)$.
+        \item The \emph{regular representation} of a finite group $G$ is the permutation representation associated with left multiplication of $G$ on itself: on the space $\mathbb{R}^G$ of functions $f:G\to\mathbb{R}$, $(\rho_{\mathrm{reg}}(g)f)(h)=f(g^{-1}h)$. The $G$-convolution of \Cref{sec:edl-achieving-equiv} satisfies \Cref{eq:linear-equivariance} for it.
+    \end{itemize}
+\end{Example}
+
+\begin{Definition}[Irreducibility]\label{def:irreducible}
+    Let $\rho$ be a representation on a vector space $V\neq {0}$.
+    A subspace $U\subseteq V$ is \emph{invariant} if $\rho(g)U\subseteq U$ for all $g\in G$, and $\rho$ then restricts to a representation on $U$.
+    If its only invariant subspaces are $\{0\}$ and $V$, $\rho$ is said to be \emph{irreducible}.
+\end{Definition}
+
+Every finite-dimensional continuous representation of a compact group is a direct sum of irreducible ones, which thus serve as building blocks.
+For example, the permutation representation of $S_n$ splits into the irreducible subspaces $\operatorname{span}(\boldsymbol{1})$ and $\{x\in\mathbb{R}^n:\sum_ix_i=0\}$.
+
+\emph{Steerable} networks \citep{cohen2016a,weiler2019anips} extend linear equivariance to typed features transforming according to a chosen representation.
+For $\mathcal{X}=\mathbb{R}^d$ and $G=\mathbb{R}^d\rtimes H$ with $H\le O(d)$, a \emph{feature field of type} $\rho:H\to GL(C)$ is a map $f:\mathbb{R}^d\to\mathbb{R}^C$ on which $G$ acts by
+\begin{equation}\label{eq:feature-field}
+    \big((v,h)\cdot f\big)(x)=\rho(h)\,f\big(h^{-1}(x-v)\big).
+\end{equation}
+Points move as $x\mapsto hx+v$ (as Euclidean actions in \Cref{sec:actions}) and the $C$ channel values are mixed by $\rho(h)$.
+The trivial type gives scalar fields (e.g.\ grey-scale images), the type $\rho(h)=h$ gives vector fields (e.g.\ forces), and for finite $H$ the regular type recovers $G$-CNNs.
+
+A convolution $f_{\mathrm{out}}(x)=\int_{\mathbb{R}^d}K(x-y)\,f_{\mathrm{in}}(y)\,dy$ with kernel $K:\mathbb{R}^d\to\mathbb{R}^{C_{\mathrm{out}}\times C_{\mathrm{in}}}$ is translation equivariant, and it maps fields of type $\rho_{\mathrm{in}}$ to fields of type $\rho_{\mathrm{out}}$ $G$-equivariantly if and only if $K$ satisfies the \emph{kernel constraint} \citep{weiler2018anips,cesa2021}
+\begin{equation}\label{eq:steerable-constraint}
+    K(hy)=\rho_{\mathrm{out}}(h)\,K(y)\,\rho_{\mathrm{in}}(h)^{-1}\qquad\forall h\in H,\ y\in\mathbb{R}^d,
+\end{equation}
+i.e.\ $K$ is itself $H$-equivariant, with $H$ acting on matrices by $M\mapsto\rho_{\mathrm{out}}(h)M\rho_{\mathrm{in}}(h)^{-1}$.
+Ordinary CNNs, whose kernels are unconstrained, correspond to the case $H=\{e\}$, while for $H=SO(d)$ and scalar fields a constraint $K(hy)=K(y)$ must be respected leading to isotropic kernels.
+Being linear in $K$, \Cref{eq:steerable-constraint} is solved once for a basis $(K_k)_k$ and only the coefficients of $K=\sum_kw_kK_k$ are learned; decomposing $\rho_{\mathrm{in}}$ and $\rho_{\mathrm{out}}$ into irreducible representations splits it into small independent blocks \citep{weiler2019anips,cesa2021}.
+The gauge-equivariant convolution of \Cref{sec:edl-achieving-equiv} obeys the same constraint, with $H$ the structure group.
+
 \subsection{Lie groups and Lie algebras}\label{sec:lie-algebra}
 
 \section{Symmetry as a Design Principle}\label{sec:design-principle}
