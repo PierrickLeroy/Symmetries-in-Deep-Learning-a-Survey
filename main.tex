@@ -244,6 +244,7 @@ Language models were additionally used to polish writing.
 % Move background on conservation laws here ? Same for gauges
 % useful to write borde2025,carlsson2025,chen2020,bronstein2021
 \Cref{sec:what-is-sym} focuses on the notion of symmetry, the following subsections introduce a few standard notions, mostly from group theory used throughout the survey.
+A group models symmetry in the abstract, while a group action is the realization of those transformations on a specific space.
 The survey is not mathematically self-contained.
 
 \subsection{What is symmetry?}\label{sec:what-is-sym}
@@ -381,9 +382,61 @@ A Lie group is \emph{compact} if it is compact as a topological space.
 
 \subsection{Actions}\label{sec:actions}
 
-\subsection{Representations}
+\begin{Definition}[Group action]\label{def:group-action}
+    An \emph{action} of a group $G$ on a set $\mathcal{X}$ is a homomorphism $\rho:G\to\operatorname{Sym}(\mathcal{X})$, and we write $g\cdot x:=\rho(g)\,x$ or the shortest form $gx$.
+\end{Definition}
 
-\subsection{Lie groups and Lie algebras}
+In continuation with \Cref{ex:groups}, $E(n)$ acts on $\mathbb{R}^n$ by $(v,A)\cdot x=Ax+v$ and $S_n$ on $n$ $d$-dimensional points by $\sigma\cdot X=P_\sigma X$ with $X\in\mathbb{R}^{n\times d}$.
+The same group can act in multiple ways: $S_n$ acts on graphs through the adjacency matrix $A$ by $\sigma\cdot A=P_\sigma AP_\sigma^\top$.
+
+\begin{Definition}[Orbit and stabilizer]\label{def:orbit-stabilizer}
+    Let $G$ act on $\mathcal{X}$ and $x\in\mathcal{X}$.
+    The \emph{orbit} of $x$ is $G\cdot x=\{g\cdot x: g\in G\}\subseteq\mathcal{X}$ and its \emph{stabilizer} is $G_x=\operatorname{Stab}(x)=\{g\in G: g\cdot x=x\}$.
+\end{Definition}
+
+The stabilizer $G_x$ is a subgroup of $G$ and orbits partition $\mathcal{X}$ since for $x,y\in \mathcal{X}$ the relation $x\sim y$ defined by $y\in G\cdot x$ is an equivalence relation.
+A function is $G$-invariant (def~\ref{def:invariance}) if and only if it is constant on orbits.
+
+\begin{Definition}[Quotient and canonicalization]\label{def:quotient}
+    The \emph{quotient} $\mathcal{X}/G$ is the set of orbits, and the \emph{quotient map} $\pi:\mathcal{X}\to\mathcal{X}/G$, $x\mapsto G\cdot x$, sends a point to its orbit.
+    A \emph{section} of $\pi$ is a map $s:\mathcal{X}/G\to\mathcal{X}$ with $\pi\circ s=\operatorname{id}_{\mathcal{X}/G}$, i.e.\ it picks one representative in each orbit, and $c=s\circ\pi:\mathcal{X}\to\mathcal{X}$ is the associated \emph{canonicalization}.
+\end{Definition}
+
+The quotient map is $G$-invariant, and every $G$-invariant function $f$ factors uniquely as $f=\bar f \circ\pi$ that is, invariant functions on $\mathcal{X}$ are functions on $\mathcal{X}/G$.
+The quotient can also be written with the orbit relation such as in parameter space $\Theta/\!\sim$ (\Cref{sec:quotient-repr-align}).
+A concrete example of canonicalization is centering a point cloud, $X\mapsto X-\boldsymbol{1}\bar{x}^\top$ with $\bar{x}$ its centroid.
+
+\begin{Theorem}[Orbit--stabilizer]\label{thm:orbit-stabilizer}
+    Let $G$ act on $\mathcal{X}$ and $x\in\mathcal{X}$.
+    The map $gG_x\mapsto g\cdot x$ is a well-defined bijection from $G/G_x$ onto the orbit $G\cdot x$.
+\end{Theorem}
+
+A larger stabilizer thus means a smaller orbit.
+If $G$ is finite, $|G\cdot x|=|G|/|G_x|$.
+If it is Lie group, we have instead $\dim(G\cdot x)=\dim G-\dim G_x$.
+For example, $SO(3)$ acts on $\mathbb{R}^3$ by rotations.
+For $x\neq0$, the orbit is the sphere of radius $\lVert x\rVert$, formally $G\cdot x\cong S^2$. 
+The stabilizer $G_x\cong SO(2)$ contains the rotations about the axis of $x$ and we have $\dim S^2=3-1$.
+The origin is special: it has orbit $\{0\}$ and stabilizer the full $SO(3)$ group.
+
+\begin{Definition}[Free, faithful and transitive actions]\label{def:free-transitive}
+    An action $\rho$ of $G$ on $\mathcal{X}$ is
+    \begin{itemize}
+        \item \emph{free} if all stabilizers are trivial;
+        \item \emph{faithful} if $\rho$ is injective, i.e.\ only $e$ fixes every point;
+        \item \emph{transitive} if for any $x\in \mathcal{X}$ the orbit is $\mathcal{X}$, and $\mathcal{X}$ is said to be a \emph{homogeneous space} of $G$.
+    \end{itemize}
+\end{Definition}
+
+A free action on a nonempty set is faithful, and a faithful action identifies $G$ with the subgroup $\rho(G)\le\operatorname{Sym}(\mathcal{X})$.
+By \Cref{thm:orbit-stabilizer}, each orbit of a free action is in bijection with $G$.
+For instance, $E(n)$ acts transitively but not freely on $\mathbb{R}^n$, $S_n$, by permuting coordinates, acts faithfully on $\mathbb{R}^n$ but neither freely nor transitively.\newline
+A group acts transitively and freely on itself by left multiplication and transitively on $G/H$ by $g\cdot(kH)=(gk)H$.
+For $x_0\in \mathcal{X}$ a homogeneous space, $\mathcal{X}\cong G/G_{x_0}$, for example $S^2\cong SO(3)/SO(2)$ and $\mathbb{R}^n\cong E(n)/O(n)$.
+
+\subsection{Representations}\label{sec:representations}
+
+\subsection{Lie groups and Lie algebras}\label{sec:lie-algebra}
 
 \section{Symmetry as a Design Principle}\label{sec:design-principle}
 
