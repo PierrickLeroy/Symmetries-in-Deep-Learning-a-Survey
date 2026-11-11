@@ -2184,7 +2184,7 @@ Functional SB is a property of the pair $(f^*,\mathcal{H})$: the target $f^*$ is
 \operatorname{Sym}(f^*)\subsetneq\operatorname{Sym}(h)=G\quad&\text{for all }h\in\mathcal{H},\\
 &\text{equivalently}\quad \exists\,x,g:\ f^*(\rho_X(g)x)\neq\rho_Y(g)f^*(x).
 \end{align}
-It is an \emph{overspecification} of equivariance and coincides pointwise with the \emph{incorrect equivariance} of \citet{wang2023a}, and its magnitude is measured by the equivariance error $\|f^*\|_{\mathrm{EE}}$ of \Cref{eq:equiv-error-approximate}.
+It is an \emph{overspecification} of equivariance and coincides pointwise with the \emph{incorrect equivariance} of \citet{wang2023a} whose magnitude can measured by equivariance errors (as in \Cref{eq:equiv-error-approximate} for instance).
 It appears in standard architectures: \citet{zhang2019p3icml} show that the subsampling hidden inside strided convolutions and max-pooling silently destroys shift-equivariance, since it violates the Nyquist--Shannon condition $f_s>f_{\max}$ for lossless sampling of a band-limited signal.
 \citet{zhang2019p3icml} propose a low-pass (blur) filtering before subsampling to partially restore it.
 Imposing an exact $G$ on a task that lacks it carries an unavoidable cost, which \citet{wang2023a} make precise through error lower bounds: for invariant classification the accuracy is capped by the best per-orbit choice, $\operatorname{err}(f_\theta)\ge\int_F k(Gx)\,dx$ with $k(Gx)$ representing the best choice on $Gx$ and $F$--so-called \emph{fundamental domain}--is used to decompose $X$ as $X=\cup_{x\in F}Gx$.
