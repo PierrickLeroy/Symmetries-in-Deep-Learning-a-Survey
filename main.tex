@@ -253,10 +253,10 @@ The following subsections introduce standard material used throughout: abstract 
 The survey is not mathematically self-contained.
 
 \subsection{What is symmetry?}\label{sec:what-is-sym}
-A \textit{symmetry} is a transformation that leaves an object as a whole unchanged, it is statement about identity.
-\textit{Invariance} is a broader, functional term used to qualify a property (called an \emph{invariant}) of an object that does not change under a transformation.
+A \emph{symmetry} is a transformation that leaves an object as a whole unchanged, it is a statement about identity.
+\emph{Invariance} is a broader, functional term used to qualify a property (called an \emph{invariant}) of an object that does not change under a transformation.
 For example, the area of a square is an invariant under isometries of the plane.
-Symmetry can be defined with invariance: given a list of invariants, a symmetry is a transformation that leave those invariants unchanged.
+Symmetry can be defined with invariance: given a list of invariants, a symmetry is a transformation that leaves those invariants unchanged.
 
 \begin{Definition}[$\phi$-equivalence, {\citep{cohen2014}}]\label{def:equivalence}
     Let $\phi : \mathcal{X} \to \mathcal{Y}$ be a function from an input space $\mathcal{X}$ to an output space $\mathcal{Y}$.
@@ -278,27 +278,29 @@ In our deep learning context, the input space $\mathcal{X}$ could be a vector sp
 \end{Example}
 
 \begin{Example}[Loss level sets]
-    If $\mathcal X$ is a parameter space, $\mathcal{Y} = \mathbb{R}$ and $\phi$ is a loss function, then the sets defined by the equivalence relation are the level set of the loss function.
+    If $\mathcal{X}$ is a parameter space, $\mathcal{Y} = \mathbb{R}$ and $\phi$ is a loss function, then the sets defined by the equivalence relation are the level set of the loss function.
 \end{Example}
 
 \begin{Example}[Observationally equivalent parameters]\label{ex:equivalence_observational}
-    If $\mathcal{X}$ a parameter space, $\mathcal{Y}$ the hypothesis space and $\varphi$ is the implementation map, then the sets given by the equivalence relation $\varphi$ are the observationally equivalent parameters (see \Cref{sec:parameter-space-symmetries}).
+    If $\mathcal{X}$ is a parameter space, $\mathcal{Y}$ the hypothesis space and $\phi=\varphi$ the implementation map, then the sets given by the equivalence relation $\sim_\varphi$ are the observationally equivalent parameters (see \Cref{sec:parameter-space-symmetries}).
 \end{Example}
 
 \begin{Definition}[Invariance]\label{def:invariance}
     Let $G$ be a group acting on a set $\mathcal{X}$.
     A function $\phi : \mathcal{X} \to \mathcal{Y}$ is $G$-invariant if $g\cdot x$ is $\phi$-equivalent to $x$ for all $g\in G$.
     That is, 
-    $$\phi(g\cdot x)=\phi(x) \text{ for all } g\in G \text{ and } x\in \mathcal{X}.$$ 
+    \[
+        \phi(g\cdot x)=\phi(x)\qquad\forall g\in G,\ x\in\mathcal{X}.
+    \]
 \end{Definition}
 
 In \Cref{ex:image-classification,ex:image-segmentation}, $G$ acts on images and could contain translations, rotations or reflections while in \Cref{ex:equivalence_observational}, $G$ acts on parameters and contains transformations that leave the implemented function unchanged such as within-layer neuron permutations for MLPs.
 
 \begin{Definition}[Equivariance]\label{def:equivariance}
     Let $G$ be a group acting on sets $\mathcal{X}$ and $\mathcal{Y}$. 
-    A function $\phi : \mathcal{X} \to \mathcal{Y}$ is $G$-equivariant if
+    A function $f : \mathcal{X} \to \mathcal{Y}$ is $G$-equivariant if
     \[
-        \phi(g \cdot x) = g \cdot \phi(x)
+        f(g \cdot x) = g \cdot f(x)
     \]
     for all $g \in G$ and $x \in \mathcal{X}$.
 \end{Definition}
@@ -308,32 +310,33 @@ $G$ can act similarly on the two sets, as it can be the case for 3D physical dat
 Similarly for image segmentation, translation of the domain (input) must induce the same translation of segmentation map (output).
 
 However, equivariance does not require that the group $G$ acts in the same way on input and output \citep{cohen2016a,bogatskiy2020p3icml}: a single abstract element $g\in G$ may take one form on $\mathcal{X}$ and a different form on $\mathcal{Y}$.
-For explicit distinction, two maps (\emph{actions} (see \Cref{def:group-action}) are attached to $G$:
+For explicit distinction, two maps (\emph{actions}, see \Cref{def:group-action}) are attached to $G$:
 \[
     \rho_X : G \to \operatorname{Sym}(\mathcal{X}), \qquad \rho_Y : G \to \operatorname{Sym}(\mathcal{Y}),
 \]
 where $\operatorname{Sym}(\mathcal{S})$ denotes the group of bijections of a set $\mathcal{S}$.
 The only requirement is that each form respects the group structure, i.e.\ that $\rho_X$ and $\rho_Y$ are group homomorphisms:
 \begin{equation}\label{eq:representation-homomorphism}
-    \rho_X(gh)=\rho_X(g)\circ\rho_X(h) \quad \textrm{and} \quad \rho_Y(gh)=\rho_Y(g)\circ\rho_Y(h) \qquad \forall g, h \in G.
+    \rho_X(gh)=\rho_X(g)\circ\rho_X(h), \qquad \rho_Y(gh)=\rho_Y(g)\circ\rho_Y(h) \qquad \forall g, h \in G.
 \end{equation}
-The equivariance condition of \cref{def:equivariance} then reads (omitting parentheses):
+The equivariance condition of \Cref{def:equivariance} then reads (omitting parentheses):
 \begin{equation}\label{eq:general-equivariance}
-    \phi\big(\rho_X(g)\,x\big)=\rho_Y(g)\,\phi(x) \qquad \forall g\in G,\ x\in\mathcal{X}.
+    f\big(\rho_X(g)\,x\big)=\rho_Y(g)\,f(x) \qquad \forall g\in G,\ x\in\mathcal{X}.
 \end{equation}
+The elements $g$ satisfying \Cref{eq:general-equivariance} form the \emph{symmetry group} $\operatorname{Sym}(f)=\{g\in G: f\circ\rho_X(g)=\rho_Y(g)\circ f\}$ of $f$, a subgroup of $G$ (\Cref{sec:groups}), and $f$ is equivariant if and only if $\operatorname{Sym}(f)=G$.
 
 \begin{Example}[One rotation, several forms]
     Let $G=C_4=\{e,r,r^2,r^3\}$ be the group of rotations by multiples of $90^\circ$, and let $\rho_X(r)$ rotate the pixel grid of an image $x\in\mathcal{X}=\mathbb{R}^{n\times n}$ (a permutation of pixels).
     Depending on the task, the same $r$ acts on the output as:
     \begin{itemize}
-        \item a shift of angle, $\rho_Y(r)\,\theta=\theta+\pi/2 \bmod 2\pi$, if $\phi$ predicts an orientation $\theta\in\mathcal{Y}=[0,2\pi)$;
-        \item a $2\times 2$ matrix, $\rho_Y(r)=\left(\begin{smallmatrix}-1&0\\0&-1\end{smallmatrix}\right)$, if $\phi$ predicts a tilt in $\mathcal{Y}=\mathbb{R}^2$;
-        \item the identity, $\rho_Y(r)=\operatorname{id}_{\mathcal{Y}}$, if $\phi$ predicts a class label.
+        \item a shift of angle, $\rho_Y(r)\,\theta=\theta+\pi/2 \bmod 2\pi$, if $f$ predicts an orientation $\theta\in\mathcal{Y}=[0,2\pi)$;
+        \item a $2\times 2$ matrix, $\rho_Y(r)=\left(\begin{smallmatrix}-1&0\\0&-1\end{smallmatrix}\right)$, if $f$ predicts a tilt in $\mathcal{Y}=\mathbb{R}^2$;
+        \item the identity, $\rho_Y(r)=\operatorname{id}_Y$, if $f$ predicts a class label.
     \end{itemize}
-    In each case $\rho_Y(r)^4=\operatorname{id}_{\mathcal{Y}}$, so $\rho_Y$ satisfies \Cref{eq:representation-homomorphism}.
+    In each case $\rho_Y(r)^4=\operatorname{id}_Y$, so $\rho_Y$ satisfies \Cref{eq:representation-homomorphism}.
 \end{Example}
 
-From \Cref{eq:general-equivariance}, we see that invariance is the special case of equivariance with $\rho_Y(g)=\operatorname{id}_{\mathcal{Y}}$: $\rho_Y$ then simply maps all elements of $G$ to the identity group action.
+From \Cref{eq:general-equivariance}, we see that invariance is the special case of equivariance with $\rho_Y(g)=\operatorname{id}_Y$: $\rho_Y$ then simply maps all elements of $G$ to the identity group action.
 
 Throughout the text, we write $g\cdot x$ whenever the action is unambiguous, for example when $G$ acts in the same way on $\mathcal{X}$ and $\mathcal{Y}$, and revert to the explicit $\rho_X(g)$, $\rho_Y(g)$ whenever the two actions must be distinguished.
 Following usage, our use of the term ``symmetry'' will be general and refer to symmetry, invariance or equivariance.
@@ -376,10 +379,10 @@ A Lie group is \emph{compact} if it is compact as a topological space.
     \begin{itemize}
         \item The \emph{cyclic group} $C_n=\{e,r,\dots,r^{n-1}\}$ of rotations of the plane by multiples of $2\pi/n$ is generated by one rotation $r$ with $r^n=e$, and $C_n\cong\mathbb{Z}/n\mathbb{Z}$.
         \item The \emph{general linear group} $GL(n,\mathbb{R})$, or $GL(n)$, of invertible $n\times n$ real matrices under multiplication, is an open subset of $\mathbb{R}^{n\times n}$ hence a non-compact Lie group of dimension $n^2$.
-        \item The \emph{symmetric group} $S_n=\operatorname{Sym}(\{1,\dots,n\})$ of permutations under composition is finite of order $n!$. For $\sigma \in S_n$ the permutation matrice $P_\sigma$ is defined by $P_\sigma e_i=e_{\sigma(i)}$.
+        \item The \emph{symmetric group} $S_n=\operatorname{Sym}(\{1,\dots,n\})$ of permutations under composition is finite of order $n!$. For $\sigma \in S_n$ the permutation matrix $P_\sigma$ is defined by $P_\sigma e_i=e_{\sigma(i)}$.
         The map $\sigma\mapsto P_\sigma$ is an injective homomorphism from $S_n$ to $GL(n,\mathbb{R})$, so $S_n$ is isomorphic to the group of permutation matrices, a subgroup of $GL(n,\mathbb{R})$.
         \item The \emph{orthogonal group} $O(n)=\{A\in GL(n):A^\top A=I\}$ of linear isometries of $\mathbb{R}^n$ (rotations including reflections), and its subgroup $SO(n)=\{A\in O(n):\det A=1\}$ (rotations only) are compact Lie groups of dimension $n(n-1)/2$.
-        \item The \emph{Euclidean group} $E(n)=\mathbb{R}^n\rtimes O(n)$ and its subgroup $SE(n)=\mathbb{R}^n\rtimes SO(n)$ of rigid motions. With $\psi(A)v=Av$, the product is $(v_1,A_1)(v_2,A_2)=(v_1+A_1v_2,\,A_1A_2)$. $E(n)$ is the group of all isometries of $\mathbb{R}^n$ with the map $x\mapsto Ax+v$ (see actions below) and both are non-compact Lie groups of dimension $n(n+1)/2$.
+        \item The \emph{Euclidean group} $E(n)=\mathbb{R}^n\rtimes O(n)$ and its subgroup $SE(n)=\mathbb{R}^n\rtimes SO(n)$ of rigid motions. With elements $(v,R)$ and $\psi(R)v=Rv$, the product is $(v_1,R_1)(v_2,R_2)=(v_1+R_1v_2,\,R_1R_2)$. $E(n)$ is the group of all isometries of $\mathbb{R}^n$ with the map $x\mapsto Rx+v$ (see actions below) and both are non-compact Lie groups of dimension $n(n+1)/2$.
         \item In parameter space (\Cref{sec:catalog-param-space-symmetries}), the permutations and positive rescalings of the $d$ hidden neurons of a ReLU layer form $(\mathbb{R}_{>0})^{d}\rtimes S_{d}$, with $S_d$ permuting the scaling factors.
         Furthermore, the groups of different layers commute and combine as a direct product.
     \end{itemize}
@@ -391,7 +394,7 @@ A Lie group is \emph{compact} if it is compact as a topological space.
     An \emph{action} of a group $G$ on a set $\mathcal{X}$ is a homomorphism $\rho:G\to\operatorname{Sym}(\mathcal{X})$, and we write $g\cdot x:=\rho(g)\,x$ or the shortest form $gx$.
 \end{Definition}
 
-In continuation with \Cref{ex:groups}, $E(n)$ acts on $\mathbb{R}^n$ by $(v,A)\cdot x=Ax+v$ and $S_n$ on $n$ $d$-dimensional points by $\sigma\cdot X=P_\sigma X$ with $X\in\mathbb{R}^{n\times d}$.
+In continuation with \Cref{ex:groups}, $E(n)$ acts on $\mathbb{R}^n$ by $(v,R)\cdot x=Rx+v$ and $S_n$ on $n$ $d$-dimensional points by $\sigma\cdot X=P_\sigma X$ with $X\in\mathbb{R}^{n\times d}$.
 The same group can act in multiple ways: $S_n$ acts on graphs through the adjacency matrix $A$ by $\sigma\cdot A=P_\sigma AP_\sigma^\top$.
 
 \begin{Definition}[Orbit and stabilizer]\label{def:orbit-stabilizer}
@@ -400,11 +403,11 @@ The same group can act in multiple ways: $S_n$ acts on graphs through the adjace
 \end{Definition}
 
 The stabilizer $G_x$ is a subgroup of $G$ and orbits partition $\mathcal{X}$ since for $x,y\in \mathcal{X}$ the relation $x\sim y$ defined by $y\in G\cdot x$ is an equivalence relation.
-A function is $G$-invariant (def~\ref{def:invariance}) if and only if it is constant on orbits.
+A function is $G$-invariant (\Cref{def:invariance}) if and only if it is constant on orbits.
 
 \begin{Definition}[Quotient and canonicalization]\label{def:quotient}
     The \emph{quotient} $\mathcal{X}/G$ is the set of orbits, and the \emph{quotient map} $\pi:\mathcal{X}\to\mathcal{X}/G$, $x\mapsto G\cdot x$, sends a point to its orbit.
-    A \emph{section} of $\pi$ is a map $s:\mathcal{X}/G\to\mathcal{X}$ with $\pi\circ s=\operatorname{id}_{\mathcal{X}/G}$, i.e.\ it picks one representative in each orbit, and $c=s\circ\pi:\mathcal{X}\to\mathcal{X}$ is the associated \emph{canonicalization}.
+    A \emph{section} of $\pi$ is a map $s:\mathcal{X}/G\to\mathcal{X}$ with $\pi\circ s=\operatorname{id}_{X/G}$, i.e.\ it picks one representative in each orbit, and $c=s\circ\pi:\mathcal{X}\to\mathcal{X}$ is the associated \emph{canonicalization}.
 \end{Definition}
 
 The quotient map is $G$-invariant, and every $G$-invariant function $f$ factors uniquely as $f=\bar f \circ\pi$ that is, invariant functions on $\mathcal{X}$ are functions on $\mathcal{X}/G$.
@@ -418,7 +421,7 @@ A concrete example of canonicalization is centering a point cloud, $X\mapsto X-\
 
 A larger stabilizer thus means a smaller orbit.
 If $G$ is finite, $|G\cdot x|=|G|/|G_x|$.
-If it is Lie group, we have instead $\dim(G\cdot x)=\dim G-\dim G_x$.
+If it is a Lie group, we have instead $\dim(G\cdot x)=\dim G-\dim G_x$.
 For example, $SO(3)$ acts on $\mathbb{R}^3$ by rotations.
 For $x\neq0$, the orbit is the sphere of radius $\lVert x\rVert$, formally $G\cdot x\cong S^2$. 
 The stabilizer $G_x\cong SO(2)$ contains the rotations about the axis of $x$ and we have $\dim S^2=3-1$.
@@ -465,7 +468,7 @@ This constraint is linear in $\Lambda$, so equivariant linear maps form a vector
 \end{Example}
 
 \begin{Definition}[Irreducibility]\label{def:irreducible}
-    Let $\rho$ be a representation on a vector space $V\neq {0}$.
+    Let $\rho$ be a representation on a vector space $V\neq\{0\}$.
     A subspace $U\subseteq V$ is \emph{invariant} if $\rho(g)U\subseteq U$ for all $g\in G$, and $\rho$ then restricts to a representation on $U$.
     If its only invariant subspaces are $\{0\}$ and $V$, $\rho$ is said to be \emph{irreducible}.
 \end{Definition}
@@ -520,12 +523,12 @@ Since $\exp(\mathfrak{g})$ generates $G$ when $G$ is connected, the constraint o
 % Necessity follows by differentiating $\rho_W(\exp tA)\Lambda=\Lambda\rho_V(\exp tA)$ at $t=0$, sufficiency by exponentiating.
 A disconnected group needs one additional constraint per connected component, e.g.\ a reflection for $O(n)$.
 
-For a nonlinear map $\phi:\mathcal{X}\to\mathcal{Y}$, the first-order counterpart is the \emph{Lie derivative}
+For a nonlinear map $f:\mathcal{X}\to\mathcal{Y}$, the first-order counterpart is the \emph{Lie derivative}
 \[
-    (\mathcal{L}_A\phi)(x)=\frac{d}{dt}\,\rho_Y\big(\exp(tA)\big)^{-1}\phi\big(\rho_X(\exp(tA))\,x\big)\Big\vert_{t=0},
+    (\mathcal{L}_Af)(x)=\frac{d}{dt}\,\rho_Y\big(\exp(tA)\big)^{-1}f\big(\rho_X(\exp(tA))\,x\big)\Big\vert_{t=0},
 \]
-equal to $\partial\phi(x)\,d\rho_X(A)\,x-d\rho_Y(A)\,\phi(x)$ for linear actions, with $\partial\phi$ the Jacobian.
-For connected $G$, $\phi$ is equivariant if and only if $\mathcal{L}_{A_i}\phi=0$ for all $i$; the Lie derivative thus measures local equivariance errors (\Cref{sec:sym-quantification})
+equal to $\partial f(x)\,d\rho_X(A)\,x-d\rho_Y(A)\,f(x)$ for linear actions, with $\partial f$ the Jacobian.
+For connected $G$, $f$ is equivariant if and only if $\mathcal{L}_{A_i}f=0$ for all $i$; the Lie derivative thus measures local equivariance errors (\Cref{sec:sym-quantification}).
 %  and penalizes relaxed models (\Cref{sec:approx-relaxed}).
 % Learning generators rather than the group underlies continuous symmetry discovery (\Cref{sec:sym-disc-from-data,sec:disco-identification}), and one-parameter subgroups acting on parameters yield conservation laws (\Cref{sec:conservation-laws}).
 
@@ -875,19 +878,19 @@ While global test accuracy is constant across runs, these three metrics fluctuat
 For data ordering specifically, SGD exhibits higher variability than GD, consistent with its smaller invariance group.
 
 \paragraph{Shuffling schemes and interaction with Batch Normalization}
-In practice, there are multiple ways to implement mini-batch training: \emph{stochastic sampling}, which draws each batch with replacement and thus involves no permutation; \emph{single shuffle} (SS), which samples one permutation $\pi\in S_n$ once and reuses it at every epoch; and \emph{random reshuffling} (RR), which resamples a new permutation at each epoch.
+In practice, there are multiple ways to implement mini-batch training: \emph{stochastic sampling}, which draws each batch with replacement and thus involves no permutation; \emph{single shuffle} (SS), which samples one permutation $\sigma\in S_n$ once and reuses it at every epoch; and \emph{random reshuffling} (RR), which resamples a new permutation at each epoch.
 Randomized ordering is not optional: mini-batch SGD requires it to converge well \citep{xu2024vj}, and, perhaps surprisingly, the permutation-based schemes SS and RR outperform with-replacement sampling \citep{koloskova2024p4icml}.
 The distinction between SS and RR is of practical importance because globally reshuffling a dataset can be a hardware bottleneck, which at scale makes RR impractical \citep{nguyen20222iipdpsi,koloskova2024p4icml,xu2024vj}.
 Batch normalization (BN) introduces an additional dependency on data ordering since batch composition determines the batch statistics.
 \citet{wu2023p4icml} show that standard GD, SS and RR then optimize \emph{three different objectives}.
-They study linear models with BN applied to the input, which take the form $x \mapsto W\Gamma\operatorname{BN}(x)$ with $\Gamma$ a diagonal matrix carrying BN's learnable scaling parameters; writing $m$ for the number of batches and $(\pi X)_i$ for the $i$-th batch under the ordering $\pi$, the objectives read
+They study linear models with BN applied to the input, which take the form $x \mapsto W\Gamma\operatorname{BN}(x)$ with $\Gamma$ a diagonal matrix carrying BN's learnable scaling parameters; writing $m$ for the number of batches and $(\sigma X)_i$ for the $i$-th batch under the ordering $\sigma$, the objectives read
 $$
 \mathcal{L}_{\mathrm{GD}} = L\big(W\Gamma\operatorname{BN}(X),\, Y\big), \qquad
-\mathcal{L}_{\pi} = \sum_{i=1}^{m} L\big(W\Gamma\operatorname{BN}((\pi X)_i),\, (\pi Y)_i\big), \qquad
-\mathcal{L}_{\mathrm{RR}} = \frac{1}{n!}\sum_{\pi\in S_n} \mathcal{L}_{\pi},
+\mathcal{L}_{\sigma} = \sum_{i=1}^{m} L\big(W\Gamma\operatorname{BN}((\sigma X)_i),\, (\sigma Y)_i\big), \qquad
+\mathcal{L}_{\mathrm{RR}} = \frac{1}{n!}\sum_{\sigma\in S_n} \mathcal{L}_{\sigma},
 $$
-where SS minimizes $\mathcal{L}_\pi$ for a single fixed random $\pi$.
-Since $\pi$ affects the per-batch normalization statistics, $\mathcal{L}_\pi \neq \mathcal{L}_{\mathrm{GD}}$ in general.
+where SS minimizes $\mathcal{L}_\sigma$ for a single fixed random $\sigma$.
+Since $\sigma$ affects the per-batch normalization statistics, $\mathcal{L}_\sigma \neq \mathcal{L}_{\mathrm{GD}}$ in general.
 \citet{wu2023p4icml} further show that SS can suffer from training instabilities that RR avoids and, consistently, \citet{zhuang2022pmls} observe empirically that with BN, RR stabilizes training against data-ordering variability.
 
 \begin{Remark}[Non-invariance due to implementation.]
@@ -897,9 +900,9 @@ Since $\pi$ affects the per-batch normalization statistics, $\mathcal{L}_\pi \ne
 
 \paragraph{Exchangeability: invariance in law}\label{par:exchangeability}
 The pointwise invariance lost by SGD can be restored \emph{in distribution} when the data themselves carry a probabilistic symmetry.
-A sequence $\boldsymbol{X}_n=(X_1,\dots,X_n)$ is \emph{exchangeable} (a generalization of the i.i.d.\ assumption) if $\pi\boldsymbol{X}_n \overset{d}{=} \boldsymbol{X}_n$ for every $\pi\in S_n$.
+A sequence $\boldsymbol{X}_n=(X_1,\dots,X_n)$ is \emph{exchangeable} (a generalization of the i.i.d.\ assumption) if $\sigma\boldsymbol{X}_n \overset{d}{=} \boldsymbol{X}_n$ for every $\sigma\in S_n$.
 \citet{bloem-reddy2020} relate this concept to distributional invariance through the \emph{empirical measure} $\mathbb{M}_{\boldsymbol{X}_n}(\cdot):=\sum_{i=1}^{n}\delta_{X_i}(\cdot)$, which represents the data but forgets its ordering.
-They show that a conditional distribution is permutation-invariant, $(Y \mid \boldsymbol{X}_n)\overset{d}{=}(Y \mid \pi\boldsymbol{X}_n)$, precisely when $Y$ factors through the empirical measure, $(\boldsymbol{X}_n, Y)\overset{a.s.}{=}\big(\boldsymbol{X}_n,\, f(\eta, \mathbb{M}_{\boldsymbol{X}_n})\big)$ for some measurable $f$ and independent noise $\eta$.
+They show that a conditional distribution is permutation-invariant, $(Y \mid \boldsymbol{X}_n)\overset{d}{=}(Y \mid \sigma\boldsymbol{X}_n)$, precisely when $Y$ factors through the empirical measure, $(\boldsymbol{X}_n, Y)\overset{a.s.}{=}\big(\boldsymbol{X}_n,\, f(\eta, \mathbb{M}_{\boldsymbol{X}_n})\big)$ for some measurable $f$ and independent noise $\eta$.
 Restricting to a single epoch $\mathcal{D}$ for simplicity, this result can be reinterpreted as
 $$
 \operatorname{Law}\big(\mathcal{A}(\sigma\cdot\mathcal{D},\,\theta_0)\big) = \operatorname{Law}\big(\mathcal{A}(\mathcal{D},\,\theta_0)\big) \qquad \text{for all } \sigma\in S_n,
@@ -1063,7 +1066,7 @@ The issue is bypassed without leveraging group theory by maintaining a jointly-l
 In object-centric tasks, the output is a set of unordered objects and permutation invariance can only be enforced in the downstream loss, typically by optimal assignment.
 \citet{locatello2020anips} (\emph{Slot Attention}) map CNN features $X\in\mathbb{R}^{N\times D_{\mathrm{in}}}$ to $K$ object slots $\{s_1,\dots,s_K\}$ through a recurrent module $S^{(t+1)}=\operatorname{SlotAttention}(X,S^{(t)})$ that is permutation-equivariant in the slots and permutation-invariant in the features,
 $$
-\operatorname{SlotAttention}(\pi_i X,\, \pi_s S) = \pi_s \operatorname{SlotAttention}(X,\, S),
+\operatorname{SlotAttention}(\sigma_i X,\, \sigma_s S) = \sigma_s \operatorname{SlotAttention}(X,\, S),
 $$
 the slot symmetry stemming from the set nature of the output, not from the input.
 Because the output order is genuinely random---so that a consistent labelling in the manner of \citet{caron2020anips} is here impossible---targets and predictions are matched by the Hungarian algorithm before the loss is evaluated.
@@ -1095,8 +1098,8 @@ $$
 $$
 over transport plans $\Gamma$, transporting and comparing \emph{distances} rather than points.
 The two clouds may differ in size, making the setup more general.
-\citet{even2024} study a \emph{planted} version: given a point cloud $X=(x_1,\dots,x_n)$ and a noisy transformed copy $y_i=Q^\star x_{\pi^\star(i)}+\sigma z_i$ with $Q^\star\in O(d)$ and $z_i\sim\mathcal{N}(0,I_d)$, the goal is to recover the pair $(Q^\star,\pi^\star)$.
-Their \emph{Ping-Pong} algorithm alternates between solving for $Q$ with $\pi$ fixed and for $\pi$ with $Q$ fixed, two tractable subproblems.
+\citet{even2024} study a \emph{planted} version: given a point cloud $X=(x_1,\dots,x_n)$ and a noisy transformed copy $y_i=Q^\star x_{\sigma^\star(i)}+\nu z_i$ with $Q^\star\in O(d)$ and $z_i\sim\mathcal{N}(0,I_d)$, the goal is to recover the pair $(Q^\star,\sigma^\star)$.
+Their \emph{Ping-Pong} algorithm alternates between solving for $Q$ with $\sigma$ fixed and for $\sigma$ with $Q$ fixed, two tractable subproblems.
 
 \begin{Remark}[A transparent permutation symmetry]
 Not every permutation symmetry in a loss calls for special treatment.
@@ -1770,7 +1773,7 @@ They build \emph{asymmetric} networks, either through an untrainability mask $W\
 Independently trained networks are then forced to be compatible and interpolate linearly with low barrier, with smoother loss landscapes.
 LMC up to permutation encompasses more natural settings.
 \citet{entezari2022} conjecture that, permutations accounted for, most SGD solutions have LMC.
-As empirical support, they show that sampling $\theta_0,\theta_1$ with SGD and drawing a random permutation $\pi$, the barrier $B(\theta_0,\theta_1)$ between independent solutions and the barrier $B(\theta_0,\pi\cdot\theta_0)$ within a single orbit follow similar distributions, as if independent runs differed only by a permutation.
+As empirical support, they show that sampling $\theta_0,\theta_1$ with SGD and drawing a random permutation $\sigma$, the barrier $B(\theta_0,\theta_1)$ between independent solutions and the barrier $B(\theta_0,\sigma\cdot\theta_0)$ within a single orbit follow similar distributions, as if independent runs differed only by a permutation.
 On the theoretical side, wide-enough shallow ReLU networks satisfy the conjecture under standard initialization conditions.
 \citet{ainsworth2023} make the permutation search more practical, aligning the two networks by coordinate descent over layerwise assignment problems.
 They exhibit a zero-barrier linear interpolation between independently trained ResNets, and applications to merging models trained on disjoint data splits in the spirit of federated learning.
@@ -2063,7 +2066,7 @@ The gradient approach achieves identification by a nullspace computation.
 Restricting to matrix Lie groups $G \leq GL(n,\mathbb{R})$, \citet{moskalev2023} (LieGG) read the trained network as a discriminator $F$ and invoke the criterion that a generator $\mathfrak{h}$ is an infinitesimal symmetry iff $\sum_{i,j} \partial_{x_i} F(x)\,\mathfrak{h}_{ij}\, x_j = 0$ on the data.
 Stacking this constraint over the dataset $D$ yields the \emph{network polarization matrix} $\mathcal{E} \in \mathbb{R}^{|D| \times n^2}$, whose nullspace \emph{is} the learned Lie algebra.
 In practice the approximate nullspace is extracted from the right-singular vectors of $\mathcal{E}$ associated with near-zero singular values (SVD), the count of which gives the algebra's dimension.
-\citet{hu2025nn} (LieSD) follow the same SVD-nullspace philosophy but start from a characterisation of \emph{equivariance} requiring only inputs, outputs and gradients: $f$ is $G$-equivariant iff $\mathrm{d}\rho_Y(A_i)\,f(x) = \nabla f(x)\,\mathrm{d}\rho_X(A_i)\,x$ for every generator $A_i$, with invariance the special case $\rho_Y = \operatorname{id}$.
+\citet{hu2025nn} (LieSD) follow the same SVD-nullspace philosophy but start from a characterisation of \emph{equivariance} requiring only inputs, outputs and gradients: $f$ is $G$-equivariant iff $d\rho_Y(A_i)\,f(x) = \nabla f(x)\,d\rho_X(A_i)\,x$ for every generator $A_i$, with invariance the special case $\rho_Y = \operatorname{id}$.
 Assembling these constraints into a coefficient matrix, the zero singular values again count the Lie-algebra dimension and singular vectors are the generators.\newline
 Notably, both \citet{krippendorf2020} and \citet{hu2025nn} rely on the assumption that a sufficiently trained network absorbs the symmetry present in its data, so identifying the model's symmetry doubles as \emph{discovery} of the data's symmetry, closing the loop with \Cref{sec:sym-disc-from-data}.
 
@@ -2235,7 +2238,7 @@ The metric is defined as:
 $$m(p_X):=\operatorname{Acc}_{\mathrm{NN}}(p_X, \bar p_X)=\mathbb{E}_{x\sim \operatorname{Unif}(p_X, \bar p_X)}\big[\operatorname{Acc}(\mathrm{NN}(x))\big],$$
 where $\mathrm{NN}$ is a neural network.
 A second \emph{task-useful} metric then asks whether the bias is label-informative, as a ratio $L_G/L$ comparing a network that predicts the label from a random-but-equivariant canonical pose against a baseline.
-Given a canonicalization function $c:\mathcal{X}\to G$, the losses are defined as $L=\mathbb{E}_x\big[\mathbb{I}(\mathrm{NN}(c(x))=f^*(x))\big]$ and $L_G=\mathbb{E}_x\big[\mathbb{I}(\mathrm{NN}(c(gx))=gf^*(x))\big]$. Here $\mathrm{NN}:G\to\mathcal{Y}$ is another model, trained to predict the label from the pose.
+Given a pose map $c:\mathcal{X}\to G$, with $c(x)^{-1}x$ the corresponding canonical form, the losses are defined as $L=\mathbb{E}_x\big[\mathbb{I}(\mathrm{NN}(c(x))=f^*(x))\big]$ and $L_G=\mathbb{E}_x\big[\mathbb{I}(\mathrm{NN}(c(gx))=gf^*(x))\big]$. Here $\mathrm{NN}:G\to\mathcal{Y}$ is another model, trained to predict the label from the pose.
 They report that standard benchmarks (QM9, ModelNet40) are notably symmetry-biased.
 \citet{urbano2026} instead estimate the orbit density directly with a class--pose IE (invariant--equivariant) autoencoder\citep{winter2022anips}.
 
@@ -2430,7 +2433,7 @@ This is the residual-pathway prior of \citet{finzi2021anips}, who write $W=A+B$ 
 The trade-off is controlled through asymmetric regularization strengths $\lambda_A\|A\|$ and $\lambda_B\|B\|$.
 \citet{ouderaa2023} extend this to select the per-layer equivariance level automatically by Bayesian model selection and improve scalability through a rank-one spatial factorization and a further sparsification using (possibly learnable) anchor points.
 \citet{pertigkiozoglou2024} repurpose the same additive form as an \emph{optimization} device rather than a misspecification remedy: training a non-strict model that is projected back to an exactly equivariant one at test time ($\theta=0$), while keeping it close to equivariant throughout training by penalizing the Lie derivative of $W$ along each generator.
-The regularization is $\mathcal{L}_{A_i}(W)=-\,\mathrm d\rho_{\mathrm{out}}(A_i)\,W+W\,\mathrm d\rho_{\mathrm{in}}(A_i)$ where $d\rho$ is the representation of the Lie algebra, and the penalization is $\mathbb{E}_x[\sum_i\|\mathcal{L}_{A_i}(W)x\|]$.
+The regularization is $\mathcal{L}_{A_i}(W)=-\,d\rho_{\mathrm{out}}(A_i)\,W+W\,d\rho_{\mathrm{in}}(A_i)$ where $d\rho$ is the representation of the Lie algebra, and the penalization is $\mathbb{E}_x[\sum_i\|\mathcal{L}_{A_i}(W)x\|]$.
 Finally, the projection-distance is also penalized, with a simple term $\|W\|$.
  
 The \emph{low-rank locally connected} (LLLC) layer is an architectural interpolation proposed by \citet{elsayed2020p3icml}, which sits between a convolution (full weight sharing) and a locally connected layer (none).

@@ -6,21 +6,29 @@
 | Meaning | Notation |
 |---|---|
 | Group | $G$ |
+| Generic subgroup | $H\le G$; also the structure group $H\le GL(d)$ of gauge-equivariant CNNs |
 | Orbit of $x$ | $G\cdot x$ |
 | Stabilizer of $x$ (subgroup of $G$ fixing $x$) | $G_x$, or $\operatorname{Stab}(x)$ where the functional form reads better |
 | Stabilizer of an injected pose feature $v$ | $\operatorname{Stab}(v) = \{g : \rho(g)v = v\}$ |
 | $\epsilon$-stabilizer (Petrache–Trivedi) | $\operatorname{Stab}_\epsilon(f)$ |
-| Structure group of a principal bundle / gauge group (allowed changes of frame) | $H$, with $H\le GL(d)$ for frame bundles |
 | Automorphism group of a **graph** | $\operatorname{Aut}(\Gamma)$ |
 | Automorphism group of a **group** | $\operatorname{Aut}(N)$ |
 | Symmetry group of a function | $\operatorname{Sym}(f)$ |
 | All bijections of a set | $\operatorname{Sym}(\mathcal{X})$ |
+| Permutation, permutation matrix | $\sigma\in S_n$, $P_\sigma$ with $P_\sigma e_i=e_{\sigma(i)}$ |
+| Element of $E(n)=\mathbb{R}^n\rtimes O(n)$ | $(v,R)$, acting by $x\mapsto Rx+v$; $A$ denotes a generic matrix |
+| Quotient map, section, canonicalization | $\pi:\mathcal{X}\to\mathcal{X}/G$, $s$, $c=s\circ\pi:\mathcal{X}\to\mathcal{X}$ |
+| Lie algebra of $G$ | $\mathfrak{g}$, elements $A$, basis (infinitesimal generators) $A_1,\dots,A_k$ |
+| Exponential map, one-parameter subgroup | $\exp:\mathfrak{g}\to G$, $t\mapsto\exp(tA)$ |
+| Infinitesimal representation of $\rho$ | $d\rho:\mathfrak{g}\to\operatorname{End}(V)$ |
+| Lie derivative of $f$ along $A\in\mathfrak{g}$ | $\mathcal{L}_Af$; the subscript $A$ distinguishes it from the loss $\mathcal{L}$ |
 
 Flags:
 - $\operatorname{Sym}$ carries multiple senses.
   They are disambiguated by their argument (a function, a set, a representation-with-superscript)
+- $C$ carries multiple senses, disambiguated by subscript or context: the cyclic group $C_n$, a number of channels ($GL(C)$), and the continuous equivariant maps $C_G(\mathcal{X},\mathcal{Y})$.
 
-Write $g\cdot x$ when the action is unambiguous — in particular when $G$ acts
+Write $g\cdot x$, or the short form $gx$, when the action is unambiguous — in particular when $G$ acts
 the same way on $\mathcal{X}$ and $\mathcal{Y}$.
 
 Write $\rho_X(g)$ and $\rho_Y(g)$ when the two actions must be distinguished:
@@ -31,15 +39,18 @@ $$f(\rho_X(g)\,x) = \rho_Y(g)\,f(x).$$
 
 | Object | Notation | Note |
 |---|---|---|
-| Space acted on by $G$ (input) | $\mathcal{X}$ | Also the $G$-set, homogeneous space, and bundle base manifold in the Background |
+| Space acted on by $G$ (input) | $\mathcal{X}$ | |
 | Output / target space | $\mathcal{Y}$ | |
 | Latent / embedding space | $\mathcal{Z}$ | |
 | Dataset | $\mathcal{D}$ | |
 | Ground truth (target map of the problem) | $f^*$ | Never $f$, $f^\star$ or $f^\ast$; plain $f$ is a generic map, $f_\theta$ the implemented function |
+| Generic map | $f$ | Except $\phi$ (`\phi`) in the $\phi$-equivalence and invariance definitions of the Background |
+| Parameter space | $\Theta$ | |
+| Implementation (realization) map | $\varphi:\Theta\to\mathcal{F}$, $\varphi(\theta)=f_\theta$ | `\varphi`, distinct from the `\phi` of $\phi$-equivalence |
+| Implemented function | $f_\theta$ | |
 | Hypothesis class | $\mathcal{H}$ | |
 | Function space | $\mathcal{F}$ | |
 | Continuous $G$-equivariant maps $\mathcal{X}\to\mathcal{Y}$ | $C_G(\mathcal{X},\mathcal{Y})$ | Invariant case: trivial action on $\mathcal{Y}$, e.g. $C_G(\mathcal{X},\mathbb{R})$. Topology of uniform convergence on compact sets unless stated; closure written $\overline{\mathcal{H}}$ (not `\bar`) |
-| Linear $G$-equivariant maps (intertwiners) | $\operatorname{Hom}_G(V,W)$ | Linear counterpart of $C_G$; already used in the Background |
 | Augmentation family | $\mathcal{T}$ | |
 | Vector space carrying a representation | $V$, $W$ | Plain, not calligraphic — these are representation carriers, not data spaces |
 | Manifold in a purely geometric statement | $M$ | e.g. GEOMANCER's $M = M_1\times M_2$ |
