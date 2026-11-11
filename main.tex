@@ -282,7 +282,7 @@ In our deep learning context, the input space $\mathcal{X}$ could be a vector sp
 \end{Example}
 
 \begin{Example}[Observationally equivalent parameters]\label{ex:equivalence_observational}
-    If $\mathcal{X}$ a parameter space, $\mathcal{Y}$ the hypothesis space and $\varphi$ is the implementation map, then the sets given by the equivalence relation $\phi$ are the observationally equivalent parameters (see \Cref{sec:parameter-space-symmetries}).
+    If $\mathcal{X}$ a parameter space, $\mathcal{Y}$ the hypothesis space and $\varphi$ is the implementation map, then the sets given by the equivalence relation $\varphi$ are the observationally equivalent parameters (see \Cref{sec:parameter-space-symmetries}).
 \end{Example}
 
 \begin{Definition}[Invariance]\label{def:invariance}
@@ -308,7 +308,7 @@ $G$ can act similarly on the two sets, as it can be the case for 3D physical dat
 Similarly for image segmentation, translation of the domain (input) must induce the same translation of segmentation map (output).
 
 However, equivariance does not require that the group $G$ acts in the same way on input and output \citep{cohen2016a,bogatskiy2020p3icml}: a single abstract element $g\in G$ may take one form on $\mathcal{X}$ and a different form on $\mathcal{Y}$.
-For explicit distinction, two maps (\emph{actions}; see def~\ref{def:group-action}) are attached to $G$:
+For explicit distinction, two maps (\emph{actions} (see \Cref{def:group-action}) are attached to $G$:
 \[
     \rho_X : G \to \operatorname{Sym}(\mathcal{X}), \qquad \rho_Y : G \to \operatorname{Sym}(\mathcal{Y}),
 \]
