@@ -267,14 +267,14 @@ Symmetry can be defined with invariance: given a list of invariants, a symmetry 
     The relation $\sim_{\phi}$ is an equivalence relation on $\mathcal{X}$ and induces a partition of $\mathcal{X}$ into equivalence classes.
 \end{Definition}
 
-In our deep learning context, the input space $\mathcal{X}$ could be a vector space $\mathbb{R}^d$, a set of structured objects (images, graphs, point clouds), a function/parameter space etc; while $\mathcal{Y}$ may be a label in $\{0,1\}$ (binary classification) or $\{1,\dots,L\}$ (multiclass classification), a scalar (regression), another vector space $\mathbb{R}^e$ (feature representation) etc.
+In our deep learning context, the input space $\mathcal{X}$ could be a vector space $\mathbb{R}^d$, a set of structured objects (images, graphs, point clouds), a function/parameter space etc; while $\mathcal{Y}$ may be a label in $\{0,1\}$ (binary classification) or $\{1,\dots,C\}$ (multiclass classification), a scalar (regression), another vector space $\mathbb{R}^e$ (feature representation) etc.
 
 \begin{Example}[Image segmentation]\label{ex:image-segmentation}
-    If $\mathcal{X}$ is an image, $x\in \mathcal{X}$ a pixel slot and $\mathcal{Y} = \{1,\dots,L\}$ are segmentation labels, then the sets defined by the equivalence relation are the pixels that belong to the same segmentation class.
+    If $\mathcal{X}$ is an image, $x\in \mathcal{X}$ a pixel slot and $\mathcal{Y} = \{1,\dots,C\}$ are segmentation labels, then the sets defined by the equivalence relation are the pixels that belong to the same segmentation class.
 \end{Example}
 
 \begin{Example}[Image classification]\label{ex:image-classification}
-    If $\mathcal{X}$ is a \emph{set of images}, $x\in \mathcal{X}$ is an image, $\mathcal{Y} = \{1,\dots,L\}$ are the labels, then the sets defined by the equivalence relation are images of the same class.
+    If $\mathcal{X}$ is a \emph{set of images}, $x\in \mathcal{X}$ is an image, $\mathcal{Y} = \{1,\dots,C\}$ are the labels, then the sets defined by the equivalence relation are images of the same class.
 \end{Example}
 
 \begin{Example}[Loss level sets]
@@ -555,7 +555,7 @@ Finally, \emph{framework symmetries} (\ref{sec:framework-symmetries}) differ on 
 The structure of $\Omega$, in particular its symmetries, is analyzed following the legacy of Klein's Erlangen Program.
 A central idea is that an appropriate inductive bias for a learning problem comes from respecting the symmetries of $\Omega$.
 Symmetries, together with a scale-separation principle, are GDL's answer to the curse of dimensionality.
-The scope of GDL also includes unifying architectures in a common blueprint \textit{e.g.}\ Transformers as graph neural networks \citep{joshi2025}, and extending non-Euclidean geometry from the input domain to every stage of deep learning, \textit{e.g.}\ non-Euclidean representation spaces \citep{mettes2024ijcv,saezdeocarizborde2025iclr}.
+The scope of GDL also includes unifying architectures in a common blueprint e.g.\ Transformers as graph neural networks \citep{joshi2025}, and extending non-Euclidean geometry from the input domain to every stage of deep learning, e.g.\ non-Euclidean representation spaces \citep{mettes2024ijcv,saezdeocarizborde2025iclr}.
 In this survey, we focus on its \emph{Equivariant Deep Learning} core, which is the most concerned with symmetries.
 Standard GDL mostly assumes exact symmetry, \textit{i.e.}\ equivariance to every $g\in G$ acting on $\Omega$.
 The deformation stability perspective \citep[Sec.~3.3]{bronstein2021} extends control to deformations $\tau\in\operatorname{Diff}(\Omega)$ near $G$, close to the setting of \Cref{sec:extent-restriction}.
