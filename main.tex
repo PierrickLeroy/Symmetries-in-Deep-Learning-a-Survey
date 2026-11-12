@@ -187,7 +187,7 @@ At a high level, the taxonomy maps onto the sections as follows: \Cref{sec:desig
         \hline
         \multirow{3}{=}{Exactness} & \multirow{3}{=}{Does the symmetry hold fully, on a restricted extent, or up to a tolerance?} & Exact & The symmetry holds exactly for all $g\in G$, with zero error. & Geometric Deep Learning: design an equivariant layer; data augmentations such as horizontal flip; global parameter-space symmetries (permutation, ReLU rescaling); conservation laws under gradient flow. \\
         \cline{3-5}
-        & & Extent restricted & There is a restriction on the extent of the symmetry; it holds only for $g\in S\subsetneq G$ (a subgroup, a non-closed set or a semigroup), or only on part of the domain (local, instance-level). & Symmetry-breaking due to regularization; data augmentations such as cropping and blurring (non-invertible) or rotation in MNIST ($6\leftrightarrow 9$); instance-level parameter-space symmetries.\\
+        & & Extent restricted & The symmetry holds only on a restricted set of transformations: a subset $S\subsetneq G$ (a subgroup or a non-closed subset), a degenerate group such as a semigroup or a groupoid or only on part of the domain (local, instance-level). & Symmetry-breaking due to regularization; data augmentations such as cropping and blurring (non-invertible) or rotation in MNIST ($6\leftrightarrow 9$); instance-level parameter-space symmetries.\\
         \cline{3-5}
         & & Approximate & There is a notion of tolerance involved in the validity of the symmetry; it holds for all $g\in G$ up to a tolerance $\epsilon>0$. & Soft equivariance penalty; conservation laws in discrete time; quantification of the strength of a symmetry.\\
         \hline
@@ -2279,34 +2279,36 @@ Since symmetries can slow optimization and trap training at low-capacity symmetr
 
 \subsection{Extent restriction: beyond groups}\label{sec:extent-restriction}
 % Add deformation stability [bronstein2021] which is about diffeomorphisms
-An extent-restricted symmetry holds exactly, but only for the transformations in a subset $S\subsetneq G$.
+An extent-restricted symmetry holds with some restriction with respect to a ``full'' group $G$.
+The set of transformation is denoted by $S$ and is understood as $G$ missing a part.
 We organize this section based on the algebraic structure of $S$ i.e.\ by which of the group axioms (closure, identity, inverses) $S$ retains.
-\Cref{table:extent-restriction} classifies the main cases along this axis.
-The $\pm 90^\circ$ case makes the boundary between the first two rows of \Cref{table:extent-restriction} (\Cref{sec:subgroups,sec:non-closed-subsets}): as an interval of rotations, $S=[-90^\circ,90^\circ]$ is non-closed since $90^\circ\!\circ\!90^\circ=180^\circ\notin S$, whereas $\{0^\circ,90^\circ,180^\circ,270^\circ\}=C_4$ is a subgroup.
+\Cref{tab:extent-restriction} classifies the main cases along this axis.
+The $\pm 90^\circ$ case makes the boundary between the first two rows of \Cref{tab:extent-restriction} (\Cref{sec:subgroups,sec:non-closed-subsets}): as an interval of rotations, $S=[-90^\circ,90^\circ]$ is non-closed since $90^\circ\!\circ\!90^\circ=180^\circ\notin S$, whereas $\{0^\circ,90^\circ,180^\circ,270^\circ\}=C_4$ is a subgroup.
 
 \begin{table}[ht]
     \centering
-    \begin{tabularx}{\textwidth}{|l|c|c|c|>{\RaggedRight\arraybackslash}X|}
+    \small
+    \setlength{\tabcolsep}{4pt}
+    \begin{tabularx}{\textwidth}{|l|c|c|c|c|>{\RaggedRight\arraybackslash}X|}
         \hline
-        \textbf{Structure of $S$} & \textbf{Closure} & \textbf{Identity} & \textbf{Inverses} & \textbf{Example / refs} \\
+        \textbf{Structure of $S$} & \textbf{Binary $*$} & \textbf{Closure} & \textbf{Identity} & \textbf{Inverses} & \textbf{Example / refs} \\
         \hline
-        Subgroup $S \le G$ & \checkmark & \checkmark & \checkmark & restricted equivariance \citep{goel2025} (mechanism), \citep{weiler2019anips} (choose $G$) \\
+        Subgroup $S \le G$ & \checkmark & \checkmark & \checkmark & \checkmark & restricted equivariance \citep{goel2025} (mechanism), \citep{weiler2019anips} (choose $G$) \\
         \hline
-        Non-closed subset $S \subsetneq G$ & $\times$ & \checkmark & \checkmark & partial equivariance \citep{romero2023}; $\pm 90^\circ$ \\
+        Non-closed subset $S \subsetneq G$ & \checkmark & $\times$ & \checkmark & \checkmark & partial equivariance \citep{romero2023}; $\pm 90^\circ$ \\
         \hline
-        Semigroup / monoid & \checkmark & (monoid) & $\times$ & downsampling \citep{worrall2019anips} \\
+        Semigroup / monoid & \checkmark & \checkmark & $\times$ /\checkmark & $\times$ & downsampling \citep{worrall2019anips} \\
         \hline
-        Groupoid & partial & \checkmark & \checkmark & \citep{sareen2026} \\
+        Groupoid & $\times$ & \checkmark & \checkmark & \checkmark & \citep{sareen2026} \\
         \hline
     \end{tabularx}
-    \caption{Restricting the \emph{extent} of symmetry: each row relaxes a different group axiom of the transformation set $S\subseteq G$.
-    For the groupoid closure, \textit{partial} is meant in the sense that the binary operation is a partial function on $S\times S$ (not automatically defined for all pairs).}
-    \label{table:extent-restriction}
+    \caption{Restricting the \emph{extent} of symmetry: each row relaxes a different group axiom of the transformation set $S\subseteq G$.}
+    \label{tab:extent-restriction}
 \end{table}
 
 \subsubsection{Subgroups}\label{sec:subgroups}
 % wang2024p4icml: relaxed equiv model initialized as G-equiv reduced to H-equiv while training due to symmetry breaking (H subgroup of G)
-Among the rows of \Cref{table:extent-restriction}, a subgroup $H\le G$ is the only restriction that breaks no group axiom: ``incompleteness'' is here intended as a reduction in symmetry rather than a defect in the algebraic structure.
+Among the rows of \Cref{tab:extent-restriction}, a subgroup $H\le G$ is the only restriction that breaks no group axiom: ``incompleteness'' is here intended as a reduction in symmetry rather than a defect in the algebraic structure.
 Two questions organize the literature: how to obtain an $H$-equivariant model, and what the subgroup structure of $G$ itself buys.
 
 A direct construction proposed by \citet{goel2025} descends equivariance ($G\to H$): the input is augmented with an auxiliary feature $v$ whose stabilizer is exactly $\operatorname{Stab}(v)=H$, so that a $G$-equivariant backbone $h_\theta(\cdot,v)$ becomes $H$-equivariant, and---if $h_\theta$ is injective in $v$---equivariant to no larger group; a single backbone thus serves any subgroup by swapping $v$.
@@ -2328,7 +2330,7 @@ Finally, the loss landscape can be structured by stabilizers: in a student-teach
 However, these proper subgroups are maximal (for $p\neq q$): they break symmetry but the least possible.
 
 \subsubsection{Partial equivariance: non-closed subsets}\label{sec:non-closed-subsets}
-The second row of \Cref{table:extent-restriction} keeps the identity and inverses but drops \emph{closure}: $S$ is a non-closed subset of $G$.
+The second row of \Cref{tab:extent-restriction} keeps the identity and inverses but drops \emph{closure}: $S$ is a non-closed subset of $G$.
 \citet{romero2023} define \emph{partial equivariance} to $S\subseteq G$ as
 $$f(\rho_X(g)\,x)=\rho_Y(g)\,f(x)\qquad \forall g\in S\subsetneq G,\ \forall x\in \mathcal{X},$$
 with $S$ not required to be a subgroup.
@@ -2349,7 +2351,7 @@ Augerino, introduced by \citet{benton2020anips}, makes the invariance range a le
 An early example can be found in \citep{goodfellow2009anips} which measured neuron invariance over a bounded transformation range $\Gamma$ rather than a full orbit (e.g.\ $\pm 5$ frames of time translation in video).
 
 \subsubsection{Additional algebraic structures}
-The last rows of \Cref{table:extent-restriction} relax the remaining axioms.
+The last rows of \Cref{tab:extent-restriction} relax the remaining axioms.
 Semigroups keep associativity and closure but drop inverses, which is exactly the structure of irreversible operations such as blurring, downsampling, or cropping where information is destroyed and cannot be recovered.
 
 \citet{worrall2019anips} build scale equivariance using this structure: a Gaussian scale-space generates coarser scales from finer ones but not conversely.
