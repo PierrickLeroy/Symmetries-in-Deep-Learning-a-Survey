@@ -40,6 +40,7 @@ $$f(\rho_X(g)\,x) = \rho_Y(g)\,f(x).$$
 | Object | Notation | Note |
 |---|---|---|
 | Space acted on by $G$ (input) | $\mathcal{X}$ | |
+| Domain of signals (GDL) | $\Omega$, points $u\in\Omega$ | The input space is then the space of signals $\mathcal{X}=\mathcal{X}(\Omega,\mathbb{R}^C)$, $x:\Omega\to\mathbb{R}^C$. $G$ acts on $\Omega$ by $u\mapsto g\cdot u$ and on $\mathcal{X}$ by $(g\cdot x)(u)=x(g^{-1}\cdot u)$. |
 | Output / target space | $\mathcal{Y}$ | |
 | Latent / embedding space | $\mathcal{Z}$ | |
 | Dataset | $\mathcal{D}$ | |

@@ -477,14 +477,14 @@ Every finite-dimensional continuous representation of a compact group is a direc
 For example, the permutation representation of $S_n$ splits into the irreducible subspaces $\operatorname{span}(\boldsymbol{1})$ and $\{x\in\mathbb{R}^n:\sum_ix_i=0\}$.
 
 \emph{Steerable} networks \citep{cohen2016a,weiler2019anips} extend linear equivariance to typed features transforming according to a chosen representation.
-For $\mathcal{X}=\mathbb{R}^d$ and $G=\mathbb{R}^d\rtimes H$ with $H\le O(d)$, a \emph{feature field of type} $\rho:H\to GL(C)$ is a map $f:\mathbb{R}^d\to\mathbb{R}^C$ on which $G$ acts by
+For the domain $\Omega=\mathbb{R}^d$ and $G=\mathbb{R}^d\rtimes H$ with $H\le O(d)$, a \emph{feature field of type} $\rho:H\to GL(C)$ is a map $f:\mathbb{R}^d\to\mathbb{R}^C$ on which $G$ acts by
 \begin{equation}\label{eq:feature-field}
-    \big((v,h)\cdot f\big)(x)=\rho(h)\,f\big(h^{-1}(x-v)\big).
+    \big((v,h)\cdot f\big)(u)=\rho(h)\,f\big(h^{-1}(u-v)\big).
 \end{equation}
-Points move as $x\mapsto hx+v$ (as Euclidean actions in \Cref{sec:actions}) and the $C$ channel values are mixed by $\rho(h)$.
+Points $u\in\Omega$ move as $u\mapsto hu+v$ (as Euclidean actions in \Cref{sec:actions}) and the $C$ channel values are mixed by $\rho(h)$.
 The trivial type gives scalar fields (e.g.\ grey-scale images), the type $\rho(h)=h$ gives vector fields (e.g.\ forces), and for finite $H$ the regular type recovers $G$-CNNs.
 
-A convolution $f_{\mathrm{out}}(x)=\int_{\mathbb{R}^d}K(x-y)\,f_{\mathrm{in}}(y)\,dy$ with kernel $K:\mathbb{R}^d\to\mathbb{R}^{C_{\mathrm{out}}\times C_{\mathrm{in}}}$ is translation equivariant, and it maps fields of type $\rho_{\mathrm{in}}$ to fields of type $\rho_{\mathrm{out}}$ $G$-equivariantly if and only if $K$ satisfies the \emph{kernel constraint} \citep{weiler2018anips,cesa2021}
+A convolution $f_{\mathrm{out}}(u)=\int_{\mathbb{R}^d}K(u-u')\,f_{\mathrm{in}}(u')\,du'$ with kernel $K:\mathbb{R}^d\to\mathbb{R}^{C_{\mathrm{out}}\times C_{\mathrm{in}}}$ is translation equivariant, and it maps fields of type $\rho_{\mathrm{in}}$ to fields of type $\rho_{\mathrm{out}}$ $G$-equivariantly if and only if $K$ satisfies the \emph{kernel constraint} \citep{weiler2018anips,cesa2021}
 \begin{equation}\label{eq:steerable-constraint}
     K(hy)=\rho_{\mathrm{out}}(h)\,K(y)\,\rho_{\mathrm{in}}(h)^{-1}\qquad\forall h\in H,\ y\in\mathbb{R}^d,
 \end{equation}
@@ -551,7 +551,8 @@ Finally, \emph{framework symmetries} (\ref{sec:framework-symmetries}) differ on 
 % dehmamy2021anips: achieve equivariance through Lie algebra
 % figure: draft/orbit-stability.png to reproduce or illustrate conceptually (equivariant models guarantee results don't change over an orbit)
 % Graphs, huang2023: distinguishes active and passive graph symmetries in constrat to CNNs
-\emph{Geometric Deep Learning} (GDL) \citep{bronstein2017ispm,bronstein2021} starts with a domain $\Omega$ and a signal $x\colon\Omega\to\mathbb{R}^{C}$.
+\emph{Geometric Deep Learning} (GDL) \citep{bronstein2017ispm,bronstein2021} starts with a domain $\Omega$ and signals $x\in\mathcal{X}(\Omega,\mathbb{R}^C)$.
+A group $G$ acting on $\Omega$ by $u\mapsto g\cdot u$ acts on signals by $(g\cdot x)(u)=x(g^{-1}\cdot u)$.
 The structure of $\Omega$, in particular its symmetries, is analyzed following the legacy of Klein's Erlangen Program.
 A central idea is that an appropriate inductive bias for a learning problem comes from respecting the symmetries of $\Omega$.
 Symmetries, together with a scale-separation principle, are GDL's answer to the curse of dimensionality.
@@ -573,9 +574,9 @@ Methods to design equivariant architectures generally intertwine equivariant lin
 
 \emph{Group Convolutional Neural Networks} ($G$-CNNs) \citep{cohen2016} generalize traditional CNNs from translations to discrete groups (\textit{e.g.} $90^\circ$ rotations and reflections); continuous groups must be discretized.
 The processing follows three steps.
-First, a lifting convolution maps a function on the domain $\mathcal{X}$ to a function on $G$.
+First, a lifting convolution maps a function on the domain $\Omega$ to a function on $G$.
 Then, iterated $G$-convolutions $(f\star\kappa)(g)=\sum_{h\in G}f(h)\,\kappa(g^{-1}h)$ compute feature maps $f^{(l)}:G\to\mathbb{R}^{c_l}$.
-Finally, the result is aggregated: pooled over $G$ for invariance, or projected back to $\mathcal{X}$ for equivariance.
+Finally, the result is aggregated: pooled over $G$ for invariance, or projected back to $\Omega$ for equivariance.
 \citet{cohen2019anips} unify $G$-CNNs on homogeneous spaces.
 $G$-CNNs have been extended to Lie groups: \citet{finzi2020p3icml} parameterize kernels on the Lie algebra, covering any Lie group with a surjective exponential map and arbitrary continuous data, while \citet{bekkers2021} expand kernels in B-splines via the logarithmic map for grid data.
 Scale-translation groups are also handled by $G$-CNNs \citep{sosnovik2020,romero2023tmlr}.
@@ -1738,7 +1739,7 @@ $$
 since any path between $\theta_1$ and $\theta_2$ can be extended at no cost by actions from $G^{\circ}$.
 Therefore, literature concentrates on disconnected symmetry groups, in particular, permutations.
 
-\citet{freeman2017} motivate the study of sublevel sets $\Omega(\lambda)=\{\theta\in\Theta:\mathcal{L}(\theta)\le\lambda\}$ since their connectedness guarantees no spurious local minimum.
+\citet{freeman2017} motivate the study of sublevel sets $\Theta_{\le\lambda}=\{\theta\in\Theta:\mathcal{L}(\theta)\le\lambda\}$ since their connectedness guarantees no spurious local minimum.
 They show that overparametrization asymptotically prevents obstructions due to permutation symmetry.
 For a shallow ReLU network of width $m$ and any $\theta,\theta'$ with $\max\big(\mathcal{L}(\theta),\mathcal{L}(\theta')\big)\le\lambda$, they construct a continuous path $\gamma$ from $\theta$ to $\theta'$ such that
 \begin{equation*}
@@ -2355,7 +2356,7 @@ Semigroups keep associativity and closure but drop inverses, which is exactly th
 
 \citet{worrall2019anips} build scale equivariance using this structure: a Gaussian scale-space generates coarser scales from finer ones but not conversely.
 They extend group correlation by a \emph{semigroup correlation}
-$$[\psi *_{S} f](s)=\sum_{x\in \mathcal{X}}\psi(x)\,L_{s}[f](x),$$
+$$[\psi *_{S} f](s)=\sum_{u\in \Omega}\psi(u)\,L_{s}[f](u),$$
 with $\psi$ the filter, $f$ the signal and $L_s$ the (non-invertible) semigroup action, recovering group and ordinary convolutions as special cases. 
 They then adapt it for scale-spaces by setting the action $L_s=L_{(A,z)}$ as $[k_{A}^{\Sigma_{0}}*_{\mathbb{Z}^{d}}f_0](A^{-1}x+z)$, where $k_{A}^{\Sigma_{0}}$ is a Gaussian blurring kernel and the semigroup element $(A,z)$ controls dilation and translation respectively.
 In self-supervised learning \citet{gupta2023a} model the set of augmentations $\mathcal{T}$ (crop, blur, colour jitter) as a semigroup.
