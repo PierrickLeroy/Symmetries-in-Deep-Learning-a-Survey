@@ -187,7 +187,7 @@ At a high level, the taxonomy maps onto the sections as follows: \Cref{sec:desig
         \hline
         \multirow{3}{=}{Exactness} & \multirow{3}{=}{Does the symmetry hold fully, on a restricted extent, or up to a tolerance?} & Exact & The symmetry holds exactly for all $g\in G$, with zero error. & Geometric Deep Learning: design an equivariant layer; data augmentations such as horizontal flip; global parameter-space symmetries (permutation, ReLU rescaling); conservation laws under gradient flow. \\
         \cline{3-5}
-        & & Extent restricted & The symmetry holds only on a restricted set of transformations: a subset $S\subsetneq G$ (a subgroup or a non-closed subset), a degenerate group such as a semigroup or a groupoid or only on part of the domain (local, instance-level). & Symmetry-breaking due to regularization; data augmentations such as cropping and blurring (non-invertible) or rotation in MNIST ($6\leftrightarrow 9$); instance-level parameter-space symmetries.\\
+        & & Extent restricted & The symmetry holds only for a restricted set of transformations (a subset $S\subsetneq G$, i.e.\ a subgroup or a non-closed subset, or a weaker structure such as a semigroup or a groupoid), or only on part of the domain (local, instance-level). & Symmetry-breaking due to regularization; data augmentations such as cropping and blurring (non-invertible) or rotation in MNIST ($6\leftrightarrow 9$); instance-level parameter-space symmetries.\\
         \cline{3-5}
         & & Approximate & There is a notion of tolerance involved in the validity of the symmetry; it holds for all $g\in G$ up to a tolerance $\epsilon>0$. & Soft equivariance penalty; conservation laws in discrete time; quantification of the strength of a symmetry.\\
         \hline
@@ -2111,7 +2111,7 @@ Quantification (\Cref{sec:sym-quantification}) measured how far a trained $f_\th
 They span several loci (\Cref{fig:sym-loci}), though the \emph{model} locus ($\mathcal{H}$) is the most investigated.
 Symmetry breaking (\Cref{sec:symmetry-breaking-dl}) is mostly \emph{descriptive}, cataloguing failure modes: why and when an expected symmetry is lost.
 The two remaining subsections are more prescriptive, explaining how to weaken a symmetry.
-They split along the exactness axis one level down: an \emph{extent-restricted} symmetry holds exactly only on a subset $S\subsetneq G$ (\Cref{sec:extent-restriction}), an \emph{approximate} one holds on all of $G$ up to a tolerance $\epsilon>0$ (\Cref{sec:soft-equivariance}).
+They split along the exactness axis one level down: an \emph{extent-restricted} symmetry holds only for a restricted set $S$ of transformations (\Cref{sec:extent-restriction}), an \emph{approximate} one holds on all of $G$ up to a tolerance $\epsilon>0$ (\Cref{sec:soft-equivariance}).
 
 The two relaxations are contrasted by the \emph{$\epsilon$-stabilizer} of \citet{petrache2023}.
 Let $G$ be a candidate group of transformations and write the equivariance error of a map $f$ under $G$ as:
@@ -2123,7 +2123,7 @@ $$
     \operatorname{Stab}_\epsilon(f)=\{g\in G:\ \operatorname{ee}(f,g)\le\epsilon\}.
 $$
 For a hypothesis class, it becomes $\operatorname{Stab}_\epsilon(\mathcal{H})=\cap_{h\in \mathcal{H}}\operatorname{Stab}_\epsilon(h)$.
-The exactness axis can be read as an algebraic criterion: the symmetry is \emph{exact} if $\operatorname{Stab}_0(f)=G$, \emph{approximate} if $\operatorname{Stab}_0(f)\neq G=\operatorname{Stab}_\epsilon(f)$ for a small $\epsilon>0$ (\Cref{sec:soft-equivariance}) and \emph{extent-restricted} if $\operatorname{Stab}_\epsilon(f)=S\subsetneq G$ (\Cref{sec:extent-restriction}).
+The value on the exactness axis varies depending on an algebraic criterion: the symmetry is \emph{exact} if $\operatorname{Stab}_0(f)=G$, \emph{approximate} if $\operatorname{Stab}_0(f)\neq G=\operatorname{Stab}_\epsilon(f)$ for a small $\epsilon>0$ (\Cref{sec:soft-equivariance}) and \emph{extent-restricted} (subset case) if $\operatorname{Stab}_\epsilon(f)=S\subsetneq G$ (\Cref{sec:extent-restriction}).
 \Cref{fig:exactness-rotation} illustrates the three cases for rotations of a 2D image.
 
 \begin{figure}[!tbp]
@@ -2279,10 +2279,9 @@ Since symmetries can slow optimization and trap training at low-capacity symmetr
 
 \subsection{Extent restriction: beyond groups}\label{sec:extent-restriction}
 % Add deformation stability [bronstein2021] which is about diffeomorphisms
-An extent-restricted symmetry holds with some restriction with respect to a ``full'' group $G$.
-The set of transformation is denoted by $S$ and is understood as $G$ missing a part.
-We organize this section based on the algebraic structure of $S$ i.e.\ by which of the group axioms (closure, identity, inverses) $S$ retains.
-\Cref{tab:extent-restriction} classifies the main cases along this axis.
+An extent-restricted symmetry holds for a set $S$ of transformations that falls short of a ``full'' group $G$.
+The four cases we consider \emph{extent-restriction} are listed in \Cref{tab:extent-restriction}.
+Accordingly, we organize this section based on the algebraic structure of $S$ i.e.\ by which group properties (axioms or operation) $S$ retains.
 The $\pm 90^\circ$ case makes the boundary between the first two rows of \Cref{tab:extent-restriction} (\Cref{sec:subgroups,sec:non-closed-subsets}): as an interval of rotations, $S=[-90^\circ,90^\circ]$ is non-closed since $90^\circ\!\circ\!90^\circ=180^\circ\notin S$, whereas $\{0^\circ,90^\circ,180^\circ,270^\circ\}=C_4$ is a subgroup.
 
 \begin{table}[ht]
@@ -2302,7 +2301,7 @@ The $\pm 90^\circ$ case makes the boundary between the first two rows of \Cref{t
         Groupoid & $\times$ & \checkmark & \checkmark & \checkmark & \citep{sareen2026} \\
         \hline
     \end{tabularx}
-    \caption{Restricting the \emph{extent} of symmetry: each row relaxes a different group axiom of the transformation set $S\subseteq G$.}
+    \caption{Extent-restricted symmetries: each row relaxes a different group axiom. $S$ is the transformation set contrasted with a ``full'' group $G$.}
     \label{tab:extent-restriction}
 \end{table}
 
@@ -2376,7 +2375,7 @@ Finally, quivers and category theory have been used to reframe and extend geomet
 % bamler2018p3icml: almost symmetric subspace from weak symmetry breaking by regularizer \psi(Z)
 % chen2024jsm: approximately Q-symmetric loss function
 % contrast approximate EDL with deformation stability of GDL, see LLM_saved-outputs/responses-saved/GDL_EDL.md
-Where the previous subsection restricted the \emph{extent} to $S\subsetneq G$, this one keeps $G$ but loosens equality to a tolerance $\epsilon>0$, exploring the last value (\emph{approximate}), of the exactness axis of the taxonomy (\Cref{tab:taxonomy}).
+Where the previous subsection restricted the \emph{extent} to a set $S$ falling short of $G$, this one keeps $G$ but loosens equality to a tolerance $\epsilon>0$, exploring the last value (\emph{approximate}), of the exactness axis of the taxonomy (\Cref{tab:taxonomy}).
 A symmetry at the problem locus may hold only to first order, be blurred by noise, or drift over a simulation; models should then match this inexactness, and relaxation can also ease optimization (\Cref{sec:approx-why-tolerate}).
 \emph{Prescriptive} methods split on the object axis: relaxed architectures (\Cref{sec:approx-relaxed}) act at the model locus, loosening constraints so that $\mathcal{H}\not\subseteq C_G(\mathcal{X},\mathcal{Y})$; soft penalties (\Cref{sec:approx-soft}) at the parameter locus, selecting a $\theta$ with approximately equivariant $f_\theta$ similarly to data augmentation (\Cref{sec:data-augmentation}, arrow $f^*\to f_\theta$ in \Cref{fig:sym-loci}).
 $G$ is usually \emph{known}, but relaxed group convolutions have been applied to discover symmetries \citep{wang2024p4icml}.
