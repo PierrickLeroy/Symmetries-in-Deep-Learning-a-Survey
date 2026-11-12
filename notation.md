@@ -48,6 +48,7 @@ $$f(\rho_X(g)\,x) = \rho_Y(g)\,f(x).$$
 | Parameter space | $\Theta$ | |
 | Implementation (realization) map | $\varphi:\Theta\to\mathcal{F}$, $\varphi(\theta)=f_\theta$ | `\varphi`, distinct from the `\phi` of $\phi$-equivalence |
 | Implemented function | $f_\theta$ | |
+| Feature map at layer $l$ (intermediate representation) | $f_\theta^{(l)}:\mathcal{X}\to\mathcal{Z}^{(l)}$ | Composition of the first $l$ layers, so $f_\theta^{(L)}=f_\theta$ for an $L$-layer network. Write $f^{(l)}$ when $\theta$ is fixed or irrelevant.|
 | Hypothesis class | $\mathcal{H}$ | |
 | Function space | $\mathcal{F}$ | |
 | Continuous $G$-equivariant maps $\mathcal{X}\to\mathcal{Y}$ | $C_G(\mathcal{X},\mathcal{Y})$ | Invariant case: trivial action on $\mathcal{Y}$, e.g. $C_G(\mathcal{X},\mathbb{R})$. Topology of uniform convergence on compact sets unless stated; closure written $\overline{\mathcal{H}}$ (not `\bar`) |
