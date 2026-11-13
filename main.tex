@@ -2246,7 +2246,7 @@ The metric is defined as:
 $$m(p_X):=\operatorname{Acc}_{\mathrm{NN}}(p_X, \bar p_X)=\mathbb{E}_{x\sim \operatorname{Unif}(p_X, \bar p_X)}\big[\operatorname{Acc}(\mathrm{NN}(x))\big],$$
 where $\mathrm{NN}$ is a neural network.
 A second \emph{task-useful} metric then asks whether the bias is label-informative, as a ratio $\mathcal{L}_G/\mathcal{L}$ comparing a network that predicts the label from a random-but-equivariant canonical pose against a baseline.
-Given a pose map $c:\mathcal{X}\to G$, with $c(x)^{-1}x$ the corresponding canonical form, the losses are defined as $\mathcal{L}=\mathbb{E}_x\big[\mathbb{I}(\mathrm{NN}(c(x))=f^*(x))\big]$ and $\mathcal{L}_G=\mathbb{E}_{x,g}\big[\mathbb{I}(\mathrm{NN}(c(gx))=gf^*(x))\big]$. Here $\mathrm{NN}:G\to\mathcal{Y}$ is another model, trained to predict the label from the pose.
+Given a pose map $c:\mathcal{X}\to G$, with $c(x)^{-1}x$ the corresponding canonical form, the losses are defined as $\mathcal{L}=\mathbb{E}_x\big[\mathbb{I}(\mathrm{NN}(c(x))\neq f^*(x))\big]$ and $\mathcal{L}_G=\mathbb{E}_{x,g}\big[\mathbb{I}(\mathrm{NN}(c(gx))\neq gf^*(x))\big]$. Here $\mathrm{NN}:G\to\mathcal{Y}$ is another model, trained to predict the label from the pose.
 They report that standard benchmarks (QM9, ModelNet40) are notably symmetry-biased.
 \citet{urbano2026} instead estimate the orbit density directly with a class--pose IE (invariant--equivariant) autoencoder \citep{winter2022anips}.
 
