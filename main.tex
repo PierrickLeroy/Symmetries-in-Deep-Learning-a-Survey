@@ -948,25 +948,25 @@ This setup carries a double (often inexact) symmetry:
 \emph{Contrastive methods} keep branch-swap symmetry (shared weights) exactly and instead prevent collapse by adding negative pairs to the objective, balancing agreement between augmented views of the same $x$ against disagreement between different inputs.
 Early metric learning methods proposed a symmetric loss $\ell(x_1,x_2,\theta)$ trained on matched/mismatched pairs \citep{chopra20052icsccvprc,hadsell20062icsccvpr-v2c}; \citet{schroff20152iccvprc} extend it to a triplet loss $\ell(x,x_p,x_n,\theta)$ contrasting one positive against one negative, and \citet{oord2018a} generalize further to an arbitrary number of negatives with the InfoNCE loss.
 
-\citet{chen2020p3icml} (SimCLR) apply strong compositional data augmentation and a projection head $g$, still shared between branches, on top of which the loss is computed:
+\citet{chen2020p3icml} (SimCLR) apply strong compositional data augmentation and a projection head $\operatorname{proj}$, still shared between branches, on top of which the loss is computed:
 \begin{equation}
-    \ell_{i,j}=-\log\frac{\exp\big(\operatorname{Sim}(z_i,z_j)/\tau\big)}{\sum_{k=1}^{2N} 1_{[k\neq i]}\exp\big(\operatorname{Sim}(z_i,z_k)/\tau\big)},\qquad z_k=g(f(\tilde x_k)),
+    \ell_{i,j}=-\log\frac{\exp\big(\operatorname{Sim}(z_i,z_j)/\tau\big)}{\sum_{k=1}^{2N} 1_{[k\neq i]}\exp\big(\operatorname{Sim}(z_i,z_k)/\tau\big)},\qquad z_k=\operatorname{proj}(f(\tilde x_k)),
 \end{equation}
 where $\tilde x_1,\dots,\tilde x_{2N}$ are the paired views of each of the $N$ inputs of a batch, $(i,j)$ indexes the two views of the same input, $\operatorname{Sim}$ is a similarity function and $\tau$ a temperature; the full loss averages $\ell_{i,j}$ over all positive pairs.
-An ablation shows that the representation $f(x)$ before the projector is better than $g(f(x))$ after it: $g$ is trained to be augmentation-invariant and this is achieved by discarding useful representational information, confirmed empirically by the authors who measured how much augmentation-related information (\textit{e.g.}\ colour) is decodable at each stage.
+An ablation shows that the representation $f(x)$ before the projector is better than $\operatorname{proj}(f(x))$ after it: $\operatorname{proj}$ is trained to be augmentation-invariant and this is achieved by discarding useful representational information, confirmed empirically by the authors who measured how much augmentation-related information (\textit{e.g.}\ colour) is decodable at each stage.
 \citet{he2020} (MoCo) relax branch-swap symmetry itself: the second branch (the ``momentum encoder'') tracks the first through an Exponential Moving Average (EMA) of its weights, $\xi\leftarrow m\,\xi+(1-m)\,\theta$, rather than sharing its weights outright. The non-contrastive methods below push further this decoupling of the branches.
 
 \emph{Non-contrastive methods} dispense with negative pairs altogether and instead prevent collapse either by decoupling the branches more strongly or by regularizing the embedding statistics directly.
-Among the former, \citet{grill2020} (BYOL) equip only the ``student'' branch with an extra prediction head $q_\theta$, computing $q_\theta(g_\theta(f_\theta(t\cdot x)))$ against the ``teacher'' target $g_\xi(f_\xi(t'\cdot x))$, where $\xi$ is an EMA of $\theta$: the student must \emph{predict} rather than match the teacher, turning the symmetric matching objective into an asymmetric one.
+Among the former, \citet{grill2020} (BYOL) equip only the ``student'' branch with an extra prediction head $q_\theta$, computing $q_\theta(\operatorname{proj}_\theta(f_\theta(t\cdot x)))$ against the ``teacher'' target $\operatorname{proj}_\xi(f_\xi(t'\cdot x))$, where $\xi$ is an EMA of $\theta$: the student must \emph{predict} rather than match the teacher, turning the symmetric matching objective into an asymmetric one.
 \citet{caron2021} (DINO) instead keeps a single set of weights (EMA aside) but breaks symmetry in the output distribution with centering and temperature.
 The student computes
 \[
-    \operatorname{Softmax}_{\tau_s}(g_{\theta}(t\cdot x)),
+    \operatorname{Softmax}_{\tau_s}(\operatorname{proj}_{\theta}(f_\theta(t\cdot x))),
 \]
 while the teacher computes
 \[
     \operatorname{Softmax}_{\tau_t}
-    \bigl(\operatorname{Center}(g_{\xi}(t'\cdot x))\bigr),
+    \bigl(\operatorname{Center}(\operatorname{proj}_{\xi}(f_\xi(t'\cdot x)))\bigr),
 \]
 with $\xi$ an EMA of $\theta$ and $\tau_t<\tau_s$: the lower temperature artificially sharpens the teacher's target.
 \citet{chen2020a} (SimSiam) pulls back toward full symmetry: weights are entirely shared and the two branches alternate between student and teacher roles within a single symmetrized loss,
@@ -1135,7 +1135,7 @@ It consists of variants of the functional symmetry of $\varphi$, which become \e
 \Cref{tab:param-double-entry} references works discussing parameter-space symmetries and their source, i.e.\ the ingredient (architecture, layer, activation, loss or optimizer) producing them.
 One source can produce multiple symmetries, and the same symmetry can arise from different sources.
 
-We propose in \Cref{fig:param-space-symmetries} a schematic description of the two axes, as transformations leaving invariant: (1) the parameter $\theta$ itself, (2) the function $f_\theta=\varphi(\theta)$, (3) a loss depending on $\theta$ only through $f_\theta$, (4) a general loss e.g. with regularizer $\mathcal{L}(\theta)=\mathcal{L}_F(f_\theta)+\mathcal{L}_R(\theta)$, (5) the restriction $f_\theta|_S$ for a subset $S\subsetneq\mathcal{X}$ of the data, and (6) $f_\theta$ for $\theta$ in a subset $\Theta_0\subsetneq\Theta$.
+We propose in \Cref{fig:param-space-symmetries} a schematic description of the two axes, as transformations leaving invariant: (1) the parameter $\theta$ itself, (2) the function $f_\theta=\varphi(\theta)$, (3) a loss depending on $\theta$ only through $f_\theta$, (4) a general loss e.g. with regularizer $\mathcal{L}(\theta)=\mathcal{L}_F(f_\theta)+\mathcal{L}_R(\theta)$, (5) the restriction $f_\theta|_{\mathcal{X}_0}$ for a subset $\mathcal{X}_0\subset\mathcal{X}$ of the data, and (6) $f_\theta$ for $\theta$ in a subset $\Theta_0\subset\Theta$.
 
 \subsubsection{Hierarchical Axis}\label{sec:hierarchy-param-space-symmetries}
 
@@ -1197,22 +1197,22 @@ To be unequivocal we call \emph{general} a PS symmetry which holds for every $\t
 The positive rescaling of ReLU networks, $(w_{\mathrm{in}}, w_{\mathrm{out}})\mapsto(\lambda w_{\mathrm{in}}, w_{\mathrm{out}}/\lambda)$ with $\lambda>0$ at each hidden neuron, is the classical example.
 
 \paragraph{Instance-Level PS}
-An \emph{instance-level} or \emph{hidden} \citep{grigsby2023p4icml} symmetry holds on a subset of $\Theta$.
+An \emph{instance-level} or \emph{hidden} \citep{grigsby2023p4icml} symmetry holds on a subset $\Theta_0\subset\Theta$.
 These are local obstructions to the completeness of the group $G$.
 An example is a neuron in a second hidden layer of a ReLU network whose incoming weights and bias are all non-positive.
 Its preactivation is thus non-positive as well so its incoming parameters can be perturbed (staying non-positive) and its outgoing weights modified arbitrarily without changing $f_\theta$.
 
 \paragraph{Data-Dependent PS}
-A \emph{data-dependent} symmetry preserves the function on a subset of the data: $f_{g\cdot\theta}|_S=f_\theta|_S$ for some $S\subset\mathcal{X}$.
+A \emph{data-dependent} symmetry preserves the function on a subset of the data: $f_{g\cdot\theta}|_{\mathcal{X}_0}=f_\theta|_{\mathcal{X}_0}$ for some $\mathcal{X}_0\subset\mathcal{X}$.
 We give an example based on activation patterns.
 \begin{Example}\label{ex:data-PS-GL-activation}
-    For a shallow ReLU network $f_{(U,V)}(x)=U\sigma(Vx)$ with $V\in\mathbb{R}^{h\times n}$ and $U\in\mathbb{R}^{m\times h}$, fix an activation pattern $A\subseteq[h]$ of the hidden layer and let $C_A:=\{z\in\mathbb{R}^h : z_i>0 \text{ for } i\in A\}$.
-    Given $S\subseteq\mathcal{X}$ with $Vx\in C_A$ for all $x\in S$, the set
+    For a shallow ReLU network $f_{(W_1,W_2)}(x)=W_2\sigma(W_1x)$ with $W_1\in\mathbb{R}^{h\times n}$ and $W_2\in\mathbb{R}^{m\times h}$, fix an activation pattern $A\subseteq[h]$ of the hidden layer and let $C_A:=\{z\in\mathbb{R}^h : z_i>0 \text{ for } i\in A\}$.
+    Given $\mathcal{X}_0\subset\mathcal{X}$ with $W_1x\in C_A$ for all $x\in \mathcal{X}_0$, the set
     \begin{equation*}
-        \Omega(S,V):=\big\{M\in GL(|A|,\mathbb{R}) : MV_Ax\in\mathbb{R}^{|A|}_{>0}\ \forall x\in S\big\}
+        \Omega(\mathcal{X}_0,W_1):=\big\{M\in GL(|A|,\mathbb{R}) : MW_{1,A}x\in\mathbb{R}^{|A|}_{>0}\ \forall x\in \mathcal{X}_0\big\}
     \end{equation*}
-    acts on $(U,V)$ by $(U_A, V_A)\mapsto(U_AM^{-1}, MV_A)$, where $V_A$ (resp.\ $U_A$) selects the rows of $V$ (resp.\ the columns of $U$) indexed by $A$ and the complementary blocks are untouched.
-    Note that $\Omega(S,V)$ is not a group: it depends on $V$ and collects the transformations admissible at $(U,V)$ in a groupoid.
+    acts on $(W_1,W_2)$ by $(W_{1,A}, W_{2,A})\mapsto(MW_{1,A}, W_{2,A}M^{-1})$, where $W_{1,A}$ (resp.\ $W_{2,A}$) selects the rows of $W_1$ (resp.\ the columns of $W_2$) indexed by $A$ and the complementary blocks are untouched.
+    Note that $\Omega(\mathcal{X}_0,W_1)$ is not a group: it depends on $W_1$ and collects the transformations admissible at $(W_1,W_2)$ in a groupoid.
 \end{Example}
 \citet{zhao2023a} provide another example: a \emph{nonlinear} data-dependent action $G\times(\Theta\times\mathcal{X})\to\Theta\times\mathcal{X}$ in which the transformation of the weights is itself a function of the input $x$: the output is preserved at $x$ only (batch size one), but the action is defined for the whole $GL(h,\mathbb{R})$.
 
@@ -1232,11 +1232,11 @@ The error landscape studied by \citet{pittorino2022jsm} possesses more symmetrie
     \centering
     \includegraphics[width=\linewidth]{images/param-space-symmetries.pdf}
 \end{adjustwidth}
-    \caption{\textbf{(a)} Inclusion of transformations applicable to (1) symmetric states $\left \{g: g\theta=\theta\right \}$; (2) general functional symmetry $\left \{g: f_\theta = f_{g\theta} \right \}$; (3) loss symmetry  when the loss factors through the implementation map $\left \{g:\mathcal{L}(f_{g\theta})=\mathcal{L}(f_{\theta})\right \}$; (4) general loss symmetry $\left \{g:\mathcal{L}(g\theta)=\mathcal{L}(\theta) \right \}$; (5) data-dependent functional symmetry $\left \{g: {(f_{g\theta})}_{\vert X'}={(f_{\theta})}_{\vert X'}\right \}$ for $X'\subsetneq \mathcal{X}$; (6) instance-dependent functional symmetry $\left \{g: \theta\in \Theta_0 \Rightarrow f_{g\theta}=f_\theta \right \}$ for $\Theta_0\subsetneq \Theta$.
+    \caption{\textbf{(a)} Inclusion of transformations applicable to (1) symmetric states $\left \{g: g\theta=\theta\right \}$; (2) general functional symmetry $\left \{g: f_\theta = f_{g\theta} \right \}$; (3) loss symmetry  when the loss factors through the implementation map $\left \{g:\mathcal{L}(f_{g\theta})=\mathcal{L}(f_{\theta})\right \}$; (4) general loss symmetry $\left \{g:\mathcal{L}(g\theta)=\mathcal{L}(\theta) \right \}$; (5) data-dependent functional symmetry $\left \{g: {(f_{g\theta})}_{\vert \mathcal{X}_0}={(f_{\theta})}_{\vert \mathcal{X}_0}\right \}$ for $\mathcal{X}_0\subset \mathcal{X}$; (6) instance-dependent functional symmetry $\left \{g: \theta\in \Theta_0 \Rightarrow f_{g\theta}=f_\theta \right \}$ for $\Theta_0\subset \Theta$.
     Each class is illustrated on an exemplar network $\mathcal{N}$ whose setup is shown at the top of the panel.
     Note that (3) and (4) can intersect (e.g. neuron permutations in an MLP with $\ell_p$ regularization for (4)), but none is included in the other.
     The illustration is not exhaustive: data-dependent and instance symmetries can act at the loss level or be combined.
-    \textbf{(b)} Spaces and maps: $\varphi$ sends $\Theta$, and the parameter space $\Theta'$ of a larger architecture, to $\mathcal{F}$; $i$ restricts functions to $X'$; $\operatorname{AGG}$ combines $\mathcal{L}_F$ and $\mathcal{L}_R$ into $\mathcal{L}$.
+    \textbf{(b)} Spaces and maps: $\varphi$ sends $\Theta$, and the parameter space $\Theta'$ of a larger architecture, to $\mathcal{F}$; $i$ restricts functions to $\mathcal{X}_0$; $\operatorname{AGG}$ combines $\mathcal{L}_F$ and $\mathcal{L}_R$ into $\mathcal{L}$.
     In $\Theta$ and $\Theta'$, colours (2)--(5) mark the preimage, along the arrows, of the dot of the same colour, i.e.\ the set reached from $\theta$ by the corresponding class of (a); (6) is not shown.
     For (1), the orbit $G\theta$ has two components, whereas that of the more symmetric $\tilde{\theta}$ has one.}
     \label{fig:param-space-symmetries}
@@ -1258,11 +1258,11 @@ We list the main parameter-space symmetries starting with discrete, then continu
 
 \paragraph{Permutation}
 The permutation of units within a layer is a ubiquitous parameter-space symmetry.
-For a layer $x\mapsto U\sigma(Vx)$ with pointwise nonlinearity $\sigma$,
+For a layer $x\mapsto W_2\sigma(W_1x)$ with pointwise nonlinearity $\sigma$,
 \begin{equation*}
-    U\sigma(Vx)=UP^{\top}\sigma(PVx)
+    W_2\sigma(W_1x)=W_2P^{\top}\sigma(PW_1x)
 \end{equation*}
-for any permutation matrix $P$: relabeling the hidden neurons i.e. permuting the rows of $V$ (with their biases) and the columns of $U$ accordingly, leaves $f_\theta$ unchanged.
+for any permutation matrix $P$: relabeling the hidden neurons i.e. permuting the rows of $W_1$ (with their biases) and the columns of $W_2$ accordingly, leaves $f_\theta$ unchanged.
 The same principle applies to filters in CNNs and to heads in multi-head attention~\citep{tran2025iclr}.
 \citet{hecht-nielsen1990anc} gave an early group-theoretic account: for an MLP with hidden widths $d_1,\dots,d_L$ the permutation group has order $\prod_{l=1}^{L}d_l!$.
 
@@ -2139,9 +2139,10 @@ Since $\operatorname{ee}$ takes a supremum over $\mathcal X$, $\operatorname{Sta
     \centering
     \includegraphics[width=\textwidth]{images/exactness-rotation.pdf}
     \caption{The exactness axis for rotations of a 2D image.
-    Top: for each image the green arrow spans $\operatorname{Stab}_\epsilon(f)$; waviness for approximate.
-    Bottom: invariance error $\operatorname{ee}(f,\theta)$ as a function of rotation angle $\theta$ (blue), tolerance $\epsilon$ (dashed), and $\operatorname{Stab}_\epsilon(f)$ (green).
-    In (\textbf{a}) and (\textbf{c}), $f$ is the image itself (colour coordinates), in (\textbf{b}) $f$ maps an image to the smooth logits of a digit classifier. Best seen in colors.}
+    Top: for each image the green arrow spans the symmetry range; waviness for approximate.
+    Bottom: invariance error as a function of rotation angle $\theta$ (blue).
+    In (\textbf{a}) and (\textbf{c}), $f$ is the image itself (colour coordinates); in (\textbf{b}) $X$ is the half annulus seen as a subset of $\mathbb R^2$ and $f(X)=\min_{x\in X}\|x-p\|_2^2$ for the fixed point $p$, so that $\{\theta:(\theta,X)\in\mathcal S(f)\}=S=[-\pi/2,\pi/2]$ is a non-closed subset
+    Best seen in colors.}
     \label{fig:exactness-rotation}
 \end{figure}
 
@@ -2327,7 +2328,7 @@ We break down subcases depending on $\mathcal K$ in \Cref{tab:extent-restriction
         \hline
         Groupoid & $(m,x)\in \mathcal K \implies (m^{-1},mx)\in \mathcal K$ & overparametrization \citep{sareen2026} \\
         \hline
-        Domain & $\mathcal{K}=\{(m,x):x\in \mathcal{X}_0, mx\in \mathcal{X}_0 \}$ for some $\mathcal{X}_0 \subsetneq \mathcal{X}$ & 6/9 digits; data-dependent and instance-level PS of \Cref{sec:scope-param-space-symmetries} \\
+        Domain & $\mathcal{K}=\{(m,x):x\in \mathcal{X}_0, mx\in \mathcal{X}_0 \}$ for some $\mathcal{X}_0 \subset \mathcal{X}$ & 6/9 digits; data-dependent and instance-level PS of \Cref{sec:scope-param-space-symmetries} \\
         \hline
     \end{tabularx}
     \caption{Extent-restricted symmetries, except the first exact row which also implies $\mathcal S(f)=M\times \mathcal{X}$.
@@ -2408,7 +2409,7 @@ The instance-level and data-dependent PS (Parameter-space Symmetry) of \Cref{sec
 For instance-level PS, $\mathcal X=\Theta$ is restricted to $\Theta_0$.
 For instance, take $\Theta_0=\{\theta:\theta^+_v\le0\}$ \citep{grigsby2023p4icml}: beyond the first hidden layer of a ReLU network, a unit $v$ with non-positive incoming parameters $\theta^+_v$ (weights and bias) never activates. Translations $T$ of its outgoing weights and positive diagonal scalings $\mathcal D_{>0}$ of $\theta^+_v$ preserve $\Theta_0$, so $\mathcal K\supseteq(T\times\mathcal D_{>0})\times\Theta_0$.
 A data-dependent PS acts on $\theta$ but constrains $x$: take the pairs $\Theta\times\mathcal X$ as domain in \Cref{ex:data-PS-GL-activation}, define $F(\theta,x)=f_\theta(x)$ and let $GL(|A|,\mathbb R)$ act by $M\cdot(\theta,x)=(M\cdot\theta,x)$, trivially on $x$ and $\mathcal Y$.
-The domain $\{(\theta,x):\ V_Ax\in\mathbb R^{|A|}_{>0}\}$ gives $\mathcal K\subseteq\mathcal S(F)$, as $\sigma$ is the identity on positive entries.
+The domain $\{(\theta,x):\ W_{1,A}x\in\mathbb R^{|A|}_{>0}\}$ gives $\mathcal K\subseteq\mathcal S(F)$, as $\sigma$ is the identity on positive entries.
 
 Label-dependent refinements are domain restrictions of the ground truth: they require $f^*(mx)=f^*(x)$ only for $m\in\mathcal K_x$, where the non-global set of transformations $\mathcal K_x$ can depend on the class of $x$ and its pose relative to a natural pose \citep{urbano2026}, or on the instance itself \citep{wang2023a,miao2023p4icml} (\Cref{fig:sym-loci}).
 Different classes or instances then carry different symmetries: changing the color of a leaf from green to yellow preserves its class, whereas the same change turns a lime into a lemon.

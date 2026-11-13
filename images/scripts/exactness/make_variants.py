@@ -1,6 +1,8 @@
 """Exactness axis on a rotation-symmetric 2D image (sec:incomplete-symmetries) -- 3 design variants.
 
-a exact (constant-hue annulus), b extent-restricted (digit 6 -> 9 under a half-turn),
+a exact (constant-hue annulus), b extent-restricted (upper half annulus X and f(X) = min_{x in X} ||x - p||^2 for a
+fixed point p on the vertical axis: f(R_theta X) = f(X) exactly iff |theta| <= pi/2, i.e. the pairs (theta, X) of
+S(f) = {(m, x) : f(m x) = f(x)} have theta in the non-closed set S = [-pi/2, pi/2]),
 c approximate (annulus whose hue varies slowly with the polar angle).
 Units: 1 user unit = 1 mm. Text stays <text> in TeX Gyre Pagella (matches mathpazo), so it is editable.
 Usage: python3 make_variants.py OUTDIR     (writes exactness_variant_{A,B,C}.svg and .png previews)
@@ -14,6 +16,7 @@ import sys
 
 MATH = "'TeX Gyre Pagella Math', 'TeX Gyre Pagella', serif"
 TEXT = "'TeX Gyre Pagella', serif"
+CAL = "'Latin Modern Math', serif"  # its U+1D49C.. script letters are the cmsy \mathcal shapes that mathpazo keeps
 W = 138.0  # MDPI \textwidth (mm)
 INK, GREY, LIGHT = "#222222", "#555555", "#bbbbbb"
 GREEN = "#117733"  # Paul Tol: "the symmetry holds"
@@ -102,6 +105,15 @@ def annulus_varying(gid, cx, cy, R, r, n=120, overlap=0.6, colour=approx_colour)
     return "".join(out)
 
 
+def half_annulus(gid, cx, cy, R, r, fill, rot=0.0, opacity=1.0):
+    """Upper half of the annulus r <= |x| <= R (polar angle in [0, 180] deg), rotated by rot deg counter-clockwise."""
+    (x0, y0), (x1, y1) = pt(cx, cy, R, rot), pt(cx, cy, R, rot + 180)
+    (u1, v1), (u0, v0) = pt(cx, cy, r, rot + 180), pt(cx, cy, r, rot)
+    d = (f"M {f2(x0)},{f2(y0)} A {f2(R)} {f2(R)} 0 0 0 {f2(x1)},{f2(y1)} L {f2(u1)},{f2(v1)} "
+         f"A {f2(r)} {f2(r)} 0 0 1 {f2(u0)},{f2(v0)} Z")
+    return f'<path id="{gid}" d="{d}" style="fill:{fill};stroke:none;opacity:{opacity}"/>'
+
+
 def six(gid, cx, cy, h, rot=0.0, color=BASE, opacity=1.0, width=None):
     """Hand-written digit 6 of height h centred at (cx, cy), rotated by rot deg counter-clockwise.
     The glyph is centred, so rot = 180 gives a 9 at the same place."""
@@ -175,18 +187,20 @@ def text(x, y, s, size=FS_TXT, anchor="middle", family=TEXT, style="normal", wei
 
 
 def math_text(x, y, parts, size=FS_TXT, anchor="middle", color=INK, gid=None):
-    """parts: list of (string, 'n' | 'sub'). Subscripts are tspans shifted with dy (portable to Ipe / browsers)."""
+    """parts: list of (string, 'n' | 'sub' | 'cal'). Subscripts are tspans shifted with dy (portable to Ipe / browsers);
+    'cal' is a normal-position span in CAL (calligraphic letters as \\mathcal prints them in the survey)."""
     sub, shift = 0.7 * size, 0.22 * size
     spans, down = [], False
     for s, kind in parts:
+        st = f' style="font-family:{CAL}"' if kind == "cal" else ""
         if kind == "sub" and not down:
             spans.append(f'<tspan dy="{f2(shift)}" style="font-size:{f2(sub)}px">{s}</tspan>')
             down = True
-        elif kind == "n" and down:
-            spans.append(f'<tspan dy="{f2(-shift)}">{s}</tspan>')
+        elif kind != "sub" and down:
+            spans.append(f'<tspan dy="{f2(-shift)}"{st}>{s}</tspan>')
             down = False
         else:
-            spans.append(f"<tspan>{s}</tspan>")
+            spans.append(f"<tspan{st}>{s}</tspan>")
     i = f' id="{gid}"' if gid else ""
     return (f'<text{i} x="{f2(x)}" y="{f2(y)}" style="font-family:{MATH};font-size:{size}px;fill:{color};'
             f'text-anchor:{anchor}">{"".join(spans)}</text>')
@@ -195,24 +209,36 @@ def math_text(x, y, parts, size=FS_TXT, anchor="middle", color=INK, gid=None):
 TH = " "  # thin space
 CRIT = {  # exactness criteria of the excerpt, in terms of the epsilon-stabilizer
     "a": [("Stab", "n"), ("0", "sub"), ("(𝑓)" + TH + "=" + TH + "𝐺", "n")],
-    "b": [("Stab", "n"), ("𝜖", "sub"), ("(𝑓)" + TH + "=" + TH + "𝑆" + TH + "⊊" + TH + "𝐺", "n")],
+    "b": [("{𝜃" + TH + ":" + TH + "(𝜃," + TH + "𝑋)" + TH + "∈" + TH, "n"), ("𝒮", "cal"),
+          ("(𝑓)}" + TH + "=" + TH + "𝑆" + TH + "⊊" + TH + "𝐺", "n")],
     "c": [("Stab", "n"), ("0", "sub"), ("(𝑓)" + TH + "≠" + TH + "𝐺" + TH + "=" + TH + "Stab", "n"), ("𝜖", "sub"),
           ("(𝑓)", "n")],
 }
 NAME = {"a": "exact", "b": "extent-restricted", "c": "approximate"}
 
 
-def image(k, cx, cy, size, ghost=False):
-    """The three 2D images; size = outer diameter of the annuli = height of the 6."""
-    R, r = size / 2, size / 2 * 0.62
+INNER = 0.62   # inner / outer radius of the annuli
+P_FRAC = (1 + INNER) / 2  # panel b: |p| / outer radius (p sits on the blue band, midway between the two radii)
+
+
+def point_p(gid, cx, cy, R, color=INK, opacity=1.0, rd=0.6, label=True):
+    """The fixed point p = (0, P_FRAC R) of panel b, on the vertical axis, on the band of the half annulus."""
+    y = cy - P_FRAC * R
+    g = (f'<circle id="{gid}" cx="{f2(cx)}" cy="{f2(y)}" r="{f2(rd)}" '
+         f'style="fill:{color};stroke:none;opacity:{opacity}"/>')
+    if label:
+        g += math_text(cx + 1.2, y + 1.0, [("𝑝", "n")], FS_TXT, "start", color=color, gid=f"{gid}-label")
+    return g
+
+
+def image(k, cx, cy, size):
+    """The three 2D images; size = outer diameter of the annuli."""
+    R, r = size / 2, size / 2 * INNER
     if k == "a":
         return annulus("img-a", cx, cy, R, r, BASE)
     if k == "c":
         return annulus_varying("img-c", cx, cy, R, r)
-    g = six("img-b", cx, cy, size)
-    if ghost:  # faint copy rotated by pi/2: the boundary of S, where 6 and 9 can no longer be told apart
-        g = six("img-b-ghost", cx, cy, size, rot=90, color=GREY, opacity=0.22) + g
-    return g
+    return half_annulus("img-b", cx, cy, R, r, BASE) + point_p("point-p", cx, cy, R)
 
 
 def svg_doc(w, h, title, layers):
@@ -244,8 +270,9 @@ def variant_A():
 # ------------------------------------------------------------------ variant B: rotation symbols + criteria
 def dial(k, cx, cy, Rd=12.0, Ra=14.5):
     """Image domain (light grey disk) and the rotation symbol around it, as (domain, rotation, ghosts) SVG strings.
-    a: full arc (exact on G); b: arc on S = [-pi/2, pi/2] only, dashed on G minus S, with faint 6s turned by
-    -pi/2 / +pi/2 at the two ends of S (6 and 9 can no longer be told apart); c: wavy full arc ("≈" on G)."""
+    a: full arc (exact on G); b: arc on S = [-pi/2, pi/2] only, dashed on G minus S, with faint copies of X turned by
+    +pi/2 (left) / -pi/2 (right) next to the two ends of S, where the cut edge of X still passes through the fixed
+    point p; c: wavy full arc ("≈" on G)."""
     S0 = 90.0
     dom = (f'<circle id="domain-{k}" cx="{f2(cx)}" cy="{f2(cy)}" r="{Rd}" '
            f'style="fill:#f3f3f3;stroke:#d6d6d6;stroke-width:0.25"/>')
@@ -258,10 +285,14 @@ def dial(k, cx, cy, Rd=12.0, Ra=14.5):
         rot = (arc("rot-b-out", cx, cy, Ra, 90 + S0, 90 - S0, LIGHT, 0.3, dash="0.8,0.8")
                + arc("rot-b-S", cx, cy, Ra, 90 - S0, 90 + S0, GREEN, 0.4, heads=("start", "end"))
                + math_text(cx, cy - Ra - 1.4, [("𝑆", "n")], FS_TXT, color=GREEN, gid="label-S"))
-        gr = Ra + 5.0
-        ghosts = (f'<g id="ghosts-b" inkscape:label="ghosts: 6 turned by ±pi/2">'
-                  f'{six("ghost-minus", cx + gr, cy, 6.0, rot=-90, color=GREY, opacity=0.4)}'
-                  f'{six("ghost-plus", cx - gr, cy, 6.0, rot=90, color=GREY, opacity=0.4)}</g>')
+        gr, gR = Ra + 2.8, 3.5  # ghost centre offset and outer radius
+        ghosts = ['<g id="ghosts-b" inkscape:label="ghosts: X turned by ±pi/2, p fixed">']
+        for sgn, name in ((-1, "minus"), (1, "plus")):  # rotation by sgn * pi/2 is drawn on the side of that end of S
+            gx = cx - sgn * gr
+            ghosts.append(half_annulus(f"ghost-{name}", gx, cy, gR, gR * INNER, GREY, rot=sgn * 90, opacity=0.4))
+            ghosts.append(point_p(f"ghost-{name}-p", gx, cy, gR, INK, opacity=0.7, rd=0.35, label=False))
+        ghosts.append("</g>")
+        ghosts = "".join(ghosts)
     return dom, rot, ghosts
 
 
@@ -282,14 +313,29 @@ def variant_B():
 
 
 # ------------------------------------------------------------------ variant C: images + equivariance-error profile
+def half_annulus_d2(q, R=1.0, r=INNER):
+    """min_{x in X} ||x - q||^2 for the upper half annulus X = {x : r <= |x| <= R, x_2 >= 0}."""
+    q1, q2 = q
+    if q2 >= 0:  # radial projection onto the annulus lands in X
+        rho = math.hypot(q1, q2)
+        return max(r - rho, 0.0, rho - R) ** 2
+    # below the cut, the polar angle of the nearest point is 0 or pi: it lies on [r, R] x {0} or [-R, -r] x {0}
+    return max(r - abs(q1), 0.0, abs(q1) - R) ** 2 + q2 ** 2
+
+
+def f_b(th):
+    """f(R_th X) = min_{x in X} ||R_th x - p||^2 = min_{x in X} ||x - R_{-th} p||^2, with p = (0, P_FRAC) (R = 1)."""
+    return half_annulus_d2((P_FRAC * math.sin(th), P_FRAC * math.cos(th)))
+
+
 def ee_profile(k, th):
-    """Schematic theta -> ee(f, theta), in units of the plot height; EPS is the tolerance level."""
+    """theta -> error, in units of the plot height; EPS is the tolerance level.
+    a, c: schematic ee(f, theta). b: exact pointwise error |f(R_theta X) - f(X)|, scaled so its max (theta = pi) is 0.92."""
     if k == "a":
         return 0.0
     if k == "c":  # colour(phi) = c0 + v cos(phi)  =>  sup_phi |colour(phi - th) - colour(phi)| = 2 |v| |sin(th / 2)|
         return 0.8 * EPS * abs(math.sin(th / 2))
-    z = (abs(th) - math.pi / 2) / 0.28  # crosses EPS exactly at |th| = pi/2
-    return 0.92 / (1 + math.exp(-(z + math.log(EPS / (0.92 - EPS)))))
+    return 0.92 * abs(f_b(th) - f_b(0.0)) / (f_b(math.pi) - f_b(0.0))
 
 
 EPS = 0.3
@@ -308,10 +354,12 @@ def variant_C():
         X = lambda th: x0 + (th + math.pi) / (2 * math.pi) * pw  # noqa: E731
         Y = lambda v: py0 - v * ph  # noqa: E731
         p = [f'<g id="plot-{k}" inkscape:label="ee profile {k}">']
-        # Stab_eps(f): sublevel set {theta : ee <= eps}, drawn as a rug under the theta axis
+        # a, c: Stab_eps(f), the sublevel set {theta : ee <= eps}; b: the zero set S = {theta : (theta, X) in S(f)}
+        # (exact, no tolerance); drawn as a rug under the theta axis
         n = 400
         ths = [-math.pi + 2 * math.pi * i / n for i in range(n + 1)]
-        inside = [ee_profile(k, t) <= EPS + 1e-9 for t in ths]
+        level = 0.0 if k == "b" else EPS
+        inside = [ee_profile(k, t) <= level + 1e-9 for t in ths]
         segs, start = [], None
         for t, ok in zip(ths, inside):
             if ok and start is None:
@@ -327,11 +375,15 @@ def variant_C():
         # axes, eps level, ticks
         p.append(f'<path d="M {f2(x0)},{f2(py0)} H {f2(x1 + 1.5)} M {f2(x0)},{f2(py0)} V {f2(py0 - ph - 1.5)}" '
                  f'style="fill:none;stroke:{INK};stroke-width:0.3"/>')
-        p.append(f'<path d="M {f2(x0)},{f2(Y(EPS))} H {f2(x1)}" '
-                 f'style="fill:none;stroke:{GREY};stroke-width:0.3;stroke-dasharray:1,0.8"/>')
-        p.append(math_text(x0 - 1.0, Y(EPS) + 0.8, [("𝜖", "n")], FS_TICK, "end"))
+        if k != "b":  # b is exact on S: no tolerance level
+            p.append(f'<path d="M {f2(x0)},{f2(Y(EPS))} H {f2(x1)}" '
+                     f'style="fill:none;stroke:{GREY};stroke-width:0.3;stroke-dasharray:1,0.8"/>')
+            p.append(math_text(x0 - 1.0, Y(EPS) + 0.8, [("𝜖", "n")], FS_TICK, "end"))
         p.append(math_text(x0 - 1.0, py0 + 0.8, [("0", "n")], FS_TICK, "end"))
-        for th, lab in ((-math.pi, "−𝜋"), (0.0, ""), (math.pi, "𝜋")):
+        ticks = [(-math.pi, "−𝜋"), (0.0, ""), (math.pi, "𝜋")]
+        if k == "b":
+            ticks += [(-math.pi / 2, "−𝜋/2"), (math.pi / 2, "𝜋/2")]
+        for th, lab in ticks:
             p.append(f'<path d="M {f2(X(th))},{f2(py0)} V {f2(py0 + 0.8)}" style="stroke:{INK};stroke-width:0.3"/>')
             if lab:
                 p.append(math_text(X(th), py0 + 4.6, [(lab, "n")], FS_TICK))
@@ -339,7 +391,10 @@ def variant_C():
         p.append(math_text(X(0.0), py0 + 4.9, [("𝑆" if k == "b" else "𝐺", "n")], FS_TICK, color=GREEN,
                            gid=f"label-stab-{k}"))
         p.append(math_text(x1 + 2.2, py0 + 0.8, [("𝜃", "n")], FS_TICK, "start"))
-        p.append(math_text(x0 + 1.0, py0 - ph - 0.6, [("ee(𝑓," + TH + "𝜃)", "n")], FS_TICK, "start"))
+        # b: |f(R_theta X) - f(X)| = f(R_theta X), since p in X gives f(X) = 0 and f >= 0
+        ylab = ([("𝑓(𝑅", "n"), ("𝜃", "sub"), ("𝑋)", "n")] if k == "b"
+                else [("ee(𝑓," + TH + "𝜃)", "n")])
+        p.append(math_text(x0 + 1.0, py0 - ph - 0.6, ylab, FS_TICK, "start"))
         # curve
         pts = " ".join(f"{f2(X(t))},{f2(Y(ee_profile(k, t)))}" for t in ths[::4])
         p.append(f'<polyline points="{pts}" style="fill:none;stroke:{BASE};stroke-width:0.55;stroke-linejoin:round"/>')
