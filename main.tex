@@ -2334,7 +2334,7 @@ We break down subcases depending on $\mathcal K$ in \Cref{tab:extent-restriction
 
 \subsubsection{Subgroups}\label{sec:subgroups}
 % wang2024p4icml: relaxed equiv model initialized as G-equiv reduced to H-equiv while training due to symmetry breaking (H subgroup of G)
-Among the rows of \Cref{tab:extent-restriction}, a subgroup $H\le G$ is the only restriction that breaks no group axiom: ``incompleteness'' is here intended as a reduction in symmetry rather than a defect in the algebraic structure.
+In \Cref{tab:extent-restriction}, a subgroup $H\le G$ is the only restriction that breaks no group axiom: ``incompleteness'' is here intended as a reduction in symmetry rather than a defect in the algebraic structure.
 Two questions organize the literature: how to obtain an $H$-equivariant model, and what the subgroup structure of $G$ itself buys.
 
 A direct construction proposed by \citet{goel2025} descends equivariance ($G\to H$): the input is augmented with an auxiliary feature $v$ whose stabilizer is exactly $\operatorname{Stab}(v)=H$, so that a $G$-equivariant backbone $h_\theta(\cdot,v)$ becomes $H$-equivariant, and---if $h_\theta$ is injective in $v$---equivariant to no larger group; a single backbone thus serves any subgroup by swapping $v$.
@@ -2356,7 +2356,7 @@ Finally, the loss landscape can be structured by stabilizers: in a student-teach
 However, these proper subgroups are maximal (for $p\neq q$): they break symmetry but the least possible.
 
 \subsubsection{Partial equivariance: non-closed subsets}\label{sec:non-closed-subsets}
-The second row of \Cref{tab:extent-restriction} keeps the identity and inverses but drops \emph{closure}: $S$ is a non-closed subset of $G$.
+The non-closed row of \Cref{tab:extent-restriction} keeps the identity and inverses but drops \emph{closure}: $S$ is a non-closed subset of $G$.
 \citet{romero2023} define \emph{partial equivariance} to $S\subseteq G$ as
 $$f(\rho_X(g)\,x)=\rho_Y(g)\,f(x)\qquad \forall g\in S\subsetneq G,\ \forall x\in \mathcal{X},$$
 with $S$ not required to be a subgroup.
@@ -2377,7 +2377,7 @@ Augerino, introduced by \citet{benton2020anips}, makes the invariance range a le
 An early example can be found in \citep{goodfellow2009anips} which measured neuron invariance over a bounded transformation range $\Gamma$ rather than a full orbit (e.g.\ $\pm 5$ frames of time translation in video).
 
 \subsubsection{Additional algebraic structures}
-The last rows of \Cref{tab:extent-restriction} relax the remaining axioms.
+Monoids/semigroup and groupoids relax the remaining axioms.
 Semigroups keep associativity and closure but drop inverses, which is exactly the structure of irreversible operations such as blurring, downsampling, or cropping where information is destroyed and cannot be recovered.
 
 \citet{worrall2019anips} build scale equivariance using this structure: a Gaussian scale-space generates coarser scales from finer ones but not conversely.
@@ -2482,7 +2482,7 @@ For encoder--decoder models \citet{ali2026} decompose this into three terms---in
 \subsection{Loose Ends and Outlook}\label{sec:loose-ends}
 We gather here some occurrences of symmetry that did not enter the main narrative.
 
-\paragraph{Label-dependence}
+\paragraph{Label-dependence}\label{par:label-dependence}
 Class-specific \citep{urbano2026} or instance-specific, pointwise \citep{wang2023a,miao2023p4icml} refinements require $f^*(g\cdot x)=f^*(x)$ only for $g$ in a subset $S_{f^*(x)}$ or $S_x$ of $G$, a data-dependent extent restriction (\Cref{sec:extent-restriction}, \Cref{fig:sym-loci}).
 Different classes or instances then carry different symmetries: changing the color of a leaf from green to yellow preserves its class, whereas the same change turns a lime into a lemon.
 Disentangled representations \citep{higgins2018}, and the more specific class--pose decompositions \citep{winter2022anips,marchetti2023p2icais} in which the latent space is split into invariant and equivariant parts for a given group, have an information-theoretic extension: an embedding $Z=[Z_Y,Z_\perp]$ with mutual information $I(Z_\perp;Y)=0$, so that $Z_\perp$ parametrizes the transformations under which $Y$ is invariant.
