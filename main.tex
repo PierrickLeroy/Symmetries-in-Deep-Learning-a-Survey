@@ -896,16 +896,21 @@ Since $\sigma$ affects the per-batch normalization statistics, $\mathcal{L}_\sig
     The $S_n$-invariance of GD is thus a property of the idealized algorithm, not of its implementation.
 \end{Remark}
 
-\paragraph{Exchangeability: invariance in law}\label{par:exchangeability}
-The invariance lost by SGD can be restored in distribution when the data themselves carry a probabilistic symmetry.
+\paragraph{Exchangeability and invariance in law}\label{par:exchangeability}
+The invariance lost by SGD can be restored in distribution, by the data or by the algorithm.
 A sequence $\boldsymbol{X}_n=(X_1,\dots,X_n)$ is \emph{exchangeable} (a generalization of the i.i.d.\ assumption) if $\sigma\boldsymbol{X}_n \overset{d}{=} \boldsymbol{X}_n$ for every $\sigma\in S_n$.
-\citet{bloem-reddy2020} relate this concept to distributional invariance through the \emph{empirical measure} $\mathbb{M}_{\boldsymbol{X}_n}(\cdot):=\sum_{i=1}^{n}\delta_{X_i}(\cdot)$, which represents the data but forgets its ordering.
-They show that a conditional distribution is permutation-invariant, $(Y \mid \boldsymbol{X}_n)\overset{d}{=}(Y \mid \sigma\boldsymbol{X}_n)$, precisely when $Y$ factors through the empirical measure, $(\boldsymbol{X}_n, Y)\overset{a.s.}{=}\big(\boldsymbol{X}_n,\, f(\eta, \mathbb{M}_{\boldsymbol{X}_n})\big)$ for some measurable $f$ and independent noise $\eta$.
-Restricting to a single epoch $\mathcal{D}$ for simplicity, this result can be reinterpreted as
+Restricting to a single epoch $\mathcal{D}$ for simplicity, if $\mathcal{D}$ is exchangeable, then $(\sigma\cdot\mathcal{D},\theta_0)\overset{d}{=}(\mathcal{D},\theta_0)$ and
 $$
 \operatorname{Law}\big(\mathcal{A}(\sigma\cdot\mathcal{D},\,\theta_0)\big) = \operatorname{Law}\big(\mathcal{A}(\mathcal{D},\,\theta_0)\big) \qquad \text{for all } \sigma\in S_n,
 $$
 even though each realization of $\mathcal{A}$ is not $S_n$-invariant.
+\citet{bloem-reddy2020} characterize a stronger, conditional invariance through the \emph{empirical measure} $\mathbb{M}_{\boldsymbol{X}_n}(\cdot):=\sum_{i=1}^{n}\delta_{X_i}(\cdot)$, which represents the data but forgets its ordering: for exchangeable $\boldsymbol{X}_n$, $(Y \mid \boldsymbol{X}_n)\overset{d}{=}(Y \mid \sigma\boldsymbol{X}_n)$ for all $\sigma\in S_n$ if and only if $(\boldsymbol{X}_n, Y)\overset{a.s.}{=}\big(\boldsymbol{X}_n,\, f(\eta, \mathbb{M}_{\boldsymbol{X}_n})\big)$ for some measurable $f$ and noise $\eta$ independent of $\boldsymbol{X}_n$.
+Shuffling (RR, SR) yields this factorization even if $\mathcal{D}$ is not exchangeable.
+If $\sigma'\in S_n$ is drawn uniformly and independently,
+$$
+\theta_T=\mathcal{A}(\sigma'\cdot\mathcal{D},\theta_0)=f(\eta_\sigma,\mathbb{M}_{\mathcal{D}})
+$$
+and the trained parameters depend on the data only through their empirical measure, up to independent noise.
 
 \begin{Remark}[Examples of non-exchangeable data]
     Not all scenarios can be modeled with exchangeable data.
