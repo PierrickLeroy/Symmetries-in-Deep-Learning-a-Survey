@@ -2140,8 +2140,8 @@ Since $\operatorname{ee}$ takes a supremum over $\mathcal X$, $\operatorname{Sta
     \includegraphics[width=\textwidth]{images/exactness-rotation.pdf}
     \caption{The exactness axis for rotations of a 2D image.
     Top: for each image the green arrow spans the symmetry range; waviness for approximate.
-    Bottom: invariance error as a function of rotation angle $\theta$ (blue).
-    In (\textbf{a}) and (\textbf{c}), $f$ is the image itself (colour coordinates); in (\textbf{b}) $X$ is the half annulus seen as a subset of $\mathbb R^2$ and $f(X)=\min_{x\in X}\|x-p\|_2^2$ for the fixed point $p$, so that $\{\theta:(\theta,X)\in\mathcal S(f)\}=S=[-\pi/2,\pi/2]$ is a non-closed subset
+    Bottom: invariance error as a function of rotation angle $\alpha$ (blue).
+    In (\textbf{a}) and (\textbf{c}), $f$ is the image itself (colour coordinates); in (\textbf{b}) $X$ is the half annulus seen as a subset of $\mathbb R^2$ and $f(X)=\min_{x\in X}\|x-p\|_2^2$ for the fixed point $p$, so that $\{\alpha:(\alpha,X)\in\mathcal S(f)\}=S=[-\pi/2,\pi/2]$ is a non-closed subset
     Best seen in colors.}
     \label{fig:exactness-rotation}
 \end{figure}
@@ -2191,7 +2191,7 @@ Functional SB is a property of the pair $(f^*,\mathcal{H})$: the target $f^*$ is
 \operatorname{Sym}(f^*)\subsetneq\operatorname{Sym}(h)=G\quad&\text{for all }h\in\mathcal{H},\\
 &\text{equivalently}\quad \exists\,x,g:\ f^*(\rho_X(g)x)\neq\rho_Y(g)f^*(x).
 \end{align}
-It is an \emph{overspecification} of equivariance and coincides pointwise with the \emph{incorrect equivariance} of \citet{wang2023a} whose magnitude can be measured by equivariance errors (as in \Cref{eq:equiv-error-approximate} for instance).
+It is an overspecification of equivariance and coincides pointwise with the \emph{incorrect equivariance} of \citet{wang2023a} whose magnitude can be measured by equivariance errors (as in \Cref{eq:equiv-error-approximate} for instance).
 It appears in standard architectures: \citet{zhang2019p3icml} show that the subsampling hidden inside strided convolutions and max-pooling silently destroys shift-equivariance, since it violates the Nyquist--Shannon condition $f_s>2f_{\max}$ for lossless sampling of a band-limited signal.
 \citet{zhang2019p3icml} propose a low-pass (blur) filtering before subsampling to partially restore it.
 Imposing an exact $G$ on a task that lacks it carries an unavoidable cost, which \citet{wang2023a} make precise through error lower bounds: for invariant classification the accuracy is capped by the best per-orbit choice, $\operatorname{err}(f_\theta)\ge\int_F k(Gx)\,dx$, where the \emph{total dissent} $k(Gx)$ is the probability mass of the points of the orbit $Gx$ that do not carry its majority label, and the \emph{fundamental domain} $F$ contains one representative per orbit such that $\mathcal{X}=\cup_{x\in F}Gx$.
@@ -2200,7 +2200,7 @@ The excess symmetry can also enter through specific blocks of an architecture fo
 This means that for every linear permutation-invariant $f$ there is an $f'$ with $f=f'\circ\mathcal{R}$. This caps expressivity, and they propose readouts invariant only to $\operatorname{Aut}(\Gamma)$, the automorphism group of the input graph $\Gamma$, rather than to the full $S_n$, deliberately breaking the symmetry.
 Reducing equivariance is a generic remedy, whether by input-injection (below) or by retyping inputs as in the vector-as-scalars trick of \citet{vadgama2025}.
 
-\paragraph{Generative Ambiguity and Curie's Principle}\label{sec:curie-principle}
+\paragraph{Generative Ambiguity and Curie's Principle}\label{par:curie-principle}
 A sub-instance of functional breaking arises when a symmetric input must produce a less symmetric output.
 This is forbidden for a deterministic equivariant map by \emph{Curie's principle}: if $f$ is $G$-equivariant then $\operatorname{Stab}(x)\subseteq\operatorname{Stab}(f(x))$, since $g\in\operatorname{Stab}(x)\Rightarrow\rho_Y(g)f(x)=f(\rho_X(g)x)=f(x)$.
 Simply put, no equivariant $f$ can map a square to a rectangle.
@@ -2214,13 +2214,13 @@ In a similar diagnostic-oriented approach, \citet{wang2024p4icml} fit a relaxed 
 Third, \citet{lawrence2024} take a generative modelling stance and move from equivariant \emph{functions} to equivariant conditional \emph{distributions}, $\mathbb{P}(Y\mid X{=}gx)=g\cdot\mathbb{P}(Y\mid X{=}x)$: Curie's principle applies at the distribution level, while individual samples may break it, restoring the ability to implement asymmetric solutions.
 
 \paragraph{Pose-Informed Symmetry Breaking, Input-Injection}
-One generic technique to overcome functional SB (already used in \Cref{sec:curie-principle}) is to intentionally inject into the input a feature $v$ carrying a preferred frame, so that a $G$-equivariant backbone becomes equivariant to at most $\operatorname{Stab}(v)=\{g\in G:\rho(g)v=v\}$ (the stabilizer of $v$, \Cref{def:orbit-stabilizer}); it is the equivariant analogue of positional encoding.
+One generic technique to overcome functional SB is to intentionally inject into the input a feature $v$ carrying a preferred frame, so that a $G$-equivariant backbone becomes equivariant to at most $\operatorname{Stab}(v)=\{g\in G:\rho(g)v=v\}$ (\Cref{def:orbit-stabilizer}); it is the equivariant analogue of positional encoding.
 
 \citet{vadgama2025} realize it with the reference-frame token $Z$ mentioned above.
 \citet{lawrence2024} concatenate $x\mapsto x\oplus\tilde g\,v$ with $v$ learnable and $\tilde g$ a pose sampled uniformly over compatible ones.
 Because the function $(x,\tilde g)\mapsto x\oplus\tilde g\,v$ is equivariant, an equivariant model in $x$ can be extended to one in $(x,\tilde g)$.
-They stress the importance of this joint equivariance, proving the identity $R(f)-R(\bar f) = \|f^{\perp}\|_{\mathbb{P}(X,Z)}^{2}$, where $\bar f$ and $f^\perp$ are respectively the equivariant and non-equivariant part of $f$.
-This bound is informative when the true map $f^*$ \emph{is} equivariant---it informs that non joint-equivariance leads to a risk excess.
+They stress the importance of this joint equivariance, proving the identity $R(f)-R(\bar f) = \|f^{\perp}\|_{\mathbb{P}(X,\tilde G)}^{2}$, where $\bar f$ and $f^\perp$ are respectively the equivariant and non-equivariant part of $f$.
+This bound is informative when the true map $f^*$ is equivariant: informing that non joint-equivariance leads to a risk excess.
 \citet{goel2025} turn the mechanism into a subgroup selector (cf.\ \Cref{sec:subgroups}): from a backbone $h_\theta:\mathcal{X}\times V\to\mathcal{Y}$ equivariant to a large group $G$, concatenating $v$ to the input with $\operatorname{Stab}(v)=H$ yields $f_\theta(x)=h_\theta(x,v)$ that is exactly $H$-equivariant provided $h_\theta$ is injective in $v$.
 Here however, the ``pose'' is not interpretable, closer to the random node features of GNNs than to positional encoding.
 

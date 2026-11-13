@@ -209,7 +209,7 @@ def math_text(x, y, parts, size=FS_TXT, anchor="middle", color=INK, gid=None):
 TH = " "  # thin space
 CRIT = {  # exactness criteria of the excerpt, in terms of the epsilon-stabilizer
     "a": [("Stab", "n"), ("0", "sub"), ("(𝑓)" + TH + "=" + TH + "𝐺", "n")],
-    "b": [("{𝜃" + TH + ":" + TH + "(𝜃," + TH + "𝑋)" + TH + "∈" + TH, "n"), ("𝒮", "cal"),
+    "b": [("{𝛼" + TH + ":" + TH + "(𝛼," + TH + "𝑋)" + TH + "∈" + TH, "n"), ("𝒮", "cal"),
           ("(𝑓)}" + TH + "=" + TH + "𝑆" + TH + "⊊" + TH + "𝐺", "n")],
     "c": [("Stab", "n"), ("0", "sub"), ("(𝑓)" + TH + "≠" + TH + "𝐺" + TH + "=" + TH + "Stab", "n"), ("𝜖", "sub"),
           ("(𝑓)", "n")],
@@ -390,10 +390,10 @@ def variant_C():
         # the rug is the set Stab_eps(f), named under its centre
         p.append(math_text(X(0.0), py0 + 4.9, [("𝑆" if k == "b" else "𝐺", "n")], FS_TICK, color=GREEN,
                            gid=f"label-stab-{k}"))
-        p.append(math_text(x1 + 2.2, py0 + 0.8, [("𝜃", "n")], FS_TICK, "start"))
+        p.append(math_text(x1 + 2.2, py0 + 0.8, [("𝛼", "n")], FS_TICK, "start"))
         # b: |f(R_theta X) - f(X)| = f(R_theta X), since p in X gives f(X) = 0 and f >= 0
-        ylab = ([("𝑓(𝑅", "n"), ("𝜃", "sub"), ("𝑋)", "n")] if k == "b"
-                else [("ee(𝑓," + TH + "𝜃)", "n")])
+        ylab = ([("𝑓(𝑅", "n"), ("𝛼", "sub"), ("𝑋)", "n")] if k == "b"
+                else [("ee(𝑓," + TH + "𝛼)", "n")])
         p.append(math_text(x0 + 1.0, py0 - ph - 0.6, ylab, FS_TICK, "start"))
         # curve
         pts = " ".join(f"{f2(X(t))},{f2(Y(ee_profile(k, t)))}" for t in ths[::4])
