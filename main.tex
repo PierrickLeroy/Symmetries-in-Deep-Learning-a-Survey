@@ -231,7 +231,7 @@ At a high level, the taxonomy maps onto the sections as follows: \Cref{sec:desig
     \caption{Loci of symmetry, a refinement of the \emph{Object} axis of the taxonomy (\Cref{tab:taxonomy}).
     Each box is an object on which a symmetry can act, with its defining relation.
     Solid arrows indicate necessity, dashed arrows another type of interaction e.g. a design choice.
-    The figure is not exhaustive: architectural symmetries (\Cref{sec:architectural-sym}) are not shown and the restriction in extent is not specific to $\varphi$ and can be applied for example to the ground truth function as discussed in \Cref{sec:loose-ends}.
+    The figure is not exhaustive: architectural symmetries (\Cref{sec:architectural-sym}) are not shown and the restriction in extent is not specific to $\varphi$ and can be applied for example to the ground truth function as discussed in \Cref{sec:domain-restriction}.
     }
     \label{fig:sym-loci}
 \end{figure}
@@ -1205,13 +1205,15 @@ Its preactivation is thus non-positive as well so its incoming parameters can be
 \paragraph{Data-Dependent PS}
 A \emph{data-dependent} symmetry preserves the function on a subset of the data: $f_{g\cdot\theta}|_S=f_\theta|_S$ for some $S\subset\mathcal{X}$.
 We give an example based on activation patterns.
-For a shallow ReLU network $f_{(U,V)}(x)=U\sigma(Vx)$ with $V\in\mathbb{R}^{h\times n}$ and $U\in\mathbb{R}^{m\times h}$, fix an activation pattern $A\subseteq[h]$ of the hidden layer and let $C_A:=\{z\in\mathbb{R}^h : z_i>0 \text{ for } i\in A\}$.
-Given $S\subseteq\mathcal{X}$ with $Vx\in C_A$ for all $x\in S$, the set
-\begin{equation*}
-    \Omega(S,V):=\big\{M\in GL(|A|,\mathbb{R}) : MV_Ax\in\mathbb{R}^{|A|}_{>0}\ \forall x\in S\big\}
-\end{equation*}
-acts on $(U,V)$ by $(U_A, V_A)\mapsto(U_AM^{-1}, MV_A)$, where $V_A$ (resp.\ $U_A$) selects the rows of $V$ (resp.\ the columns of $U$) indexed by $A$ and the complementary blocks are untouched.
-Note that $\Omega(S,V)$ is not a group but a groupoid (cf.\ \Cref{sec:extent-restriction}).
+\begin{Example}\label{ex:data-PS-GL-activation}
+    For a shallow ReLU network $f_{(U,V)}(x)=U\sigma(Vx)$ with $V\in\mathbb{R}^{h\times n}$ and $U\in\mathbb{R}^{m\times h}$, fix an activation pattern $A\subseteq[h]$ of the hidden layer and let $C_A:=\{z\in\mathbb{R}^h : z_i>0 \text{ for } i\in A\}$.
+    Given $S\subseteq\mathcal{X}$ with $Vx\in C_A$ for all $x\in S$, the set
+    \begin{equation*}
+        \Omega(S,V):=\big\{M\in GL(|A|,\mathbb{R}) : MV_Ax\in\mathbb{R}^{|A|}_{>0}\ \forall x\in S\big\}
+    \end{equation*}
+    acts on $(U,V)$ by $(U_A, V_A)\mapsto(U_AM^{-1}, MV_A)$, where $V_A$ (resp.\ $U_A$) selects the rows of $V$ (resp.\ the columns of $U$) indexed by $A$ and the complementary blocks are untouched.
+    Note that $\Omega(S,V)$ is not a group: it depends on $V$ and collects the transformations admissible at $(U,V)$ in a groupoid.
+\end{Example}
 \citet{zhao2023a} provide another example: a \emph{nonlinear} data-dependent action $G\times(\Theta\times\mathcal{X})\to\Theta\times\mathcal{X}$ in which the transformation of the weights is itself a function of the input $x$: the output is preserved at $x$ only (batch size one), but the action is defined for the whole $GL(h,\mathbb{R})$.
 
 \paragraph{Architectural PS}\label{sec:architectural-sym}
@@ -1338,7 +1340,7 @@ These are architectural symmetries, forming a groupoid (\Cref{sec:extent-restric
 Non-minimality can also induce instance symmetries, applying in particular for symmetric states.
 When two neurons have identical incoming weights, as for permutation symmetric states, a $d_{l+1}$-dimensional additive group acts freely ($d_{l+1}$ the width of the next layer): the paired outgoing weights can be varied arbitrarily as long as their sums stay constant \citep{brea2019}.
 At a rescale-symmetric state ($\theta_v=0$ for a neuron $v$), additive groups of dimensions $d_{l+1}$ and $d_{l-1}$ separately act freely.
-From the second hidden layer of a ReLU MLP on, a unit $v$ whose incoming parameters $\theta^+_v$ are all negative causes non-minimality since it does not contribute to the implemented function.
+From the second hidden layer of a ReLU MLP on, a unit $v$ whose incoming parameters $\theta^+_v$ are all non-positive causes non-minimality since it does not contribute to the implemented function.
 The scaling $D\theta^+_v$ with $D$ a diagonal matrix whose diagonal is strictly positive constitutes a symmetry.
 
 \begin{Remark}[Overparametrization by width and depth]
@@ -2116,7 +2118,7 @@ Quantification (\Cref{sec:sym-quantification}) measured how far a trained $f_\th
 They span several loci (\Cref{fig:sym-loci}), though the \emph{model} locus ($\mathcal{H}$) is the most investigated.
 Symmetry breaking (\Cref{sec:symmetry-breaking-dl}) is mostly \emph{descriptive}, cataloguing failure modes: why and when an expected symmetry is lost.
 The two remaining subsections are more prescriptive and explain how a symmetry weakens.
-They split along the exactness axis one level down: an \emph{extent-restricted} symmetry holds only for a restricted set of transformations (\Cref{sec:extent-restriction}), an \emph{approximate} one holds on all of $G$ up to a tolerance (\Cref{sec:soft-equivariance}).
+They split along the exactness axis one level down: an \emph{extent-restricted} symmetry holds exactly but only for a restricted set of transformations or points (\Cref{sec:extent-restriction}), an \emph{approximate} one holds on all of $G$ up to a tolerance (\Cref{sec:soft-equivariance}).
 
 The two relaxations are contrasted by the \emph{$\epsilon$-stabilizer} of \citet{petrache2023}.
 Let $G$ be a candidate group of transformations and write the equivariance error of a map $f$ under $G$ as:
@@ -2128,7 +2130,9 @@ $$
     \operatorname{Stab}_\epsilon(f)=\{g\in G:\ \operatorname{ee}(f,g)\le\epsilon\}.
 $$
 For a hypothesis class, it becomes $\operatorname{Stab}_\epsilon(\mathcal{H})=\cap_{h\in \mathcal{H}}\operatorname{Stab}_\epsilon(h)$.
-The value on the exactness axis varies depending on an algebraic criterion: the symmetry is \emph{exact} if $\operatorname{Stab}_0(f)=G$, \emph{approximate} if $\operatorname{Stab}_0(f)\neq G=\operatorname{Stab}_\epsilon(f)$ for a small $\epsilon>0$ (\Cref{sec:soft-equivariance}) and \emph{extent-restricted} (subset case) if $\operatorname{Stab}_\epsilon(f)=S\subsetneq G$ (\Cref{sec:extent-restriction}).
+The value on the exactness axis can be read from this criterion: the symmetry is \emph{exact} if $\operatorname{Stab}_0(f)=G$ and \emph{approximate} if $\operatorname{Stab}_0(f)\neq G=\operatorname{Stab}_\epsilon(f)$ for a small $\epsilon>0$ (\Cref{sec:soft-equivariance}).
+Since $\operatorname{ee}$ takes a supremum over $\mathcal X$, $\operatorname{Stab}_0(f)$ cannot express a symmetry holding on part of the domain only, and it is always a subgroup of $G$.
+\emph{Extent-restricted} symmetries are therefore defined on pairs $(g,x)$ in \Cref{sec:extent-restriction}, of which $\operatorname{Stab}_0(f)=H\subsetneq G$ is the subgroup case, whereas $\operatorname{Stab}_\epsilon(f)\subsetneq G$ with $\epsilon>0$ combines restriction and tolerance.
 \Cref{fig:exactness-rotation} illustrates the three cases for rotations of a 2D image.
 
 \begin{figure}[!tbp]
@@ -2284,8 +2288,8 @@ Since symmetries can slow optimization and trap training at low-capacity symmetr
 
 \subsection{Extent restriction: beyond groups}\label{sec:extent-restriction}
 % Add deformation stability [bronstein2021] which is about diffeomorphisms
-An extent-restricted symmetry holds for a set $S$ of transformations that falls short of a proper group $G$.
-To define it more precisely, we will use the following algebraic structure, similar to a group except that inverses are not not required.
+An extent-restricted symmetry holds for a set $S$ of transformations that falls short of a full group $G$.
+To define it more precisely, we will use the following algebraic structure, similar to a group except that inverses are not required.
 \begin{Definition}
     A \emph{monoid} $(M,\cdot)$ is a set $M$ with an associative product and identity $e\in M$.
 \end{Definition}
@@ -2295,14 +2299,14 @@ The transformations that are symmetries are extracted in
 $$
     \mathcal S(f)=\{(m,x)\in M\times\mathcal X:\ f(\rho_X(m)x)=\rho_Y(m)f(x)\}.
 $$
-A \emph{extent-restricted symmetry} is then a subset $\mathcal K\subseteq \mathcal S(f)$ where composition holds:
+An \emph{extent-restricted symmetry} is then a subset $\mathcal K\subseteq \mathcal S(f)$ where composition holds:
 $$
     (m,x), (m',mx)\in \mathcal K \implies (m'm,x)\in \mathcal K.
 $$
-We break down subcases depending on $\mathcal K$ in \Cref{tab:extent-restriction} and start the subsection with the algebraic conditions (rows $2-5$), then the domain restriction (row $6$).
+We break down subcases depending on $\mathcal K$ in \Cref{tab:extent-restriction} and start the subsection with the algebraic conditions (rows~2--5), then the domain restriction (row~6).
 
 \begin{Remark}\label{rem:extent-restr-category}
-    % Category view: (M,X), K, precise objets and arrows we shy away from a full categorical description.
+    In categorical terms, $(M,\mathcal X)$ defines a \emph{category}, with objects $x\in\mathcal X$ and arrows $(m,x)\colon x\to mx$ and $\mathcal K$ too once provided the identities $(e,x)\in\mathcal S(f)$ are added.
 \end{Remark}
 
 \begin{table}[ht]
@@ -2319,7 +2323,7 @@ We break down subcases depending on $\mathcal K$ in \Cref{tab:extent-restriction
         \hline
         Monoid/semigroup & $\mathcal K=N\times \mathcal{X}$ with $N$ monoid/semigroup & downsampling \citep{worrall2019anips} \\
         \hline
-        Non-closed subset & $\exists x, \{ g:(g,x)\in \mathcal K \}$ not closed & partial equivariance of \citep{romero2023}; $\pm 90^\circ$ \\
+        Non-closed subset & $\exists x, \{ m:(m,x)\in \mathcal K \}$ not closed & partial equivariance of \citep{romero2023}; $\pm 90^\circ$ \\
         \hline
         Groupoid & $(m,x)\in \mathcal K \implies (m^{-1},mx)\in \mathcal K$ & overparametrization \citep{sareen2026} \\
         \hline
@@ -2327,7 +2331,7 @@ We break down subcases depending on $\mathcal K$ in \Cref{tab:extent-restriction
         \hline
     \end{tabularx}
     \caption{Extent-restricted symmetries, except the first exact row which also implies $\mathcal S(f)=M\times \mathcal{X}$.
-    As an concrete example, consider 2D rotations.
+    As a concrete example, consider 2D rotations.
     The interval of rotations $I:=[-90^\circ,90^\circ]$ is non-closed since $90^\circ\!\circ\!90^\circ=180^\circ\notin I$, whereas $\{0^\circ,90^\circ,180^\circ,270^\circ\}=C_4$ is a discrete subgroup of all continuous rotations.}
     \label{tab:extent-restriction}
 \end{table}
@@ -2356,11 +2360,11 @@ Finally, the loss landscape can be structured by stabilizers: in a student-teach
 However, these proper subgroups are maximal (for $p\neq q$): they break symmetry but the least possible.
 
 \subsubsection{Partial equivariance: non-closed subsets}\label{sec:non-closed-subsets}
-The non-closed row of \Cref{tab:extent-restriction} keeps the identity and inverses but drops \emph{closure}: $S$ is a non-closed subset of $G$.
+The non-closed row of \Cref{tab:extent-restriction} keeps the identity and inverses but drops \emph{closure} at some point $x$: the set $S=\{m:(m,x)\in\mathcal K\}$ of transformations admissible at $x$ is a non-closed subset of $G$.
 \citet{romero2023} define \emph{partial equivariance} to $S\subseteq G$ as
 $$f(\rho_X(g)\,x)=\rho_Y(g)\,f(x)\qquad \forall g\in S\subsetneq G,\ \forall x\in \mathcal{X},$$
 with $S$ not required to be a subgroup.
-Equivalently, in the formalism of \citet{petrache2023}, this corresponds to $S\subseteq\operatorname{Stab}_0(f)$.
+Equivalently, in the formalism of \citet{petrache2023}, this corresponds to $S\subseteq\operatorname{Stab}_0(f)$, but since $\operatorname{Stab}_0(f)$ is a subgroup \citet{romero2023} note that non-subgroup cases are necessarily also approximate (exactness on a non-closed $S$ would require $S$ to depend on $x$ \Cref{sec:domain-restriction}).
 The distinguishing feature of partial equivariance is non-iterability: because $S$ is not closed, composing admissible transformations may leave $S$.
 This subtlety, noted by \citet{romero2023}, also means partial equivariance cannot be enforced exactly by stacking layers.
 The motivation is that symmetries can be only \emph{ranged}: equivariance to rotations in $[-90^\circ,90^\circ]$ avoids merging the digits $6$ and $9$, or respects a preferred orientation such as a face aligned with the camera \citep{romero2023}.
@@ -2377,7 +2381,7 @@ Augerino, introduced by \citet{benton2020anips}, makes the invariance range a le
 An early example can be found in \citep{goodfellow2009anips} which measured neuron invariance over a bounded transformation range $\Gamma$ rather than a full orbit (e.g.\ $\pm 5$ frames of time translation in video).
 
 \subsubsection{Additional algebraic structures}
-Monoids/semigroup and groupoids relax the remaining axioms.
+Monoids/semigroups and groupoids relax the remaining axioms.
 Semigroups keep associativity and closure but drop inverses, which is exactly the structure of irreversible operations such as blurring, downsampling, or cropping where information is destroyed and cannot be recovered.
 
 \citet{worrall2019anips} build scale equivariance using this structure: a Gaussian scale-space generates coarser scales from finer ones but not conversely.
@@ -2397,6 +2401,17 @@ Arrows defining the compositional structure of $\Theta_{n, n_f}$ reflect duplica
 A simple example: duplicating a row $W^{(l)}_{i,:}$ into a new row $W^{(l)}_{i',:}$ while splitting the outgoing column, $W'^{(l+1)}_{:,i}+W'^{(l+1)}_{:,i'}=W^{(l+1)}_{:,i}$, does not change the function.
 
 Finally, quivers and category theory have been used to reframe and extend geometric deep learning ideas \citep{gavranovic2024}, define message-passing GNNs equivariant to local isomorphisms \citep{dehaan2020} or study isomorphisms of the computational graphs of feedforward architectures \citep{armenta2021a}.
+
+\subsubsection{Domain restriction}\label{sec:domain-restriction}
+The last row of \Cref{tab:extent-restriction} restricts points rather than transformations.
+The instance-level and data-dependent PS (Parameter-space Symmetry) of \Cref{sec:scope-param-space-symmetries} are domain restrictions in parameter space.
+For instance-level PS, $\mathcal X=\Theta$ is restricted to $\Theta_0$.
+For instance, take $\Theta_0=\{\theta:\theta^+_v\le0\}$ \citep{grigsby2023p4icml}: beyond the first hidden layer of a ReLU network, a unit $v$ with non-positive incoming parameters $\theta^+_v$ (weights and bias) never activates. Translations $T$ of its outgoing weights and positive diagonal scalings $\mathcal D_{>0}$ of $\theta^+_v$ preserve $\Theta_0$, so $\mathcal K\supseteq(T\times\mathcal D_{>0})\times\Theta_0$.
+A data-dependent PS acts on $\theta$ but constrains $x$: take the pairs $\Theta\times\mathcal X$ as domain in \Cref{ex:data-PS-GL-activation}, define $F(\theta,x)=f_\theta(x)$ and let $GL(|A|,\mathbb R)$ act by $M\cdot(\theta,x)=(M\cdot\theta,x)$, trivially on $x$ and $\mathcal Y$.
+The domain $\{(\theta,x):\ V_Ax\in\mathbb R^{|A|}_{>0}\}$ gives $\mathcal K\subseteq\mathcal S(F)$, as $\sigma$ is the identity on positive entries.
+
+Label-dependent refinements are domain restrictions of the ground truth: they require $f^*(mx)=f^*(x)$ only for $m\in\mathcal K_x$, where the non-global set of transformations $\mathcal K_x$ can depend on the class of $x$ and its pose relative to a natural pose \citep{urbano2026}, or on the instance itself \citep{wang2023a,miao2023p4icml} (\Cref{fig:sym-loci}).
+Different classes or instances then carry different symmetries: changing the color of a leaf from green to yellow preserves its class, whereas the same change turns a lime into a lemon.
 
 \subsection{Approximate symmetries: tolerance}\label{sec:soft-equivariance}
 % bamler2018p3icml: almost symmetric subspace from weak symmetry breaking by regularizer \psi(Z)
@@ -2482,9 +2497,7 @@ For encoder--decoder models \citet{ali2026} decompose this into three terms---in
 \subsection{Loose Ends and Outlook}\label{sec:loose-ends}
 We gather here some occurrences of symmetry that did not enter the main narrative.
 
-\paragraph{Label-dependence}\label{par:label-dependence}
-Class-specific \citep{urbano2026} or instance-specific, pointwise \citep{wang2023a,miao2023p4icml} refinements require $f^*(g\cdot x)=f^*(x)$ only for $g$ in a subset $S_{f^*(x)}$ or $S_x$ of $G$, a data-dependent extent restriction (\Cref{sec:extent-restriction}, \Cref{fig:sym-loci}).
-Different classes or instances then carry different symmetries: changing the color of a leaf from green to yellow preserves its class, whereas the same change turns a lime into a lemon.
+\paragraph{Beyond disentanglement}
 Disentangled representations \citep{higgins2018}, and the more specific class--pose decompositions \citep{winter2022anips,marchetti2023p2icais} in which the latent space is split into invariant and equivariant parts for a given group, have an information-theoretic extension: an embedding $Z=[Z_Y,Z_\perp]$ with mutual information $I(Z_\perp;Y)=0$, so that $Z_\perp$ parametrizes the transformations under which $Y$ is invariant.
 This goes beyond disentanglement since it accounts for a label-informative distributional SB (\Cref{sec:distributional-sb}) and extends beyond groups to complex transformations \citep{wieser2020anips}.
 
