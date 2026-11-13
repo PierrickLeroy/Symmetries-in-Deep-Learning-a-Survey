@@ -921,7 +921,7 @@ and the trained parameters depend on the data only through their empirical measu
 
 \subsubsection{Joint-embedding architectures}\label{sec:joint-embedding}
 
-Joint-embedding (or Siamese) architectures learn representations by training a network to closely embed two related \emph{views}, rather than by predicting a label or reconstructing the input.
+Joint-embedding (or Siamese) architectures learn representations by training a network to closely embed two related views rather than by predicting a label or reconstructing the input.
 We give here a symmetry-centered reading of the development of this family of self-supervised methods; for a more in-depth account, see \citet{ilina2022sa}.
 In this part, invariance prevails but equivariance-based methods have also been explored~\citep{gupta2023a}.
 
@@ -930,19 +930,19 @@ $$
     L\big(f_{\theta_1}(x_1),\,f_{\theta_2}(x_2)\big)
 $$
 computing a similarity between embeddings is minimized.
-A common way to generate views is through data augmentation: for $x\sim\mathcal{D}$, two transformations $t,t'$ are drawn i.i.d.\ from an augmentation family $\mathcal{T}$ to form the views $x_1=t\cdot x$ and $x_2=t'\cdot x$.
-This setup carries a double (often incomplete) symmetry:
+A common way to generate views is through data augmentation: for $x\sim\mathcal{D}$, two transformations $t_1,t_2$ are drawn i.i.d.\ from an augmentation family $\mathcal{T}$ to form the views $x_1=t_1\cdot x$ and $x_2=t_2\cdot x$.
+This setup carries a double (often inexact) symmetry:
 \begin{enumerate}
-    \item A symmetry of the implemented function (parameter-level in \Cref{fig:sym-loci}).
+    \item A target invariance $f_{\theta_i}(t_1x)=f_{\theta_i}(t_2x)$ of the implemented encoder functions (parameter-level in \Cref{fig:sym-loci}).
     Involving data transformations, it is conceptually close to DA (\Cref{sec:data-augmentation}) and soft penalties (\Cref{sec:soft-equivariance}).
-    In contrast with DA, which is typically a supervised approach focusing on the invariance of the $(x,y)$ mapping, this symmetry is usually implemented online and focuses on the invariance of the representation.
-    This symmetry is the end goal: we want $f_\theta$ to be invariant to $\mathcal{T}$.
-    \item A \emph{branch symmetry}, exact or deliberately broken, in the training protocol.
-    Obtained via weight entangling, it is transparent at inference time and is only a means to train and achieve the former.
-    Much of the design space below is organized by how and where it is broken.
+    In contrast with DA, which is typically a supervised approach focusing on the invariance of the $(x,y)$ mapping, this symmetry focuses on the invariance of the representation.
+    This symmetry is the end goal: ultimately we want $f_\theta$ to be invariant to $\mathcal{T}$.
+    \item A \emph{branch symmetry} in the training protocol: the objective is invariant under swapping the two branches $(\theta_1,t_1)\leftrightarrow(\theta_2,t_2)$.
+    With shared weights $\theta_1=\theta_2$ and a symmetric $L$ this is an exact $C_2$ symmetry, but it is often deliberately broken and much of the design space below is organized by how and where it is broken.
+    It is transparent at inference time and is only a means to train and achieve the above target invariance.
 \end{enumerate}
 
-\emph{Representational collapse} is the failure mode where encoders are constant and methods can be envisioned by how they deviate from exact symmetries toward carefully engineered asymmetry to avoid collapse.
+\noindent \emph{Representational collapse} is the failure mode where encoders are constant and methods can be envisioned by how they deviate from exact symmetries toward carefully engineered asymmetry to avoid collapse.
 
 \paragraph{Avoiding representational collapse}
 \emph{Contrastive methods} keep branch-swap symmetry (shared weights) exactly and instead prevent collapse by adding negative pairs to the objective, balancing agreement between augmented views of the same $x$ against disagreement between different inputs.
@@ -952,7 +952,7 @@ Early metric learning methods proposed a symmetric loss $\ell(x_1,x_2,\theta)$ t
 \begin{equation}
     \ell_{i,j}=-\log\frac{\exp\big(\operatorname{Sim}(z_i,z_j)/\tau\big)}{\sum_{k=1}^{2N} 1_{[k\neq i]}\exp\big(\operatorname{Sim}(z_i,z_k)/\tau\big)},\qquad z_k=g(f(\tilde x_k)),
 \end{equation}
-where $\tilde x_1,\dots,\tilde x_{2N}$ are the two views $t\cdot x$, $t'\cdot x$ of each of the $N$ inputs of a batch, $(i,j)$ indexes the two views of the same input, $\operatorname{Sim}$ is a similarity function and $\tau$ a temperature; the full loss averages $\ell_{i,j}$ over all positive pairs.
+where $\tilde x_1,\dots,\tilde x_{2N}$ are the paired views of each of the $N$ inputs of a batch, $(i,j)$ indexes the two views of the same input, $\operatorname{Sim}$ is a similarity function and $\tau$ a temperature; the full loss averages $\ell_{i,j}$ over all positive pairs.
 An ablation shows that the representation $f(x)$ before the projector is better than $g(f(x))$ after it: $g$ is trained to be augmentation-invariant and this is achieved by discarding useful representational information, confirmed empirically by the authors who measured how much augmentation-related information (\textit{e.g.}\ colour) is decodable at each stage.
 \citet{he2020} (MoCo) relax branch-swap symmetry itself: the second branch (the ``momentum encoder'') tracks the first through an Exponential Moving Average (EMA) of its weights, $\xi\leftarrow m\,\xi+(1-m)\,\theta$, rather than sharing its weights outright. The non-contrastive methods below push further this decoupling of the branches.
 
