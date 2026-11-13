@@ -551,8 +551,7 @@ Finally, \emph{framework symmetries} (\ref{sec:framework-symmetries}) differ on 
 % dehmamy2021anips: achieve equivariance through Lie algebra
 % figure: draft/orbit-stability.png to reproduce or illustrate conceptually (equivariant models guarantee results don't change over an orbit)
 % Graphs, huang2023: distinguishes active and passive graph symmetries in constrat to CNNs
-\emph{Geometric Deep Learning} (GDL) \citep{bronstein2017ispm,bronstein2021} starts with a domain $\Omega$ and signals $x\in\mathcal{X}(\Omega,\mathbb{R}^C)$.
-A group $G$ acting on $\Omega$ by $u\mapsto g\cdot u$ acts on signals by $(g\cdot x)(u)=x(g^{-1}\cdot u)$.
+\emph{Geometric Deep Learning} (GDL) \citep{bronstein2017ispm,bronstein2021} starts with a domain $\Omega$ and signals $x\in\mathcal{X}(\Omega,\mathbb{R}^C)$. A group $G$ acting on $\Omega$ by $u\mapsto g\cdot u$ acts on signals by $(g\cdot x)(u)=x(g^{-1}\cdot u)$.
 The structure of $\Omega$, in particular its symmetries, is analyzed following the legacy of Klein's Erlangen Program.
 A central idea is that an appropriate inductive bias for a learning problem comes from respecting the symmetries of $\Omega$.
 Symmetries, together with a scale-separation principle, are GDL's answer to the curse of dimensionality.
@@ -597,7 +596,7 @@ Other approaches include \emph{invariant-feature construction} from distances or
 \paragraph{Euclidean symmetries}
 Euclidean symmetries are important symmetries of the physical world, consisting of translations and rotations (with or without reflections).
 Mathematically, they form the Euclidean group $E(3)$ and its subgroup $SE(3)$ of rigid motions (\Cref{ex:groups}).
-Tools to treat these symmetries include irreducible representations, Fourier analysis, tensor products and spherical harmonics.
+Tools to treat these symmetries include irreducible representations, Fourier analysis, and spherical harmonics (functions on $S^2$ that generalize the Fourier basis on $S^1$).
 We proceed from coarse to fine rotations, in 2D then 3D.
 
 In 2D, seminal $G$-CNNs \citep{cohen2016} already treat $90^\circ$ rotations and reflections.
@@ -618,7 +617,7 @@ The e3nn library \citep{geiger2022} implements these ideas.
 When data is unstructured (sets), spatially unorganized (point clouds), or defined on a graph, models must be invariant or equivariant to the order of input elements.
 We start with sets and point clouds since they have weaker structure.
 Stacking $n$ elements as the rows of $X\in\mathbb{R}^{n\times d}$, $\sigma\in S_n$ acts by $X\mapsto P_\sigma X$, with $P_\sigma$ the permutation matrix: set-level predictions must be invariant, $f(P_\sigma X)=f(X)$, and per-element ones equivariant, $f(P_\sigma X)=P_\sigma f(X)$.
-\citet{zaheer2018} introduced \emph{Deep Sets}, proving that invariant functions on a countable domain decompose as $f(X)=\psi\big(\sum_{i=1}^{n}\phi(x_i)\big)$ and characterizing equivariant linear layers (\Cref{ex:representations-recap}).
+\citet{zaheer2018} introduced \emph{Deep Sets}, proving that invariant functions on a countable domain decompose as $f(X)=\psi\big(\sum_{x\in X}\phi(x)\big)$ and characterizing equivariant linear layers (\Cref{ex:representations-recap}).
 The \emph{Set Transformer} \citep{lee2019p3icml} models element interactions with self-attention (equivariant without positional encodings) followed by invariant attention-based pooling.
 \citet{wang2025} make a more abstract use of $S_n$-equivariance in multi-view 3D reconstruction, where treating views as a set removes the bias of an arbitrary reference view.
 PointNet \citep{qi2017a} pioneered deep learning directly on raw point clouds though only permutation-invariance is built-in: translation and approximate rotation invariance come from normalization and learned canonicalization plus data augmentation respectively. 
@@ -707,10 +706,10 @@ We report three answers from finest to coarsest: \emph{representation theorems} 
 
 \paragraph{Representation theorems and the particular role of the convolution}
 Representation theorems give an explicit form that every equivariant map must take; we give two examples.
-For linear maps, they lead to ``convolution is all you need'' statements.
+First, for linear maps, they lead to ``convolution is all you need'' statements.
 \citet{kondor2018p3icml} prove that, for a compact group $G$, linear equivariant maps between feature spaces over homogeneous spaces of $G$ are exactly generalized convolutions: convolution is not only sufficient for equivariance but also necessary.
 \citet{weiler2018anips} prove the analogous statement for $SE(3)$ and feature fields over $\mathbb{R}^3$, and \citet{cohen2019anips} extend it to general homogeneous spaces from a fiber bundle perspective.
-On sets, \citet{zaheer2018} show that every permutation-invariant function on a countable domain decomposes as $f(X)=\psi\big(\sum_{x\in X}\phi(x)\big)$.
+Second, on sets \citet{zaheer2018} show that every permutation-invariant function on a countable domain decomposes as $f(X)=\psi\big(\sum_{x\in X}\phi(x)\big)$.
 
 Such characterizations guide the design of $\mathcal{H}$: \textit{e.g.}\ approximating $\phi$ and $\psi$ by MLPs makes Deep Sets a universal approximator, a notion we now address.
 
@@ -723,7 +722,7 @@ For continuous groups, \citet{yarotsky2018r} covers invariant maps under compact
 
 \paragraph{Separation power}
 Universality for invariant functions implies that $\mathcal{H}$ separates every pair of orbits that continuous invariant functions separate, hence separation power is the weaker notion.
-GNNs have been extensively studied from this angle through the \emph{WL hierarchy} of Weisfeiler--Lehman graph isomorphism tests, which ranks GNN architectures by their ability to distinguish non-isomorphic graphs.
+GNNs have been extensively studied from this angle through the \emph{WL hierarchy} of Weisfeiler--Lehman graph isomorphism tests, which measures the ability of architectures to distinguish non-isomorphic graphs.
 \citet{xu2019,morris2019pacai} showed that message passing GNNs (MPNNs) are at most as powerful as $1$-WL, i.e.\ they cannot tell apart two graphs, or two nodes, that $1$-WL cannot.
 Research then sought to surpass this barrier by adding subgraph counts as structural features \citep{bouritsas2021}, going to higher orders \citep{morris2019pacai,maron2020}, or lifting graphs to cell complexes \citep{bodnar2021a}.
 \citet{maron2020} showed that $k$-th order invariant networks are at least as powerful as $k$-WL, and \citet{bodnar2021a} that cell complex networks are strictly more powerful than $1$-WL, a motivation for TDL (\Cref{sec:edl-permutation}).
@@ -898,7 +897,7 @@ Since $\sigma$ affects the per-batch normalization statistics, $\mathcal{L}_\sig
 \end{Remark}
 
 \paragraph{Exchangeability: invariance in law}\label{par:exchangeability}
-The pointwise invariance lost by SGD can be restored \emph{in distribution} when the data themselves carry a probabilistic symmetry.
+The invariance lost by SGD can be restored in distribution when the data themselves carry a probabilistic symmetry.
 A sequence $\boldsymbol{X}_n=(X_1,\dots,X_n)$ is \emph{exchangeable} (a generalization of the i.i.d.\ assumption) if $\sigma\boldsymbol{X}_n \overset{d}{=} \boldsymbol{X}_n$ for every $\sigma\in S_n$.
 \citet{bloem-reddy2020} relate this concept to distributional invariance through the \emph{empirical measure} $\mathbb{M}_{\boldsymbol{X}_n}(\cdot):=\sum_{i=1}^{n}\delta_{X_i}(\cdot)$, which represents the data but forgets its ordering.
 They show that a conditional distribution is permutation-invariant, $(Y \mid \boldsymbol{X}_n)\overset{d}{=}(Y \mid \sigma\boldsymbol{X}_n)$, precisely when $Y$ factors through the empirical measure, $(\boldsymbol{X}_n, Y)\overset{a.s.}{=}\big(\boldsymbol{X}_n,\, f(\eta, \mathbb{M}_{\boldsymbol{X}_n})\big)$ for some measurable $f$ and independent noise $\eta$.
@@ -908,8 +907,8 @@ $$
 $$
 even though each realization of $\mathcal{A}$ is not $S_n$-invariant.
 
-\begin{Remark}[Example of non-exchangeable data]
-    Not all tasks can be modeled with exchangeable data.
+\begin{Remark}[Examples of non-exchangeable data]
+    Not all scenarios can be modeled with exchangeable data.
     In \emph{curriculum learning} \citep{bengio2009p2aicml}, examples are deliberately ordered, often from easy to hard or progress from primitive to compositional tasks \citep{lee2024}.
     This can be framed either as a single sorted dataset ($E=1$) or as a progression over per-epoch datasets ($\mathcal{D}_e\neq \mathcal{D}_{e'}$ for $e\neq e' \in [E]$).
     Ordering biases can also be more fortuitous: data stored in database systems can be clustered by attribute producing a non-exchangeable stream \citep{xu2024vj}.
