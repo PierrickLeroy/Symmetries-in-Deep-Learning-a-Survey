@@ -270,19 +270,19 @@ The two notions can be related as follows: given a list of invariants of interes
 In a deep learning context, the input space $\mathcal{X}$ can be a vector space $\mathbb{R}^d$, a set of structured objects (images, graphs, point clouds), a function, a parameter etc; while $\mathcal{Y}$ can be a boolean in $\{0,1\}$ (binary classification), a label $\{1,\dots,C\}$ (multiclass classification), a scalar (regression), another vector space $\mathbb{R}^e$ (feature representation) etc.
 
 \begin{Example}[Image segmentation]\label{ex:image-segmentation}
-    If $\mathcal{X}$ is an image, $x\in \mathcal{X}$ a pixel slot and $\mathcal{Y} = \{1,\dots,C\}$ are segmentation labels, then the sets defined by the equivalence relation are the pixels that belong to the same segmentation class.
+    If $\mathcal{X}$ is the set of \emph{pixel slots} of an image, $\mathcal{Y} = \{1,\dots,C\}$ the segmentation labels and $\phi$ the map assigning a label to each pixel, then the equivalence classes of $\sim_\phi$ are the sets of pixels that belong to the same segmentation class.
 \end{Example}
 
 \begin{Example}[Image classification]\label{ex:image-classification}
-    If $\mathcal{X}$ is a \emph{set of images}, $x\in \mathcal{X}$ is an image, $\mathcal{Y} = \{1,\dots,C\}$ are the labels, then the sets defined by the equivalence relation are images of the same class.
+    If $\mathcal{X}$ is a \emph{set of images}, $\mathcal{Y} = \{1,\dots,C\}$ the class labels and $\phi$ the map assigning a label to each image, then the equivalence classes of $\sim_\phi$ are the sets of images of the same class.
 \end{Example}
 
 \begin{Example}[Loss level sets]
-    If $\mathcal{X}$ is a parameter space, $\mathcal{Y} = \mathbb{R}$ and $\phi$ is a loss function, then the sets defined by the equivalence relation are the level sets of the loss function.
+    If $\mathcal{X}=\Theta$ is a parameter space, $\mathcal{Y} = \mathbb{R}$ and $\phi=\mathcal{L}$ a loss function, then the equivalence classes of $\sim_{\mathcal{L}}$ are the level sets of the loss function.
 \end{Example}
 
 \begin{Example}[Observationally equivalent parameters]\label{ex:equivalence_observational}
-    If $\mathcal{X}=\Theta$ is a parameter space, $\mathcal{Y}=\mathcal{F}$ a function space and $\phi=\varphi:\theta\mapsto f_\theta$ the implementation map sending parameters to the function the network computes (\Cref{eq:implementation-map}), then the sets given by the equivalence relation $\sim_\varphi$ are the observationally equivalent parameters (see \Cref{sec:parameter-space-symmetries}).
+    If $\mathcal{X}=\Theta$ is a parameter space, $\mathcal{Y}=\mathcal{F}$ a function space and $\phi=\varphi:\theta\mapsto f_\theta$ the implementation map sending parameters to the function the network computes (\Cref{eq:implementation-map}), then the equivalence classes of $\sim_\varphi$ are the sets of observationally equivalent parameters (see \Cref{sec:parameter-space-symmetries}).
 \end{Example}
 
 \begin{Definition}[Invariance]\label{def:invariance}
@@ -310,11 +310,12 @@ $G$ can act similarly on the two sets, as it can be the case for 3D physical dat
 Similarly for image segmentation, translation of the domain (input) must induce the same translation of segmentation map (output).
 
 However, equivariance does not require that the group $G$ acts in the same way on input and output \citep{cohen2016a,bogatskiy2020p3icml}: a single abstract element $g\in G$ may take one form on $\mathcal{X}$ and a different form on $\mathcal{Y}$.
-For explicit distinction, two maps (\emph{actions}, see \Cref{def:group-action}) are attached to $G$:
+For explicit distinction, two maps (\emph{actions}, see \Cref{def:group-action}):
 \[
-    \rho_X : G \to \operatorname{Sym}(\mathcal{X}), \qquad \rho_Y : G \to \operatorname{Sym}(\mathcal{Y}),
+    \rho_X : G \to \operatorname{Sym}(\mathcal{X}), \qquad \rho_Y : G \to \operatorname{Sym}(\mathcal{Y})
 \]
-where $\operatorname{Sym}(\mathcal{S})$ denotes the group of bijections of a set $\mathcal{S}$.
+are introduced to keep track on the form $g$ takes on each space.
+Here $\operatorname{Sym}(\mathcal{S})$ denotes the group of bijections of a set $\mathcal{S}$.
 The only requirement is that each form respects the group structure, i.e.\ that $\rho_X$ and $\rho_Y$ are group homomorphisms:
 \begin{equation}\label{eq:representation-homomorphism}
     \rho_X(gh)=\rho_X(g)\circ\rho_X(h), \qquad \rho_Y(gh)=\rho_Y(g)\circ\rho_Y(h) \qquad \forall g, h \in G.
@@ -338,9 +339,8 @@ The elements $g$ satisfying \Cref{eq:general-equivariance} form the \emph{symmet
 
 From \Cref{eq:general-equivariance}, we see that invariance is the special case of equivariance with $\rho_Y(g)=\operatorname{id}_Y$ and $\rho_Y$ has no effect.
 
-Throughout the text, we write $g\cdot x$ whenever the action is unambiguous, for example when $G$ acts in the same way on $\mathcal{X}$ and $\mathcal{Y}$, and revert to the explicit $\rho_X(g)$, $\rho_Y(g)$ whenever the two actions must be distinguished.
+Throughout the text, we write $g\cdot x$ or the shorter $gx$ whenever the action is unambiguous, for example when $G$ acts in the same way on $\mathcal{X}$ and $\mathcal{Y}$, and revert to the explicit $\rho_X(g)$, $\rho_Y(g)$ when the two actions must be distinguished explicitly.
 Following usage, our use of the term ``symmetry'' will be general and refer to symmetry, invariance or equivariance.
-The triple $(G,\rho_X,\rho_Y)$ is the object that symmetry-discovery methods set out to recover (\Cref{sec:sym-disc-from-data}).
 
 \subsection{Groups}\label{sec:groups}
 
