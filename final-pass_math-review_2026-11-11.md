@@ -52,7 +52,7 @@ Suggested: *"A branch symmetry: the objective is invariant under swapping the tw
 
 ✔**A11. Data-dependent subset: $S$ in the text, $X'$ in Fig. 4** ([L1138](main.tex#L1138), L1207). In §6, $S$ also denotes a subset of $G$. Suggest $\mathcal{X}'$ in both the text and the figure.
 
-▢**A12. False-class remark and churn** ([L1189](main.tex#L1189)). Churn compares predicted labels. The link to false classes only holds on misclassified points, where the prediction is a false class set by unconstrained logits. Either say so or drop the churn mention.
+✔**A12. False-class remark and churn** ([L1189](main.tex#L1189)). Churn compares predicted labels. The link to false classes only holds on misclassified points, where the prediction is a false class set by unconstrained logits. Either say so or drop the churn mention.
 
 ▢**A13. Table 4, lightning self-attention row** ([L1369](main.tex#L1369)). The text ([L1311](main.tex#L1311)) classifies $(A,V)\mapsto(\lambda A,\lambda^{-1}V)$ as *Rescale*, but the table puts it under *Scale*. Also, the $GL(d_k)$ symmetry acts *within* a layer on $K^\top Q$ (with an extra between-layer $GL$ in deep networks), while the table says "between-layer" only.
 
