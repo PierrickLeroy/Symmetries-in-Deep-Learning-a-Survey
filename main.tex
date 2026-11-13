@@ -1365,7 +1365,7 @@ The scaling $D\theta^+_v$ with $D$ a diagonal matrix whose diagonal is strictly 
         \hline
         Self-attention &  & \citep{zhang2025p4icml} &  &  &  & \citep{zhang2025p4icml,kobayashi2024anips,ziyin2024a,ziyin2025} (double rotation) & \citep{kobayashi2024anips} &  &  &  \\
         \hline
-        Lightning self-attention &  &  &  & \citep{henry2025} (within-layer) &  &  & \citep{henry2025} (between-layer) &  &  &  \\
+        Lightning self-attention &  & \citep{henry2025} (within-layer) &  &  &  &  & \citep{henry2025} (between- and within-layer) &  &  &  \\
         \hline
         LoRA &  &  &  &  &  &  & \citep{yen2025iclr} &  &  &  \\
         \hline
@@ -2245,8 +2245,8 @@ A \emph{symmetry-bias} metric compares $p_X$ to its symmetrization $\bar p_X(x)=
 The metric is defined as:
 $$m(p_X):=\operatorname{Acc}_{\mathrm{NN}}(p_X, \bar p_X)=\mathbb{E}_{x\sim \operatorname{Unif}(p_X, \bar p_X)}\big[\operatorname{Acc}(\mathrm{NN}(x))\big],$$
 where $\mathrm{NN}$ is a neural network.
-A second \emph{task-useful} metric then asks whether the bias is label-informative, as a ratio $L_G/L$ comparing a network that predicts the label from a random-but-equivariant canonical pose against a baseline.
-Given a pose map $c:\mathcal{X}\to G$, with $c(x)^{-1}x$ the corresponding canonical form, the losses are defined as $L=\mathbb{E}_x\big[\mathbb{I}(\mathrm{NN}(c(x))=f^*(x))\big]$ and $L_G=\mathbb{E}_x\big[\mathbb{I}(\mathrm{NN}(c(gx))=gf^*(x))\big]$. Here $\mathrm{NN}:G\to\mathcal{Y}$ is another model, trained to predict the label from the pose.
+A second \emph{task-useful} metric then asks whether the bias is label-informative, as a ratio $\mathcal{L}_G/\mathcal{L}$ comparing a network that predicts the label from a random-but-equivariant canonical pose against a baseline.
+Given a pose map $c:\mathcal{X}\to G$, with $c(x)^{-1}x$ the corresponding canonical form, the losses are defined as $\mathcal{L}=\mathbb{E}_x\big[\mathbb{I}(\mathrm{NN}(c(x))=f^*(x))\big]$ and $\mathcal{L}_G=\mathbb{E}_{x,g}\big[\mathbb{I}(\mathrm{NN}(c(gx))=gf^*(x))\big]$. Here $\mathrm{NN}:G\to\mathcal{Y}$ is another model, trained to predict the label from the pose.
 They report that standard benchmarks (QM9, ModelNet40) are notably symmetry-biased.
 \citet{urbano2026} instead estimate the orbit density directly with a class--pose IE (invariant--equivariant) autoencoder \citep{winter2022anips}.
 
@@ -2267,8 +2267,7 @@ We now focus on parameter space $\Theta$ along training, for which the term ``sp
 
 \paragraph{Spontaneous SB}
 Gradient Flow (GF) overstates how much symmetry survives training.
-\citet{kunin2020} derive a \emph{modified} gradient flow accounting for finite learning rate, momentum and weight decay, under which the conservation laws implied by parameter-space symmetries are broken.
-A simple example: a quantity conserved under GF instead decays as $\langle\theta(t),\boldsymbol{1}_{\mathcal{A}}\rangle=e^{-\lambda t}\langle\theta(0),\boldsymbol{1}_{\mathcal{A}}\rangle$, where $\lambda$ is the weight decay.
+The modified gradient flow accounting for finite learning rate, momentum and weight decay of \citet{kunin2020} breaks the conservation laws implied by parameter-space symmetries (\Cref{sec:conservation-laws}).
 \citet{tanaka2021} show, through a Lagrangian formulation with the loss as potential energy $V$ and the learning rule as kinetic energy $T$, that a symmetry of the loss need not be a symmetry of the \emph{dynamics}.
 This can be seen from the Lagrangian $\mathfrak L = T-V$ where $T=\frac{1}{2} m \dot q^2$ is the kinetic energy and $V$ the potential energy. Parameter-space symmetries leave $V$ invariant by definition, however $T$ is not necessarily invariant.
 They give the example of a scaling transformation where $\dot q^2$ transforms as $(1+s)\dot q^2$, thus the kinetic part is responsible for breaking the symmetry of $\mathfrak L$, and alteration of the trajectory.
@@ -2357,8 +2356,7 @@ To learn disentangled representation, several methods have been proposed.
 \citet{pfau2020anips} (GEOMANCER) geometrically factorize the global manifold into disentangled submanifolds: $M=M_1\times M_2$, guaranteed whenever there exists a subspace of the tangent space left invariant by the holonomy group of $M$, the group of linear maps of a tangent space obtained by parallel transport around closed loops (under conditions on $M$).
 \citet{shakerinava2022anips} formulate a disentangling loss, using a subgroup objective $\mathcal{L}=\sum_{i=1}^{m} \big[\mathcal{L}_{G_i}^{\mathrm{equiv}} + \sum_{j\neq i} \mathcal{L}_{G_j}^{\mathrm{inv}}\big]$; however it requires samples where subgroups act in isolation, i.e.\ datasets $\mathcal{D}_i$ where only $G_i$ acts as $\tau (e, \dots, e, g_i, e, \dots, e)$.
 
-Finally, the loss landscape can be structured by stabilizers: in a student-teacher framework composed of two-layer ReLU networks with fixed output weights, \citet{arjevani2023} find that when the teacher has stabilizer isomorphic to $S_d$, spurious local minima have smaller stabilizers $S_p\times S_q$ with $p+q=d$.
-However, these proper subgroups are maximal (for $p\neq q$): they break symmetry but the least possible.
+Finally, the loss landscape can be structured by stabilizers, as in the principle of least SB of \citet{arjevani2023} (\Cref{sec:dynamical-sb}).
 
 \subsubsection{Partial equivariance: non-closed subsets}\label{sec:non-closed-subsets}
 The non-closed row of \Cref{tab:extent-restriction} keeps the identity and inverses but drops \emph{closure} at some point $x$: the set $S=\{m:(m,x)\in\mathcal K\}$ of transformations admissible at $x$ is a non-closed subset of $G$.
