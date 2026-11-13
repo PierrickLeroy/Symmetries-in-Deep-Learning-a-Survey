@@ -270,7 +270,8 @@ The two notions can be related as follows: given a list of invariants of interes
 In a deep learning context, the input space $\mathcal{X}$ can be a vector space $\mathbb{R}^d$, a set of structured objects (images, graphs, point clouds), a function, a parameter etc; while $\mathcal{Y}$ can be a boolean in $\{0,1\}$ (binary classification), a label $\{1,\dots,C\}$ (multiclass classification), a scalar (regression), another vector space $\mathbb{R}^e$ (feature representation) etc.
 
 \begin{Example}[Image segmentation]\label{ex:image-segmentation}
-    If $\mathcal{X}$ is the set of \emph{pixel slots} of an image, $\mathcal{Y} = \{1,\dots,C\}$ the segmentation labels and $\phi$ the map assigning a label to each pixel, then the equivalence classes of $\sim_\phi$ are the sets of pixels that belong to the same segmentation class.
+    If $\mathcal{X}=\mathbb{R}^{H\times W\times 3}$ is the set of RGB images, $\mathcal{Y}=\{1,\dots,C\}^{H\times W}$ the segmentation maps assigning a class to each pixel and $\phi$ the map assigning its segmentation map to each image, then the equivalence classes of $\sim_\phi$ are the sets of images with the same segmentation map.
+    If instead $\mathcal{X}=H\times W$ is the set of pixel slots, $\mathcal{Y} = \{1,\dots,C\}$ and $\phi$ labels each pixel, then the equivalence classes of $\sim_\phi$ are the segments.
 \end{Example}
 
 \begin{Example}[Image classification]\label{ex:image-classification}
@@ -285,6 +286,9 @@ In a deep learning context, the input space $\mathcal{X}$ can be a vector space 
     If $\mathcal{X}=\Theta$ is a parameter space, $\mathcal{Y}=\mathcal{F}$ a function space and $\phi=\varphi:\theta\mapsto f_\theta$ the implementation map sending parameters to the function the network computes (\Cref{eq:implementation-map}), then the equivalence classes of $\sim_\varphi$ are the sets of observationally equivalent parameters (see \Cref{sec:parameter-space-symmetries}).
 \end{Example}
 
+In the following, we use the concepts of group and group action loosely; they are made precise in \Cref{def:group} and \Cref{def:group-action}.
+Here it suffices to understand $g\in G$ as an operation moving a point $x\in\mathcal{X}$ to another point $g\cdot x\in\mathcal{X}$.
+
 \begin{Definition}[Invariance]\label{def:invariance}
     Let $G$ be a group acting on a set $\mathcal{X}$.
     A function $\phi : \mathcal{X} \to \mathcal{Y}$ is $G$-invariant if $g\cdot x$ is $\phi$-equivalent to $x$ for all $g\in G$.
@@ -294,7 +298,9 @@ In a deep learning context, the input space $\mathcal{X}$ can be a vector space 
     \]
 \end{Definition}
 
-In \Cref{ex:image-classification,ex:image-segmentation}, $G$ acts on images and could contain translations, rotations or reflections while in \Cref{ex:equivalence_observational}, $G$ acts on parameters and contains transformations that leave the implemented function unchanged such as within-layer neuron permutations for MLPs.
+In \Cref{ex:image-classification}, $G$ acts on images and could contain translations, rotations or reflections, which leave the class unchanged, while in \Cref{ex:equivalence_observational}, $G$ acts on parameters and contains transformations that leave the implemented function unchanged such as within-layer neuron permutations for MLPs.
+In \Cref{ex:image-segmentation}, by contrast, translating the image does not leave the segmentation unchanged in general.
+The output is however not arbitrary: it is translated accordingly, which is captured by the notion of equivariance.
 
 \begin{Definition}[Equivariance]\label{def:equivariance}
     Let $G$ be a group acting on sets $\mathcal{X}$ and $\mathcal{Y}$. 
@@ -305,10 +311,7 @@ In \Cref{ex:image-classification,ex:image-segmentation}, $G$ acts on images and 
     for all $g \in G$ and $x \in \mathcal{X}$.
 \end{Definition}
 
-In equivariance, the group $G$ acts both on the input and output.
-$G$ can act similarly on the two sets, as it can be the case for 3D physical data \citep{geiger2022,bogatskiy2020p3icml}: when studying forces acting on a molecule one might want to encode in $G$ the fact that when rotating the molecules, a similar rotation must be applied to the forces.
-Similarly for image segmentation, translation of the domain (input) must induce the same translation of segmentation map (output).
-
+Now, $G$ acts on both input and output, possibly in the same way: translating an image translates its segmentation map, and rotating a molecule rotates the forces acting on it \citep{geiger2022,bogatskiy2020p3icml}.
 However, equivariance does not require that the group $G$ acts in the same way on input and output \citep{cohen2016a,bogatskiy2020p3icml}: a single abstract element $g\in G$ may take one form on $\mathcal{X}$ and a different form on $\mathcal{Y}$.
 For explicit distinction, two maps (\emph{actions}, see \Cref{def:group-action}):
 \[
@@ -324,6 +327,7 @@ The equivariance condition of \Cref{def:equivariance} then reads (omitting paren
 \begin{equation}\label{eq:general-equivariance}
     f\big(\rho_X(g)\,x\big)=\rho_Y(g)\,f(x) \qquad \forall g\in G,\ x\in\mathcal{X}.
 \end{equation}
+Invariance is the special case $\rho_Y(g)=\operatorname{id}_Y$ for all $g\in G$.
 The elements $g$ satisfying \Cref{eq:general-equivariance} form the \emph{symmetry group} $\operatorname{Sym}(f)=\{g\in G: f\circ\rho_X(g)=\rho_Y(g)\circ f\}$ of $f$, a subgroup of $G$ (\Cref{sec:groups}), and $f$ is equivariant if and only if $\operatorname{Sym}(f)=G$.
 
 \begin{Example}[One rotation, several forms]
@@ -337,10 +341,8 @@ The elements $g$ satisfying \Cref{eq:general-equivariance} form the \emph{symmet
     In each case $\rho_Y(r)^4=\operatorname{id}_Y$, so $\rho_Y$ satisfies \Cref{eq:representation-homomorphism}, but the image $\rho_Y(G)$ is $C_4$, $C_2$ and trivial, respectively.
 \end{Example}
 
-From \Cref{eq:general-equivariance}, we see that invariance is the special case of equivariance with $\rho_Y(g)=\operatorname{id}_Y$ and $\rho_Y$ has no effect.
-
 Throughout the text, we write $g\cdot x$ or the shorter $gx$ whenever the action is unambiguous, for example when $G$ acts in the same way on $\mathcal{X}$ and $\mathcal{Y}$, and revert to the explicit $\rho_X(g)$, $\rho_Y(g)$ when the two actions must be distinguished explicitly.
-Following usage, our use of the term ``symmetry'' will be general and refer to symmetry, invariance or equivariance.
+Following usage, and contrary to the definition given at the beginning of this section, our use of the term ``symmetry'' will be general and refer to symmetry, invariance or equivariance.
 
 \subsection{Groups}\label{sec:groups}
 
