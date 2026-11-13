@@ -2284,29 +2284,51 @@ Since symmetries can slow optimization and trap training at low-capacity symmetr
 
 \subsection{Extent restriction: beyond groups}\label{sec:extent-restriction}
 % Add deformation stability [bronstein2021] which is about diffeomorphisms
-An extent-restricted symmetry holds for a set $S$ of transformations that falls short of a ``full'' group $G$.
-The four cases we consider \emph{extent-restriction} are listed in \Cref{tab:extent-restriction}.
-Accordingly, we organize this section based on the algebraic structure of $S$ i.e.\ by which group properties (axioms or operation) $S$ retains.
-The $\pm 90^\circ$ case makes the boundary between the first two rows of \Cref{tab:extent-restriction} (\Cref{sec:subgroups,sec:non-closed-subsets}): as an interval of rotations, $S=[-90^\circ,90^\circ]$ is non-closed since $90^\circ\!\circ\!90^\circ=180^\circ\notin S$, whereas $\{0^\circ,90^\circ,180^\circ,270^\circ\}=C_4$ is a subgroup.
+An extent-restricted symmetry holds for a set $S$ of transformations that falls short of a proper group $G$.
+To define it more precisely, we will use the following algebraic structure, similar to a group except that inverses are not not required.
+\begin{Definition}
+    A \emph{monoid} $(M,\cdot)$ is a set $M$ with an associative product and identity $e\in M$.
+\end{Definition}
+Let $f:\mathcal X\to\mathcal Y$ and $M$ be a monoid acting on $\mathcal{X}$ and $\mathcal{Y}$.
+The pair $(M,\mathcal{X})$ defines the transformations that we consider.
+The transformations that are symmetries are extracted in
+$$
+    \mathcal S(f)=\{(m,x)\in M\times\mathcal X:\ f(\rho_X(m)x)=\rho_Y(m)f(x)\}.
+$$
+A \emph{extent-restricted symmetry} is then a subset $\mathcal K\subseteq \mathcal S(f)$ where composition holds:
+$$
+    (m,x), (m',mx)\in \mathcal K \implies (m'm,x)\in \mathcal K.
+$$
+We break down subcases depending on $\mathcal K$ in \Cref{tab:extent-restriction} and start the subsection with the algebraic conditions (rows $2-5$), then the domain restriction (row $6$).
+
+\begin{Remark}\label{rem:extent-restr-category}
+    % Category view: (M,X), K, precise objets and arrows we shy away from a full categorical description.
+\end{Remark}
 
 \begin{table}[ht]
     \centering
     \small
     \setlength{\tabcolsep}{4pt}
-    \begin{tabularx}{\textwidth}{|l|c|c|c|c|>{\RaggedRight\arraybackslash}X|}
+    \begin{tabularx}{\textwidth}{|l|>{\RaggedRight\arraybackslash}X|>{\RaggedRight\arraybackslash}X|}
         \hline
-        \textbf{Structure of $S$} & \textbf{Binary $*$} & \textbf{Closure} & \textbf{Identity} & \textbf{Inverses} & \textbf{Example / refs} \\
+        \textbf{Case} & \textbf{Condition on $\mathcal K$} & \textbf{Example / refs} \\
         \hline
-        Subgroup $S \le G$ & \checkmark & \checkmark & \checkmark & \checkmark & restricted equivariance \citep{goel2025} (mechanism), \citep{weiler2019anips} (choose $G$) \\
+        Exact & $\mathcal K=M\times \mathcal{X}$ and $M$ is a group & equivariant layer \\
         \hline
-        Non-closed subset $S \subsetneq G$ & \checkmark & $\times$ & \checkmark & \checkmark & partial equivariance \citep{romero2023}; $\pm 90^\circ$ \\
+        Subgroup & $\mathcal K=H\times \mathcal{X}$ with $H\leq M$ groups & downgrade equivariance \citep{goel2025} (mechanism), \citep{weiler2019anips} (choose $G$) \\
         \hline
-        Semigroup / monoid & \checkmark & \checkmark & $\times$ /\checkmark & $\times$ & downsampling \citep{worrall2019anips} \\
+        Monoid/semigroup & $\mathcal K=N\times \mathcal{X}$ with $N$ monoid/semigroup & downsampling \citep{worrall2019anips} \\
         \hline
-        Groupoid & $\times$ & \checkmark & \checkmark & \checkmark & \citep{sareen2026} \\
+        Non-closed subset & $\exists x, \{ g:(g,x)\in \mathcal K \}$ not closed & partial equivariance of \citep{romero2023}; $\pm 90^\circ$ \\
+        \hline
+        Groupoid & $(m,x)\in \mathcal K \implies (m^{-1},mx)\in \mathcal K$ & overparametrization \citep{sareen2026} \\
+        \hline
+        Domain & $\mathcal{K}=\{(m,x):x\in \mathcal{X}_0, mx\in \mathcal{X}_0 \}$ for some $\mathcal{X}_0 \subsetneq \mathcal{X}$ & 6/9 digits; data-dependent and instance-level PS of \Cref{sec:scope-param-space-symmetries} \\
         \hline
     \end{tabularx}
-    \caption{Extent-restricted symmetries: each row relaxes a different group axiom. $S$ is the transformation set contrasted with a ``full'' group $G$.}
+    \caption{Extent-restricted symmetries, except the first exact row which also implies $\mathcal S(f)=M\times \mathcal{X}$.
+    As an concrete example, consider 2D rotations.
+    The interval of rotations $I:=[-90^\circ,90^\circ]$ is non-closed since $90^\circ\!\circ\!90^\circ=180^\circ\notin I$, whereas $\{0^\circ,90^\circ,180^\circ,270^\circ\}=C_4$ is a discrete subgroup of all continuous rotations.}
     \label{tab:extent-restriction}
 \end{table}
 
