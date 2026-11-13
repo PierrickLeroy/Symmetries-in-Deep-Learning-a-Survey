@@ -253,10 +253,10 @@ The following subsections introduce standard material used throughout: abstract 
 The survey is not mathematically self-contained.
 
 \subsection{What is symmetry?}\label{sec:what-is-sym}
-A \emph{symmetry} is a transformation that leaves an object as a whole unchanged, it is a statement about identity.
-\emph{Invariance} is a broader, functional term used to qualify a property (called an \emph{invariant}) of an object that does not change under a transformation.
+Intuitively, a \emph{symmetry} is a transformation that leaves an object as a whole unchanged, it is a statement about identity.
+\emph{Invariance} is a broader, functional term used to qualify a property of an object that does not change under a transformation (the property is called an \emph{invariant}).
 For example, the area of a square is an invariant under isometries of the plane.
-Symmetry can be defined with invariance: given a list of invariants, a symmetry is a transformation that leaves those invariants unchanged.
+The two notions can be related as follows: given a list of invariants of interest, a symmetry is a transformation that leaves all those invariants unchanged.
 
 \begin{Definition}[$\phi$-equivalence, {\citep{cohen2014}}]\label{def:equivalence}
     Let $\phi : \mathcal{X} \to \mathcal{Y}$ be a function from an input space $\mathcal{X}$ to an output space $\mathcal{Y}$.
@@ -267,7 +267,7 @@ Symmetry can be defined with invariance: given a list of invariants, a symmetry 
     The relation $\sim_{\phi}$ is an equivalence relation on $\mathcal{X}$ and induces a partition of $\mathcal{X}$ into equivalence classes.
 \end{Definition}
 
-In our deep learning context, the input space $\mathcal{X}$ could be a vector space $\mathbb{R}^d$, a set of structured objects (images, graphs, point clouds), a function/parameter space etc; while $\mathcal{Y}$ may be a label in $\{0,1\}$ (binary classification) or $\{1,\dots,C\}$ (multiclass classification), a scalar (regression), another vector space $\mathbb{R}^e$ (feature representation) etc.
+In a deep learning context, the input space $\mathcal{X}$ can be a vector space $\mathbb{R}^d$, a set of structured objects (images, graphs, point clouds), a function, a parameter etc; while $\mathcal{Y}$ can be a boolean in $\{0,1\}$ (binary classification), a label $\{1,\dots,C\}$ (multiclass classification), a scalar (regression), another vector space $\mathbb{R}^e$ (feature representation) etc.
 
 \begin{Example}[Image segmentation]\label{ex:image-segmentation}
     If $\mathcal{X}$ is an image, $x\in \mathcal{X}$ a pixel slot and $\mathcal{Y} = \{1,\dots,C\}$ are segmentation labels, then the sets defined by the equivalence relation are the pixels that belong to the same segmentation class.
@@ -1669,11 +1669,11 @@ Riemannian gradient descent on this manifold is equivariant in the sense of \Cre
 
 Quotienting can also express the loss on another domain.
 In the linear autoencoder of \Cref{sec:learning-dynamics}, where every critical point of the regularized loss satisfies $W_1=W_2^{\top}\in \mathbb R^{k\times d}$, \citet{kunin2019p3icml} reinterpret the loss as a function on the Grassmannian $\operatorname{Gr}_k(\mathbb{R}^d)$ of $k$-planes in $\mathbb{R}^d$.
-Fixing a point cloud $X$, the loss value at a $k$-plane is the sum of squared distances from the points of $X$ to that plane: the $GL(k,\mathbb{R})$ symmetry has disappeared.
+Fixing a point cloud $X$, the loss value at a $k$-plane is the sum of squared distances from the points of $X$ to that plane: the residual symmetry has been quotiented out.
 Finally, identifiability questions have been investigated from a quotient perspective: writing $\bar\varphi:\Theta/\!\sim\,\to\mathcal{F}$ for the implementation map induced on the quotient, \citet{grillo2026} phrase identifiability up to quotiented symmetries as the fiber $\bar\varphi^{-1}(f_\theta)$ being a singleton.
 
 \paragraph{Representative Extraction}
-\citet{hecht-nielsen1990anc} constructs a cone $H\subset\mathbb{R}^q$ in parameter space, itself a union of cones of the form $\{x\in\mathbb{R}^q : |x_i|\le|x_k|,\ i\neq k\}$, guaranteed to contain at least one parameter implementing each realizable function.
+\citet{hecht-nielsen1990anc} constructs a cone $H\subset\mathbb{R}^q$ in parameter space, itself a union of cones $H_k=\{\theta\in\mathbb{R}^q : |\theta_i|\le|\theta_k|\ \forall i\neq k\}$ over an architecture-dependent subset of indices $k$, guaranteed to contain at least one parameter implementing each realizable function.
 Weight search can be restricted to $H$ but it remains redundant, still containing a number of permuted copies of any given network, motivating the notion of a \emph{minimal search set}: in modern terms, a section of the quotient.
 
 For rescaling symmetries a possible section is a unit-norm slice.
@@ -2187,7 +2187,7 @@ The model also supports \emph{pose-informed} breaking, by supplying an extra tok
 Functional SB is a property of the pair $(f^*,\mathcal{H})$: the target $f^*$ is \emph{less} equivariant than hypotheses in the model class,
 \begin{align}
 \operatorname{Sym}(f^*)\subsetneq\operatorname{Sym}(h)=G\quad&\text{for all }h\in\mathcal{H},\\
-&\text{equivalently}\quad \exists\,x,g:\ f^*(\rho_X(g)x)\neq\rho_Y(g)f^*(x).
+&\text{equivalently}\quad \exists\,x,g:\ f^*(\rho_X(g)x)\neq\rho_Y(g)f^*(x).\notag
 \end{align}
 It is an overspecification of equivariance and coincides pointwise with the \emph{incorrect equivariance} of \citet{wang2023a} whose magnitude can be measured by equivariance errors (as in \Cref{eq:equiv-error-approximate} for instance).
 It appears in standard architectures: \citet{zhang2019p3icml} show that the subsampling hidden inside strided convolutions and max-pooling silently destroys shift-equivariance, since it violates the Nyquist--Shannon condition $f_s>2f_{\max}$ for lossless sampling of a band-limited signal.
@@ -2596,7 +2596,17 @@ LLM & Large Language Model \\
 SB & Symmetry Breaking \\
 GF & Gradient Flow \\
 GD & Gradient Descent \\
-SGD & Stochastic Gradient Descent
+SGD & Stochastic Gradient Descent \\
+EDL & Equivariant Deep Learning \\
+FA & Feature Averaging \\
+MC & Mode Connectivity \\
+LMC & Linear Mode Connectivity \\
+SS & Symmetric States \\
+PS & Parameter-Space Symmetries \\
+LS & Loss-Level Symmetries \\
+NTK & Neural Tangent Kernel \\
+GNN & Graph Neural Network \\
+CNN & Convolutional Neural Network
 \end{tabular}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
