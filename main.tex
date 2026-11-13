@@ -1184,10 +1184,10 @@ Neither implication reverses.
 \begin{Remark}[False-class symmetry]
     Even when $\mathcal{L}$ factors through $\varphi$, a loss-level symmetry can arise as the cross-entropy case of \Cref{ex:false-class-symmetries}.
     Assuming an overparametrized setup where the model has enough flexibility to change per-example false-class values while fixing the true class probability $\hat y_c$, multiple parameters, whose predictions differ by such rearrangements, are therefore loss-equivalent without being functionally equivalent.
-    Interestingly, these false-class logits---left unconstrained during training---turn out to be idiosyncratic and can help to discriminate models.
-    It has been used in the predictive churn of \citet{zhuang2022pmls}, the fraction of test points on which two models disagree to measure model instability across retrainings (\Cref{sec:data-ordering}); and \citet{godinot2024} used this principle as a fingerprinting technique.
-    Our hypothesis is that the lack of objectivisation of false-classes makes the influence of initialization perceptible even after training.
+    Interestingly, these false-class logits have been used to compare models: \citet{zhuang2022pmls} measure model instability across retrainings as the fraction of test points on which two models disagree (\Cref{sec:data-ordering}) and \citet{godinot2024} used this principle as a fingerprinting technique.
+    The false-classes logits distribution is not directly optimized by training thus the influence of initialization might be perceptible even after training.
 \end{Remark}
+
 
 \subsubsection{Scope Axis}\label{sec:scope-param-space-symmetries}
 The scope axis starts from the functional symmetry (PS) of $\varphi$ (model locus, \ref{sec:PS_param-space-sym}) and varies where the invariance must hold and what the transformation may act on: holding only on a subset of $\Theta$ or $\mathcal X$ makes the symmetry \emph{extent-restricted} (\Cref{tab:taxonomy}).
