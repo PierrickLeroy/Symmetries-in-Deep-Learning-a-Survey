@@ -941,11 +941,19 @@ This setup carries a double (often inexact) symmetry:
     In contrast with DA, which is typically a supervised approach focusing on the invariance of the $(x,y)$ mapping, this symmetry focuses on the invariance of the representation.
     This symmetry is the end goal: ultimately we want $f_\theta$ to be invariant to $\mathcal{T}$.
     \item A \emph{branch symmetry} in the training protocol: the objective is invariant under swapping the two branches $(\theta_1,t_1)\leftrightarrow(\theta_2,t_2)$.
-    With shared weights $\theta_1=\theta_2$ and a symmetric $L$ this is an exact $C_2$ symmetry, but it is often deliberately broken and much of the design space below is organized by how and where it is broken.
+    With shared weights $\theta_1=\theta_2$ and a symmetric $L$ this is an exact $C_2$ symmetry, but it is often deliberately broken and much of the design space below is organized by how and where it is broken (\Cref{fig:joint-embedding}).
     It is transparent at inference time and is only a means to train and achieve the above target invariance.
 \end{enumerate}
 
-\noindent \emph{Representational collapse} is the failure mode where encoders are constant and methods can be envisioned by how they deviate from exact symmetries toward carefully engineered asymmetry to avoid collapse.
+\noindent \emph{Representational collapse} is the failure mode where encoders are constant and the more insidious \emph{dimensional collapse} happens when the embedding space becomes rank-defficient.
+Methods can be envisioned by how they deviate from exact symmetries toward carefully engineered asymmetry while and to avoid collapse.
+
+\begin{figure}[!tbp]
+    \centering
+    \includegraphics[width=\textwidth]{images/joint-embedding.pdf}
+    \caption{Joint-embedding architectures. (\textbf{a}) Fully symmetric: $z_1=z_2$, so $L$ is uninformative. (\textbf{b}) Design space: carefully chosen asymmetries departing from (\textbf{a}).}
+    \label{fig:joint-embedding}
+\end{figure}
 
 \paragraph{Avoiding representational collapse}
 \emph{Contrastive methods} keep branch-swap symmetry (shared weights) exactly and instead prevent collapse by adding negative pairs to the objective, balancing agreement between augmented views of the same $x$ against disagreement between different inputs.
@@ -982,12 +990,11 @@ Branch-swap symmetry is fully retained; collapse is instead prevented by the los
 
 A second strand of non-contrastive methods regularizes the batch statistics of the embeddings, keeping branch-swap symmetry exact and no stop-gradient.
 \citet{zbontar2021p3icml} (Barlow Twins) drive the cross-correlation matrix $\mathcal{C}$ between the two branches' embeddings toward the identity with a loss
-% , $\mathcal{C}_{ij}=\frac{\sum_b z^A_{b,i}z^B_{b,j}}{\sqrt{\sum_b (z^A_{b,i})^2}\sqrt{\sum_b (z^B_{b,j})^2}}$,
 \[
-\mathcal{L}=\big\|[\,I-\mathcal{C}\odot I\,]\big\|_F^2+\lambda\big\|\mathcal{C}\odot(\boldsymbol 1\boldsymbol 1^\top-I)\big\|_F^2,
+\mathcal{L}=\big\|[\,I-\mathcal{C}\odot I\,]\big\|_F^2+\lambda\big\|\mathcal{C}\odot(\boldsymbol 1\boldsymbol 1^\top-I)\big\|_F^2\quad ,
 \]
 where $\boldsymbol{1}$ is the all-ones vector, $\odot$ is the Hadamard product, and $\lambda$ a hyperparameter.
-The first term enforces invariance (at a minimum, branches agree on each embedding coordinate) and the second term decorrelates coordinates \emph{across} branches, preventing constant representations.
+The first term enforces invariance (at a minimum, branches agree on each embedding coordinate) and the second term decorrelates coordinates across branches, preventing dimensional collapse.
 \citet{bardes2022} (VICReg) optimize similar objectives but reintroduce a direct invariance penalty $\sum_i \lVert z_i-z_i'\rVert_2^2$ computed on embeddings $z_i$ and $z_i'$. 
 
 \paragraph{Invariance across modalities}
@@ -2587,6 +2594,8 @@ Read as questions (which object carries the symmetry, is it known, is it exact?)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Optional
+
+\clearpage
 
 \abbreviations{Abbreviations}{%
 The following abbreviations are used in this manuscript:\\
