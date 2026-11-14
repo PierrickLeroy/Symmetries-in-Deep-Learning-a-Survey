@@ -810,6 +810,14 @@ While there is no denying that equivariant models are scientifically well-founde
 % add adversarial training ? [Goodfellow, Explaining and harnessing adversarial examples] and [Madry, Towards deep learning models resistant to adversarial attacks]
 % shorten2019jbd and mumuni2022a: surveys on DA
 % miao2023p4icml: instance-dependent DA
+\begin{figure}[!tbp]
+    \centering
+    \includegraphics[width=\textwidth]{images/five-routes.pdf}
+    \caption{Five routes to invariance on a single pipeline: each row colours the block where $G$ enters.
+    Model-level routes are exact for every $\theta$, parameter-level ones learned and approximate.}
+    \label{fig:five-routes}
+\end{figure}
+
 Data augmentation (DA) shares the goal of EDL, distilling a symmetry of the ground truth $f^*$, but from the \emph{problem} side: rather than constraining $\mathcal{H}$, it enriches the training set by applying transformations known (or assumed) to leave the target label unchanged.
 Formally letting $G$ act on input space $\mathcal{X}$, the augmented risk replaces the standard empirical risk by averaging over orbits:
 $$
@@ -817,7 +825,8 @@ $$
 $$
 and for a continuous group, an expectation is taken over a distribution on $G$.
 The hope is encouraging $f_\theta$ to be approximately invariant to those transformations.
-Since the hypothesis class is unconstrained, the symmetry is encouraged for a specific parameter $\theta$ which correspond to the parameter locus of \Cref{fig:sym-loci}.
+Since the hypothesis class is unconstrained, the symmetry is encouraged for a specific parameter $\theta$ which corresponds to the parameter locus of \Cref{fig:sym-loci}.
+\Cref{fig:five-routes} contrasts the entry point of the symmetry group $G$ in DA with equivariant layers and symmetrization methods (\Cref{sec:edl-achieving-equiv}), and soft penalties (\Cref{sec:approx-soft}).
 DA is declarative: it states which transformations should not matter, not how $f_\theta$ realizes the invariance, accommodating transformations lacking an algebraic description (\textit{e.g.}\ illumination, viewpoint or background changes); the symmetry often stays \emph{implicit}, and even \emph{unknown a priori} when automated strategies (\Cref{par:auto-da}) learn the transformations.
 DA has further practical advantages over EDL: it applies to any pretrained model without architectural changes, suitable for fine-tuning; it requires no group-theoretic implementation, easing rapid prototyping; and it seamlessly handles extent-restricted symmetries (\Cref{sec:extent-restriction}), \textit{e.g.}\ non-invertible crops or small-angle rotations on MNIST (avoiding $6\leftrightarrow 9$), where EDL mostly assumes exactness.
 On the downside, a continuous group cannot be covered exhaustively, and materialized augmentations multiply storage and compute by the number of samples drawn per orbit.
