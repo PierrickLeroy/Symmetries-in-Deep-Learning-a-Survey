@@ -929,9 +929,9 @@ We give here a symmetry-centered reading of the development of this family of se
 In this part, invariance prevails but equivariance-based methods have also been explored~\citep{gupta2023a}.
 
 In the simplest setting, for views $x_1$ and $x_2$ of the same underlying object $x$ and encoders $f_{\theta_1}$ and $f_{\theta_2}$, a loss 
-$$
+\begin{equation}\label{eq:joint-embeddings}
     L\big(f_{\theta_1}(x_1),\,f_{\theta_2}(x_2)\big)
-$$
+\end{equation}
 computing a similarity between embeddings is minimized.
 A common way to generate views is through data augmentation: for $x\sim\mathcal{D}$, two transformations $t_1,t_2$ are drawn i.i.d.\ from an augmentation family $\mathcal{T}$ to form the views $x_1=t_1\cdot x$ and $x_2=t_2\cdot x$.
 This setup carries a double (often inexact) symmetry:
@@ -951,12 +951,12 @@ This setup carries a double (often inexact) symmetry:
 \emph{Contrastive methods} keep branch-swap symmetry (shared weights) exactly and instead prevent collapse by adding negative pairs to the objective, balancing agreement between augmented views of the same $x$ against disagreement between different inputs.
 Early metric learning methods proposed a symmetric loss $\ell(x_1,x_2,\theta)$ trained on matched/mismatched pairs \citep{chopra20052icsccvprc,hadsell20062icsccvpr-v2c}; \citet{schroff20152iccvprc} extend it to a triplet loss $\ell(x,x_p,x_n,\theta)$ contrasting one positive against one negative, and \citet{oord2018a} generalize further to an arbitrary number of negatives with the InfoNCE loss.
 
-\citet{chen2020p3icml} (SimCLR) apply strong compositional data augmentation and a projection head $\operatorname{proj}$, still shared between branches, on top of which the loss is computed:
+\citet{chen2020p3icml} (SimCLR) apply strong compositional data augmentation and a projection head $\operatorname{proj}_\theta$, still shared between branches, on top of which the loss is computed:
 \begin{equation}
-    \ell_{i,j}=-\log\frac{\exp\big(\operatorname{Sim}(z_i,z_j)/\tau\big)}{\sum_{k=1}^{2N} 1_{[k\neq i]}\exp\big(\operatorname{Sim}(z_i,z_k)/\tau\big)},\qquad z_k=\operatorname{proj}(f(\tilde x_k)),
+    \ell_{i,j}=-\log\frac{\exp\big(\operatorname{CoSim}(z_i,z_j)/\tau\big)}{\sum_{k=1}^{2N} 1_{[k\neq i]}\exp\big(\operatorname{CoSim}(z_i,z_k)/\tau\big)},\qquad z_k=\operatorname{proj}_\theta(f_\theta(\tilde x_k)),
 \end{equation}
-where $\tilde x_1,\dots,\tilde x_{2N}$ are the paired views of each of the $N$ inputs of a batch, $(i,j)$ indexes the two views of the same input, $\operatorname{Sim}$ is a similarity function and $\tau$ a temperature; the full loss averages $\ell_{i,j}$ over all positive pairs.
-An ablation shows that the representation $f(x)$ before the projector is better than $\operatorname{proj}(f(x))$ after it: $\operatorname{proj}$ is trained to be augmentation-invariant and this is achieved by discarding useful representational information, confirmed empirically by the authors who measured how much augmentation-related information (\textit{e.g.}\ colour) is decodable at each stage.
+where $\tilde x_1,\dots,\tilde x_{2N}$ are the paired views of each of the $N$ inputs of a batch, $(i,j)$ indexes the two views of the same input, $\operatorname{CoSim}$ is the cosine similarity and $\tau$ a temperature; the full loss averages $\ell_{i,j}$ over all positive pairs.
+An ablation shows that the representation $f_\theta(x)$ before the projector is better than $\operatorname{proj}_\theta(f_\theta(x))$ after it: $\operatorname{proj}_\theta$ is trained to be augmentation-invariant and this is achieved by discarding useful representational information, confirmed empirically by the authors who measured how much augmentation-related information (\textit{e.g.}\ colour) is decodable at each stage.
 \citet{he2020} (MoCo) relax branch-swap symmetry itself: the second branch (the ``momentum encoder'') tracks the first through an Exponential Moving Average (EMA) of its weights, $\xi\leftarrow m\,\xi+(1-m)\,\theta$, rather than sharing its weights outright. The non-contrastive methods below push further this decoupling of the branches.
 
 \emph{Non-contrastive methods} dispense with negative pairs altogether and instead prevent collapse either by decoupling the branches more strongly or by regularizing the embedding statistics directly.
@@ -972,28 +972,29 @@ while the teacher computes
     \bigl(\operatorname{Center}(\operatorname{proj}_{\xi}(f_\xi(t'\cdot x)))\bigr),
 \]
 with $\xi$ an EMA of $\theta$ and $\tau_t<\tau_s$: the lower temperature artificially sharpens the teacher's target.
-\citet{chen2020a} (SimSiam) pulls back toward full symmetry: weights are entirely shared and the two branches alternate between student and teacher roles within a single symmetrized loss,
-$$
-\mathcal{L}=d\big((h\circ f)(t\cdot x),\,\operatorname{sg}(f(t'\cdot x))\big)+d\big((h\circ f)(t'\cdot x),\,\operatorname{sg}(f(t\cdot x))\big),
-$$
-where $d$ is the negative cosine similarity and $\operatorname{sg}$ the stop-gradient operator.
+\citet{chen2020a} (SimSiam) pulls back toward full symmetry: weights are entirely shared and the two branches alternate between student and teacher roles within a single symmetrized loss.
+With $z=\operatorname{proj}_\theta(f_\theta(t\cdot x))$ and $z'=\operatorname{proj}_\theta(f_\theta(t'\cdot x))$,
+\[
+\mathcal{L}=-\operatorname{CoSim}\big(q_\theta(z),\,\operatorname{sg}(z')\big)-\operatorname{CoSim}\big(q_\theta(z'),\,\operatorname{sg}(z)\big),
+\]
+where $q_\theta$ is a prediction head as in BYOL and $\operatorname{sg}$ the stop-gradient operator.
 Branch-swap symmetry is fully retained; collapse is instead prevented by the loss circuitry and the stop-gradient, an asymmetry introduced in the \emph{optimization} rather than in the architecture.
 
 A second strand of non-contrastive methods regularizes the batch statistics of the embeddings, keeping branch-swap symmetry exact and no stop-gradient.
 \citet{zbontar2021p3icml} (Barlow Twins) drive the cross-correlation matrix $\mathcal{C}$ between the two branches' embeddings toward the identity with a loss
 % , $\mathcal{C}_{ij}=\frac{\sum_b z^A_{b,i}z^B_{b,j}}{\sqrt{\sum_b (z^A_{b,i})^2}\sqrt{\sum_b (z^B_{b,j})^2}}$,
-$$
+\[
 \mathcal{L}=\big\|[\,I-\mathcal{C}\odot I\,]\big\|_F^2+\lambda\big\|\mathcal{C}\odot(\boldsymbol 1\boldsymbol 1^\top-I)\big\|_F^2,
-$$
+\]
 where $\boldsymbol{1}$ is the all-ones vector, $\odot$ is the Hadamard product, and $\lambda$ a hyperparameter.
 The first term enforces invariance (at a minimum, branches agree on each embedding coordinate) and the second term decorrelates coordinates \emph{across} branches, preventing constant representations.
 \citet{bardes2022} (VICReg) optimize similar objectives but reintroduce a direct invariance penalty $\sum_i \lVert z_i-z_i'\rVert_2^2$ computed on embeddings $z_i$ and $z_i'$. 
 
 \paragraph{Invariance across modalities}
 \citet{radford2021p3icml} (CLIP) apply the same branch-swap logic across modalities: image and text encoders embed into a shared space, cosine similarities $s_{ij}=\operatorname{CoSim}(z_i^{\mathrm{txt}},z_j^{\mathrm{img}})$ populate a matrix $S$, and a symmetric cross-entropy
-$$
+\[
 -\left[\sum_i\log\frac{\exp(s_{ii})}{\sum_j\exp(s_{ij})}+\sum_j\log\frac{\exp(s_{jj})}{\sum_i\exp(s_{ij})}\right]
-$$
+\]
 treats both modalities identically, echoing SimSiam's~\citep{chen2020a} symmetric treatment.
 Here however, the two encoders cannot share weights and the symmetry is only present at the block level and in the loss.
 CLIP also uses comparatively little data augmentation, presumably because the image/text modality gap already supplies ample view diversity.
