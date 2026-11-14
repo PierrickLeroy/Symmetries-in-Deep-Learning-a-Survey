@@ -945,8 +945,8 @@ This setup carries a double (often inexact) symmetry:
     It is transparent at inference time and is only a means to train and achieve the above target invariance.
 \end{enumerate}
 
-\noindent \emph{Representational collapse} is the failure mode where encoders are constant and the more insidious \emph{dimensional collapse} happens when the embedding space becomes rank-defficient.
-Methods can be envisioned by how they deviate from exact symmetries toward carefully engineered asymmetry while and to avoid collapse.
+\noindent \emph{Representational collapse} is the failure mode where the encoder is constant, while the subtler \emph{dimensional collapse} occurs when the embedding space becomes rank-deficient.
+Methods can be understood by how far they depart from exact symmetries toward carefully engineered asymmetry designed to learn and avoid collapse.
 
 \begin{figure}[!tbp]
     \centering
@@ -2597,7 +2597,7 @@ Read as questions (which object carries the symmetry, is it known, is it exact?)
 
 \clearpage
 
-\abbreviations{Abbreviations}{%
+\abbreviations{Abbreviations and notation}{%
 The following abbreviations are used in this manuscript:\\
 \noindent
 \begin{tabular}{@{}ll}
@@ -2620,7 +2620,56 @@ LS & Loss-Level Symmetries \\
 NTK & Neural Tangent Kernel \\
 GNN & Graph Neural Network \\
 CNN & Convolutional Neural Network
-\end{tabular}}
+\end{tabular}\\[8pt]
+The following notation is used in this manuscript:\\
+% Three blocks (groups / spaces and maps / losses) so the table can break across pages.
+% mdpi.cls makes X columns vertically centered; restore top alignment locally.
+\renewcommand\tabularxcolumn[1]{p{#1}}%
+\newcolumntype{N}{>{\raggedright\arraybackslash}p{3.8cm}>{\raggedright\arraybackslash}p{3.5cm}>{\RaggedRight\arraybackslash}X}%
+\noindent
+\begin{tabularx}{\linewidth}{@{}N@{}}
+\toprule
+\textbf{Object} & \textbf{Notation} & \textbf{Note} \\
+\midrule
+Group & $G$ & Acts by ${g\cdot x}$; $gx$; ${\rho_X(g)\,x}$ and ${\rho_Y(g)\,y}$ \\
+Generic subgroup & $H\le G$ & Also the structure group with gauges \\
+Orbit of $x$ & $G\cdot x$ &  \\
+Stabilizer of $x$ & $G_x$, $\operatorname{Stab}(x)$ & \\
+Symmetry group of $f$ & $\operatorname{Sym}(f)$ & \\
+Bijections of a set & $\operatorname{Sym}(\mathcal{X})$ & \\
+Permutation; permutation matrix & $\sigma\in S_n$; $P_\sigma$ & ${P_\sigma e_i=e_{\sigma(i)}}$ \\
+Quotient map & ${\pi:\mathcal{X}\to\mathcal{X}/G}$ & Sends $x$ to its orbit \\
+Section & ${s:\mathcal{X}/G\to\mathcal{X}}$ & A representative per orbit, ${\pi\circ s=\operatorname{id}}$ \\
+Canonicalization & ${c=s\circ\pi:\mathcal{X}\to\mathcal{X}}$ & \\
+Lie algebra of $G$ & $\mathfrak{g}$ & Elements $A$ \\
+Augmentation family & $\mathcal{T}$ & Broader than a group (crop, blur...) \\
+\midrule
+\end{tabularx}\\
+\noindent
+\begin{tabularx}{\linewidth}{@{}N@{}}
+\midrule
+Input space & $\mathcal{X}$ & \\
+Output / target space & $\mathcal{Y}$ & \\
+Latent / embedding space & $\mathcal{Z}$ & \\
+Parameter space & $\Theta$ & \\
+Function space & $\mathcal{F}$ & \\
+Hypothesis class & $\mathcal{H}$ & Functions realizable by an architecture \\
+Dataset & $\mathcal{D}$ & \\
+Generic map & $f$ & \\
+Ground truth & $f^*$ & Target map of the problem \\
+Implementation/realization map & ${\varphi:\Theta\to\mathcal{F}}$ & ${\varphi(\Theta)=\mathcal{H}}$ \\
+Implemented function & ${f_\theta=\varphi(\theta)}$ & \\
+Feature map at layer $l$ & ${f_\theta^{(l)}:\mathcal{X}\to\mathcal{Z}^{(l)}}$ & ${f_\theta^{(L)}=f_\theta}$ for $L$ layers \\
+\midrule
+\end{tabularx}\\
+\noindent
+\begin{tabularx}{\linewidth}{@{}N@{}}
+Per-example loss & $\ell(x,\theta)$ & \\
+Loss criterion & $L(\hat y,y)$ & Compares a prediction $\hat y$ to a target $y$ \\
+Single-argument loss & $\mathcal{L}$ & ${\Theta\to\mathbb{R}}$ or ${\mathcal{F}\to\mathbb{R}}$\\
+Regularizer & $\mathcal{R}$ & Penalty term added to $\mathcal{L}$ \\
+\bottomrule
+\end{tabularx}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
