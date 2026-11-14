@@ -593,8 +593,7 @@ For finite groups acting by permutations, equivariance amounts to weight-tying: 
 \emph{Clifford (geometric) algebras} yield equivariant models such as the $E(n)$-equivariant CGENN \citep{ruhe2023} and the $E(3)$-equivariant transformer GATr \citep{brehmer2023}.
 
 Other approaches include \emph{invariant-feature construction} from distances or inner products, \textit{e.g.} EGNN \citep{satorras2021p3icml} and ``scalars are universal'' \citep{villar2021anips}.
-\emph{Loss regularization} keeps the group but loosens the constraint, yielding only approximate (soft) equivariance; see \Cref{sec:soft-equivariance}. \emph{Symmetrization} wraps an arbitrary backbone $f$, \textit{e.g.} by canonicalization \citep{kaba2023p4icml} or group/frame averaging \citep{puny2021}.
-% with the Reynolds operator $(\mathcal{R}f)(x)=\frac{1}{|G|}\sum_{g\in G}\rho_Y(g)^{-1}f(\rho_X(g)\,x)$, which maps any $f$ to an equivariant one (an integral replaces the sum for compact $G$).
+\emph{Loss regularization} keeps the group but loosens the constraint, yielding only approximate (soft) equivariance; see \Cref{sec:soft-equivariance}. \emph{Symmetrization} wraps an arbitrary backbone $f$, \textit{e.g.} by canonicalization \citep{kaba2023p4icml} or group/frame averaging \citep{puny2021} with the Reynolds operator $(\mathcal{R}f)(x)=\frac{1}{|G|}\sum_{g\in G}\rho_Y(g)^{-1}f(\rho_X(g)\,x)$, which maps any $f$ to an equivariant one (an integral replaces the sum for compact $G$).
 
 \paragraph{Euclidean symmetries}
 Euclidean symmetries are important symmetries of the physical world, consisting of translations and rotations (with or without reflections).
@@ -2039,11 +2038,8 @@ They prove that this factorization can represent equivariance to any finite grou
 \citet{dehmamy2021anips} introduce Lie Algebra Convolutional Networks (L-conv), whose layers make the Lie algebra basis itself a learnable parameter allowing discovery at a non-negligible computational cost.
 \citet{ouderaa2024} take a physics-inspired approach via Noether's theorem: they parameterize symmetries as quadratic conserved quantities of a Hamiltonian system and learn them by maximizing a variational lower bound.
 
-\subsubsection{Caveats}
-% could add benton2020anips,miao2023p4icml as additional papers supporting that imposing a wrong symmetry can affect performance
-Despite the appeal of symmetry discovery as a path around the symmetry bottleneck or as a diagnostic tool, it comes with important limitations.
-\citet{rath2024air} caution that, while discovery is valuable when prior knowledge is unavailable or hard to specify, automatically learned symmetries are generally unable to outperform models whose equivariance is correctly specified by design.
-Furthermore, \citet{yang2023p4icml} observe, and \citet{finzi2021anips} formalize, that enforcing the \emph{wrong} symmetry group (too large, small, or simply incorrect) can be harmful.
+\subsubsection{Caveat}
+Despite the appeal of symmetry discovery as a path around the symmetry bottleneck or as a diagnostic tool, \citet{rath2024air} caution that while discovery is valuable when prior knowledge is unavailable or hard to specify, automatically learned symmetries are generally unable to outperform models whose equivariance is correctly specified by design and misspecification can degrade performances as seen in \Cref{sec:edl-tradeoffs}.
 
 
 \subsection{Symmetry Extraction from Learned Models}\label{sec:sym-extract-model}
