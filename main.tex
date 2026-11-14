@@ -810,12 +810,14 @@ While there is no denying that equivariant models are scientifically well-founde
 % add adversarial training ? [Goodfellow, Explaining and harnessing adversarial examples] and [Madry, Towards deep learning models resistant to adversarial attacks]
 % shorten2019jbd and mumuni2022a: surveys on DA
 % miao2023p4icml: instance-dependent DA
-Data augmentation (DA) shares the goal of EDL, distilling a symmetry of the ground truth $f^*$ into $f_\theta$, but from the \emph{problem} side: rather than constraining $\mathcal{H}$, it enriches the training set by applying transformations known (or assumed) to leave the target label unchanged.
+Data augmentation (DA) shares the goal of EDL, distilling a symmetry of the ground truth $f^*$, but from the \emph{problem} side: rather than constraining $\mathcal{H}$, it enriches the training set by applying transformations known (or assumed) to leave the target label unchanged.
 Formally letting $G$ act on input space $\mathcal{X}$, the augmented risk replaces the standard empirical risk by averaging over orbits:
 $$
 \hat R_{\mathrm{aug}}(\theta)=\frac{1}{|G|}\sum_{g\in G}\hat R(\theta;\,g\cdot \mathcal{D}),\qquad g\cdot\mathcal{D}=\{(g\cdot x_i,\,y_i)\}_{i},
 $$
-with the hope of encouraging $f_\theta$ to be approximately invariant to those transformations (for a continuous group, an expectation is taken over a distribution on $G$).
+and for a continuous group, an expectation is taken over a distribution on $G$.
+The hope is encouraging $f_\theta$ to be approximately invariant to those transformations.
+Since the hypothesis class is unconstrained, the symmetry is encouraged for a specific parameter $\theta$ which correspond to the parameter locus of \Cref{fig:sym-loci}.
 DA is declarative: it states which transformations should not matter, not how $f_\theta$ realizes the invariance, accommodating transformations lacking an algebraic description (\textit{e.g.}\ illumination, viewpoint or background changes); the symmetry often stays \emph{implicit}, and even \emph{unknown a priori} when automated strategies (\Cref{par:auto-da}) learn the transformations.
 DA has further practical advantages over EDL: it applies to any pretrained model without architectural changes, suitable for fine-tuning; it requires no group-theoretic implementation, easing rapid prototyping; and it seamlessly handles extent-restricted symmetries (\Cref{sec:extent-restriction}), \textit{e.g.}\ non-invertible crops or small-angle rotations on MNIST (avoiding $6\leftrightarrow 9$), where EDL mostly assumes exactness.
 On the downside, a continuous group cannot be covered exhaustively, and materialized augmentations multiply storage and compute by the number of samples drawn per orbit.
@@ -1981,7 +1983,7 @@ The previous sections typically assumed \emph{known} symmetries; here the symmet
 Quantification works (\Cref{sec:sym-quantification}) are in effect a mix of \emph{known} and \emph{unknown}: the transformation is given, and how well $f_\theta$ respects it is what is measured.
 Symmetry discovery seeks the triplet $(G,\rho_X,\rho_Y)$, i.e.\ a group and its actions such that $f(\rho_X(g)\,x)=\rho_Y(g)\,f(x)$ for all $g\in G$; the map $f$ sets the locus and splits the two subsections along the object axis (\Cref{fig:sym-loci}).
 \Cref{sec:sym-disc-from-data} is mostly at the \emph{problem} level: $f$ is the ground truth $f^*$ (or, for invariance, the data distribution $p$), observed only through a finite dataset.
-Its motivation is practical: supplying the a priori knowledge that equivariant design requires (symmetry bottleneck, \Cref{par:sym-bottleneck}), gaining performance, or simply getting insight on a dataset.
+Its motivation is practical: supplying the a priori knowledge that equivariant design requires and avoid the symmetry bottleneck (\Cref{sec:edl-tradeoffs}), gaining performance, or simply getting insight on a dataset.
 \Cref{sec:sym-extract-model} is at the \emph{parameter} level: $f=f_\theta$ for a trained, hence fixed, $\theta$; but unlike in \Cref{sec:parameter-space-symmetries}, $G$ acts on $\mathcal X$ and $\mathcal Y$, not on $\Theta$.
 Its motivation is more theoretical: the symmetries a network implicitly learns reveal its behavior and inductive biases.
 As a whole, the section is mainly \emph{descriptive}.
