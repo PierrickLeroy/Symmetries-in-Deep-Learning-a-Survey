@@ -955,7 +955,7 @@ Early metric learning methods proposed a symmetric loss $\ell(x_1,x_2,\theta)$ t
 \begin{equation}
     \ell_{i,j}=-\log\frac{\exp\big(\operatorname{CoSim}(z_i,z_j)/\tau\big)}{\sum_{k=1}^{2N} 1_{[k\neq i]}\exp\big(\operatorname{CoSim}(z_i,z_k)/\tau\big)},\qquad z_k=\operatorname{proj}_\theta(f_\theta(\tilde x_k)),
 \end{equation}
-where $\tilde x_1,\dots,\tilde x_{2N}$ are the paired views of each of the $N$ inputs of a batch, $(i,j)$ indexes the two views of the same input, $\operatorname{CoSim}$ is the cosine similarity and $\tau$ a temperature; the full loss averages $\ell_{i,j}$ over all positive pairs.
+where $\tilde x_1,\dots,\tilde x_{2N}$ are the paired views of each of the $N$ inputs of a batch, $(i,j)$ indexes the two views of the same input, $\operatorname{CoSim}$ is the cosine similarity and $\tau$ a temperature. The full loss averages $\ell_{i,j}$ over all positive pairs.
 An ablation shows that the representation $f_\theta(x)$ before the projector is better than $\operatorname{proj}_\theta(f_\theta(x))$ after it: $\operatorname{proj}_\theta$ is trained to be augmentation-invariant and this is achieved by discarding useful representational information, confirmed empirically by the authors who measured how much augmentation-related information (\textit{e.g.}\ colour) is decodable at each stage.
 \citet{he2020} (MoCo) relax branch-swap symmetry itself: the second branch (the ``momentum encoder'') tracks the first through an Exponential Moving Average (EMA) of its weights, $\xi\leftarrow m\,\xi+(1-m)\,\theta$, rather than sharing its weights outright. The non-contrastive methods below push further this decoupling of the branches.
 
