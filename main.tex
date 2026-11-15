@@ -333,20 +333,19 @@ Invariance is the special case $\rho_Y(g)=\operatorname{id}_Y$ for all $g\in G$.
 The elements $g$ satisfying \Cref{eq:general-equivariance} form the \emph{symmetry group} $\operatorname{Sym}(f)=\{g\in G: f\circ\rho_X(g)=\rho_Y(g)\circ f\}$ of $f$, a subgroup of $G$ (\Cref{sec:groups}), and $f$ is equivariant if and only if $\operatorname{Sym}(f)=G$.
 
 \begin{Example}[One rotation, several forms]\label{ex:one-rotation-several-forms}
-    Let $G=C_4=\{e,r,r^2,r^3\}$ be the group of quarter rotations acting on $\mathcal{X}=\mathbb R^2$ as $\rho_X(r)=R_{\frac{\pi}{2}}$ (\Cref{fig:one-rotation}).
+    Let $G=C_4=\{e,r,r^2,r^3\}$ be the group of quarter rotations acting on $\mathcal{X}=\mathbb R^2$ as $\rho_X(r)=R_{\frac{\pi}{2}}$.
     Depending on the task, input and output relate differently and the representation of the same element $r$ should reflect the particular nature of this relation:
     \begin{enumerate}
         \item if $f$ predicts an orientation $\hat \alpha\in\mathcal{Y}=[0,2\pi)$, a shift of angle $\rho_Y(r)\,\hat \alpha=\hat \alpha+\pi/2 \bmod 2\pi$
         \item if $f$ predicts an axis $\hat \alpha\in\mathcal{Y}=[0,\pi)$, a different shift $\rho_Y(r)\,\hat \alpha=\hat \alpha+\pi/2 \bmod \pi$
         \item if $f$ predicts an invariant class label, trivially $\rho_Y(r)=\operatorname{id}_Y$.
     \end{enumerate}
-    In each case $\rho_Y(r)^4=\operatorname{id}_Y$, so $\rho_Y$ satisfies \Cref{eq:representation-homomorphism}, but the image $\rho_Y(G)$ varies (respectively $C_4$, $C_2$ and trivial).
+    In each case $\rho_Y(r)^4=\operatorname{id}_Y$, so $\rho_Y$ satisfies \Cref{eq:representation-homomorphism}, but the image $\rho_Y(G)$ varies (respectively $C_4$, $C_2$ and trivial in group language).
     \Cref{fig:one-rotation} illustrate the example with a lamp aiming a ray through the origin.
     The output action should (1) also be quarter rotations if $f:\mathcal{X}\to \mathcal{Y}$ models where the ray comes from (the lamp); (2) identify opposite rays if $f$ models rays themselves; (3) be trivial if $f$ predicts an invariant e.g. the ray's color.
 \end{Example}
 
-% wrapfigure: the [22] lines span the paragraph below, the heading of sec:groups and def:group; it must start a
-% paragraph that is not near a page bottom, so re-check it when the text above changes
+% wrapfigure: \begin{wrapfigure}[n] spans n lines; it must start a paragraph that is not near a page bottom
 \begin{wrapfigure}[13]{r}{0.55\textwidth}
     \centering
     \vspace{-7mm}
