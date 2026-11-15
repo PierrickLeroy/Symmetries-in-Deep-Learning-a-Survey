@@ -331,14 +331,14 @@ The equivariance condition of \Cref{def:equivariance} then reads (omitting paren
 Invariance is the special case $\rho_Y(g)=\operatorname{id}_Y$ for all $g\in G$.
 The elements $g$ satisfying \Cref{eq:general-equivariance} form the \emph{symmetry group} $\operatorname{Sym}(f)=\{g\in G: f\circ\rho_X(g)=\rho_Y(g)\circ f\}$ of $f$, a subgroup of $G$ (\Cref{sec:groups}), and $f$ is equivariant if and only if $\operatorname{Sym}(f)=G$.
 
-\begin{Example}[One rotation, several forms]
-    Let $G=C_4=\{e,r,r^2,r^3\}$ acting on $\mathcal{X}=\mathbb R^2$ through $\rho_X(r)=R_{\frac{\pi}{2}}$.
-    Depending on the task, we might want the same $r$ to act on the output in different ways:
-    \begin{itemize}
+\begin{Example}[One rotation, several forms]\label{ex:one-rotation-several-forms}
+    Let $G=C_4=\{e,r,r^2,r^3\}$ act on $\mathcal{X}=\mathbb R^2$ as $\rho_X(r)=R_{\frac{\pi}{2}}$.
+    Depending on the task, input and output relate differently and the representation of the same element $r$ should reflect the particular nature of this relation:
+    \begin{enumerate}
         \item if $f$ predicts an orientation $\hat \alpha\in\mathcal{Y}=[0,2\pi)$, a shift of angle $\rho_Y(r)\,\hat \alpha=\hat \alpha+\pi/2 \bmod 2\pi$
         \item if $f$ predicts an axis $\hat \alpha\in\mathcal{Y}=[0,\pi)$, a different shift $\rho_Y(r)\,\hat \alpha=\hat \alpha+\pi/2 \bmod \pi$
-        \item the identity, $\rho_Y(r)=\operatorname{id}_Y$, if $f$ predicts a class label.
-    \end{itemize}
+        \item if $f$ predicts an invariant class label, trivially $\rho_Y(r)=\operatorname{id}_Y$.
+    \end{enumerate}
     In each case $\rho_Y(r)^4=\operatorname{id}_Y$, so $\rho_Y$ satisfies \Cref{eq:representation-homomorphism}, but the image $\rho_Y(G)$ is $C_4$, $C_2$ and trivial, respectively.
 \end{Example}
 
