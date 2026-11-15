@@ -2001,12 +2001,14 @@ While the polynomial setting is restrictive, it still approximates a broad class
 
 \section{Symmetry as an Unknown: Symmetry Discovery}\label{sec:sym-disco}
 The previous sections typically assumed \emph{known} symmetries; here the symmetry is a priori \emph{unknown}, to be recovered or its validity assessed rather than imposed (\Cref{sec:design-principle}) or understood (\Cref{sec:parameter-space-symmetries}).
-Quantification works (\Cref{sec:sym-quantification}) are in effect a mix of \emph{known} and \emph{unknown}: the transformation is given, and how well $f_\theta$ respects it is what is measured.
-Symmetry discovery seeks the triplet $(G,\rho_X,\rho_Y)$, i.e.\ a group and its actions such that $f(\rho_X(g)\,x)=\rho_Y(g)\,f(x)$ for all $g\in G$; the map $f$ sets the locus and splits the two subsections along the object axis (\Cref{fig:sym-loci}).
-\Cref{sec:sym-disc-from-data} is mostly at the \emph{problem} level: $f$ is the ground truth $f^*$ (or, for invariance, the data distribution $p$), observed only through a finite dataset.
-Its motivation is practical: supplying the a priori knowledge that equivariant design requires and avoid the symmetry bottleneck (\Cref{sec:edl-tradeoffs}), gaining performance, or simply getting insight on a dataset.
-\Cref{sec:sym-extract-model} is at the \emph{parameter} level: $f=f_\theta$ for a trained, hence fixed, $\theta$; but unlike in \Cref{sec:parameter-space-symmetries}, $G$ acts on $\mathcal X$ and $\mathcal Y$, not on $\Theta$.
-Its motivation is more theoretical: the symmetries a network implicitly learns reveal its behavior and inductive biases.
+Quantification (\Cref{sec:sym-quantification}) actually lies at the boundary between \emph{known} and \emph{unknown}: one starts with a candidate symmetry and how much it holds is what is measured.\newline
+Symmetry discovery seeks to recover both a group and how it acts, that is, the triplet $(G,\rho_X,\rho_Y)$ for a map $f:\mathcal{X}\to \mathcal{Y}$.
+The two subsections split along the object axis (\Cref{fig:sym-loci}) with $f$ setting the locus of the symmetry.
+\Cref{sec:sym-disc-from-data} is mostly at the \emph{problem} level: $f$ is the ground truth $f^*$ or the data distribution $p$, observed only through a finite dataset.
+The motivation is practical: supplying the a priori knowledge that equivariant design requires and avoid the symmetry bottleneck (\Cref{sec:edl-tradeoffs}) leading to performance gains, or simply getting insight on a dataset.
+\Cref{sec:sym-extract-model} is at the \emph{parameter} level: $f=f_\theta$ for a trained, hence fixed, $\theta$.
+Unlike in \Cref{sec:parameter-space-symmetries}, $G$ acts on the pair $(\mathcal X,\mathcal Y)$, not on $\Theta$.
+\pnote{Its motivation is more theoretical: the symmetries a network implicitly learns reveal its behavior and inductive biases.}
 As a whole, the section is mainly \emph{descriptive}.
 
 \subsection{Symmetry Discovery at the problem level}\label{sec:sym-disc-from-data}
@@ -2020,41 +2022,43 @@ As a whole, the section is mainly \emph{descriptive}.
 In this part, the symmetry is carried by the ground truth $f^*$ or, less frequently, the data distribution $p$ or a single data point, and must be identified from finitely many samples.
 This can be contrasted on the explicitness axis (\Cref{tab:taxonomy}) with automated DA (\Cref{par:auto-da}), where an augmentation policy only produces training examples, leaving the symmetry \emph{implicit}.
 Discovery instead makes the symmetry \emph{explicit}, as an interpretable, reusable object for a downstream inductive bias, augmentation or diagnostic.
-Some works incorporate EDL into a single pipeline that discovers and enforces the symmetry, the model becoming more equivariant as evidence for it accumulates \citep{benton2020anips,ouderaa2022,otto2025,escriche2025}.
+Some works merge discovery with EDL into a single pipeline that discovers and enforces the symmetry, the model becoming more equivariant as evidence for it accumulates \citep{benton2020anips,ouderaa2022,otto2025,escriche2025}.
 Formally, given samples $(x_i,y_i)\sim p$, one seeks a group $G$ acting by $g\cdot(x,y)=(\rho_X(g)x,\rho_Y(g)y)$.
-Generative approaches test the stronger condition $p\circ g^{-1}=p$, which also constrains the marginal $p_X$; most works, however, target only the equivariance of $f^*$, $f^*(\rho_X(g)x)=\rho_Y(g)f^*(x)$.
+Generative approaches test the stronger condition $p\circ g^{-1}=p$; most works however target only the equivariance of $f^*$, $f^*(\rho_X(g)x)=\rho_Y(g)f^*(x)$.
 Since the trivial group $\{e\}$ always qualifies, works add regularizers favoring large groups or entropy maximization to rule it out \citep{benton2020anips,yang2023p4icml,escriche2025}.
 
  
 
-\subsubsection{Seminal works}
-The problem of detecting symmetries from finite data is not new and early works extract the symmetries of one shape (data locus), not of a distribution or a target function.
+\subsubsection{Seminal works, data level}
+The problem of detecting symmetries from finite data is not new and early works extract the symmetries of one shape (data point locus), not of a distribution or a target function.
 \citet{highnam1985} and \citet{wolter1985tvc} provided algorithms for finding all rotational and reflective symmetries of planar and three-dimensional point sets.
-An early machine learning approach appeared in \citet{rao1998anips}, who framed symmetry discovery in visual perception as learning Lie group operators from infinitesimally transformed image patches via an unsupervised Bayesian algorithm.
+An early machine learning approach by \citet{rao1998anips} framed invariance discovery in visual perception (problem locus) as learning Lie group operators from infinitesimally transformed image patches via an unsupervised Bayesian algorithm.
 
-\subsubsection{Discrete vs continuous symmetry learning}
+\subsubsection{Discrete and continuous symmetries}
+
 Discrete symmetries can be approached through combinatorial search over parameter-sharing schemes \citep{yeh2022p2icais,zhou2021} or Cayley table extraction~\citep{sanborn2022}.
-Continuous symmetries benefit from the smooth structure of Lie groups and are usually approached by parameterizing transformations through their Lie algebra and the matrix exponential map \citep{benton2020anips,ouderaa2022}.
-Estimation of the Lie algebra by learning a basis of infinitesimal generators from data is proposed by  \citet{dehmamy2021anips,yang2023p4icml}.
-Additionally, regularization terms can be put on Lie generators \citep{escriche2025} to prevent collapse.
-
-\subsubsection{Generative approaches}
-\citet{desai2022prd} introduce a GAN-based framework, where the generator learns maps that preserve the data distribution relative to a reference, formalizing a statistical notion of symmetry.
-\citet{yang2023p4icml} propose \textit{LieGAN}, where a generator learns a Lie algebra basis $\{A_i\}$ such that transformations of the form $\exp(\sum_i w_i A_i)$ preserve the data distribution, with an additional discriminator forcing \textit{distribution-matching} while regularizers on the generators prevent both identity collapse and redundancy of learning basis elements.
-
-\subsubsection{Learning groups and their representations}
-A line of work frames symmetry discovery as learning not only the group but also its decomposition into independent factors or irreps \textit{i.e.} a form of disentangled representation learning \citep{higgins2018}.
-\citet{cohen2014} propose a probabilistic model that learns irreducible representations for compact commutative Lie groups, in particular the toroidal subgroups of $SO(D)$.
-In the context of dynamic environments where observations are paired with transformations, \citet{quessard2020anips} addresses disentanglement by a sparsity regularizer that encourages each symmetry generator to act on as few latent dimensions as possible, thereby identifying a block-diagonal structure in the representation.
-\citet{sanborn2022} introduce Bispectral Neural Networks, which learn a Fourier basis for compact groups and \citet{ennes2025fcm} tackle the problem from a geometric perspective: given a point cloud sampled from orbits of a compact Lie group, their \textit{LieDetect} algorithm estimates the Lie algebra via a PCA-like operator and projects onto the closest valid Lie algebra for a set of candidate groups ($SO(2)$, $T^d$, $SU(2)$, $SO(3)$), with theoretical stability guarantees given in terms of Wasserstein distances.
-
-\subsubsection{Parameter-Sharing Schemes}
+% Parameter-Sharing Schemes
 A layer's equivariance can be determined by which weight entries are shared, so the problem of symmetry discovery can be framed as learning the partition of weights into equivalence classes; factorizing the weight space into a \textit{structural component} (the parameter-sharing scheme) and a \textit{value component} (the actual shared parameters).
 \citet{zhou2021} operationalize this idea via a reparameterization $\mathrm{vec}(W) = Uv$, where the sharing matrix $U$ is optimized in a meta-learning outer loop while $v$ (value) adapts per task.
 They prove that this factorization can represent equivariance to any finite group.
 \citet{yeh2022p2icais} directly optimize over partitions of weight indices.
 
-\subsubsection{Discovery from classifiers and other approaches}
+Continuous symmetries benefit from the smooth structure of Lie groups and are usually approached by parameterizing transformations through their Lie algebra and the matrix exponential map \citep{benton2020anips,ouderaa2022}.
+Estimation of the Lie algebra by learning a basis of infinitesimal generators from data is proposed by  \citet{dehmamy2021anips,yang2023p4icml}.
+Additionally, regularization terms can be put on Lie generators \citep{escriche2025} to prevent collapse.
+
+\subsubsection{Generative approaches, data disribution symmetry}
+\citet{desai2022prd} introduce a GAN-based framework, where the generator learns maps that preserve the data distribution relative to a reference, formalizing a statistical notion of symmetry.
+\citet{yang2023p4icml} propose \textit{LieGAN}, where a generator learns a Lie algebra basis $\{A_i\}$ such that transformations of the form $\exp(\sum_i w_i A_i)$ preserve the data distribution, with an additional discriminator forcing \textit{distribution-matching} while regularizers on the generators prevent both identity collapse and redundancy of learning basis elements.
+
+\subsubsection{Discovering group factors: disentangled symmetries}
+A line of work frames symmetry discovery as learning not only the group but also its decomposition into independent factors, a form of disentangled discovery \citep{higgins2018}.
+\citet{cohen2014} propose a probabilistic model that learns irreducible representations for compact commutative Lie groups, in particular the toroidal subgroups of $SO(D)$.
+In the context of dynamic environments where observations are paired with transformations, \citet{quessard2020anips} addresses disentanglement by a sparsity regularizer that encourages each symmetry generator to act on as few latent dimensions as possible, thereby identifying a block-diagonal structure in the representation.
+\citet{sanborn2022} introduce Bispectral Neural Networks, which learn a Fourier basis for compact groups and \citet{ennes2025fcm} tackle the problem from a geometric perspective: given a point cloud sampled from orbits of a compact Lie group, their \textit{LieDetect} algorithm estimates the Lie algebra via a PCA-like operator and projects onto the closest valid Lie algebra for a set of candidate groups ($SO(2)$, $T^d$, $SU(2)$, $SO(3)$), with theoretical stability guarantees given in terms of Wasserstein distances.
+
+\subsubsection{Discovery from task-trained models}
+Here the symmetry is recovered from a model fitted to a task, either extracted post hoc or learned jointly as a parameter.
 \citet{krippendorf2020} bet on the fact that a classifier trained on symmetric data will collapse symmetry-related inputs to nearby positions in the embedding layer and exploit this by performing linear regression on pairs of proximate embedding points to extract infinitesimal generators, effectively reading the symmetry off the network's representations.
 \citet{vanderwilk2018anips} incorporate invariance desiderata directly into the prior of a Gaussian Process by constructing an invariant kernel that averages over an orbit of transformations; the parameters of these transformations are then learned end-to-end by maximizing the marginal likelihood, which naturally penalizes complexity and avoids overfitting to spurious symmetries.
 \citet{wieser2020anips} employ an autoencoder framework in which the latent space is partitioned into a property-sensitive and a property-invariant subspace, with a mutual information regularizer enforcing that the invariant subspace carries no information about a target quantity.
