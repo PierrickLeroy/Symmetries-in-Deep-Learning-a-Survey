@@ -2123,7 +2123,17 @@ An early machine learning approach by \citet{rao1998anips} framed invariance dis
 
 
 \subsubsection{Generative approaches, data distribution symmetry}
-\citet{desai2022prd} introduce a GAN-based framework, where the generator learns maps that preserve the data distribution relative to a reference, formalizing a statistical notion of symmetry.
+To statistically define symmetry of a probability density function $p$, \citet{desai2022prd} note that for a candidate symmetry $g$, the naive pdf-preserving condition $p(X=gx)|J_g(x)|=p(X=x)$ allows spurious symmetries.
+They strengthen the definition by introducing a reference distribution $p_I$: $g$ is a symmetry only if it is pdf-preserving for both $p$ and $p_I$.
+Taking $p_I$ uniform as a canonical choice amounts to constraining $g$ to equiareal maps i.e.\ $|J_g(x)|=1$.
+Their \emph{symmetry GAN} restricts its generator to linear equiareal maps, since no parametrization exists for general equiareal maps, and learns to map real data to linearly modified versions of it by optimizing
+\begin{equation*}
+    \mathcal{L}[g,D] = -\sum_{i=1}^{N}\Big[\log D(x_i) + \log\big(1-D(g(x_i))\big)\Big],
+\end{equation*}
+where $D$ is the discriminator
+Unlike in a standard GAN, the same samples enter both terms.
+
+
 \citet{yang2023p4icml} propose \textit{LieGAN}, where a generator learns a Lie algebra basis $\{A_i\}$ such that transformations of the form $\exp(\sum_i w_i A_i)$ preserve the data distribution, with an additional discriminator enforcing \textit{distribution matching}, while regularizers on the generators prevent both identity collapse and redundancy among the learned basis elements.
 
 

@@ -93,5 +93,5 @@ $\rho_{\mathcal{X}}$, which is heavy and non-standard.
 - `\citet{}` when the work is the grammatical subject
   ("\citet{cohen2016} showed…"); `\citep{}` when parenthetical or appositive
   ("Spherical CNNs \citep{cohen2018} use…").
-- LaTeX quotes ` ``…'' `, em-dashes `---`, `\emph{}` for emphasis (no
+- LaTeX quotes ` ``…'' `, no em-dashes `---`, `\emph{}` for emphasis (no
   markdown asterisks).
