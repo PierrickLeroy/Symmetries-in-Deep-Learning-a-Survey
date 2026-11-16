@@ -2172,7 +2172,9 @@ A line of work frames symmetry discovery as learning not only the group but also
 \citet{cohen2014} propose a probabilistic model that learns irreducible representations for compact commutative Lie groups, in particular the toroidal subgroups of $SO(D)$.
 In the context of dynamic environments where observations are paired with transformations, \citet{quessard2020anips} address disentanglement with a sparsity regularizer that encourages each symmetry generator to act on as few latent dimensions as possible, thereby identifying a block-diagonal structure in the representation.
 \citet{sanborn2022} introduce Bispectral Neural Networks, which learn a Fourier basis (irreducible representations) for compact commutative groups, from which the Cayley table can be read off.
-\citet{ennes2025fcm} tackle the problem from a geometric perspective: given a point cloud sampled from orbits of a compact Lie group, their \textit{LieDetect} algorithm estimates the Lie algebra via a PCA-like operator and projects onto the closest valid Lie algebra for a set of candidate groups ($SO(2)$, $T^d$, $SU(2)$, $SO(3)$), with theoretical stability guarantees given in terms of Wasserstein distances.
+\citet{ennes2025fcm} tackle the problem from a geometric perspective: given a candidate compact Lie group $G$ and a point cloud $X\subset \mathbb R^n$ sampled on or close to an orbit $\mathcal O$ of $G$, their \textit{LieDetect} algorithm outputs a representation of $G$ in $GL(n)$ as direct sum of irreducible representations by first identifying infinitesimal symmetries in $\mathcal O$ via a PCA-like operator and projecting onto the closest valid Lie algebra of $G$.
+While the algorithm recipe is general, it is implemented for a the groups $SO(2)$, $T^d$, $SU(2)$ and $SO(3)$.
+Theoretical stability guarantees given in terms of Wasserstein distances.
 
 
 \subsubsection{Caveat}
