@@ -2132,9 +2132,8 @@ Their \emph{symmetry GAN} restricts its generator to linear equiareal maps, sinc
 \end{equation*}
 where $D$ is the discriminator
 Unlike in a standard GAN, the same samples enter both terms.
-
-
-\citet{yang2023p4icml} propose \textit{LieGAN}, where a generator learns a Lie algebra basis $\{A_i\}$ such that transformations of the form $\exp(\sum_i w_i A_i)$ preserve the data distribution, with an additional discriminator enforcing \textit{distribution matching}, while regularizers on the generators prevent both identity collapse and redundancy among the learned basis elements.
+\citet{yang2023p4icml} propose \textit{LieGAN}, where a generator learns a Lie algebra basis $\{A_i\}$ such that transformations of the form $\exp(\sum_i w_i A_i)$ preserve the data distribution, guaranteed by the minimax objective of the GAN which minimizes the Jensen-Shannon (JS) divergence $D_{\text{JS}}(p\,\Vert{}\, p_g)$ between $p$ and its pushforward $p_g$.
+Additionally, regularizers are introduce to prevent (i) trivial solutions and identity collapse by penalizing $\mathrm{Sim}(g(x,y), (x,y))$ with $\mathrm{Sim}:\mathcal{X} \times \mathcal{Y}$ a similarity function and (ii) redundancy in generators by penalizing cosine similarity $\mathrm{CoSim}(L_i, L_j)$ for $i\neq j$ to favor orthogonal spanning of the tangent space.
 
 
 \subsubsection{Discovery from task-trained models}
