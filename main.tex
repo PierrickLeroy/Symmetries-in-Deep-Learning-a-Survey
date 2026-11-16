@@ -2022,10 +2022,11 @@ As a whole, the section is mainly \emph{descriptive}.
 In this part, the symmetry is carried by the ground truth $f^*$ or, less frequently, the data distribution $p$ or a single data point, and must be identified from finitely many samples.
 This can be contrasted on the explicitness axis (\Cref{tab:taxonomy}) with automated DA (\Cref{par:auto-da}), where an augmentation policy only produces training examples, leaving the symmetry \emph{implicit}.
 Discovery instead makes the symmetry \emph{explicit}, as an interpretable, reusable object for a downstream inductive bias, augmentation or diagnostic.
-Some works merge discovery with EDL into a single pipeline that discovers and enforces the symmetry, the model becoming more equivariant as evidence for it accumulates \citep{benton2020anips,ouderaa2022,otto2025,escriche2025}.
+Some works merge discovery with EDL into a single pipeline that discovers and enforces the symmetry, the model becoming more equivariant as evidence for it accumulates \citep{benton2020anips,otto2025,escriche2025}.
 Formally, given samples $(x_i,y_i)\sim p$, one seeks a group $G$ acting by $g\cdot(x,y)=(\rho_X(g)x,\rho_Y(g)y)$.
-Generative approaches test the stronger condition $p\circ g^{-1}=p$; most works however target only the equivariance of $f^*$, $f^*(\rho_X(g)x)=\rho_Y(g)f^*(x)$.
-Since the trivial group $\{e\}$ always qualifies, works add regularizers favoring large groups or entropy maximization to rule it out \citep{benton2020anips,yang2023p4icml,escriche2025}.
+Generative approaches test the stronger condition $p\circ g^{-1}=p$; most works however target the equivariance of $f^*$, $f^*(\rho_X(g)x)=\rho_Y(g)f^*(x)$.
+Since the trivial group $\{e\}$ always qualifies, works add regularizers to favor larger groups \citep{benton2020anips,yang2023p4icml,escriche2025}.
+Weaker forms of discovery include estimating the range or level of a symmetry \citep{benton2020anips,ouderaa2022}.
 
  
 
@@ -2034,13 +2035,7 @@ The problem of detecting symmetries from finite data is not new and early works 
 \citet{highnam1985} and \citet{wolter1985tvc} provided algorithms for finding all rotational and reflective symmetries of planar and three-dimensional point sets.
 An early machine learning approach by \citet{rao1998anips} framed invariance discovery in visual perception (problem locus) as learning Lie group operators from infinitesimally transformed image patches via an unsupervised Bayesian algorithm.
 
-\subsubsection{Continuous symmetries}
-
-Continuous symmetries benefit from the smooth structure of Lie groups and are usually approached by parameterizing transformations through their Lie algebra and the matrix exponential map \citep{benton2020anips,ouderaa2022}.
-Estimation of the Lie algebra by learning a basis of infinitesimal generators from data is proposed by  \citet{dehmamy2021anips,yang2023p4icml}.
-Additionally, regularization terms can be put on Lie generators \citep{escriche2025} to prevent collapse.
-
-\subsubsection{Generative approaches, data disribution symmetry}
+\subsubsection{Generative approaches, data distribution symmetry}
 \citet{desai2022prd} introduce a GAN-based framework, where the generator learns maps that preserve the data distribution relative to a reference, formalizing a statistical notion of symmetry.
 \citet{yang2023p4icml} propose \textit{LieGAN}, where a generator learns a Lie algebra basis $\{A_i\}$ such that transformations of the form $\exp(\sum_i w_i A_i)$ preserve the data distribution, with an additional discriminator forcing \textit{distribution-matching} while regularizers on the generators prevent both identity collapse and redundancy of learning basis elements.
 
@@ -2048,19 +2043,23 @@ Additionally, regularization terms can be put on Lie generators \citep{escriche2
 A line of work frames symmetry discovery as learning not only the group but also its decomposition into independent factors, a form of disentangled discovery \citep{higgins2018}.
 \citet{cohen2014} propose a probabilistic model that learns irreducible representations for compact commutative Lie groups, in particular the toroidal subgroups of $SO(D)$.
 In the context of dynamic environments where observations are paired with transformations, \citet{quessard2020anips} addresses disentanglement by a sparsity regularizer that encourages each symmetry generator to act on as few latent dimensions as possible, thereby identifying a block-diagonal structure in the representation.
-\citet{sanborn2022} introduce Bispectral Neural Networks, which learn a Fourier basis for compact commutative groups and \citet{ennes2025fcm} tackle the problem from a geometric perspective: given a point cloud sampled from orbits of a compact Lie group, their \textit{LieDetect} algorithm estimates the Lie algebra via a PCA-like operator and projects onto the closest valid Lie algebra for a set of candidate groups ($SO(2)$, $T^d$, $SU(2)$, $SO(3)$), with theoretical stability guarantees given in terms of Wasserstein distances.
+\citet{sanborn2022} introduce Bispectral Neural Networks, which learn a Fourier basis (irreducible representations) for compact commutative groups, from which the Cayley table can be read off.
+\citet{ennes2025fcm} tackle the problem from a geometric perspective: given a point cloud sampled from orbits of a compact Lie group, their \textit{LieDetect} algorithm estimates the Lie algebra via a PCA-like operator and projects onto the closest valid Lie algebra for a set of candidate groups ($SO(2)$, $T^d$, $SU(2)$, $SO(3)$), with theoretical stability guarantees given in terms of Wasserstein distances.
 
 \subsubsection{Discovery from task-trained models}
-
 Here the symmetry is recovered from a model fitted to a task, either extracted post hoc or learned jointly as a parameter.
+
+\paragraph{Continuous symmetries}
+Continuous symmetries benefit from the smooth structure of Lie groups and \citet{dehmamy2021anips} learns a Lie algebra basis.
+Additionally, regularization terms can be put on Lie generators \citep{escriche2025} to prevent collapse.
 \citet{krippendorf2020} bet on the fact that a classifier trained on symmetric data will collapse symmetry-related inputs to nearby positions in the embedding layer and exploit this by performing linear regression on pairs of proximate embedding points to extract infinitesimal generators, effectively reading the symmetry off the network's representations.
 \citet{vanderwilk2018anips} incorporate invariance desiderata directly into the prior of a Gaussian Process by constructing an invariant kernel that averages over an orbit of transformations; the parameters of these transformations are then learned end-to-end by maximizing the marginal likelihood, which naturally penalizes complexity and avoids overfitting to spurious symmetries.
 \citet{wieser2020anips} employ an autoencoder framework in which the latent space is partitioned into a property-sensitive and a property-invariant subspace, with a mutual information regularizer enforcing that the invariant subspace carries no information about a target quantity.
 \citet{dehmamy2021anips} introduce Lie Algebra Convolutional Networks (L-conv), whose layers make the Lie algebra basis itself a learnable parameter allowing discovery at a non-negligible computational cost.
 \citet{ouderaa2024} take a physics-inspired approach via Noether's theorem: they parameterize symmetries as quadratic conserved quantities of a Hamiltonian system and learn them by maximizing a variational lower bound.
 
-Discrete symmetries can be approached through search over parameter-sharing schemes \citep{zhou2021,yeh2022p2icais} or learned irreducible representations, from which the Cayley table can be read off~\citep{sanborn2022}.
-% Parameter-Sharing Schemes
+\paragraph{Parameter-Sharing schemes for discrete groups}
+Discrete symmetries can be approached through search over parameter-sharing schemes \citep{zhou2021,yeh2022p2icais}.
 A layer's equivariance to a discrete group is determined by which weight entries are shared, so the problem of symmetry discovery can be framed as learning the partition of weights into equivalence classes; factorizing the weight space into structural (the parameter-sharing scheme) and value (the actual shared parameters) components.
 \citet{zhou2021} apply the idea in a multitask scenario via a reparameterization of a linear layer $W\in \mathbb R^{mn}$ as $\mathrm{vec}(W) = Uv$, where their \emph{symmetry matrix} $U\in \mathbb R^{mn\times k}$ encoding the sharing pattern is optimized in a meta-learning outer loop while $v\in \mathbb R^k$ contains learned coefficients that adapt per task.
 They prove that this factorization can represent equivariance to any finite group and they learn translation, rotation and flip patterns in $U$.
@@ -2476,7 +2475,8 @@ Note that these symmetries are to be distinguished from the (passive) permutatio
 
 On the implementation side, two enforcement mechanisms recur and possibly co-occur.
 A \emph{relaxed architecture} loosens the weight-sharing constraint so the layer is no longer forced to $\epsilon=0$ while a \emph{soft penalty} instead leaves the model class unconstrained but adds a penalty (or a prior) that discourages large deviations.
-A relaxed architecture is rarely sufficient on its own, since ordinary training favours the less constrained model and must be nudged back towards symmetry \citep{ouderaa2022,wang2022p3icml}---in the Bayesian case this can be done directly through the prior \citep{vanderwilk2018anips,ouderaa2023}.
+A relaxed architecture is rarely sufficient on its own, since ordinary training favours the less constrained model and must be nudged back towards symmetry \citep{ouderaa2022,wang2022p3icml}.
+In the Bayesian case this can be done directly through the prior \citep{vanderwilk2018anips,ouderaa2023}.
 In one sentence: \emph{a relaxed architecture trained with a soft penalty yields an approximately equivariant function}, where the two mechanisms need not co-occur.
 
 \subsubsection{Why tolerate}\label{sec:approx-why-tolerate}
