@@ -1999,6 +1999,8 @@ The program laid out by \citet{marchetti2025a} translates deep learning question
 For example, the dimension of the closure of the neuromanifold is maximal (equal to the number of parameters) if and only if the model is finitely identifiable for homogeneous PNNs \citep{usevich2025}.
 While the polynomial setting is restrictive, it still approximates a broad class of functions, and represents an idealized yet analytically tractable middle ground similarly to infinite-width regimes.
 
+
+
 \section{Symmetry as an Unknown: Symmetry Discovery}\label{sec:sym-disco}
 The previous sections typically assumed \emph{known} symmetries; here the symmetry is a priori \emph{unknown}, to be recovered or its validity assessed rather than imposed (\Cref{sec:design-principle}) or understood (\Cref{sec:parameter-space-symmetries}).
 Quantification (\Cref{sec:sym-quantification}) actually lies at the boundary between \emph{known} and \emph{unknown}: one starts with a candidate symmetry and how much it holds is what is measured.\newline
@@ -2010,6 +2012,7 @@ The motivation is practical: supplying the a priori knowledge that equivariant d
 Unlike in \Cref{sec:parameter-space-symmetries}, $G$ acts on the pair $(\mathcal X,\mathcal Y)$, not on $\Theta$.
 \pnote{Its motivation is more theoretical: the symmetries a network implicitly learns reveal its behavior and inductive biases.}
 As a whole, the section is mainly \emph{descriptive}.
+
 
 \subsection{Symmetry Discovery at the problem level}\label{sec:sym-disc-from-data}
 % hu2025nn seems similar to krippendorf2020
@@ -2028,34 +2031,33 @@ Generative approaches test the stronger condition $p\circ g^{-1}=p$; most works 
 Since the trivial group $\{e\}$ always qualifies, works add regularizers to favor larger groups \citep{benton2020anips,yang2023p4icml,escriche2025}.
 Weaker forms of discovery include estimating the range or level of a symmetry \citep{benton2020anips,ouderaa2022}.
 
- 
 
 \subsubsection{Seminal works, data level}
 The problem of detecting symmetries from finite data is not new and early works extract the symmetries of one shape (data point locus), not of a distribution or a target function.
 \citet{highnam1985} and \citet{wolter1985tvc} provided algorithms for finding all rotational and reflective symmetries of planar and three-dimensional point sets.
 An early machine learning approach by \citet{rao1998anips} framed invariance discovery in visual perception (problem locus) as learning Lie group operators from infinitesimally transformed image patches via an unsupervised Bayesian algorithm.
 
+
 \subsubsection{Generative approaches, data distribution symmetry}
 \citet{desai2022prd} introduce a GAN-based framework, where the generator learns maps that preserve the data distribution relative to a reference, formalizing a statistical notion of symmetry.
 \citet{yang2023p4icml} propose \textit{LieGAN}, where a generator learns a Lie algebra basis $\{A_i\}$ such that transformations of the form $\exp(\sum_i w_i A_i)$ preserve the data distribution, with an additional discriminator forcing \textit{distribution-matching} while regularizers on the generators prevent both identity collapse and redundancy of learning basis elements.
 
-\subsubsection{Discovering group factors: disentangled symmetries}
-A line of work frames symmetry discovery as learning not only the group but also its decomposition into independent factors, a form of disentangled discovery \citep{higgins2018}.
-\citet{cohen2014} propose a probabilistic model that learns irreducible representations for compact commutative Lie groups, in particular the toroidal subgroups of $SO(D)$.
-In the context of dynamic environments where observations are paired with transformations, \citet{quessard2020anips} addresses disentanglement by a sparsity regularizer that encourages each symmetry generator to act on as few latent dimensions as possible, thereby identifying a block-diagonal structure in the representation.
-\citet{sanborn2022} introduce Bispectral Neural Networks, which learn a Fourier basis (irreducible representations) for compact commutative groups, from which the Cayley table can be read off.
-\citet{ennes2025fcm} tackle the problem from a geometric perspective: given a point cloud sampled from orbits of a compact Lie group, their \textit{LieDetect} algorithm estimates the Lie algebra via a PCA-like operator and projects onto the closest valid Lie algebra for a set of candidate groups ($SO(2)$, $T^d$, $SU(2)$, $SO(3)$), with theoretical stability guarantees given in terms of Wasserstein distances.
 
 \subsubsection{Discovery from task-trained models}
 Here the symmetry is recovered from a model fitted to a task, either extracted post hoc or learned jointly as a parameter.
 
 \paragraph{Continuous symmetries}
-Continuous symmetries benefit from the smooth structure of Lie groups and \citet{dehmamy2021anips} learns a Lie algebra basis.
+Continuous symmetries benefit from the smooth structure of Lie groups and \citet{dehmamy2021anips} introduce Lie Algebra Convolutional Networks (L-conv), whose layers make Lie algebra generators $n_L$ (a hyperparameter) learnable matrix parameters allowing joint discovery by training L-conv layers:
+\begin{equation}
+    \begin{aligned}
+        f \in \mathbb R^{d\times m} &\mapsto f\,W^{0\top} + \sum_{i=1}^{n_L} \hat L_i\, f\, W^i, \qquad \hat L_i \in \mathbb R^{d\times d},\; W^i \in \mathbb R^{m\times m'}.
+    \end{aligned}
+\end{equation}
+For large dimension $d$, the $d\times d$ matrices $\hat L_i$ can be factored.
 Additionally, regularization terms can be put on Lie generators \citep{escriche2025} to prevent collapse.
 \citet{krippendorf2020} bet on the fact that a classifier trained on symmetric data will collapse symmetry-related inputs to nearby positions in the embedding layer and exploit this by performing linear regression on pairs of proximate embedding points to extract infinitesimal generators, effectively reading the symmetry off the network's representations.
 \citet{vanderwilk2018anips} incorporate invariance desiderata directly into the prior of a Gaussian Process by constructing an invariant kernel that averages over an orbit of transformations; the parameters of these transformations are then learned end-to-end by maximizing the marginal likelihood, which naturally penalizes complexity and avoids overfitting to spurious symmetries.
 \citet{wieser2020anips} employ an autoencoder framework in which the latent space is partitioned into a property-sensitive and a property-invariant subspace, with a mutual information regularizer enforcing that the invariant subspace carries no information about a target quantity.
-\citet{dehmamy2021anips} introduce Lie Algebra Convolutional Networks (L-conv), whose layers make the Lie algebra basis itself a learnable parameter allowing discovery at a non-negligible computational cost.
 \citet{ouderaa2024} take a physics-inspired approach via Noether's theorem: they parameterize symmetries as quadratic conserved quantities of a Hamiltonian system and learn them by maximizing a variational lower bound.
 
 \paragraph{Parameter-Sharing schemes for discrete groups}
@@ -2067,8 +2069,18 @@ They prove that this factorization can represent equivariance to any finite grou
 Parameters are shared when $A$ is not a permutation matrix.
 They jointly learn $\tilde \theta$ and meta-learn $A$ on a validation set; when $n$ discourages combinatorial search, they relax $A\in [0,1]^{n\times n}$ and add regularizers: an entropy term $H(A) = -\sum_{i,j} A_{ij}\log A_{ij}$ to push values close to $\{0,1\}$ and nuclear norm $\|A\|_*$ encouraging low-rank hence sharing.
 
+
+\subsubsection{Discovering group factors: disentangled symmetries}
+A line of work frames symmetry discovery as learning not only the group but also its decomposition into independent factors, a form of disentangled discovery \citep{higgins2018}.
+\citet{cohen2014} propose a probabilistic model that learns irreducible representations for compact commutative Lie groups, in particular the toroidal subgroups of $SO(D)$.
+In the context of dynamic environments where observations are paired with transformations, \citet{quessard2020anips} addresses disentanglement by a sparsity regularizer that encourages each symmetry generator to act on as few latent dimensions as possible, thereby identifying a block-diagonal structure in the representation.
+\citet{sanborn2022} introduce Bispectral Neural Networks, which learn a Fourier basis (irreducible representations) for compact commutative groups, from which the Cayley table can be read off.
+\citet{ennes2025fcm} tackle the problem from a geometric perspective: given a point cloud sampled from orbits of a compact Lie group, their \textit{LieDetect} algorithm estimates the Lie algebra via a PCA-like operator and projects onto the closest valid Lie algebra for a set of candidate groups ($SO(2)$, $T^d$, $SU(2)$, $SO(3)$), with theoretical stability guarantees given in terms of Wasserstein distances.
+
+
 \subsubsection{Caveat}
 Despite the appeal of symmetry discovery as a path around the symmetry bottleneck or as a diagnostic tool, \citet{rath2024air} caution that while discovery is valuable when prior knowledge is unavailable or hard to specify, automatically learned symmetries are generally unable to outperform models whose equivariance is correctly specified by design and misspecification can degrade performances as seen in \Cref{sec:edl-tradeoffs}.
+
 
 
 \subsection{Symmetry Extraction from Learned Models}\label{sec:sym-extract-model}
