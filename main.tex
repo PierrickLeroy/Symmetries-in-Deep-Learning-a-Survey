@@ -2133,7 +2133,7 @@ Their \emph{symmetry GAN} restricts its generator to linear equiareal maps, sinc
 where $D$ is the discriminator
 Unlike in a standard GAN, the same samples enter both terms.
 \citet{yang2023p4icml} propose \textit{LieGAN}, where a generator learns a Lie algebra basis $\{A_i\}$ such that transformations of the form $\exp(\sum_i w_i A_i)$ preserve the data distribution, guaranteed by the minimax objective of the GAN which minimizes the Jensen-Shannon (JS) divergence $D_{\text{JS}}(p\,\Vert{}\, p_g)$ between $p$ and its pushforward $p_g$.
-Additionally, regularizers are introduce to prevent (i) trivial solutions and identity collapse by penalizing $\mathrm{Sim}(g(x,y), (x,y))$ with $\mathrm{Sim}:\mathcal{X} \times \mathcal{Y}$ a similarity function and (ii) redundancy in generators by penalizing cosine similarity $\mathrm{CoSim}(L_i, L_j)$ for $i\neq j$ to favor orthogonal spanning of the tangent space.
+Additionally, regularizers are introduce to (i) prevent trivial solutions and identity collapse by penalizing $\mathrm{Sim}(g(x,y), (x,y))$ with $\mathrm{Sim}:\mathcal{X} \times \mathcal{Y}$ a similarity function and (ii) favor orthogonal spanning of the tangent space by penalizing cosine similarity $\mathrm{CoSim}(L_i, L_j)$ for $i\neq j$.
 
 
 \subsubsection{Discovery from task-trained models}
@@ -2148,7 +2148,7 @@ Continuous symmetries benefit from the smooth structure of Lie groups.
     \end{aligned}
 \end{equation}
 For large dimension $d$, the $d\times d$ matrices $\hat L_i$ can be factored.
-Additionally, regularization terms can be put on Lie generators \citep{escriche2025} to prevent collapse.
+Additionally, regularization terms can be put on Lie generators, \citep{escriche2025} uses three of them: the same non-trivial and orthonormal penalties as \citet{yang2023p4icml} and an additional sparsity term $\sum_{i=1}|L_{i}|$ (entrywise $l_1$ penalty).
 A post hoc method is proposed by \citet{krippendorf2020}.
 They bet on the fact that a classifier trained on $G$-invariant data will cluster symmetry-related inputs more tightly than generic same-class points, so that orbits can be read off the network's representations.
 They exploit this by sampling thickened 2D plane $\Pi_\delta$ in embedding space and collect all close pairs $x,x'\in\Pi_\delta$ with $\|x-x'\|<\epsilon$ inside a cluster.
