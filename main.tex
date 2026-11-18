@@ -2210,9 +2210,12 @@ Similarly to the setup of \Cref{sec:disco-task-trained}, they train networks on 
 A secondary classifier can be trained to recover from the penultimate representations the symmetry group of the data from ($O(2)$, $\mathbb{Z}_2$, $T$, $T_n$ or $\emptyset$) largely above chance.
 Symmetry is thus learned, since a structure that can be decoded must have been represented.
 
-These existence results leave open \emph{when} learning succeeds, a question that can be approached through training regimes.
-In the lazy (NTK) regime, \citet{perin2025} prove a negative result: generalization to a held-out orbit point is governed entirely by local kernel geometry through the spectral ratio $\epsilon_s = \lambda_N^{-1}/\langle\lambda^{-1}\rangle$ (class separation versus orbit density), with no mechanism to transport a symmetry.
-Concretely, they illustrate that rotation poses seen only on some classes cannot be extrapolated to other classes with missing poses in the training set: if not hard-coded, the symmetry is not discovered.
+These existence results leave open \emph{when} learning succeeds, a question that must consider training regimes.
+In the lazy (NTK), infinite-width regime, \citet{perin2025} prove a negative result showing that generalization to a held-out orbit point is governed entirely by local kernel geometry.
+They study kernel regression on symmetric datasets such as two parallel $C_N$ orbits at distance $\Delta$, where one of them is further rotated by $\pi/2N$. Each orbit represents a class.
+The Gram matrix $K=k(x_i, x_j) \in \mathbb R^{2N\times 2N}$ of various models (RBF, MLP, CNNs) is circulant or close to circulant in that case, allowing them to find a simple expression for the error on a held-out point picked on one of the orbits; $\epsilon_s=\frac{\lambda_N^{-1}}{\left\langle \lambda^{-1}\right\rangle}$, where $\lambda_N$ is the eigenvalue of the highest frequency of $K$.
+They then show that $\epsilon_s$ is a decreasing function of $\Delta$ and $N$: the more separated (high $\Delta$) and densily sampled (high $N$) orbits are, the lower the error and find no mechanism to transport a symmetry.
+Their result holds empirically on rotated MNIST poses, symmetries is not extrapolated to other classes with missing poses in the training set unless $N$ is high enough.
 This places symmetry learning in the feature-learning regime.
 In the active (feature-learning) regime, \citet{jacot2025} establish a positive counterpart: depth lets a network learn compositions $f_\theta = h \circ q$, and when the target is $G$-invariant the inner map $q$ can play the role of the quotient map $\pi:\mathbb{R}^{d_{\mathrm{in}}} \to \mathbb{R}^{d_{\mathrm{in}}}/G$ (\Cref{def:quotient}).
 
