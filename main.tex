@@ -615,7 +615,7 @@ For finite groups acting by permutations, equivariance amounts to weight-tying: 
 \emph{Clifford (geometric) algebras} yield equivariant models such as the $E(n)$-equivariant CGENN \citep{ruhe2023} and the $E(3)$-equivariant transformer GATr \citep{brehmer2023}.
 
 Other approaches include \emph{invariant-feature construction} from distances or inner products, \textit{e.g.}\ EGNN \citep{satorras2021p3icml} and ``scalars are universal'' \citep{villar2021anips}.
-\emph{Loss regularization} keeps the group but loosens the constraint, yielding only approximate (soft) equivariance (\Cref{sec:soft-equivariance}).
+\emph{Loss regularization} keeps the group but loosens the constraint, yielding only approximate (soft) equivariance (\Cref{sec:approx-tolerance}).
 \emph{Symmetrization} wraps an arbitrary backbone $f$, \textit{e.g.}\ by canonicalization \citep{kaba2023p4icml} or group/frame averaging \citep{puny2021} with the Reynolds operator $(\mathcal{R}f)(x)=\frac{1}{|G|}\sum_{g\in G}\rho_Y(g)^{-1}f(\rho_X(g)\,x)$, which maps any $f$ to an equivariant one (an integral replaces the sum for compact $G$).
 
 \paragraph{Euclidean symmetries}
@@ -816,7 +816,7 @@ This creates a bottleneck for three reasons.
     \item \textbf{Inflexibility}: once a symmetry is hard-coded into the architecture, the model cannot adapt if the assumptions are wrong.
     Many real-world datasets only approximately satisfy a given symmetry, for instance due to sensor noise, occlusions, or genuine symmetry breaking in the underlying phenomenon, and in that case strictly equivariant models may be over-constrained.
 \end{enumerate}
-These hurdles are addressed, respectively, by (1) symmetry discovery (\Cref{sec:sym-disc-from-data}), (2) general recipes addressing multiple groups at once \citep{ravanbakhsh2017p3icml,finzi2020p3icml,finzi2021p3icml,pearce-crump2023p4icml}, foundational approaches \citep{goel2025} or symmetrization of a backbone \citep{puny2021,kaba2023p4icml}, and (3) approximate soft-equivariance methods (\Cref{sec:soft-equivariance}).
+These hurdles are addressed, respectively, by (1) symmetry discovery (\Cref{sec:sym-disc-from-data}), (2) general recipes addressing multiple groups at once \citep{ravanbakhsh2017p3icml,finzi2020p3icml,finzi2021p3icml,pearce-crump2023p4icml}, foundational approaches \citep{goel2025} or symmetrization of a backbone \citep{puny2021,kaba2023p4icml}, and (3) approximate soft-equivariance methods (\Cref{sec:approx-tolerance}).
 
 \paragraph{To be or not to be}
 A practical question is whether the design cost, potential optimization difficulties and hardware inefficiency of less mature implementations are justified compared with a simpler model, possibly trained with data augmentation.
@@ -985,7 +985,7 @@ A common way to generate views is through data augmentation: for $x\sim\mathcal{
 This setup carries a double (often inexact) symmetry:
 \begin{enumerate}
     \item A target invariance $f_{\theta_i}(t_1x)=f_{\theta_i}(t_2x)$ of the implemented encoder functions (parameter-level in \Cref{fig:sym-loci}).
-    Involving data transformations, it is conceptually close to DA (\Cref{sec:data-augmentation}) and soft penalties (\Cref{sec:soft-equivariance}).
+    Involving data transformations, it is conceptually close to DA (\Cref{sec:data-augmentation}) and soft penalties (\Cref{sec:approx-tolerance}).
     In contrast with DA, which is typically a supervised approach focusing on the invariance of the $(x,y)$ mapping, this symmetry focuses on the invariance of the representation.
     This symmetry is the end goal: ultimately we want $f_\theta$ to be invariant to $\mathcal{T}$.
     \item A \emph{branch symmetry} in the training protocol: the objective is invariant under swapping the two branches $(\theta_1,t_1)\leftrightarrow(\theta_2,t_2)$.
@@ -2136,8 +2136,9 @@ Unlike in a standard GAN, the same samples enter both terms.
 Additionally, regularizers are introduce to (i) prevent trivial solutions and identity collapse by penalizing $\mathrm{Sim}(g(x,y), (x,y))$ with $\mathrm{Sim}:\mathcal{X} \times \mathcal{Y}$ a similarity function and (ii) favor orthogonal spanning of the tangent space by penalizing cosine similarity $\mathrm{CoSim}(L_i, L_j)$ for $i\neq j$.
 
 
-\subsubsection{Discovery from task-trained models}
+\subsubsection{Discovery from task-trained models}\label{sec:disco-task-trained}
 Here the symmetry is recovered from a model fitted to a task, either extracted post hoc or learned jointly as a parameter.
+The working assumption is that leveraging data symmetries is useful so models, often equipped with dedicated symmetry modules, will absorb the correct symmetry present in its data.
 
 \paragraph{Continuous symmetries}
 Continuous symmetries benefit from the smooth structure of Lie groups.
@@ -2193,19 +2194,22 @@ Misspecification can also degrade performance, as seen in \Cref{sec:edl-tradeoff
 
 \subsection{Symmetry Extraction from Learned Models}\label{sec:sym-extract-model}
 Moving from the problem or data to the \emph{parameter} locus, extraction refers to a post-hoc diagnostic on a trained network: the symmetries are those of the implemented function $f_\theta$ at a given $\theta$.
-\Cref{sec:disco-capability} first asks whether a network not hard-coding $G$ can learn it at all, i.e.\ whether a symmetry of $f^*$ or $p$ transfers to $f_\theta$ (\Cref{fig:sym-loci}), which requires an expressive enough architecture and that such features are learnable.
+\Cref{sec:disco-capability} first asks whether networks can learn symmetries at all, i.e.\ whether a symmetry of $f^*$ or $p$ transfers to $f_\theta$ (\Cref{fig:sym-loci}), which requires an expressive enough architecture and that such features are learnable.
 \Cref{sec:disco-identification} is discovery proper, with the least a priori knowledge: $\theta$ is studied in isolation and the group, or its Lie-algebra generators, is read off $f_\theta$.
 \Cref{sec:sym-quantification} starts with more a priori knowledge: the transformation is given, and what is measured is the tolerance $\epsilon$ up to which $f_\theta$ respects it, i.e.\ the degree of \emph{approximate} symmetry.
 
 
 \subsubsection{Capability}\label{sec:disco-capability}
 % lenc2014a: if the linear map exists but only one transformation at a time
-Before asking \emph{which} or \emph{how much} symmetry a model has acquired, a more basic question is: can a network whose architecture does \emph{not} hard-code a group $G$ incorporate, represent or learn symmetries at all, and under what conditions?
+Before asking \emph{which} or \emph{how much} symmetry a model has acquired, a more basic question is: can a network whose architecture does not hard-code a group $G$ incorporate, represent or learn symmetries, and how?
 \citet{olah2020d} give a mechanistic demonstration by inspecting \emph{circuits} (human-interpretable subgraphs) of a trained convolutional network.
 They find, with a combination of activation maximization and visual interpretation, clusters of ``equivariant'' neurons that respond to transformed variants (rotation, hue, scale) of the same feature.
 They then show how downstream circuits combine them to synthesize invariant units at deeper layers, i.e.\ invariance can be built compositionally from equivariant parts.
-\citet{barenboim2021sp} give a decodability argument: a network trained on a symmetry-agnostic decoy task nonetheless encodes the symmetry class of the data in its penultimate representations, which a secondary classifier recovers ($O(2)$, $\mathbb{Z}_2$, $T$, $T_n$ or $\emptyset$) largely above chance.
-Symmetry is thus learned in the absence of any explicit symmetry label, since a structure that can be decoded must have been represented.\newline
+\citet{barenboim2021sp} give a decodability argument.
+Similarly to the setup of \Cref{sec:disco-task-trained}, they train networks on pretext tasks containing an underlying symmetry such as binary classification $f_\theta: \mathbb{R}^2 \to \{0, 1\}$ predicting the foreground from the background on a single image of concentric circles ($O(2)$ action) from $(x,y)$ coordinates only.
+A secondary classifier can be trained to recover from the penultimate representations the symmetry group of the data from ($O(2)$, $\mathbb{Z}_2$, $T$, $T_n$ or $\emptyset$) largely above chance.
+Symmetry is thus learned, since a structure that can be decoded must have been represented.
+
 These existence results leave open \emph{when} learning succeeds, a question that can be approached through training regimes.
 In the lazy (NTK) regime, \citet{perin2025} prove a negative result: generalization to a held-out orbit point is governed entirely by local kernel geometry through the spectral ratio $\epsilon_s = \lambda_N^{-1}/\langle\lambda^{-1}\rangle$ (class separation versus orbit density), with no mechanism to transport a symmetry.
 Concretely, they illustrate that rotation poses seen only on some classes cannot be extrapolated to other classes with missing poses in the training set: if not hard-coded, the symmetry is not discovered.
@@ -2214,21 +2218,22 @@ In the active (feature-learning) regime, \citet{jacot2025} establish a positive 
 
 \subsubsection{Identification}\label{sec:disco-identification}
 Beyond proving that neural networks can represent symmetries, another challenge is to identify the symmetry a trained model has internalized: to recover the group acting on the data or, for continuous groups, the Lie-algebra generators.
-Two types of methods read the symmetry (1) off the network's representations or, more locally, (2) off its gradients.\newline
+Two types of methods read the symmetry (1) off the network's representations or, more locally, (2) off its gradients.
+
 The representational approach inspects what the trained model has stored.
 \citet{krippendorf2020} exploit the empirical observation that, when a classifier is trained on a label invariant under a group action such as the discretized value of a rotation-invariant potential $V(\|x\|)$, points on the same orbit collapse into clusters in the embedding layer that are tighter than generic same-class points.
 That is, if $(x_1, y_1)$, $(x_2, y_2)$, $(x_3, y_3)$ are three samples with the same label $y_1 = y_2 = y_3$ but only $x_1$ and $x_2$ lie on the same orbit, $x_2\in G\cdot x_1$, then the embedding distance $d(f_\theta^{(l)}(x_1), f_\theta^{(l)}(x_2))$ is expected to be smaller than $d(f_\theta^{(l)}(x_1), f_\theta^{(l)}(x_3))$.
 This clustering is used as a probe: orbit point clouds detected in embedding space are pulled back to the input space, and infinitesimal generators $A_a$ are recovered by linear regression on nearest-neighbor pairs $(x,x')$ under the first-order relation $x' \approx x + \epsilon_a A_a x$, yielding the $SO(n)$ and $SU(2)$ generators even from noisy, sparse point clouds.
 \citet{olah2020d} work one unit at a time: \emph{activation maximization} generates inputs that strongly excite neurons, and direct visual interpretation of this preferred stimulus names the feature it encodes.
 A group of neurons whose preferred stimuli are rotated, hue-shifted or rescaled copies of one feature is then read as an ``equivariant'' family.
-Tracing a neuron's activation along an orbit, a \emph{tuning curve}, further confirms the symmetry: a flat curve signals invariance while shifted curves indicate equivariance.\newline
+Tracing a neuron's activation along an orbit, a \emph{tuning curve}, further confirms the symmetry: a flat curve signals invariance while shifted curves indicate equivariance.
+
 The gradient approach achieves identification by a nullspace computation.
 Restricting to matrix Lie groups $G \leq GL(n,\mathbb{R})$, \citet{moskalev2023} (LieGG) read the trained network as a discriminator $F$ and invoke the criterion that a generator $A\in\mathbb{R}^{n\times n}$ is an infinitesimal symmetry if and only if $\sum_{i,j} \partial_{x_i} F(x)\,A_{ij}\, x_j = 0$ on the data, i.e.\ the Lie derivative of \Cref{sec:lie-algebra} vanishes.
 Stacking this constraint over the dataset $\mathcal{D}$ yields the \emph{network polarization matrix} $\mathcal{E} \in \mathbb{R}^{|\mathcal{D}| \times n^2}$, whose nullspace is the learned Lie algebra.
 In practice, the approximate nullspace is extracted from the right-singular vectors of $\mathcal{E}$ associated with near-zero singular values (SVD), the count of which gives the algebra's dimension.
 \citet{hu2025nn} (LieSD) follow the same SVD-nullspace philosophy but characterize \emph{equivariance} from inputs, outputs and gradients: for connected $G$, $f$ is $G$-equivariant if and only if $d\rho_Y(A_i)\,f(x) = \partial f(x)\,d\rho_X(A_i)\,x$ for every generator $A_i$, with invariance the special case $d\rho_Y = 0$.
 Assembling these constraints into a coefficient matrix, the zero singular values again count the Lie-algebra dimension and singular vectors are the generators.\newline
-Notably, both \citet{krippendorf2020} and \citet{hu2025nn} rely on the assumption that a sufficiently trained network absorbs the symmetry present in its data, so identifying the model's symmetry doubles as \emph{discovery} of the data's symmetry, closing the loop with \Cref{sec:sym-disc-from-data}.
 
 \subsubsection{Quantification}\label{sec:sym-quantification}
 % mention sensitivity analysis as the broader field that studies how the variation in the output of a model can be apportioned to different sources of variation in its inputs - see storm2024prl for an example of local sensitivity analysis applied to deep networks. Symmetry quantification could be likened to sensitivity analysis to specific directions in input space.
@@ -2237,14 +2242,15 @@ Notably, both \citet{krippendorf2020} and \citet{hu2025nn} rely on the assumptio
 % qu2024anips: sec 5.4 cosine similarity >0.99 for atom force prediction in a scaled non-equivariant model
 % wang2022p3icml: equivariance error (def 3.1)
 % elhag2026: equivariance metrics macro and micro averaging over group orbit (eq 8, eq 9)
-Once one knows or assumes \emph{which} symmetry a model should carry, the natural follow-up is \emph{how much} of it the model has actually learned.
+Once one knows or assumes the symmetry a model should carry, the natural follow-up is to quantify how much of it the model has actually learned.
 The works below share a common template: a transformation (or its infinitesimal generator) is assumed to be given, and one measures a notion of sensitivity of the model under it, assessing how well invariance or equivariance is respected.
-For this reason, this part could also belong to \Cref{sec:incomplete-symmetries}.\newline
-Among seminal works, \citet{goodfellow2009anips} define a neuron-level \emph{invariance score} $S(i) = r_{\mathrm{loc}}(i)/r_{\mathrm{glob}}(i)$, where the \emph{local firing rate} $r_{\mathrm{loc}}(i)$ is the fraction of transformed versions of a maximally activating input $z$ that still excite neuron $i$, and the \emph{global firing rate} $r_{\mathrm{glob}}(i) = \mathbb{E}_{x\sim P}[f_i(x)]$ measures indiscriminate firing under a random sampling $P$.
-A neuron scores high only if it tracks transformations of its preferred stimulus while staying silent on generic inputs, because the denominator enforces selectivity.
-A network-level score averages $S(i)$ over only the top-$p$ fraction of neurons in a layer, which permits a \emph{modular} detection in which one subpopulation specializes to rotation, another to translation or illumination.
+For this reason, this part could also belong to \Cref{sec:approx-tolerance}.
+
+The seminal work of \citet{goodfellow2009anips} defines a neuron-level \emph{invariance score} $S(i) = r_{\mathrm{loc}}(i)/r_{\mathrm{glob}}(i)$, where the \emph{local firing rate} $r_{\mathrm{loc}}(i)$ is the fraction of transformed versions of a maximally activating input $z$ that still excite neuron $i$, and the \emph{global firing rate} $r_{\mathrm{glob}}(i) = \mathbb{E}_{x\sim P}[f_i(x)]$ measures indiscriminate firing under a random sampling $P$.
+A neuron scores high only if it tracks transformations of its preferred stimulus while staying silent on generic inputs, the denominator enforcing selectivity.
+A network-level score averages $S(i)$ over only the top-$p$ fraction of neurons in a layer, which permits a modular detection in which one subpopulation specializes to rotation, another to translation or illumination.
 The score is parametrized by a \emph{type} $\tau$ (an action), a \emph{range} $\Gamma$ (a partial orbit, not necessarily the full one) and the sampling $P$: varying these parameters instantiates different tests under the same template, e.g.\ on video $\tau$ can be forward time-translation and $\Gamma$ the maximal number of frames skipped.
-Rather than measuring invariance directly, \citet{lenc2014a} test whether a learned representation $f_\theta^{(l)}$ is compatible with equivariance by fitting a linear map $M_g$ such that $M_g\,f_\theta^{(l)}(x) \approx f_\theta^{(l)}(gx)$, but only one transformation $g$ at a time.
+Rather than measuring invariance directly, \citet{lenc2014a} test whether a learned representation $f_\theta^{(l)}$ is compatible with equivariance by fitting a linear map $M_g$ such that $M_g\,f_\theta^{(l)}(x) \approx f_\theta^{(l)}(gx)$, though only one transformation $g$ at a time.
 This map is estimated by sparse regression with structured-sparsity constraints respecting the convolutional locality of $f_\theta^{(l)}$, making the problem tractable.
 Two quantifications are used: (i) the reconstruction error $\mathbb{E}_x[\|f_\theta^{(l)}(gx)-M_g f_\theta^{(l)}(x)\|]$ evaluates the goodness of fit, i.e.\ the degree of linear equivariance of a representation, and (ii) invariance is assessed by measuring how close $M_g$ is to the identity.
 In practice, they look at the off-diagonal weights of $M_g$ through the ratio $\frac{\|(M_g)_{i,:}\|_2}{\|(M_g)_{i,:}-(M_g)_{i,i}e_{i}^\top\|_2}$, where $e_{i}$ is the $i$-th canonical basis vector.
@@ -2252,9 +2258,9 @@ Applied layer-by-layer to AlexNet, it reveals that equivariance to geometric tra
 
 Among subsequent works, translation equivariance in CNNs is studied by \citet{zhang2019p3icml}, who track an internal feature distance $d\big(g(f_\theta^{(l)}(x)),\,f_\theta^{(l)}(gx)\big)$ under the translation $g$ across layers $l$, exposing how downsampling destroys shift-equivariance.
 A simple performance check is used by \citet{finzi2020p3icml} (App.~B.1): the prediction gap under a group transformation of the input, which is expected to vanish up to stochasticity and numerical approximation for a truly equivariant model.
-Logit-based scores sharpen this input-output analysis: \citet{hutchinson2021p3icml} report an \emph{invariance error} $\lVert \Phi(g\cdot x) - \Phi(x)\rVert_\infty$, the worst-case logit deviation under $g$.
+Logit-based scores sharpen this input-output analysis: \citet{hutchinson2021p3icml} use an \emph{invariance error} $\lVert \Phi(g\cdot x) - \Phi(x)\rVert_\infty$, the worst-case logit deviation under $g$.
 \citet{moskalev2023p2awtagmlt} propose other invariance errors based on the consistency of logits and saliency maps along orbits.
-Crucially, they distinguish \emph{genuine} invariance from a weaker \emph{learned} invariance, in which a network (e.g.\ trained by data augmentation) reaches correct predictions on an orbit while maintaining \emph{separate} internal representations per transformation.
+Crucially, they distinguish \emph{genuine} invariance from a weaker \emph{learned} invariance, in which a network (e.g.\ trained by data augmentation) reaches correct predictions on an orbit while maintaining separate internal representations per transformation.
 Under an MNIST $\to$ Fashion-MNIST interpolation, their predictive-distribution invariance $DI_f = \sum_{x\sim \mathcal{D}}\sum_{g\sim G} D_{\mathrm{KL}}\big(f(x)\,\Vert\,f(gx)\big)$ finds that learned invariance deteriorates rapidly with the domain shift, a direct empirical argument for the robustness that strictly equivariant architectures guarantee by construction.
 In the same vein, an equivariance error $\frac{1}{n} \sum_{i=1}^{n} \operatorname{std}(L_{R_i} \Phi(f_i) - \Phi(L_{R_i} f_i)) / \operatorname{std}(\Phi(f_i))$ is proposed by \citet{cohen2018}, measuring an average normalized difference between pre- and post-application of the group actions $L_{R_i}$ on feature maps $f_i$.
 \citet{shen2026} instead define an \emph{equivariance error} as the share of the total loss attributable to non-equivariance, $\mathcal{L}_{\mathrm{equiv}}(\theta)/\mathcal{L}(\theta)$, and observe that, for augmentation-trained non-equivariant models, it drops quickly to low values ($\approx 2\%$ of the loss).\newline
@@ -2276,7 +2282,7 @@ This section continues in that direction and gathers symmetries that are \emph{i
 They span several loci (\Cref{fig:sym-loci}), though the \emph{model} locus ($\mathcal{H}$) is the most investigated.
 Symmetry breaking (\Cref{sec:symmetry-breaking-dl}) is mostly \emph{descriptive}, cataloging failure modes: why and when an expected symmetry is lost.
 The two remaining subsections are more prescriptive and explain how a symmetry weakens.
-They split along the exactness axis one level down: an \emph{extent-restricted} symmetry holds exactly but only for a restricted set of transformations or points (\Cref{sec:extent-restriction}), while an \emph{approximate} one holds on all of $G$ up to a tolerance (\Cref{sec:soft-equivariance}).
+They split along the exactness axis one level down: an \emph{extent-restricted} symmetry holds exactly but only for a restricted set of transformations or points (\Cref{sec:extent-restriction}), while an \emph{approximate} one holds on all of $G$ up to a tolerance (\Cref{sec:approx-tolerance}).
 
 The two relaxations are contrasted by the \emph{$\epsilon$-stabilizer} of \citet{petrache2023}.
 Let $G$ be a candidate group of transformations and write the equivariance error of a map $f$ under $G$ as:
@@ -2288,7 +2294,7 @@ $$
     \operatorname{Stab}_\epsilon(f)=\{g\in G:\ \operatorname{ee}(f,g)\le\epsilon\}.
 $$
 For a hypothesis class, it becomes $\operatorname{Stab}_\epsilon(\mathcal{H})=\cap_{h\in \mathcal{H}}\operatorname{Stab}_\epsilon(h)$.
-The value on the exactness axis can be read from this criterion: the symmetry is \emph{exact} if $\operatorname{Stab}_0(f)=G$ and \emph{approximate} if $\operatorname{Stab}_0(f)\neq G=\operatorname{Stab}_\epsilon(f)$ for a small $\epsilon>0$ (\Cref{sec:soft-equivariance}).
+The value on the exactness axis can be read from this criterion: the symmetry is \emph{exact} if $\operatorname{Stab}_0(f)=G$ and \emph{approximate} if $\operatorname{Stab}_0(f)\neq G=\operatorname{Stab}_\epsilon(f)$ for a small $\epsilon>0$ (\Cref{sec:approx-tolerance}).
 Since $\operatorname{ee}$ takes a supremum over $\mathcal X$, $\operatorname{Stab}_0(f)$ cannot express a symmetry holding on part of the domain only, and it is always a subgroup of $G$.
 \emph{Extent-restricted} symmetries are therefore defined on pairs $(g,x)$ in \Cref{sec:extent-restriction}, of which $\operatorname{Stab}_0(f)=H\subsetneq G$ is the subgroup case, whereas $\operatorname{Stab}_\epsilon(f)\subsetneq G$ with $\epsilon>0$ combines restriction and tolerance.
 \Cref{fig:exactness-rotation} illustrates the three cases for rotations of a 2D image.
@@ -2354,7 +2360,7 @@ It is an overspecification of equivariance and coincides pointwise with the \emp
 It appears in standard architectures: \citet{zhang2019p3icml} show that the subsampling hidden inside strided convolutions and max-pooling silently destroys shift-equivariance, since it violates the Nyquist--Shannon condition $f_s>2f_{\max}$ for lossless sampling of a band-limited signal.
 \citet{zhang2019p3icml} propose a low-pass (blur) filtering before subsampling to partially restore it.
 Imposing an exact $G$ on a task that lacks it carries an unavoidable cost, which \citet{wang2023a} make precise through error lower bounds: for invariant classification the accuracy is capped by the best per-orbit choice, $\operatorname{err}(f_\theta)\ge\int_F k(Gx)\,dx$, where the \emph{total dissent} $k(Gx)$ is the probability mass of the points of the orbit $Gx$ that do not carry its majority label, and the \emph{fundamental domain} $F$ contains one representative per orbit such that $\mathcal{X}=\cup_{x\in F}Gx$.
-With analogous bounds for invariant and equivariant regression, this motivates the partial and approximate relaxations of \Cref{sec:extent-restriction,sec:soft-equivariance}.
+With analogous bounds for invariant and equivariant regression, this motivates the partial and approximate relaxations of \Cref{sec:extent-restriction,sec:approx-tolerance}.
 The excess symmetry can also enter through specific blocks of an architecture, for instance the readout layer of GNNs: \citet{talhi2026} show that any linear permutation-invariant graph readout (sum pooling, etc.) factors through the Reynolds operator, here acting on features as $\mathcal{R}(x)=\frac{1}{|G|}\sum_{g\in G}\rho(g)x$.
 This means that, for every linear permutation-invariant $f$, there is an $f'$ with $f=f'\circ\mathcal{R}$.
 This caps expressivity, and they propose readouts invariant only to $\operatorname{Aut}(\Gamma)$, the automorphism group of the input graph $\Gamma$, rather than to the full $S_n$, deliberately breaking the symmetry.
@@ -2582,7 +2588,7 @@ The domain $\{(\theta,x):\ W_{1,A}x\in\mathbb R^{|A|}_{>0}\}$ gives $\mathcal K\
 Label-dependent refinements are domain restrictions of the ground truth: they require $f^*(mx)=f^*(x)$ only for $m\in\mathcal K_x$, where the non-global set of transformations $\mathcal K_x$ can depend on the class of $x$ and its pose relative to a natural pose \citep{urbano2026}, or on the instance itself \citep{wang2023a,miao2023p4icml} (\Cref{fig:sym-loci}).
 Different classes or instances then carry different symmetries: changing the color of a leaf from green to yellow preserves its class, whereas the same change turns a lime into a lemon.
 
-\subsection{Approximate symmetries: tolerance}\label{sec:soft-equivariance}
+\subsection{Approximate symmetries: tolerance}\label{sec:approx-tolerance}
 % bamler2018p3icml: almost symmetric subspace from weak symmetry breaking by regularizer \psi(Z)
 % chen2024jsm: approximately Q-symmetric loss function
 % contrast approximate EDL with deformation stability of GDL, see LLM_saved-outputs/responses-saved/GDL_EDL.md
