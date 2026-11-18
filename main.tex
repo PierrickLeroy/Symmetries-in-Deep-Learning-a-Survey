@@ -2099,7 +2099,6 @@ As a whole, the section is mainly \emph{descriptive}.
 
 
 \subsection{Symmetry Discovery at the problem level}\label{sec:sym-disc-from-data}
-% hu2025nn seems similar to krippendorf2020
 % add: ko2024anips
 % non-linear SD: yang2024p4icml, shaw2024
 % add ouderaa2023
@@ -2152,8 +2151,8 @@ For large dimension $d$, the $d\times d$ matrices $\hat L_i$ can be factored.
 Additionally, regularization terms can be put on Lie generators, \citep{escriche2025} uses three of them: the same non-trivial and orthonormal penalties as \citet{yang2023p4icml} and an additional sparsity term $\sum_{i=1}|L_{i}|$ (entrywise $l_1$ penalty).
 A post hoc method is proposed by \citet{krippendorf2020}.
 They bet on the fact that a classifier trained on $G$-invariant data will cluster symmetry-related inputs more tightly than generic same-class points, so that orbits can be read off the network's representations.
+Formally, if $(x_1, y_1)$, $(x_2, y_2)$, $(x_3, y_3)$ are three samples with the same label $y_1 = y_2 = y_3$ but only $x_2\in G\cdot x_1$, then the embedding distance $d(f_\theta^{(l)}(x_1), f_\theta^{(l)}(x_2))$ is expected to be smaller than $d(f_\theta^{(l)}(x_1), f_\theta^{(l)}(x_3))$.
 They exploit this by sampling thickened 2D plane $\Pi_\delta$ in embedding space and collect all close pairs $x,x'\in\Pi_\delta$ with $\|x-x'\|<\epsilon$ inside a cluster.
-
 The generator acting in this plane is estimated as the least-squares solution $\hat A$ of the linear constraints
 \begin{equation*}
     x'-x=\sigma(x,x')\,\frac{\|x'-x\|}{\|x\|}\,\hat A x,
@@ -2203,7 +2202,8 @@ Moving from the problem or data to the \emph{parameter} locus, extraction refers
 % lenc2014a: if the linear map exists but only one transformation at a time
 Before asking \emph{which} or \emph{how much} symmetry a model has acquired, a more basic question is: can a network whose architecture does not hard-code a group $G$ incorporate, represent or learn symmetries, and how?
 \citet{olah2020d} give a mechanistic demonstration by inspecting \emph{circuits} (human-interpretable subgraphs) of a trained convolutional network.
-They find, with a combination of activation maximization and visual interpretation, clusters of ``equivariant'' neurons that respond to transformed variants (rotation, hue, scale) of the same feature.
+They use \emph{activation maximization}, which generates inputs that strongly excite a neuron, and name the feature it encodes by visually interpreting this preferred stimulus.
+They proceed manually, one unit at a time, to identify ``equivariant'' families: groups of neurons whose preferred stimuli are rotated, hue-shifted or rescaled copies of the same feature.
 They then show how downstream circuits combine them to synthesize invariant units at deeper layers, i.e.\ invariance can be built compositionally from equivariant parts.
 \citet{barenboim2021sp} give a decodability argument.
 Similarly to the setup of \Cref{sec:disco-task-trained}, they train networks on pretext tasks containing an underlying symmetry such as binary classification $f_\theta: \mathbb{R}^2 \to \{0, 1\}$ predicting the foreground from the background on a single image of concentric circles ($O(2)$ action) from $(x,y)$ coordinates only.
@@ -2220,16 +2220,12 @@ This places symmetry learning in the feature-learning regime.
 In the active (feature-learning) regime, \citet{jacot2025} establish a positive counterpart: depth lets a network learn compositions $f_\theta = h \circ q$, and when the target is $G$-invariant the inner map $q$ can play the role of the quotient map $\pi:\mathbb{R}^{d_{\mathrm{in}}} \to \mathbb{R}^{d_{\mathrm{in}}}/G$ (\Cref{def:quotient}).
 
 \subsubsection{Identification}\label{sec:disco-identification}
-Beyond proving that neural networks can represent symmetries, another challenge is to identify the symmetry a trained model has internalized: to recover the group acting on the data or, for continuous groups, the Lie-algebra generators.
-Two types of methods read the symmetry (1) off the network's representations or, more locally, (2) off its gradients.
+Beyond proving that neural networks can represent symmetries, another challenge is to describe the symmetries a trained model has internalized, looking at the network's representations or its gradients.
 
-The representational approach inspects what the trained model has stored.
-\citet{krippendorf2020} exploit the empirical observation that, when a classifier is trained on a label invariant under a group action such as the discretized value of a rotation-invariant potential $V(\|x\|)$, points on the same orbit collapse into clusters in the embedding layer that are tighter than generic same-class points.
-That is, if $(x_1, y_1)$, $(x_2, y_2)$, $(x_3, y_3)$ are three samples with the same label $y_1 = y_2 = y_3$ but only $x_1$ and $x_2$ lie on the same orbit, $x_2\in G\cdot x_1$, then the embedding distance $d(f_\theta^{(l)}(x_1), f_\theta^{(l)}(x_2))$ is expected to be smaller than $d(f_\theta^{(l)}(x_1), f_\theta^{(l)}(x_3))$.
-This clustering is used as a probe: orbit point clouds detected in embedding space are pulled back to the input space, and infinitesimal generators $A_a$ are recovered by linear regression on nearest-neighbor pairs $(x,x')$ under the first-order relation $x' \approx x + \epsilon_a A_a x$, yielding the $SO(n)$ and $SU(2)$ generators even from noisy, sparse point clouds.
-\citet{olah2020d} work one unit at a time: \emph{activation maximization} generates inputs that strongly excite neurons, and direct visual interpretation of this preferred stimulus names the feature it encodes.
-A group of neurons whose preferred stimuli are rotated, hue-shifted or rescaled copies of one feature is then read as an ``equivariant'' family.
-Tracing a neuron's activation along an orbit, a \emph{tuning curve}, further confirms the symmetry: a flat curve signals invariance while shifted curves indicate equivariance.
+The representational approach inspects activations of the units on input data.
+The method of \citet{krippendorf2020} (see \Cref{sec:disco-task-trained}) is a method to read the symmetry of $f_\theta$ off representation, which they assimilate to the symmetries of $f^*$. 
+\citet{olah2020d} manually study circuits to identify groups of neurons collectively encoding equivariance (\Cref{sec:disco-capability}).
+They distinguish invariance from equivariance with \emph{tuning curves}, which trace a neuron's activation along an orbit: a flat curve signals invariance, while shifted curves indicate equivariance.
 
 The gradient approach achieves identification by a nullspace computation.
 Restricting to matrix Lie groups $G \leq GL(n,\mathbb{R})$, \citet{moskalev2023} (LieGG) read the trained network as a discriminator $F$ and invoke the criterion that a generator $A\in\mathbb{R}^{n\times n}$ is an infinitesimal symmetry if and only if $\sum_{i,j} \partial_{x_i} F(x)\,A_{ij}\, x_j = 0$ on the data, i.e.\ the Lie derivative of \Cref{sec:lie-algebra} vanishes.
