@@ -2093,8 +2093,10 @@ The two subsections split along the object axis (\Cref{fig:sym-loci}), with $f$ 
 \Cref{sec:sym-disc-from-data} is mostly at the \emph{problem} level: $f$ is the ground truth $f^*$ or the data distribution $p$, observed only through a finite dataset.
 The motivation is practical: supplying the a priori knowledge that equivariant design requires and avoiding the symmetry bottleneck (\Cref{sec:edl-tradeoffs}), which leads to performance gains, or simply gaining insight into a dataset.
 \Cref{sec:sym-extract-model} is at the \emph{parameter} level: $f=f_\theta$ for a trained, hence fixed, $\theta$.
+Its motivation is rather diagnostic: checking whether, and how faithfully, a model trained without hard constraints has acquired a symmetry.
+It could inform whether equivariant design is needed at all (\Cref{sec:edl-tradeoffs}).
 Unlike in \Cref{sec:parameter-space-symmetries}, $G$ acts on the pair $(\mathcal X,\mathcal Y)$, not on $\Theta$.
-\pnote{Its motivation is more theoretical: the symmetries a network implicitly learns reveal its behavior and inductive biases.}
+One notable difference between the two cases is that with models, the function is available for inference (and its gradients).
 As a whole, the section is mainly \emph{descriptive}.
 
 
@@ -2270,7 +2272,7 @@ Their \emph{local equivariance error} then averages on the data support $\mathrm
 \citet{leroy2025} instead estimate, in the embedding space $\mathcal{Z}$, the unit tangents $\hat v(z)$ of discrete curves $t\mapsto f(\alpha_t x)$ traced by a one-parameter attribute action $\alpha_t$ resulting from interpretable attribute modifications (e.g.\ aging a person in an image).
 They define an \emph{invariance energy} as a misalignment of neighboring tangents, i.e.\ a folding of $\mathcal{Z}$, rather than as a vanishing derivative.
 The nullspace methods of \Cref{sec:disco-identification} used for identification can serve as quantification: \citet{moskalev2023} (LieGG) compute a \emph{symmetry variance} $\sigma_{\min}(\mathcal{E})^2/|\mathcal{D}|$ to characterize how close the network is to admitting an invariant direction in data space, where $\mathcal{E}$ is the network polarization matrix from \Cref{sec:disco-identification}.
-Against a known generator, a \emph{symmetry bias} measuring how faithfully that symmetry is respected.
+Against a known generator, a \emph{symmetry bias} $\mathcal{B}_i(\mathcal{E},A^*) = \lVert \bar v_i(\mathcal{E}) - A^*\rVert_F$ measures how faithfully that symmetry is respected, where $\bar v_i(\mathcal{E})\in\mathbb{R}^{n\times n}$ is the $i$-th right-singular vector of $\mathcal{E}$ and $A^*$ the closest ground-truth generator.
 \citet{hu2025nn} (LieSD) push the comparison to ground truth further with a \emph{space error} and an \emph{orthogonality error}.
 The proposed space error is $E_{\mathrm{space}} = \min_{X} \|VX - V^*\|_F^2 + \min_{Y} \|V^*Y - V\|_F^2$, which encodes the mutual expressibility of the spans of the true ($V^*$) and recovered ($V$) generator bases.
 The orthogonality error is $E_{\mathrm{orth}} = \sum_{i=1}^{k-1} \sum_{j=i+1}^{k} |\langle v_i, v_j \rangle|$ and computes a notion of redundancy among recovered generators $v_i$.
