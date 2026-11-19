@@ -67,7 +67,7 @@
 \corres{Correspondence: pierrick.lry@gmail.com}
 
 \abstract{Deep learning is a field of symmetries: imposed by design in architectures, augmentations or training frameworks, emerging from the parametrization, unknown and to be discovered, or holding only partially or approximately.
-Starting from the concept of symmetry, we systematically review more than 300 works from the literature from a mathematical perspective.
+Starting from the concept of symmetry, we review in a structured way more than 300 works from the literature from a mathematical perspective.
 We propose a faceted taxonomy whose six axes (exactness, purpose, object, a priori knowledge, state, explicitness) map, locate and contrast occurrences of symmetry across subfields.
 We pay particular attention to which object carries the symmetry, from the learning problem to the training framework.
 We end with underexplored areas.}
@@ -115,7 +115,7 @@ We extend this perspective from architectures to every object that can carry a s
 As Alan Perlis put it: ``Symmetry is a complexity-reducing concept […]; seek it everywhere.''~\citep{perlis1982}
 Our contributions are threefold.
 (i)~A faceted taxonomy (\Cref{tab:taxonomy}) whose six axes locate, link and contrast occurrences of symmetry across subfields.
-(ii)~An inventory of $322$ works organized along this taxonomy, underpinned by a hybrid systematic review and the coding of the corpus (\Cref{sec:materials-methods}).
+(ii)~An inventory of $412$ works organized along this taxonomy, underpinned by a structured hybrid review and the coding of the corpus (\Cref{sec:materials-methods}).
 (iii)~The identification of underexplored areas and possible gaps (\Cref{sec:discussion}).
 We hope that this single perspective will foster the transfer of knowledge and methods between subfields.
 The survey can be of interest to researchers in a covered field seeking a bird's-eye view, mathematicians seeking areas where symmetry applies, and deep learning practitioners who want to make the notion of invariance precise.
@@ -142,7 +142,7 @@ The corpus was collected over a two-year period, starting from an initial collec
 The selection process is described in \Cref{fig:selection-flow}.
 A reference is discarded if it does not satisfy at least one of the following criteria: (A) it is published in a peer-reviewed venue, (B) it is highly cited (more than 50 citations on Google Scholar), (C) it is recent (made available less than two years ago).
 Criterion (C) exists because the field is fast-moving and a citation/peer-review threshold alone would systematically remove emerging work.
-Following this protocol, $408$ works were identified, out of which $322$ are cited in the current version.
+Following this protocol, $412$ works were identified, out of which $336$ are cited in the current version (not counting the introduction).
 \Cref{fig:corpus-stats} summarizes the corpus: it reports the distribution over publication years and the pace at which the corpus was assembled.
 
 \begin{figure}[ht]
@@ -153,7 +153,7 @@ Following this protocol, $408$ works were identified, out of which $322$ are cit
     \caption{Selection of the corpus and construction of its knowledge base.
     Works are identified by monitoring (daily research, references of other works, recommendations, Scholar Inbox), keyword search (Google Scholar, Scopus) and dedicated tools (Research Rabbit, Google Scholar Labs, Connected Papers, LLMs: ChatGPT, Gemini, Claude, Elicit), then screened on criteria (A)--(C).
     Each retained work is converted to Markdown (with the open-source Python library $\texttt{marker}$~\citep{datalab2026}), then summarized and indexed by an LLM (abridged prompts, full versions in \Cref{app:prompts}).
-    The summaries support the coding of the corpus along the axes of \Cref{tab:taxonomy} by the typed language model $\texttt{jev-1.13.0}$.}
+    The summaries support the coding of the corpus along the axes of \Cref{tab:taxonomy} by the typed-output language model $\texttt{jev-1.13.0}$.}
     \label{fig:selection-flow}
 \end{figure}
 
@@ -173,7 +173,7 @@ We propose a faceted taxonomy in \Cref{tab:taxonomy} to categorize occurrences o
 This taxonomy was used to code the corpus with the typed-output model $\texttt{jev-1.13.0}$~\citep{typesafe2026t}, which provides a $6$-dimensional classification for each paper, or a $17$-dimensional vector of coordinates in $[0,1]$ when the output probabilities associated with each choice are recorded.
 The coded corpus was used as an organizing tool to guide the framing of each part, to develop the taxonomy, to position the different parts, and to lay out and contrast their distinctive features.
 \Cref{app:automated-taxonomy} gives additional details on the coding of the corpus, our method to validate both the coding and the taxonomy, and the way we leverage it to analyze the corpus.
-We chose a typed-output model over a standard LLM because typed output matches the requirement of the task (a discrete set of categorical answers) while being significantly faster and more cost-effective, which allowed us to proceed by iterations.
+We chose a typed-output model over a standard LLM because it matches the requirement of the task (a discrete set of categorical answers) while being significantly faster and more cost-effective, which allowed us to proceed by iterations.
 
 At a high level, the taxonomy maps onto the sections as follows.
 \Cref{sec:design-principle} \emph{prescriptively} builds in \emph{known} symmetries (\Cref{tab:taxonomy}).
@@ -243,7 +243,7 @@ In \Cref{fig:sym-loci}, equivariant architectures follow the arrow $f^*\dashrigh
 \end{figure}
 
 \paragraph{AI statement}
-Following the guidelines of MDPI \textit{Mathematics}, we report the use of AI tools in the Acknowledgments.
+Following the guidelines of MDPI \textit{Mathematics}, we additionally report the use of AI tools in the Acknowledgments.
 
 
 
@@ -2892,11 +2892,11 @@ A value \emph{Not applicable} was added and described as ``The paper does not st
 \section{Automated taxonomy}\label{app:automated-taxonomy}
 
 \subsection{Validation of the coding}\label{app:coding-validation}
-Each work $w$ of the corpus is coded from its summary by the typed-output model \texttt{jev-1.13.0} (Jev), with one call per work.
+Each work $w$ of the corpus is coded from its summary by the typed-output model \texttt{jev-1.13.0} (Jev~\citep{typesafe2026t}), with one call per work.
 For each axis $c$ of \Cref{tab:taxonomy}, with value set $V_c$, we add a default value ``not applicable'' (NA), so that a work is not forced into a value of an axis it does not concern.
 Jev returns a probability distribution $q_{w,c}$ on $V_c\cup\{\mathrm{NA}\}$.
 Its choice is then $\hat v_{w,c}=\operatorname{arg\,max}_{v}q_{w,c}(v)$.
-NA stays rare: over the $408$ coded works, it accounts for $165$ of the $2448$ choices ($6.7\%$), with fluctuations depending on the axis (\Cref{fig:taxonomy-choices}).
+NA stays rare: over the $412$ coded works, it accounts for $165$ of the $2472$ choices ($6.7\%$), with fluctuations depending on the axis (\Cref{fig:taxonomy-choices}).
 Eleven works are NA on every axis.
 On inspection, they consist of deep learning works with no symmetry content or methodological references, with the exception of one work \citep{xu2024vj} introducing a data shuffling scheme, which is about data ordering (framework symmetry) but very implicit.
 
@@ -2935,14 +2935,14 @@ With $E_{ab}=n_a n_b/N_{AB}$ the expected count under independence, we report Cr
     \label{fig:taxonomy-cramersV}
 \end{figure}
 
-We also report dependence at the level of values, where we use the probabilities $q_{w,c}(v)$ of the $17$ values (NA excluded) and compute the Spearman correlation over the $408$ works (\Cref{fig:taxonomy-Pcorrelations}).
+We also report dependence at the level of values, where we use the probabilities $q_{w,c}(v)$ of the $17$ values (NA excluded) and compute the Spearman correlation over the coded corpus (\Cref{fig:taxonomy-Pcorrelations}).
 
 \begin{figure}[ht]
 \begin{adjustwidth}{-\extralength}{0cm}
     \raggedleft
     \includegraphics[width=0.8\linewidth]{images/taxonomy-Pcorrelations.pdf}
 \end{adjustwidth}
-    \caption{Spearman correlation, over the $408$ works, between the probabilities $q_{w,c}(v)$ of values of distinct axes of \Cref{tab:taxonomy}.
+    \caption{Spearman correlation, over the coded corpus, between the probabilities $q_{w,c}(v)$ of values of distinct axes of \Cref{tab:taxonomy}.
     Blocks within one axis are left blank.}
     \label{fig:taxonomy-Pcorrelations}
 \end{figure}
