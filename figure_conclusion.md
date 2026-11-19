@@ -19,13 +19,13 @@ Steps 2-4 are the three main phases, organized as sequential panels.
 Step 5 is a feedback/warning, it could be an arrow pointing backward.
 Loci should be indicated as leaves in 2., and segments (sections, subsections, subsubsections, paragraphs) as clickable tags where they apply.
 
-## Entry points
+## 1. Entry points
 
 - A symmetry is mentioned: stated or given, e.g. by the problem or a paper
 - A symmetry is hypothesized: a candidate $G$ is assumed but its validity is not checked
 - A symmetry is suspected: there are cues of a symmetry but $G$ is not identified
 
-## Locate
+## 2. Locate
 Goal: describe how to pick the box (locus) in \Cref{fig:sym-loci}, i.e. the Object axis.
 It should consist of a small decision tree to identify the locus and answer the question: of which object (usually a map $f$) is the symmetry a property?
 
@@ -38,7 +38,7 @@ Now, it should be possible to attempt writing the domain and codomain of $f$.
 
 There might be multiple symmetries and loci. If this is the case, repeat these steps. The arrows of \Cref{fig:sym-loci} can suggest other related loci.
 
-## Characterize
+## 3. Characterize
 Goal: list all important information about the symmetry. It could organize the questions in multiple mini decision-trees, in the best logical order.
 
 Is it possible to write the triplet $(G, \rho_X, \rho_Y)$?
@@ -65,7 +65,7 @@ Does $G$ formally verify the group axioms?
 
 If $G$ is found to not be exact, revisiting "Locate" might be necessary.
 
-## Act
+## 4. Act
 This is the purpose axis extended beyond the binary "prescriptive" or "descriptive".
 
 What do we want to do?
@@ -87,7 +87,7 @@ What do we want to do?
     - Make a network more equivariant (data augmentation, soft penalty)
     - Find an application (e.g. teleportation, pruning)
 
-## Diagnose/warnings
+## 5. Diagnose/warnings
 How do I diagnose whether the assumed symmetry is actually wrong?
 Cues that something is wrong, mechanisms to find that something is not right, guardrails.
 - An equivariance error is large (\Cref{sec:sym-quantification})
