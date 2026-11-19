@@ -70,7 +70,8 @@ $\rho_{\mathcal{X}}$, which is heavy and non-standard.
 | $\ell$ | Per-example loss, $\ell(x,\theta)$ |
 | $L$ | Loss criterion comparing a prediction to a target, $L(\hat y, y)$ |
 | $\mathcal{L}$ | Single argument loss $\Theta \to \mathbb R$ or $\mathcal F \to \mathbb R$ or full training objective (SimCLR, Barlow Twins, DINO, …) |
-| $\mathcal{R}$ | Regularizer (penalty term added to $\mathcal{L}$) |
+| $\mathcal{L}_R$ | Regularizer (penalty term), $\mathcal{L}(\theta)=\mathcal{L}_F(f_\theta)+\mathcal{L}_R(\theta)$ |
+| $\mathcal{R}$ | Reynolds operator (orbit average), maps $f$ to an equivariant function |
 | $\hat R$ | Empirical risk |
 | $R$ | Population risk |
 

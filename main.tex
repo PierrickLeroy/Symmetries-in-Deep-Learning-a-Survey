@@ -126,14 +126,14 @@ The survey can be of interest to researchers in a covered field seeking a bird's
 After the methodology (\Cref{sec:materials-methods}) and a background that the accustomed reader can skip (\Cref{sec:background}), the survey follows a conceptual progression: symmetry imposed by design (\Cref{sec:design-principle}), symmetry as an artifact of the parametrization (\Cref{sec:parameter-space-symmetries}), unknown symmetries to be discovered (\Cref{sec:sym-disco}), and incomplete symmetries (\Cref{sec:incomplete-symmetries}).
 This order is one choice among several: equivariant optimizers, for instance, are treated with parameter-space symmetries (\Cref{sec:bug-or-feature}) but also belong to symmetry by design.
 
-\subsection{Related work}\label{sec:related-work}
+\subsection{Related Work}\label{sec:related-work}
 Previous works have studied the literature on symmetries in deep learning.
-\citet{ilina2022sa} surveys symmetric architectures such as Siamese networks.
-\citet{zhao2025} focuses on parameter-space symmetries.
+\citet{ilina2022sa} survey symmetric architectures such as Siamese networks.
+\citet{zhao2025} focus on parameter-space symmetries.
 \citet{sipiran202523scgpis} reviews symmetry detection methods for 3D shapes.
-\citet{bronstein2021} is the reference textbook on geometric deep learning, and \citet{gerken2021,carlsson2025} study its mathematical formalism.
+The textbook of \citet{bronstein2021} is the reference on geometric deep learning, and \citet{gerken2021,carlsson2025} study its mathematical formalism.
 More specialized works focus on equivariant convolutions \citep{basheer2025ijdsa,habte2023}, 3D rotations \citep{fei2024air} and $SE(3)$-equivariant robot learning \citep{seo2025a}.
-\citet{rath2024air} reviews methods that integrate geometric prior knowledge into neural networks so that their representations are invariant or equivariant.
+\citet{rath2024air} review methods that integrate geometric prior knowledge into neural networks so that their representations are invariant or equivariant.
 \citet{shorten2019jbd,mumuni2022a} survey data augmentation.
 Each of these works focuses on a few objects carrying the symmetry or on one application domain.
 
@@ -257,7 +257,7 @@ Following the guidelines of MDPI \textit{Mathematics}, we additionally report th
 The following subsections introduce standard material used throughout: abstract groups (\Cref{sec:groups}), their realization on spaces (\Cref{sec:actions}), representations as the linear view of groups and the constraints they place on equivariant layers (\Cref{sec:representations}), and the infinitesimal view of continuous groups through Lie algebras (\Cref{sec:lie-algebra}).
 The survey is not mathematically self-contained.
 
-\subsection{What is symmetry?}\label{sec:what-is-sym}
+\subsection{What Is Symmetry?}\label{sec:what-is-sym}
 Intuitively, a \emph{symmetry} of an object is a transformation that leaves it unchanged as a whole: it is a statement about identity.
 \emph{Invariance} is a broader, functional term used to qualify a property of an object that does not change under a transformation (the property is called an \emph{invariant}).
 For example, the area of a square is invariant under all isometries of the plane, yet only those superimposing the square onto itself (quarter rotations and reflections) are symmetries of the object ``square''.
@@ -459,7 +459,8 @@ The origin is special: it has orbit $\{0\}$ and stabilizer the full $SO(3)$ grou
 
 A free action on a nonempty set is faithful, and a faithful action identifies $G$ with the subgroup $\rho(G)\le\operatorname{Sym}(\mathcal{X})$.
 By \Cref{thm:orbit-stabilizer}, each orbit of a free action is in bijection with $G$.
-For instance, $E(n)$ acts transitively but not freely on $\mathbb{R}^n$, while $S_n$, by permuting coordinates, acts faithfully on $\mathbb{R}^n$ but neither freely nor transitively.\newline
+For instance, $E(n)$ acts transitively but not freely on $\mathbb{R}^n$, while $S_n$, by permuting coordinates, acts faithfully on $\mathbb{R}^n$ but neither freely nor transitively.
+
 A group acts transitively and freely on itself by left multiplication and transitively on $G/H$ by $g\cdot(kH)=(gk)H$.
 For a homogeneous space $\mathcal{X}$ and any $x_0\in \mathcal{X}$, $\mathcal{X}\cong G/G_{x_0}$, for example $S^2\cong SO(3)/SO(2)$ and $\mathbb{R}^n\cong E(n)/O(n)$.
 
@@ -515,7 +516,7 @@ Being linear in $K$, \Cref{eq:steerable-constraint} is solved once for a basis $
 Decomposing $\rho_{\mathrm{in}}$ and $\rho_{\mathrm{out}}$ into irreducible representations splits the constraint into small independent blocks \citep{weiler2019anips,cesa2021}.
 The gauge-equivariant convolution of \Cref{sec:edl-achieving-equiv} obeys the same constraint, with $H$ the structure group.
 
-\subsection{Lie groups and Lie algebras}\label{sec:lie-algebra}
+\subsection{Lie Groups and Lie Algebras}\label{sec:lie-algebra}
 
 A Lie group (\Cref{sec:groups}) is described to first order by its tangent space at the identity, called its Lie algebra.
 We restrict to matrix Lie groups $G\le GL(n,\mathbb{R})$, which include those of \Cref{ex:groups}.
@@ -581,21 +582,21 @@ A central idea is that an appropriate inductive bias for a learning problem come
 Symmetries, together with a scale-separation principle, are GDL's answer to the curse of dimensionality.
 The scope of GDL also includes unifying architectures in a common blueprint, e.g.\ Transformers as graph neural networks \citep{joshi2025}, and extending non-Euclidean geometry from the input domain to every stage of deep learning, e.g.\ non-Euclidean representation spaces \citep{mettes2024ijcv,saezdeocarizborde2025iclr}.
 In this survey, we focus on its \emph{Equivariant Deep Learning} core, which is the most concerned with symmetries.
-Standard GDL mostly assumes exact symmetry, \textit{i.e.}\ equivariance to every $g\in G$ acting on $\Omega$.
+Standard GDL mostly assumes exact symmetry, i.e.\ equivariance to every $g\in G$ acting on $\Omega$.
 The deformation stability perspective \citep[Sec.~3.3]{bronstein2021} extends control to deformations $\tau\in\operatorname{Diff}(\Omega)$ near $G$, close to the setting of \Cref{sec:extent-restriction}.
 
 The promise of EDL is to design principled architectures that are sample-efficient and generalize well.
-Equivariant networks typically benefit from fewer learnable parameters and better interpretability, \textit{e.g.}\ CNN filters.
+Equivariant networks typically benefit from fewer learnable parameters and better interpretability, e.g.\ CNN filters.
 They also offer robustness guarantees, since their response to a transformed input is dictated by the group: $f(\rho_X(g)\,x)=\rho_Y(g)\,f(x)$ for all $g\in G$.
 As for generalization, an out-of-distribution input $\rho_X(g)\,x$, with $x$ in-distribution, is handled as reliably as $x$ itself once the symmetry is imposed.
 Resorting to EDL is not automatic, however: \Cref{sec:edl-tradeoffs} discusses the trade-offs between EDL and DA, in particular the recurring question of whether the cost of exact equivariance is justified over a simpler model trained with augmentation.
 Recommended resources include surveys \citep{rath2024air,basheer2025ijdsa}, foundations \citep{borde2025,gerken2021,carlsson2025} and a historical account of the field \citep{bronstein2023tg}.
 
-\subsubsection{Achieving equivariance}\label{sec:edl-achieving-equiv}
+\subsubsection{Achieving Equivariance}\label{sec:edl-achieving-equiv}
 
 Methods to design equivariant architectures generally intertwine equivariant linear maps with suitable non-linearities.
 
-\emph{Group Convolutional Neural Networks} ($G$-CNNs) \citep{cohen2016} generalize traditional CNNs from translations to discrete groups (\textit{e.g.}\ $90^\circ$ rotations and reflections), and continuous groups must be discretized.
+\emph{Group Convolutional Neural Networks} ($G$-CNNs) \citep{cohen2016} generalize traditional CNNs from translations to discrete groups (e.g.\ $90^\circ$ rotations and reflections), and continuous groups must be discretized.
 The processing follows three steps.
 First, a lifting convolution maps a function on the domain $\Omega$ to a function on $G$.
 Then, iterated $G$-convolutions $(f\star\kappa)(g)=\sum_{h\in G}f(h)\,\kappa(g^{-1}h)$ compute feature maps $f^{(l)}:G\to\mathbb{R}^{c_l}$.
@@ -613,9 +614,9 @@ Relatedly, \citet{finzi2021p3icml} numerically solve the linear equivariance con
 For finite groups acting by permutations, equivariance amounts to weight-tying: a layer is $G$-equivariant if $G$ preserves its parameter-sharing pattern \citep{ravanbakhsh2017p3icml}.
 \emph{Clifford (geometric) algebras} yield equivariant models such as the $E(n)$-equivariant CGENN \citep{ruhe2023} and the $E(3)$-equivariant transformer GATr \citep{brehmer2023}.
 
-Other approaches include \emph{invariant-feature construction} from distances or inner products, \textit{e.g.}\ EGNN \citep{satorras2021p3icml} and ``scalars are universal'' \citep{villar2021anips}.
+Other approaches include \emph{invariant-feature construction} from distances or inner products, e.g.\ EGNN \citep{satorras2021p3icml} and ``scalars are universal'' \citep{villar2021anips}.
 \emph{Loss regularization} keeps the group but loosens the constraint, yielding only approximate (soft) equivariance (\Cref{sec:approx-tolerance}).
-\emph{Symmetrization} wraps an arbitrary backbone $f$, \textit{e.g.}\ by canonicalization \citep{kaba2023p4icml} or group/frame averaging \citep{puny2021} with the Reynolds operator $(\mathcal{R}f)(x)=\frac{1}{|G|}\sum_{g\in G}\rho_Y(g)^{-1}f(\rho_X(g)\,x)$, which maps any $f$ to an equivariant one (an integral replaces the sum for compact $G$).
+\emph{Symmetrization} wraps an arbitrary backbone $f$, e.g.\ by canonicalization \citep{kaba2023p4icml} or group/frame averaging \citep{puny2021} with the Reynolds operator $(\mathcal{R}f)(x)=\frac{1}{|G|}\sum_{g\in G}\rho_Y(g)^{-1}f(\rho_X(g)\,x)$, which maps any $f$ to an equivariant one (an integral replaces the sum for compact $G$).
 
 \paragraph{Euclidean symmetries}
 Euclidean symmetries are important symmetries of the physical world, consisting of translations and rotations (with or without reflections).
@@ -627,7 +628,7 @@ In 2D, seminal $G$-CNNs \citep{cohen2016} already treat $90^\circ$ rotations and
 \citet{hoogeboom2018} reach $60^\circ$ rotations without interpolation on hexagonal grids.
 \citet{weiler20182iccvpr} use finer rotation discretizations, bridging $G$-CNNs and steerable networks.
 Continuous rotations are handled with circular harmonics by \citet{worrall2017}, and the full group $E(2)$ by \citet{weiler2019anips}.
-In 3D, discrete rotation groups act on voxels, \textit{e.g.}\ for biomedical data \citep{worrall2018cv-e21ecmgs82ppv,winkels2019mia}.
+In 3D, discrete rotation groups act on voxels, e.g.\ for biomedical data \citep{worrall2018cv-e21ecmgs82ppv,winkels2019mia}.
 \emph{Spherical CNNs} \citep{cohen2018} handle continuous rotations of signals on $S^2$ using a generalized Fast Fourier Transform.
 \citet{monti20172iccvprc} sidestep extrinsic rotations via intrinsic surface coordinates.
 
@@ -722,7 +723,7 @@ where the invariant weights $\alpha_{ij,k} \in \mathbb R$ are computed by an MLP
 Feature coordinates $f_i = \rho(R_i)F_i$ are then invariant to the active global $\hat R$, and can be processed by arbitrary MLPs.
 Moreover, $R_i$ only depends on a small neighborhood of $x_i$, so similar local structures are oriented similarly and get similar coordinates $f_i$: the downstream network is presented with aligned inputs.
 
-\subsubsection{Expressivity analysis}
+\subsubsection{Expressivity Analysis}
 % maron2018
 % Dunford-Pettis theorem
 % weiler2026: Part I seems to contain "necessity theorems" e.g. translation-equivariant linear layers are exactly convolutions
@@ -741,7 +742,7 @@ First, for linear maps, they lead to ``convolution is all you need'' statements.
 \citet{weiler2018anips} prove the analogous statement for $SE(3)$ and feature fields over $\mathbb{R}^3$, and \citet{cohen2019anips} extend it to general homogeneous spaces from a fiber bundle perspective.
 Second, on sets, \citet{zaheer2018} show that every permutation-invariant function on a countable domain decomposes as $f(X)=\psi\big(\sum_{x\in X}\phi(x)\big)$.
 
-Such characterizations guide the design of $\mathcal{H}$: \textit{e.g.}\ approximating $\phi$ and $\psi$ by MLPs makes Deep Sets a universal approximator, a notion we now address.
+Such characterizations guide the design of $\mathcal{H}$: e.g.\ approximating $\phi$ and $\psi$ by MLPs makes Deep Sets a universal approximator, a notion we now address.
 
 \paragraph{Universality}
 % pacini2026: something about \overline H not being too far from H
@@ -769,7 +770,7 @@ Beyond vision, scale--translation equivariance has been applied to raw audio \ci
 
 
 
-\subsubsection{Tradeoffs of equivariance}\label{sec:edl-tradeoffs}
+\subsubsection{Tradeoffs of Equivariance}\label{sec:edl-tradeoffs}
 % last par of [vadgama2025 sec 4]
 Restricting the hypothesis class $\mathcal{H}$ to $G$-equivariant maps is a double-edged sword: it can improve sample efficiency and generalization, but it costs speed and design effort, can hinder optimization and can impose the wrong symmetry.
 We review both sides and when equivariance is worth its cost.
@@ -837,7 +838,7 @@ The learnability of a symmetry should therefore also enter the cost-benefit anal
 
 While there is no denying that equivariant models are scientifically well-founded, one may wonder whether this will be another occurrence of the bitter lesson~\citep{sutton2019}.
 
-\subsection{Data augmentation}\label{sec:data-augmentation}
+\subsection{Data Augmentation}\label{sec:data-augmentation}
 % add adversarial training ? [Goodfellow, Explaining and harnessing adversarial examples] and [Madry, Towards deep learning models resistant to adversarial attacks]
 % shorten2019jbd and mumuni2022a: surveys on DA
 % miao2023p4icml: instance-dependent DA
@@ -858,15 +859,15 @@ and for a continuous group, an expectation is taken over a distribution on $G$.
 The hope is to encourage $f_\theta$ to be approximately invariant to those transformations.
 Since the hypothesis class is unconstrained, the symmetry is encouraged for a specific parameter $\theta$, which corresponds to the parameter locus of \Cref{fig:sym-loci}.
 \Cref{fig:five-routes} contrasts the entry point of the symmetry group $G$ in DA with equivariant layers and symmetrization methods (\Cref{sec:edl-achieving-equiv}), and soft penalties (\Cref{sec:approx-soft}).
-DA is declarative: it states which transformations should not matter, not how $f_\theta$ realizes the invariance, accommodating transformations lacking an algebraic description (\textit{e.g.}\ illumination, viewpoint or background changes).
+DA is declarative: it states which transformations should not matter, not how $f_\theta$ realizes the invariance, accommodating transformations lacking an algebraic description (e.g.\ illumination, viewpoint or background changes).
 The symmetry often stays \emph{implicit}, and even \emph{unknown a priori} when automated strategies (\Cref{par:auto-da}) learn the transformations.
 DA has further practical advantages over EDL.
 It applies to any pretrained model without architectural changes, which suits fine-tuning.
 It requires no group-theoretic implementation, which eases rapid prototyping.
-It also seamlessly handles extent-restricted symmetries (\Cref{sec:extent-restriction}), \textit{e.g.}\ non-invertible crops or small-angle rotations on MNIST (avoiding $6\leftrightarrow 9$), where EDL mostly assumes exactness.
+It also seamlessly handles extent-restricted symmetries (\Cref{sec:extent-restriction}), e.g.\ non-invertible crops or small-angle rotations on MNIST (avoiding $6\leftrightarrow 9$), where EDL mostly assumes exactness.
 On the downside, a continuous group cannot be covered exhaustively, and materialized augmentations multiply storage and compute by the number of samples drawn per orbit.
 
-\subsubsection{Theoretical approaches}
+\subsubsection{Theoretical Approaches}
 \citet{chen2020} propose a group-theoretic framework for DA and formally connect orbit averaging with lower generalization error.
 Variance reduction results can also be obtained \citep{chen2020,dao2019p3icml}.
 Orbit averaging is adapted and practically implemented by \citet{benton2020anips}.
@@ -875,7 +876,7 @@ For infinite-width and kernel-classifier settings, DA is shown to be equivalent 
 The value of DA may be context dependent, the relevant aspects being the learning regime (over- or underparametrized) and the task (classification or regression).
 A spectral point of view is given by \citet{lin2024}, while \citet{lawrence2026} further study the role of the symmetry distribution.
 
-\subsubsection{Automated DA strategies}\label{par:auto-da}
+\subsubsection{Automated DA Strategies}\label{par:auto-da}
 % automated DA vs sym discovery: automated DA has the goal of producing new augmentations, it can be transductive whereas sym discovery is more inductive and aims at recognizing the group and its actions (which can be an intermediate step before generating augmentations anyways)
 Rather than hand-crafting augmentation policies, several works have proposed to search for them automatically.
 \citet{cubuk20192iccvprc} introduce AutoAugment, which uses reinforcement learning to find a policy composed of image-processing operations such as rotations, translations, and shearing, optimized for validation accuracy.
@@ -888,7 +889,7 @@ A practical advantage shared by all these approaches is interpretability: learne
 One limitation, however, is that materializing augmentations requires an explicit parametric form for the transformations.
 \citet{shoshan2021} partly circumvent this in the face-generation setting by showing that a scalar attribute predictor (e.g.\ age) provides sufficient supervision for a GAN to learn to manipulate that attribute in a controllable way without a closed-form group action.
 
-\subsubsection{DA in relation to Feature Averaging}\label{sec:da-fa}
+\subsubsection{DA in Relation to Feature Averaging}\label{sec:da-fa}
 Feature Averaging (FA) is another strategy for incorporating symmetries: it averages model outputs over a set of transformed inputs, effectively symmetrizing the model.
 Theoretically, \citet{dao2019p3icml} show that DA can be approximated to first order by FA, while \citet{maass2024} establish, in the infinite-width limit, that DA and FA induce identical gradient flow dynamics when the activation functions respect the group action.
 Despite this asymptotic equivalence, \citet{lyle2020} prove that, for convex losses, FA has a risk no larger than DA (by Jensen's inequality) and tighter PAC-Bayes generalization bounds, suggesting FA is preferable when applicable.
@@ -899,7 +900,7 @@ Another natural comparison is with equivariant models, covered in \Cref{sec:edl-
 Unlike EDL and DA, which distill a problem symmetry into $\mathcal{H}$ or $f_\theta$, \emph{framework} symmetries are carried by the training pipeline, across several loci or forward calls (\Cref{fig:sym-loci}).
 Symmetries arise in the way data is piped through during training (\Cref{sec:data-ordering,sec:joint-embedding}) or reflect a limitation in downstream processing rather than a true problem constraint: criterion symmetries (\Cref{sec:criterion-symmetries}) are the irreducible loss symmetries that cannot be addressed through parameter or architectural adjustments.
 From a taxonomic viewpoint, data ordering (\Cref{sec:data-ordering}) is inherently \emph{dynamic}, as its symmetry permutes the data stream over training, while joint embeddings (\Cref{sec:joint-embedding}) and criterion symmetries (\Cref{sec:criterion-symmetries}) are both \emph{prescriptive}, designing how to train.
-These symmetries can be incomplete (\Cref{sec:incomplete-symmetries}), \textit{e.g.}\ full-batch GD is $S_n$-invariant but mini-batch SGD only under a subgroup or only approximately. The works are often \emph{implicit} and the overall symmetry reading of joint embedding (\Cref{sec:joint-embedding}) is ours.
+These symmetries can be incomplete (\Cref{sec:incomplete-symmetries}), e.g.\ full-batch GD is $S_n$-invariant but mini-batch SGD only under a subgroup or only approximately. The works are often \emph{implicit} and the overall symmetry reading of joint embedding (\Cref{sec:joint-embedding}) is ours.
 Compared to the symmetries of $\mathcal{L}$ on $\Theta$ (\Cref{sec:parameter-space-symmetries}), criterion symmetries act on $\mathcal{Y}$, and works lean towards being implicit and prescriptive.
 
 \subsubsection{Data Ordering}\label{sec:data-ordering}
@@ -969,7 +970,7 @@ and the trained parameters depend on the data only through their empirical measu
     Ordering biases can also be more fortuitous: data stored in database systems can be clustered by attribute, producing a non-exchangeable stream \citep{xu2024vj}.
 \end{Remark}
 
-\subsubsection{Joint-embedding architectures}\label{sec:joint-embedding}
+\subsubsection{Joint-Embedding Architectures}\label{sec:joint-embedding}
 
 Joint-embedding (or Siamese) architectures learn representations by training a network to closely embed two related views rather than by predicting a label or reconstructing the input.
 We give here a symmetry-centered reading of the development of this family of self-supervised methods, and refer to \citet{ilina2022sa} for a more in-depth account.
@@ -1013,12 +1014,12 @@ Early metric learning methods proposed a symmetric loss $\ell(x_1,x_2,\theta)$ t
 \end{equation}
 where $\tilde x_1,\dots,\tilde x_{2N}$ are the paired views of each of the $N$ inputs of a batch, $(i,j)$ indexes the two views of the same input, $\operatorname{CoSim}$ is the cosine similarity and $\tau$ a temperature. The full loss averages $\ell_{i,j}$ over all positive pairs.
 An ablation shows that the representation $f_\theta(x)$ before the projector is better than $\operatorname{proj}_\theta(f_\theta(x))$ after it: $\operatorname{proj}_\theta$ is trained to be augmentation-invariant, which it achieves by discarding useful representational information.
-The authors confirm this empirically by measuring how much augmentation-related information (\textit{e.g.}\ color) is decodable at each stage.
+The authors confirm this empirically by measuring how much augmentation-related information (e.g.\ color) is decodable at each stage.
 \citet{he2020} (MoCo) relax branch-swap symmetry itself: the second branch (the ``momentum encoder'') tracks the first through an Exponential Moving Average (EMA) of its weights, $\xi\leftarrow m\,\xi+(1-m)\,\theta$, rather than sharing its weights outright. The non-contrastive methods below push this decoupling of the branches further.
 
 \emph{Non-contrastive methods} dispense with negative pairs altogether and instead prevent collapse either by decoupling the branches more strongly or by regularizing the embedding statistics directly.
 Among the former, \citet{grill2020} (BYOL) equip only the ``student'' branch with an extra prediction head $q_\theta$, computing $q_\theta(\operatorname{proj}_\theta(f_\theta(t\cdot x)))$ against the ``teacher'' target $\operatorname{proj}_\xi(f_\xi(t'\cdot x))$, where $\xi$ is an EMA of $\theta$: the student must \emph{predict} rather than match the teacher, turning the symmetric matching objective into an asymmetric one.
-\citet{caron2021} (DINO) instead keeps a single set of weights (EMA aside) but breaks symmetry in the output distribution with centering and temperature.
+\citet{caron2021} (DINO) instead keep a single set of weights (EMA aside) but break symmetry in the output distribution with centering and temperature.
 The student computes
 \[
     \operatorname{Softmax}_{\tau_s}(\operatorname{proj}_{\theta}(f_\theta(t\cdot x))),
@@ -1029,7 +1030,7 @@ while the teacher computes
     \bigl(\operatorname{Center}(\operatorname{proj}_{\xi}(f_\xi(t'\cdot x)))\bigr),
 \]
 with $\xi$ an EMA of $\theta$ and $\tau_t<\tau_s$: the lower temperature artificially sharpens the teacher's target.
-\citet{chen2020a} (SimSiam) pulls back toward full symmetry: weights are entirely shared and the two branches alternate between student and teacher roles within a single symmetrized loss.
+\citet{chen2020a} (SimSiam) pull back toward full symmetry: weights are entirely shared and the two branches alternate between student and teacher roles within a single symmetrized loss.
 With $z=\operatorname{proj}_\theta(f_\theta(t\cdot x))$ and $z'=\operatorname{proj}_\theta(f_\theta(t'\cdot x))$,
 \[
 \mathcal{L}=-\operatorname{CoSim}\big(q_\theta(z),\,\operatorname{sg}(z')\big)-\operatorname{CoSim}\big(q_\theta(z'),\,\operatorname{sg}(z)\big),
@@ -2023,7 +2024,7 @@ Their algorithm computes per-edge scores $\frac{\partial \mathcal{L}}{\partial \
 The invariant set $\Theta_\Gamma(c)=\{\theta:\tilde{B}\theta^2=c\}$ of \citet{nurisso2025}, where $\tilde B$ encodes the conservation constraint, contains singularities that correspond exactly to configurations where zero-weighted edges disconnect a subset of neurons from both input and output, i.e.\ to prunable subnetworks.
 Regularizing the rank of the Jacobian $J_\Gamma(\theta)=2\tilde{B}\operatorname{diag}(\theta)$ yields a differentiable pruning approach that empirically produces whole-neuron sparsification rather than the edge-level sparsity of an $\ell_1$ penalty.
 
-\subsection{Adjacent fields}\label{sec:adjacent-fields}
+\subsection{Adjacent Fields}\label{sec:adjacent-fields}
 We close this section by mentioning adjacent fields that directly engage with parameter-space symmetries.
 
 \paragraph{Weight-space learning and Neural Functional Networks}
@@ -2086,7 +2087,8 @@ While the polynomial setting is restrictive, it still approximates a broad class
 \section{Symmetry as an Unknown: Symmetry Discovery}\label{sec:sym-disco}
 The previous sections typically assumed \emph{known} symmetries.
 Here the symmetry is a priori \emph{unknown}: it is to be recovered, or its validity assessed, rather than imposed (\Cref{sec:design-principle}) or understood (\Cref{sec:parameter-space-symmetries}).
-Quantification (\Cref{sec:sym-quantification}) actually lies at the boundary between \emph{known} and \emph{unknown}: one starts with a candidate symmetry and measures how much it holds.\newline
+Quantification (\Cref{sec:sym-quantification}) actually lies at the boundary between \emph{known} and \emph{unknown}: one starts with a candidate symmetry and measures how much it holds.
+
 Symmetry discovery seeks to recover both a group and how it acts, that is, the triplet $(G,\rho_X,\rho_Y)$ for a map $f:\mathcal{X}\to \mathcal{Y}$.
 The two subsections split along the object axis (\Cref{fig:sym-loci}), with $f$ setting the locus of the symmetry.
 \Cref{sec:sym-disc-from-data} is mostly at the \emph{problem} level: $f$ is the ground truth $f^*$ or the data distribution $p$, observed only through a finite dataset.
@@ -2099,7 +2101,7 @@ One notable difference between the two cases is that with models, the function i
 As a whole, the section is mainly \emph{descriptive}.
 
 
-\subsection{Symmetry Discovery at the problem level}\label{sec:sym-disc-from-data}
+\subsection{Symmetry Discovery at the Problem Level}\label{sec:sym-disc-from-data}
 % add: ko2024anips
 % non-linear SD: yang2024p4icml, shaw2024
 % add ouderaa2023
@@ -2118,16 +2120,16 @@ Despite the appeal of symmetry discovery as a path around the symmetry bottlenec
 Misspecification can also degrade performance, as seen in \Cref{sec:edl-tradeoffs}.
 
 
-\subsubsection{Seminal works, data level}
+\subsubsection{Seminal Works, Data Level}
 The problem of detecting symmetries from finite data is not new, and early works extract the symmetries of one shape (data point locus), not of a distribution or a target function.
 \citet{highnam1985} and \citet{wolter1985tvc} provided algorithms for finding all rotational and reflective symmetries of planar and three-dimensional point sets.
 An early machine learning approach by \citet{rao1998anips} framed invariance discovery in visual perception (problem locus) as learning Lie group operators from infinitesimally transformed image patches via an unsupervised Bayesian algorithm.
 
 
-\subsubsection{Generative approaches, data distribution locus}
+\subsubsection{Generative Approaches, Data Distribution Locus}
 To statistically define symmetry of a probability density function $p$, \citet{desai2022prd} note that for a candidate symmetry $g$, the naive pdf-preserving condition $p(X=gx)|J_g(x)|=p(X=x)$ allows spurious symmetries.
 They strengthen the definition by introducing a reference distribution $p_I$: $g$ is a symmetry only if it is pdf-preserving for both $p$ and $p_I$.
-Taking $p_I$ uniform as a canonical choice amounts to constraining $g$ to equiareal maps i.e.\ $|J_g(x)|=1$.
+Taking $p_I$ uniform as a canonical choice amounts to constraining $g$ to equiareal maps, i.e.\ $|J_g(x)|=1$.
 Their \emph{symmetry GAN} restricts its generator to linear equiareal maps, since no parametrization exists for general equiareal maps, and learns to map real data to linearly modified versions of it by optimizing
 \begin{equation*}
     \mathcal{L}[g,D] = -\sum_{i=1}^{N}\Big[\log D(x_i) + \log\big(1-D(g(x_i))\big)\Big],
@@ -2135,10 +2137,10 @@ Their \emph{symmetry GAN} restricts its generator to linear equiareal maps, sinc
 where $D$ is the discriminator
 Unlike in a standard GAN, the same samples enter both terms.
 \citet{yang2023p4icml} propose \textit{LieGAN}, where a generator learns a Lie algebra basis $\{A_i\}$ such that transformations of the form $\exp(\sum_i w_i A_i)$ preserve the data distribution, guaranteed by the minimax objective of the GAN which minimizes the Jensen-Shannon (JS) divergence $D_{\text{JS}}(p\,\Vert{}\, p_g)$ between $p$ and its pushforward $p_g$.
-Additionally, regularizers are introduce to (i) prevent trivial solutions and identity collapse by penalizing $\mathrm{Sim}(g(x,y), (x,y))$ with $\mathrm{Sim}:\mathcal{X} \times \mathcal{Y}$ a similarity function and (ii) favor orthogonal spanning of the tangent space by penalizing cosine similarity $\mathrm{CoSim}(L_i, L_j)$ for $i\neq j$.
+Additionally, regularizers are introduced to (i) prevent trivial solutions and identity collapse by penalizing $\mathrm{Sim}(g(x,y), (x,y))$ with $\mathrm{Sim}:\mathcal{X} \times \mathcal{Y}$ a similarity function and (ii) favor orthogonal spanning of the tangent space by penalizing cosine similarity $\mathrm{CoSim}(L_i, L_j)$ for $i\neq j$.
 
 
-\subsubsection{Discovery from task-trained models}\label{sec:disco-task-trained}
+\subsubsection{Discovery from Task-Trained Models}\label{sec:disco-task-trained}
 Here the symmetry is recovered from a model fitted to a task, either extracted post hoc or learned jointly as a parameter.
 The working assumption is that leveraging data symmetries is useful so models, often equipped with dedicated symmetry modules, will absorb the correct symmetry present in its data.
 
@@ -2178,7 +2180,7 @@ They jointly learn $\tilde \theta$ and meta-learn $A$ on a validation set.
 When $n$ discourages combinatorial search, they relax $A\in [0,1]^{n\times n}$ and add regularizers: an entropy term $H(A) = -\sum_{i,j} A_{ij}\log A_{ij}$ to push values close to $\{0,1\}$, and a nuclear norm $\|A\|_*$ to encourage low rank, hence sharing.
 
 
-\subsubsection{Discovering group factors: disentangled symmetries}
+\subsubsection{Discovering Group Factors: Disentangled Symmetries}
 A line of work frames symmetry discovery as learning not only the group but also its decomposition into independent factors, a form of disentangled discovery \citep{higgins2018}.
 \citet{cohen2014} propose a probabilistic model that learns irreducible representations for compact commutative Lie groups, in particular the toroidal subgroups of $SO(D)$.
 In the context of dynamic environments where observations are paired with transformations, \citet{quessard2020anips} address disentanglement with a sparsity regularizer that encourages each symmetry generator to act on as few latent dimensions as possible, thereby identifying a block-diagonal structure in the representation.
@@ -2230,7 +2232,8 @@ Restricting to matrix Lie groups $G \leq GL(n,\mathbb{R})$, \citet{moskalev2023}
 Stacking this constraint over the dataset $\mathcal{D}$ yields the \emph{network polarization matrix} $\mathcal{E} \in \mathbb{R}^{|\mathcal{D}| \times n^2}$, whose nullspace is the learned Lie algebra.
 In practice, the approximate nullspace is extracted from the right-singular vectors of $\mathcal{E}$ associated with near-zero singular values (SVD), the count of which gives the algebra's dimension.
 \citet{hu2025nn} (LieSD) follow the same SVD-nullspace philosophy but characterize \emph{equivariance} from inputs, outputs and gradients: for connected $G$, $f$ is $G$-equivariant if and only if $d\rho_Y(A_i)\,f(x) = \partial f(x)\,d\rho_X(A_i)\,x$ for every generator $A_i$, with invariance the special case $d\rho_Y = 0$.
-Assembling these constraints into a coefficient matrix, the zero singular values again count the Lie-algebra dimension and singular vectors are the generators.\newline
+Assembling these constraints into a coefficient matrix, the zero singular values again count the Lie-algebra dimension and singular vectors are the generators.
+
 
 \subsubsection{Quantification}\label{sec:sym-quantification}
 % mention sensitivity analysis as the broader field that studies how the variation in the output of a model can be apportioned to different sources of variation in its inputs - see storm2024prl for an example of local sensitivity analysis applied to deep networks. Symmetry quantification could be likened to sensitivity analysis to specific directions in input space.
@@ -2457,7 +2460,7 @@ Finally, \citet{arjevani2023} identify a principle of least SB: for a shallow Re
 Since symmetries can slow optimization and trap training at low-capacity symmetric saddles, \citet{ziyin2024b} remove them purposefully with \emph{syre}, a model-agnostic scheme that anchors a random static bias at initialization, $\mathcal{L}_r(\theta)=\mathcal{L}(\theta+\theta_0)+\gamma\|\theta\|^2$, with the penalty upgraded to $\gamma\,\theta^\top D\theta$, $D_{ii}\sim\operatorname{Unif}(1-\epsilon,1+\epsilon)$, to also discard continuous symmetries.
 
 
-\subsection{Extent restriction: beyond groups}\label{sec:extent-restriction}
+\subsection{Extent Restriction: Beyond Groups}\label{sec:extent-restriction}
 % Add deformation stability [bronstein2021] which is about diffeomorphisms
 An extent-restricted symmetry holds for a set $S$ of transformations that falls short of a full group $G$.
 To define it more precisely, we use the following algebraic structure, similar to a group except that inverses are not required.
@@ -2525,14 +2528,14 @@ A pragmatic use of subgroups is \emph{discretization}: a finite $H\le G$ approxi
 A second role of subgroups organizes the representation itself.
 Direct products of subgroups are used by \citet{higgins2018} to define a representation $f\colon \mathcal{X}\to \mathcal{Z}$ \emph{disentangled} with respect to a decomposition $G=G_1\times\cdots\times G_m$ if $\mathcal{Z}$ splits as $\mathcal{Z}=\bigoplus_{i=1}^m \mathcal{Z}_i$ with $f$ equivariant and each factor $G_i$ acting nontrivially only on $\mathcal{Z}_i$.
 Several methods have been proposed to learn disentangled representations.
-\citet{quessard2020anips} start from trajectories $(o_1, g_1, o_2, g_2 \dots, )$ and map observations $o_i$ to a vector space $V$ and actions $g_i$ to $GL(V)$ while regularizing the number of dimensions acted on by the representation of the $g_i$.
+\citet{quessard2020anips} start from trajectories $(o_1, g_1, o_2, g_2, \dots)$ and map observations $o_i$ to a vector space $V$ and actions $g_i$ to $GL(V)$ while regularizing the number of dimensions acted on by the representation of the $g_i$.
 \citet{pfau2020anips} (GEOMANCER) geometrically factorize the global manifold into disentangled submanifolds: $M=M_1\times M_2$, guaranteed whenever there exists a subspace of the tangent space left invariant by the holonomy group of $M$, the group of linear maps of a tangent space obtained by parallel transport around closed loops (under conditions on $M$).
 \citet{shakerinava2022anips} formulate a disentangling loss, using a subgroup objective $\mathcal{L}=\sum_{i=1}^{m} \big[\mathcal{L}_{G_i}^{\mathrm{equiv}} + \sum_{j\neq i} \mathcal{L}_{G_j}^{\mathrm{inv}}\big]$.
 However, it requires samples where subgroups act in isolation, i.e.\ datasets $\mathcal{D}_i$ where only $G_i$ acts as $\tau (e, \dots, e, g_i, e, \dots, e)$.
 
 Finally, the loss landscape can be structured by stabilizers, as in the principle of least SB of \citet{arjevani2023} (\Cref{sec:dynamical-sb}).
 
-\subsubsection{Partial equivariance: non-closed subsets}\label{sec:non-closed-subsets}
+\subsubsection{Partial Equivariance: Non-Closed Subsets}\label{sec:non-closed-subsets}
 The non-closed row of \Cref{tab:extent-restriction} keeps the identity and inverses but drops \emph{closure} at some point $x$: the set $S=\{m:(m,x)\in\mathcal K\}$ of transformations admissible at $x$ is a non-closed subset of $G$.
 \citet{romero2023} define \emph{partial equivariance} to $S\subseteq G$ as
 $$f(\rho_X(g)\,x)=\rho_Y(g)\,f(x)\qquad \forall g\in S\subsetneq G,\ \forall x\in \mathcal{X},$$
@@ -2555,7 +2558,7 @@ Augerino, introduced by \citet{benton2020anips}, makes the invariance range a le
 Thus, a digit $7$ is found to be symmetric only over roughly $\pm 30^\circ$, while distinct natural poses keep $6$ and $9$ apart.
 An early example is \citet{goodfellow2009anips}, who measured neuron invariance over a bounded transformation range $\Gamma$ rather than a full orbit (e.g.\ $\pm 5$ frames of time translation in video).
 
-\subsubsection{Additional algebraic structures}
+\subsubsection{Additional Algebraic Structures}
 Monoids/semigroups and groupoids relax the remaining axioms.
 Semigroups keep associativity and closure but drop inverses, which is exactly the structure of irreversible operations such as blurring, downsampling, or cropping, where information is destroyed and cannot be recovered.
 
@@ -2577,7 +2580,7 @@ As a simple example, duplicating a row $W^{(l)}_{i,:}$ into a new row $W^{(l)}_{
 
 Finally, quivers and category theory have been used to reframe and extend geometric deep learning ideas \citep{gavranovic2024}, define message-passing GNNs equivariant to local isomorphisms \citep{dehaan2020} or study isomorphisms of the computational graphs of feedforward architectures \citep{armenta2021a}.
 
-\subsubsection{Domain restriction}\label{sec:domain-restriction}
+\subsubsection{Domain Restriction}\label{sec:domain-restriction}
 The last row of \Cref{tab:extent-restriction} restricts points rather than transformations.
 The instance-level and data-dependent PS (Parameter-space Symmetry) of \Cref{sec:scope-param-space-symmetries} are domain restrictions in parameter space.
 For instance-level PS, $\mathcal X=\Theta$ is restricted to $\Theta_0$.
@@ -2589,7 +2592,7 @@ The domain $\{(\theta,x):\ W_{1,A}x\in\mathbb R^{|A|}_{>0}\}$ gives $\mathcal K\
 Label-dependent refinements are domain restrictions of the ground truth: they require $f^*(mx)=f^*(x)$ only for $m\in\mathcal K_x$, where the non-global set of transformations $\mathcal K_x$ can depend on the class of $x$ and its pose relative to a natural pose \citep{urbano2026}, or on the instance itself \citep{wang2023a,miao2023p4icml} (\Cref{fig:sym-loci}).
 Different classes or instances then carry different symmetries: changing the color of a leaf from green to yellow preserves its class, whereas the same change turns a lime into a lemon.
 
-\subsection{Approximate symmetries: tolerance}\label{sec:approx-tolerance}
+\subsection{Approximate Symmetries: Tolerance}\label{sec:approx-tolerance}
 % bamler2018p3icml: almost symmetric subspace from weak symmetry breaking by regularizer \psi(Z)
 % chen2024jsm: approximately Q-symmetric loss function
 % contrast approximate EDL with deformation stability of GDL, see LLM_saved-outputs/responses-saved/GDL_EDL.md
@@ -2624,7 +2627,7 @@ A relaxed architecture is rarely sufficient on its own, since ordinary training 
 In the Bayesian case, this can be done directly through the prior \citep{vanderwilk2018anips,ouderaa2023}.
 In one sentence: \emph{a relaxed architecture trained with a soft penalty yields an approximately equivariant function}, where the two mechanisms need not co-occur.
 
-\subsubsection{Why tolerate}\label{sec:approx-why-tolerate}
+\subsubsection{Why Tolerate}\label{sec:approx-why-tolerate}
 The governing principle is that the model's symmetry should match the data's, so that hard-coding an exact symmetry is detrimental when the data does not reflect it exactly \citep{zhou2021,finzi2021anips,elsayed2020p3icml}.
 
 \citet{wang2022p3icml} make the cost precise: a strictly equivariant $f_\theta$ approximating an approximately equivariant target $f^*$ must commit an error $\exists x_0\in \mathcal{X},\ \|f^*(x_0)-f_\theta(x_0)\|\ge \tfrac12\|f^*\|_{\mathrm{EE}}$, lower-bounded by the target's own functional symmetry breaking measured in terms of the equivariance error (\Cref{eq:equiv-error-approximate}).
@@ -2644,7 +2647,7 @@ The latter also reframes the whole process as an optimization question, arguing 
 Relaxation is meant to smooth training, while exactness can be restored at test time.
 \citet{elhag2026} make the compatible empirical observation that equivariant models have a rougher loss landscape.
 
-\subsubsection{Relaxed architectures}\label{sec:approx-relaxed}
+\subsubsection{Relaxed Architectures}\label{sec:approx-relaxed}
 The most direct construction generalizes the group convolution by making its filter position-dependent, $k_\theta(v^{-1}u,v)$, so that the kernel depends on the absolute element $v$ and not only on the relative one $v^{-1}u$.
 \citet{ouderaa2022} implement this with a bivariate kernel $k_\theta:G\times G\to\mathbb{R}$ fed by random Fourier features of the Lie-algebra coordinates, modulated by frequency parameters $\omega,\omega'$ that control the equivariance strength ($\omega'=0$ is strict equivariance) and are themselves learnable.
 \citet{wang2022p3icml} relax both group and steerable convolution by replacing the single kernel with a weighted family, $\Psi_{\mathrm{relaxed}}(g,h)=\sum_{l=1}^{L}w_l(h)\,\Psi_l(g^{-1}h)$ for the group case and $\Phi_{\mathrm{relaxed}}(y)=\sum_{l=1}^{L}w_l(y)\odot\Phi_l(y)$ for the steerable basis.
@@ -2667,7 +2670,7 @@ For Bayesian methods, the relaxation lives in the prior.
 \citet{vanderwilk2018anips} build an approximately invariant Gaussian-process kernel from a base kernel by summing over augmentations, $k(x,x')=\sum_{x_a\in\mathcal{T}(x)}\sum_{x'_a\in\mathcal{T}(x')}k_g(x_a,x'_a)$, where $\mathcal{T}(x)$ is the set of augmentations of $x$, and select the invariance by maximizing the marginal likelihood.
 \citet{finzi2021anips} place different prior strengths on the equivariant and flexible pathways, and \citet{ouderaa2023} make those strengths learnable hyperparameters selected the same way.
 
-\subsubsection{Soft penalties}\label{sec:approx-soft}
+\subsubsection{Soft Penalties}\label{sec:approx-soft}
 Another architecture-agnostic route imposes symmetry through the objective alone.
 A first line performs ``symmetry regularization''~\citep{shakerinava2022anips} via group invariants.
 \citet{shakerinava2022anips} note that equivariance is a weak condition, as any injective $f:\mathcal{X}\to \mathcal{Z}$ is equivariant for a (generally nonlinear) induced action, $\tau_Z(g,z)=f(\tau_X(g,f^{-1}(z)))$.
@@ -2693,7 +2696,7 @@ Read as questions (which object carries the symmetry, is it known, is it exact?)
 Though not the only key to understanding deep learning, symmetry is a central one.
 
 
-\subsection{Underexplored areas and possible gaps}
+\subsection{Underexplored Areas and Possible Gaps}
 We collect possible future investigations.
 
 \Cref{tab:gaps} (\Cref{app:gaps}) lists the low-lift pairs (a measure of under-representation) of the coded corpus.
@@ -2817,7 +2820,7 @@ LS & Loss-Level Symmetries \\
 NTK & Neural Tangent Kernel \\
 GNN & Graph Neural Network \\
 CNN & Convolutional Neural Network
-\end{tabular}\\[8pt]
+\end{tabular}\par\vspace{8pt}\noindent
 The following notation is used in this manuscript:\\
 % Three blocks (groups / spaces and maps / losses) so the table can break across pages.
 % mdpi.cls makes X columns vertically centered; restore top alignment locally.
@@ -2838,6 +2841,7 @@ Permutation, permutation matrix & $\sigma\in S_n$, $P_\sigma$ & ${P_\sigma e_i=e
 Quotient map & ${\pi:\mathcal{X}\to\mathcal{X}/G}$ & Sends $x$ to its orbit \\
 Section & ${s:\mathcal{X}/G\to\mathcal{X}}$ & A representative per orbit, ${\pi\circ s=\operatorname{id}}$ \\
 Canonicalization & ${c=s\circ\pi:\mathcal{X}\to\mathcal{X}}$ & \\
+Reynolds operator & $\mathcal{R}$ & Orbit average, maps $f$ to an equivariant function \\
 Lie algebra of $G$ & $\mathfrak{g}$ & Elements $A$ \\
 Augmentation family & $\mathcal{T}$ & Broader than a group (crop, blur...) \\
 \midrule
@@ -2864,7 +2868,7 @@ Feature map at layer $l$ & ${f_\theta^{(l)}:\mathcal{X}\to\mathcal{Z}^{(l)}}$ & 
 Per-example loss & $\ell(x,\theta)$ & \\
 Loss criterion & $L(\hat y,y)$ & Compares a prediction $\hat y$ to a target $y$ \\
 Single-argument loss & $\mathcal{L}$ & ${\Theta\to\mathbb{R}}$ or ${\mathcal{F}\to\mathbb{R}}$\\
-Regularizer & $\mathcal{R}$ & Penalty term added to $\mathcal{L}$ \\
+Regularizer & $\mathcal{L}_R$ &  \\
 \bottomrule
 \end{tabularx}}
 
@@ -2880,18 +2884,18 @@ Regularizer & $\mathcal{R}$ & Penalty term added to $\mathcal{L}$ \\
 The knowledge base of \Cref{fig:selection-flow} is built by the two prompts below, run once per work and in this order.
 In both, \texttt{\{\}} stands for the citation key of the work, $\to$ for a tab character, and the trailing options set the model and its reasoning effort.
 
-\subsection{Summary prompt}
+\subsection{Summary Prompt}
 \begin{lstlisting}[style=prompt]
     "Open and read the folder raw/{}, particularly the main paper raw/{}/{}.md and summarize it to a file summaries/{}.md following the structure: \
     SUMMARY, KEY DEFINITIONS AND BACKGROUND NOTIONS, RESULTS (theoretical if any, empirical if any), METHODOLOGY, LIMITATIONS, THOUGHTS, ONE-LINE TL;DR" --model claude-sonnet-5 --effort high
 \end{lstlisting}
 
-\subsection{Indexing prompt}
+\subsection{Indexing Prompt}
 \begin{lstlisting}[style=prompt]
     "Read summaries/{} and add a line to index.tsv according to the column headers: citation_key(*\,$\to$\,*)Title(*\,$\to$\,*)Links(*\,$\to$\,*)Keywords(*\,$\to$\,*)Short comment" --model claude-sonnet-5 --effort medium
 \end{lstlisting}
 
-\subsection{Corpus coding}
+\subsection{Corpus Coding}
 The questions, value definitions and examples of \Cref{tab:taxonomy}, were preceded by the instruction:
 
 \begin{lstlisting}[style=prompt]
@@ -2902,9 +2906,9 @@ A value \emph{Not applicable} was added and described as ``The paper does not st
 
 \pagebreak
 
-\section{Automated taxonomy}\label{app:automated-taxonomy}
+\section{Automated Taxonomy}\label{app:automated-taxonomy}
 
-\subsection{Validation of the coding}\label{app:coding-validation}
+\subsection{Validation of the Coding}\label{app:coding-validation}
 Each work $w$ of the corpus is coded from its summary by the typed-output model \texttt{jev-1.13.0} (Jev~\citep{typesafe2026t}), with one call per work.
 For each axis $c$ of \Cref{tab:taxonomy}, with value set $V_c$, we add a default value ``not applicable'' (NA), so that a work is not forced into a value of an axis it does not concern.
 Jev returns a probability distribution $q_{w,c}$ on $V_c\cup\{\mathrm{NA}\}$.
@@ -2920,7 +2924,7 @@ This is one of the reasons why we also record the probabilities $q_{w,c}$, which
 We illustrate with one of the disagreements, a close call between two sensible values.
 \citet{brea2019} study paths whose endpoints are obtained by the permutation symmetry of the architecture (\emph{Model}) through a particular symmetric state (\emph{Parameter}): we chose \emph{Parameter}, Jev chose \emph{Model}.
 
-\subsection{Validation of the taxonomy axes}\label{app:taxonomy-validation}
+\subsection{Validation of the Taxonomy Axes}\label{app:taxonomy-validation}
 A taxonomy is useful if each axis separates the corpus and if distinct axes carry distinct information.
 We check both on the coded corpus.
 
@@ -2960,7 +2964,7 @@ We also report dependence at the level of values, where we use the probabilities
     \label{fig:taxonomy-Pcorrelations}
 \end{figure}
 
-\subsection{Example of analysis}\label{app:taxonomy-analysis}
+\subsection{Example of Analysis}\label{app:taxonomy-analysis}
 We report two ways we used the coded corpus to support the framing of the survey: the complementary \emph{segment} and \emph{choice} views.
 The segment view selects a section, subsection or subsubsection $s$, gathers its $n_s$ citations, of works $w_1,\dots,w_{n_s}$ (a work cited twice counts twice), and plots, for each value $v\in V_c$ of each axis $c$, the mean
 \begin{equation}
@@ -2990,7 +2994,7 @@ For instance, \Cref{sec:sym-disco} is the only section where \emph{Unknown} domi
 
 \clearpage
 
-\section{Gaps from coded corpus}\label{app:gaps}
+\section{Gaps from Coded Corpus}\label{app:gaps}
 
 \begin{figure}[ht]
 \begin{adjustwidth}{-\extralength}{0cm}
