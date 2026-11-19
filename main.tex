@@ -66,7 +66,7 @@
 \address[1]{Department of Mathematical Sciences, Politecnico di Torino, Turin, Italy}
 \corres{Correspondence: pierrick.lry@gmail.com}
 
-\abstract{Deep learning is a field of symmetries: it is imposed by design in architectures, data augmentations and training frameworks, emerges unintentionally from the parametrization of networks, is sometimes unknown and must be discovered, and often holds only partially or approximately.
+\abstract{Deep learning is a field of symmetries: they are imposed by design in architectures, data augmentations and training frameworks, emerge unintentionally from the parametrization of networks, are sometimes unknown and must be discovered, and often hold only partially or approximately.
 These occurrences are usually studied separately.
 Starting from the concept of symmetry, we provide a structured review of more than 300 works from a mathematical perspective.
 We propose a faceted taxonomy whose six axes (exactness, purpose, object, a priori knowledge, state, explicitness) locate, link and contrast occurrences.
@@ -1173,7 +1173,7 @@ Not every permutation symmetry in a loss calls for special treatment.
 Passing from a triplet loss to the InfoNCE / multi-negative losses \citep{oord2018a} introduces a permutation symmetry over the negative samples, but the loss is manifestly symmetric in them (a plain sum over negatives) and hence requires no alignment or assignment step.
 \end{Remark}
 
-\section{Loss Landscape and Parameter Space: Symmetries Puzzles}\label{sec:parameter-space-symmetries}
+\section{Loss Landscape and Parameter Space: Symmetry Puzzles}\label{sec:parameter-space-symmetries}
 % zhao2025: indicate overlaps
 In \Cref{sec:design-principle}, a symmetry carried by the problem or the training framework is deliberately built into the learning system.
 Here, the group acts on the parameter space $\Theta$, and symmetries are rather unanticipated artifacts of the parametrization, often a source of confusion.
@@ -2114,6 +2114,8 @@ Formally, given samples $(x_i,y_i)\sim p$, one seeks a group $G$ acting by $g\cd
 Generative approaches test the stronger condition $p\circ g^{-1}=p$, but most works target the equivariance of $f^*$, $f^*(\rho_X(g)x)=\rho_Y(g)f^*(x)$.
 Since the trivial group $\{e\}$ always qualifies, works add regularizers to favor larger groups \citep{benton2020anips,yang2023p4icml,escriche2025}.
 Weaker forms of discovery include estimating the range or level of a symmetry \citep{benton2020anips,ouderaa2022}.
+Despite the appeal of symmetry discovery as a path around the symmetry bottleneck or as a diagnostic tool, \citet{rath2024air} caution that, while discovery is valuable when prior knowledge is unavailable or hard to specify, automatically learned symmetries are generally unable to outperform models whose equivariance is correctly specified by design.
+Misspecification can also degrade performance, as seen in \Cref{sec:edl-tradeoffs}.
 
 
 \subsubsection{Seminal works, data level}
@@ -2122,7 +2124,7 @@ The problem of detecting symmetries from finite data is not new, and early works
 An early machine learning approach by \citet{rao1998anips} framed invariance discovery in visual perception (problem locus) as learning Lie group operators from infinitesimally transformed image patches via an unsupervised Bayesian algorithm.
 
 
-\subsubsection{Generative approaches, data distribution symmetry}
+\subsubsection{Generative approaches, data distribution locus}
 To statistically define symmetry of a probability density function $p$, \citet{desai2022prd} note that for a candidate symmetry $g$, the naive pdf-preserving condition $p(X=gx)|J_g(x)|=p(X=x)$ allows spurious symmetries.
 They strengthen the definition by introducing a reference distribution $p_I$: $g$ is a symmetry only if it is pdf-preserving for both $p$ and $p_I$.
 Taking $p_I$ uniform as a canonical choice amounts to constraining $g$ to equiareal maps i.e.\ $|J_g(x)|=1$.
@@ -2184,11 +2186,6 @@ In the context of dynamic environments where observations are paired with transf
 \citet{ennes2025fcm} tackle the problem from a geometric perspective: given a candidate compact Lie group $G$ and a point cloud $X\subset \mathbb R^n$ sampled on or close to an orbit $\mathcal O$ of $G$, their \textit{LieDetect} algorithm outputs a representation of $G$ in $GL(n)$ as direct sum of irreducible representations by first identifying infinitesimal symmetries in $\mathcal O$ via a PCA-like operator and projecting onto the closest valid Lie algebra of $G$.
 While the algorithm recipe is general, it is implemented for a the groups $SO(2)$, $T^d$, $SU(2)$ and $SO(3)$.
 Theoretical stability guarantees given in terms of Wasserstein distances.
-
-
-\subsubsection{Caveat}
-Despite the appeal of symmetry discovery as a path around the symmetry bottleneck or as a diagnostic tool, \citet{rath2024air} caution that, while discovery is valuable when prior knowledge is unavailable or hard to specify, automatically learned symmetries are generally unable to outperform models whose equivariance is correctly specified by design.
-Misspecification can also degrade performance, as seen in \Cref{sec:edl-tradeoffs}.
 
 
 
@@ -2695,41 +2692,12 @@ The coded corpus and maintained knowledge base allow for a new type of structure
 Read as questions (which object carries the symmetry, is it known, is it exact?), the axes also guide the choice of a symmetry-aware strategy.
 Though not the only key to understanding deep learning, symmetry is a central one.
 
-\subsection{Loose Ends and Outlook}\label{sec:loose-ends}
-We gather here some occurrences of symmetry that did not enter the main narrative.
-
-\paragraph{Beyond disentanglement}
-Disentangled representations \citep{higgins2018}, and the more specific class--pose decompositions \citep{winter2022anips,marchetti2023p2icais} in which the latent space is split into invariant and equivariant parts for a given group, have an information-theoretic extension: an embedding $Z=[Z_Y,Z_\perp]$ with mutual information $I(Z_\perp;Y)=0$, so that $Z_\perp$ parametrizes the transformations under which $Y$ is invariant.
-This goes beyond disentanglement since it accounts for a label-informative distributional SB (\Cref{sec:distributional-sb}) and extends beyond groups to complex transformations \citep{wieser2020anips}.
-
-\paragraph{Framework symmetries}
-Symmetrization is mentioned in several places (\Cref{sec:edl-achieving-equiv,sec:quotient-repr-align,sec:distributional-sb}) but never unified.
-It gathers post-hoc or ad-hoc methods that make a module equivariant, such as canonicalization \citep{kaba2023p4icml,urbano2026,ciuclea2025,kalogeropoulos2024} and frame averaging \citep{puny2021}, an efficient version of the feature averaging of \Cref{sec:da-fa}.
-Some paradigms induce symmetries.
-In federated learning, the FedAvg update $\theta=\sum_k \frac{n_k}{n}\theta_k$ \citep{mcmahan2017p2icais} is invariant to relabeling the clients $k$.
-In asynchronous training, stale gradients can be applied, so the result depends on their arrival order, as in \Cref{sec:data-ordering}.
-In reinforcement learning, self-play \citep{silver2017,zhang2025a} trains agents in competition with duplicates of themselves, close to the branch symmetry of joint embeddings (\Cref{sec:joint-embedding}).
-Generative models and joint-embedding predictive architectures (JEPA) were not covered.
-Evaluations and explanations should respect symmetries too.
-In the spirit of the feature-matrix dissimilarity $\mu(X,Y)$ of \citet{godfrey2022}, invariant to the permutations and rescalings of ReLU networks (\Cref{sec:quotient-repr-align}), explanations should be equivariant to the same group as the model \citep{crabbe2023}, and self-interpretable models can produce explanations that respect equivariances \citep{wang2021anips}.
-In NLP, semantic-preservation tests \citep{ribeiro2020p5amacl,zarza2026,bianchi2022pnpfwebn} ask a transformation such as a paraphrase to preserve $\phi$-equivalence (\Cref{def:equivalence}), with $\phi$ the model or a text property.
-
-\paragraph{Other}
-Still in NLP, symmetries and asymmetries of language are studied: translation-invariant co-occurrences shape word representations~\citep{karkada2026}, and learning language in reverse performs worse, although the best achievable loss is invariant \citep{papadopoulos2024}.
-Complex symmetries remain largely open.
-Non-linear symmetries can be discovered as linear actions in a latent space \citep{yang2024p4icml}.
-A 3D rotation of an object seen as a 2D image has no well-defined action \citep{park2022p3icml,wang2022b}, and context raises similar issues: a bounding box should rotate with its object while the global scene stays unrotated \citep{yu2022}.
-
-\paragraph{Limitations}
-The corpus was assembled by monitoring and keyword search over two years rather than by a registered search protocol: it reflects our reading and is not exhaustive.
-The coding along the taxonomy was produced by a language model from structured LLM-generated summaries (\Cref{app:coding-validation}).
-Each work receives a single value per axis although some might span several.
-The lift of \Cref{app:gaps} is relative to this corpus: a low value can reflect our selection, which is why the candidates of \Cref{tab:gaps} are filtered by hand.
 
 \subsection{Underexplored areas and possible gaps}
 We collect possible future investigations.
 
-\Cref{tab:gaps} (\Cref{app:gaps}) lists the low-lift pairs (a measure of under-representation) of the coded corpus, among which the following could be plausible candidates.
+\Cref{tab:gaps} (\Cref{app:gaps}) lists the low-lift pairs (a measure of under-representation) of the coded corpus.
+We extract plausible candidates in the first four paragraphs below, what remains is our reading.
 
 \paragraph{(Framework, Explicit)}
 The design of learning systems could be formalized through symmetry principles, as in our reading of joint embeddings in \Cref{sec:joint-embedding}.
@@ -2775,6 +2743,38 @@ For minibatches, writing $S_B(\theta)=\{g: f_{g\cdot\theta}|_B=f_\theta|_B\}$ fo
 \paragraph{From parameters to functions}
 A further goal is to infer properties of $\mathcal{F}$ from $\Theta$ (\Cref{sec:measurements-param-space}).
 For example, mode connectivity carries over to function space (\Cref{sec:mode-connectivity}), but what does a low linear barrier after alignment $\min_{g\in G}B(\theta_0,g\cdot\theta_1)\approx 0$ (\Cref{eq:linear-barrier}) mean for $f_{\theta_0}$ and $f_{\theta_1}$?
+
+\subsection{Loose Ends and Outlook}\label{sec:loose-ends}
+We gather here some occurrences of symmetry that did not enter the main narrative.
+
+\paragraph{Beyond disentanglement}
+Disentangled representations \citep{higgins2018}, and the more specific class--pose decompositions \citep{winter2022anips,marchetti2023p2icais} in which the latent space is split into invariant and equivariant parts for a given group, have an information-theoretic extension: an embedding $Z=[Z_Y,Z_\perp]$ with mutual information $I(Z_\perp;Y)=0$, so that $Z_\perp$ parametrizes the transformations under which $Y$ is invariant.
+This goes beyond disentanglement since it accounts for a label-informative distributional SB (\Cref{sec:distributional-sb}) and extends beyond groups to complex transformations \citep{wieser2020anips}.
+
+\paragraph{Framework symmetries}
+Symmetrization is mentioned in several places (\Cref{sec:edl-achieving-equiv,sec:quotient-repr-align,sec:distributional-sb}) but never unified.
+It gathers post-hoc or ad-hoc methods that make a module equivariant, such as canonicalization \citep{kaba2023p4icml,urbano2026,ciuclea2025,kalogeropoulos2024} and frame averaging \citep{puny2021}, an efficient version of the feature averaging of \Cref{sec:da-fa}.
+Some paradigms induce symmetries.
+In federated learning, the FedAvg update $\theta=\sum_k \frac{n_k}{n}\theta_k$ \citep{mcmahan2017p2icais} is invariant to relabeling the clients $k$.
+In asynchronous training, stale gradients can be applied, so the result depends on their arrival order, as in \Cref{sec:data-ordering}.
+In reinforcement learning, self-play \citep{silver2017,zhang2025a} trains agents in competition with duplicates of themselves, close to the branch symmetry of joint embeddings (\Cref{sec:joint-embedding}).
+Generative models and joint-embedding predictive architectures (JEPA) were not covered.
+Evaluations and explanations should respect symmetries too.
+In the spirit of the feature-matrix dissimilarity $\mu(X,Y)$ of \citet{godfrey2022}, invariant to the permutations and rescalings of ReLU networks (\Cref{sec:quotient-repr-align}), explanations should be equivariant to the same group as the model \citep{crabbe2023}, and self-interpretable models can produce explanations that respect equivariances \citep{wang2021anips}.
+In NLP, semantic-preservation tests \citep{ribeiro2020p5amacl,zarza2026,bianchi2022pnpfwebn} ask a transformation such as a paraphrase to preserve $\phi$-equivalence (\Cref{def:equivalence}), with $\phi$ the model or a text property.
+
+\paragraph{Other}
+Still in NLP, symmetries and asymmetries of language are studied: translation-invariant co-occurrences shape word representations~\citep{karkada2026}, and learning language in reverse performs worse, although the best achievable loss is invariant \citep{papadopoulos2024}.
+Complex symmetries remain largely open.
+Non-linear symmetries can be discovered as linear actions in a latent space \citep{yang2024p4icml}.
+A 3D rotation of an object seen as a 2D image has no well-defined action \citep{park2022p3icml,wang2022b}, and context raises similar issues: a bounding box should rotate with its object while the global scene stays unrotated \citep{yu2022}.
+
+\paragraph{Limitations}
+The corpus was assembled by monitoring and keyword search over two years rather than by a registered search protocol: it reflects our reading and is not exhaustive.
+The coding along the taxonomy was produced by a language model from structured LLM-generated summaries (\Cref{app:coding-validation}).
+Each work receives a single value per axis although some might span several.
+The lift of \Cref{app:gaps} is relative to this corpus: a low value can reflect our selection, which is why the candidates of \Cref{tab:gaps} are filtered by hand.
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
