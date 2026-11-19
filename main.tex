@@ -64,7 +64,7 @@
 % MDPI internal command: Authors, for metadata in PDF
 \AuthorNames{Pierrick Leroy, Giovanni Petri and Francesco Vaccarino}
 \address[1]{Department of Mathematical Sciences, Politecnico di Torino, Turin, Italy}
-\corres{Correspondence: pierrick.leroy@polito.it}
+\corres{Correspondence: pierrick.lry@gmail.com}
 
 \abstract{Deep learning is a field of symmetries: imposed by design in architectures, augmentations or training frameworks, emerging from the parametrization, unknown and to be discovered, or holding only partially or approximately.
 Starting from the concept of symmetry, we systematically review more than 300 works from the literature from a mathematical perspective.
@@ -2768,11 +2768,15 @@ We organized the literature with a faceted taxonomy that makes the links between
 Read as questions (which object carries the symmetry, is it known, is it exact?), the axes also guide the choice of a symmetry-aware strategy.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\authorcontributions{}
+\authorcontributions{Literature acquisition and analysis, methodology, processing and writing (draft preparation), P.L.; supervision, review, editing and project idea, G.P. and F.V. All authors have read and agreed to the published version of the manuscript.}
 
-\funding{}
+\funding{This study was carried out within the FAIR - Future Artificial Intelligence Research and received funding from the European Union Next-GenerationEU (PIANO NAZIONALE DI RIPRESA E RESILIENZA (PNRR) – MISSIONE 4 COMPONENTE 2, INVESTIMENTO 1.3 – D.D. 1555 11/10/2022, PE00000013).}
 
-\acknowledgments{}
+\acknowledgments{During the preparation of this manuscript, the authors used ChatGPT, Gemini, Claude and Elicit to identify candidate works; claude-sonnet-5 (Anthropic) to summarize and index each retained work; the typed-output model jev-1.13.0 (TypeSafe) to code the corpus according to the taxonomy from its summary; and claude-opus versions 4.8 and 5.5 to polish the writing and interact with the corpus.
+The summary and indexing prompts used are reported in \Cref{app:prompts} and, for the coding, the questions, value definitions and examples of \Cref{tab:taxonomy}, preceded by the instruction: ``The paper is coded for a survey on symmetries, invariance and equivariance in deep learning.
+A symmetry is a transformation $g$ of an object (data, model, parameters, loss, \dots) leaving some property unchanged.
+Answer about the main symmetry the paper studies or uses, not about the paper's topic in general.''
+The authors have reviewed and edited the output and take full responsibility for the content of this publication.}
 
 \conflictsofinterest{The authors declare no conflicts of interest.} 
 
