@@ -2761,10 +2761,14 @@ For example, mode connectivity carries over to function space (\Cref{sec:mode-co
 
 \subsection{Conclusions}
 
-Symmetry appears at every stage of the deep learning pipeline.
-Though not the only key to understanding deep learning, it is a central one.
-We organized the literature with a faceted taxonomy that makes the links between results across subfields explicit.
+Symmetry appears at every stage of the deep learning pipeline, and the concept plays varying roles depending on the context and object that carries it: an inductive prior when the group acts on data, a confounder when it acts on parameters or an objective in discovery scenarios.
+Organizing the literature by this object, together with five other axes, links results that are usually read separately.
+Equivariant architectures, data augmentation and soft penalties distill the same problem symmetry differently: the first to the hypothesis class $\mathcal{H}$, the other two to a single implemented function $f_\theta$ with the former exact for every $\theta$ and the latter learned and approximate.
+In parameter space, the chain of \Cref{eq:param-symmetry-hierarchy} separates what is due to a parameter, to the architecture and to the objective.
+Discovery and incomplete symmetries ask the same question from opposite ends: which transformations are symmetries and to what degree.
+The coded corpus and maintained knowledge base allow for a new type of structured analysis and points to under-represented combinations.
 Read as questions (which object carries the symmetry, is it known, is it exact?), the axes also guide the choice of a symmetry-aware strategy.
+Though not the only key to understanding deep learning, symmetry is a central one.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \authorcontributions{Literature acquisition and analysis, methodology, processing and writing (draft preparation), P.L.; supervision, review, editing and project idea, G.P. and F.V. All authors have read and agreed to the published version of the manuscript.}
