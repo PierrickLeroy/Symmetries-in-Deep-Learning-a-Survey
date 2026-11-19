@@ -39,23 +39,27 @@ Goal: list all important information about the symmetry
 
 Is it possible to write the triplet $(G, \rho_X, \rho_Y)$?
 Is there an algebraic form for the action of $g$?
-- If not, is it because the symmetry is complex but there is an underlying symmetry (3D rotation seen in 2D) or because it is not a true symmetry (incomplete)?
+- If not, is it because the symmetry is complex but there is an underlying symmetry (3D rotation seen in 2D), because it is not a true symmetry (incomplete), or because it is unknown?
 - If yes, can $\rho_X$ and $\rho_Y$ be written as matrices (linear representations)?
 
 Is $(G, \rho_X, \rho_Y)$ known? If only a candidate is known, its validity can be measured (\Cref{sec:sym-quantification}).
 
 Properties of $G$ as a group (\Cref{sec:groups})
-- Continuous or discrete? If discrete, is it finite or infinite?
-- Compact? Connected?
+- Continuous or discrete?
+    - If discrete, is it finite or infinite?
+    - If continuous, is it connected?
+- Is it compact?
 These determine the available tools (\Cref{sec:edl-achieving-equiv,sec:lie-algebra}).
 
 How does $G$ act:
 - Invariantly or equivariantly? If equivariant, is the action the same on input and output space (\Cref{ex:one-rotation-several-forms})?
 
-Does $G$ formally verify the group axioms? If not, describe the actual weaker structure (\Cref{tab:extent-restriction}).
-If yes, does the symmetry always hold fully (exact)? If not, does it depend on time (dynamic, State axis), hold only on part of the domain (extent-restricted, domain case), only on a subgroup (extent-restricted, subgroup case), or up to a tolerance (approximate)?
+Does $G$ formally verify the group axioms?
+- If not, describe the actual weaker structure (\Cref{tab:extent-restriction}).
+- If yes, does the symmetry always hold fully (exact)?
+    - If not, does it depend on time (dynamic, State axis), hold only on part of the domain (extent-restricted, domain case), only on a subgroup (extent-restricted, subgroup case), or up to a tolerance (approximate)? Or is it a case of symmetry breaking \Cref{table:symmetry-breaking}?
 
-If $G$ is found to not be exact, revisite "Locate" and consider symmetry breaking \Cref{table:symmetry-breaking}.
+If $G$ is found to not be exact, revisiting "Locate" might be necessary.
 
 ## Act
 This is the purpose axis extended beyond the binary "prescriptive" or "descriptive".
@@ -63,14 +67,23 @@ This is the purpose axis extended beyond the binary "prescriptive" or "descripti
 Is it a bug, a feature, a prior, an object of study or something to discover?
 
 What do I want to do?
-- Discover/describe
-- Explain/understand
+- Discover/describe the symmetry itself
+    - Find the symmetry group (discovery)
+    - Formalize an intuitive/empirical observation
+    - Give a new perspective on a subfield (framework symmetries) or unify previous works
+    - Precise the structure if not a group
+- Explain/understand its consequences
+    - List conservation laws
+    - Analyze the effect of a symmetry on training dynamics
+    - Characterize a fiber of the implementation map
 - Account for
+    - Remove it
+    - Quotient it
+    - Align, canonicalize
 - Exploit
-
-Use the symmetry as a prior (\Cref{fig:five-routes}):
-- Should I hard-code it / Do I have competencies and time to develop an equivariant model (symmetry bottleneck, \Cref{par:sym-bottleneck})? Is it worth it (\Cref{sec:edl-tradeoffs}: how well the data satisfy it, its learnability, compute)? If yes, should I try something in-between to still allow it to break (\Cref{sec:approx-relaxed,sec:subgroups})?
-- If not, augment for it (\Cref{sec:data-augmentation}), regularize toward it with an unconstrained model (\Cref{sec:approx-soft}), or let it be learned (then check, \Cref{sec:sym-quantification})
+    - Design an equivariant layer/network
+    - Make a network more equivariant (data augmentation, soft penalty)
+    - Find an application (e.g. teleportation, pruning)
 
 ## Diagnose
 How do I diagnose whether the assumed symmetry is actually wrong?
@@ -83,4 +96,9 @@ Cues that something is wrong, mechanisms to find that something is not right, gu
 - An equivariant model loses against an unconstrained one (or augmented one). Caveat: not necessarily conclusive, since this also happens with a correct symmetry under distributional SB or optimization difficulties (\Cref{sec:distributional-sb,sec:edl-tradeoffs})
 
 # Unused
+
 If it was not possible to write $(G, \rho_X, \rho_Y)$, is it because the symmetry is unknown and discovery is the objective?
+
+Use the symmetry as a prior (\Cref{fig:five-routes}):
+- Should I hard-code it / Do I have competencies and time to develop an equivariant model (symmetry bottleneck, \Cref{par:sym-bottleneck})? Is it worth it (\Cref{sec:edl-tradeoffs}: how well the data satisfy it, its learnability, compute)? If yes, should I try something in-between to still allow it to break (\Cref{sec:approx-relaxed,sec:subgroups})?
+- If not, augment for it (\Cref{sec:data-augmentation}), regularize toward it with an unconstrained model (\Cref{sec:approx-soft}), or let it be learned (then check, \Cref{sec:sym-quantification})
