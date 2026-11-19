@@ -9,11 +9,15 @@ A progression in steps:
 5. Diagnose: if something goes wrong, how do we catch it?
 
 Taxonomy axes (\Cref{tab:taxonomy}) per step: Locate = Object; Characterize = Exactness, A priori knowledge, State; Act = Purpose.
+Explicitness is discarded.
 Other questions (group properties, form of the action, cost of equivariance) go beyond the taxonomy.
 
-In the figure, steps 2-4 could be represented from left to right.
-I am not sure step 1 and 5 should be diagrammatically represented.
-Loci should be indicated in 2., and segments (sections, subsections, subsubsections, paragraphs) as tag when they apply.
+**Figure**
+The figure progresses from left to right.
+Step 1 is the entry, it could be three icons and should not take much space. 
+Steps 2-4 are the three main phases, organized as sequential panels.
+Step 5 is a feedback/warning, it could be an arrow pointing backward.
+Loci should be indicated as leaves in 2., and segments (sections, subsections, subsubsections, paragraphs) as clickable tags where they apply.
 
 ## Entry points
 
@@ -23,7 +27,7 @@ Loci should be indicated in 2., and segments (sections, subsections, subsubsecti
 
 ## Locate
 Goal: describe how to pick the box (locus) in \Cref{fig:sym-loci}, i.e. the Object axis.
-It should consist of a (mini) decision tree to identify the locus and answer the question: of which object (usually a map $f$) is the symmetry a property?
+It should consist of a small decision tree to identify the locus and answer the question: of which object (usually a map $f$) is the symmetry a property?
 
 1. A natural first step is to ask: can it be conceived without any reference to a model/architecture (problem, data)? If not, is it about a single model and its training (model, optimization, parameter) or about the wider training pipeline as a whole (framework)?
     1. To separate (problem, data): data is about a single fixed point $x$, $g\cdot x=x$, a symmetry in the strong sense of \Cref{sec:what-is-sym}. Problem involves either a task relating two spaces through the ground truth $f^*:\mathcal{X}\to \mathcal{Y}$ or multiple points through the data distribution $p$.
@@ -35,7 +39,7 @@ Now, it should be possible to attempt writing the domain and codomain of $f$.
 There might be multiple symmetries and loci. If this is the case, repeat these steps. The arrows of \Cref{fig:sym-loci} can suggest other related loci.
 
 ## Characterize
-Goal: list all important information about the symmetry
+Goal: list all important information about the symmetry. It could organize the questions in multiple mini decision-trees, in the best logical order.
 
 Is it possible to write the triplet $(G, \rho_X, \rho_Y)$?
 Is there an algebraic form for the action of $g$?
@@ -57,16 +61,14 @@ How does $G$ act:
 Does $G$ formally verify the group axioms?
 - If not, describe the actual weaker structure (\Cref{tab:extent-restriction}).
 - If yes, does the symmetry always hold fully (exact)?
-    - If not, does it depend on time (dynamic, State axis), hold only on part of the domain (extent-restricted, domain case), only on a subgroup (extent-restricted, subgroup case), or up to a tolerance (approximate)? Or is it a case of symmetry breaking \Cref{table:symmetry-breaking}?
+    - If not, does it depend on time (dynamic, State axis), hold only on part of the domain (extent-restricted, domain case), only on a subgroup (extent-restricted, subgroup case), or up to a tolerance (approximate)?
 
 If $G$ is found to not be exact, revisiting "Locate" might be necessary.
 
 ## Act
 This is the purpose axis extended beyond the binary "prescriptive" or "descriptive".
 
-Is it a bug, a feature, a prior, an object of study or something to discover?
-
-What do I want to do?
+What do we want to do?
 - Discover/describe the symmetry itself
     - Find the symmetry group (discovery)
     - Formalize an intuitive/empirical observation
@@ -85,17 +87,20 @@ What do I want to do?
     - Make a network more equivariant (data augmentation, soft penalty)
     - Find an application (e.g. teleportation, pruning)
 
-## Diagnose
+## Diagnose/warnings
 How do I diagnose whether the assumed symmetry is actually wrong?
 Cues that something is wrong, mechanisms to find that something is not right, guardrails.
 - An equivariance error is large (\Cref{sec:sym-quantification})
 - An ill-posed task Curie obstruction: the task needs $\operatorname{Stab}(f^*(x))\subsetneq\operatorname{Stab}(x)$.
 - A two-sample classifier can tell $p_X$ from its symmetrized version leads to questions on an evaluation dataset
 - A conserved quantity drifts in practice
+- Symmetry breaking (\Cref{table:symmetry-breaking}) is at play
 - Discovery/quantification disagree with the assumed group
 - An equivariant model loses against an unconstrained one (or augmented one). Caveat: not necessarily conclusive, since this also happens with a correct symmetry under distributional SB or optimization difficulties (\Cref{sec:distributional-sb,sec:edl-tradeoffs})
 
 # Unused
+
+Act: is it a bug, a feature, a prior, an object of study or something to discover?
 
 If it was not possible to write $(G, \rho_X, \rho_Y)$, is it because the symmetry is unknown and discovery is the objective?
 
