@@ -2684,6 +2684,17 @@ For encoder--decoder models, \citet{ali2026} decompose this into three terms: an
 
 \section{Discussion}\label{sec:discussion}
 
+\subsection{Conclusions}
+
+Symmetry appears at every stage of the deep learning pipeline, and the concept plays varying roles depending on the context and object that carries it: an inductive prior when the group acts on data, a confounder when it acts on parameters or an objective in discovery scenarios.
+Organizing the literature by this object, together with five other axes, links results that are usually read separately.
+Equivariant architectures, data augmentation and soft penalties distill the same problem symmetry differently: the first to the hypothesis class $\mathcal{H}$, the other two to a single implemented function $f_\theta$ with the former exact for every $\theta$ and the latter learned and approximate.
+In parameter space, the chain of \Cref{eq:param-symmetry-hierarchy} separates what is due to a parameter, to the architecture and to the objective.
+Discovery and incomplete symmetries ask the same question from opposite ends: which transformations are symmetries and to what degree.
+The coded corpus and maintained knowledge base allow for a new type of structured analysis and points to under-represented combinations.
+Read as questions (which object carries the symmetry, is it known, is it exact?), the axes also guide the choice of a symmetry-aware strategy.
+Though not the only key to understanding deep learning, symmetry is a central one.
+
 \subsection{Loose Ends and Outlook}\label{sec:loose-ends}
 We gather here some occurrences of symmetry that did not enter the main narrative.
 
@@ -2708,6 +2719,12 @@ Still in NLP, symmetries and asymmetries of language are studied: translation-in
 Complex symmetries remain largely open.
 Non-linear symmetries can be discovered as linear actions in a latent space \citep{yang2024p4icml}.
 A 3D rotation of an object seen as a 2D image has no well-defined action \citep{park2022p3icml,wang2022b}, and context raises similar issues: a bounding box should rotate with its object while the global scene stays unrotated \citep{yu2022}.
+
+\paragraph{Limitations}
+The corpus was assembled by monitoring and keyword search over two years rather than by a registered search protocol: it reflects our reading and is not exhaustive.
+The coding along the taxonomy was produced by a language model from structured LLM-generated summaries (\Cref{app:coding-validation}).
+Each work receives a single value per axis although some might span several.
+The lift of \Cref{app:gaps} is relative to this corpus: a low value can reflect our selection, which is why the candidates of \Cref{tab:gaps} are filtered by hand.
 
 \subsection{Underexplored areas and possible gaps}
 We collect possible future investigations.
@@ -2759,16 +2776,6 @@ For minibatches, writing $S_B(\theta)=\{g: f_{g\cdot\theta}|_B=f_\theta|_B\}$ fo
 A further goal is to infer properties of $\mathcal{F}$ from $\Theta$ (\Cref{sec:measurements-param-space}).
 For example, mode connectivity carries over to function space (\Cref{sec:mode-connectivity}), but what does a low linear barrier after alignment $\min_{g\in G}B(\theta_0,g\cdot\theta_1)\approx 0$ (\Cref{eq:linear-barrier}) mean for $f_{\theta_0}$ and $f_{\theta_1}$?
 
-\subsection{Conclusions}
-
-Symmetry appears at every stage of the deep learning pipeline, and the concept plays varying roles depending on the context and object that carries it: an inductive prior when the group acts on data, a confounder when it acts on parameters or an objective in discovery scenarios.
-Organizing the literature by this object, together with five other axes, links results that are usually read separately.
-Equivariant architectures, data augmentation and soft penalties distill the same problem symmetry differently: the first to the hypothesis class $\mathcal{H}$, the other two to a single implemented function $f_\theta$ with the former exact for every $\theta$ and the latter learned and approximate.
-In parameter space, the chain of \Cref{eq:param-symmetry-hierarchy} separates what is due to a parameter, to the architecture and to the objective.
-Discovery and incomplete symmetries ask the same question from opposite ends: which transformations are symmetries and to what degree.
-The coded corpus and maintained knowledge base allow for a new type of structured analysis and points to under-represented combinations.
-Read as questions (which object carries the symmetry, is it known, is it exact?), the axes also guide the choice of a symmetry-aware strategy.
-Though not the only key to understanding deep learning, symmetry is a central one.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \authorcontributions{Literature acquisition and analysis, methodology, processing and writing (draft preparation), P.L.; supervision, review, editing and project idea, G.P. and F.V. All authors have read and agreed to the published version of the manuscript.}
