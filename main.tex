@@ -170,7 +170,7 @@ Following this protocol, $408$ works were identified, out of which $322$ are cit
 \subsection{Taxonomy}
 We propose a faceted taxonomy in \Cref{tab:taxonomy} to categorize occurrences of symmetries in works.
 \Cref{fig:sym-loci} further details the \emph{Object} axis of the taxonomy.
-This taxonomy was used to code the corpus with the typed-output model $\texttt{jev-1.13.0}$, which provides a $6$-dimensional classification for each paper, or a $17$-dimensional vector of coordinates in $[0,1]$ when the output probabilities associated with each choice are recorded.
+This taxonomy was used to code the corpus with the typed-output model $\texttt{jev-1.13.0}$~\citep{typesafe2026t}, which provides a $6$-dimensional classification for each paper, or a $17$-dimensional vector of coordinates in $[0,1]$ when the output probabilities associated with each choice are recorded.
 The coded corpus was used as an organizing tool to guide the framing of each part, to develop the taxonomy, to position the different parts, and to lay out and contrast their distinctive features.
 \Cref{app:automated-taxonomy} gives additional details on the coding of the corpus, our method to validate both the coding and the taxonomy, and the way we leverage it to analyze the corpus.
 We chose a typed-output model over a standard LLM because typed output matches the requirement of the task (a discrete set of categorical answers) while being significantly faster and more cost-effective, which allowed us to proceed by iterations.
@@ -2773,9 +2773,7 @@ Read as questions (which object carries the symmetry, is it known, is it exact?)
 \funding{This study was carried out within the FAIR - Future Artificial Intelligence Research and received funding from the European Union Next-GenerationEU (PIANO NAZIONALE DI RIPRESA E RESILIENZA (PNRR) – MISSIONE 4 COMPONENTE 2, INVESTIMENTO 1.3 – D.D. 1555 11/10/2022, PE00000013).}
 
 \acknowledgments{During the preparation of this manuscript, the authors used ChatGPT, Gemini, Claude and Elicit to identify candidate works; claude-sonnet-5 (Anthropic) to summarize and index each retained work; the typed-output model jev-1.13.0 (TypeSafe) to code the corpus according to the taxonomy from its summary; and claude-opus versions 4.8 and 5.5 to polish the writing and interact with the corpus.
-The summary and indexing prompts used are reported in \Cref{app:prompts} and, for the coding, the questions, value definitions and examples of \Cref{tab:taxonomy}, preceded by the instruction: ``The paper is coded for a survey on symmetries, invariance and equivariance in deep learning.
-A symmetry is a transformation $g$ of an object (data, model, parameters, loss, \dots) leaving some property unchanged.
-Answer about the main symmetry the paper studies or uses, not about the paper's topic in general.''
+The summary, indexing and corpus coding prompts used are reported in \Cref{app:prompts}.
 The authors have reviewed and edited the output and take full responsibility for the content of this publication.}
 
 \conflictsofinterest{The authors declare no conflicts of interest.} 
@@ -2881,6 +2879,15 @@ In both, \texttt{\{\}} stands for the citation key of the work, $\to$ for a tab 
 \begin{lstlisting}[style=prompt]
     "Read summaries/{} and add a line to index.tsv according to the column headers: citation_key(*\,$\to$\,*)Title(*\,$\to$\,*)Links(*\,$\to$\,*)Keywords(*\,$\to$\,*)Short comment" --model claude-sonnet-5 --effort medium
 \end{lstlisting}
+
+\subsection{Corpus coding}
+The questions, value definitions and examples of \Cref{tab:taxonomy}, were preceded by the instruction:
+
+\begin{lstlisting}[style=prompt]
+    "The paper is coded for a survey on symmetries, invariance and equivariance in deep learning. A symmetry is a transformation $g$ of an object (data, model, parameters, loss, \dots) leaving some property unchanged. Answer about the main symmetry the paper studies or uses, not about the paper's topic in general."
+\end{lstlisting}
+
+A value \emph{Not applicable} was added and described as ``The paper does not study or use any symmetry, invariance or equivariance, or the summary gives no basis to answer this question.''; with examples ``General background reference (algebra textbook, optimization theory); empty or uninformative summary; no symmetry-related content.''.
 
 \pagebreak
 
