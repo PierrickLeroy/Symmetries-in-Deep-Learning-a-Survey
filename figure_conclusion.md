@@ -19,7 +19,8 @@ The figure is a progression for steps 1 to 4, step 5 is a feedback/warning so it
 Loci of \Cref{fig:sym-loci} are leaves of a decision tree in step 2, these leaves should be colored in accordance with \Cref{fig:sym-loci}.
 Colors of \Cref{fig:sym-loci} (Okabe–Ito): Problem `#0072b2`, Model `#009e73`, Optimization `#e69f00`, Parameter `#d55e00`, Data `#cc79a7`, Framework `#777777`.
 It would be nice to add segments (sections, subsections, subsubsections, paragraphs) as tags (post-its way) freely where they apply.
-There will be some text in the figure, but it should be reduced to the minimum.
+There will be some text in the figure, but it should be as simple as possible, do not overload the figure with text.
+Match the style of other figures.
 
 ## 1. Entry points
 
@@ -75,6 +76,7 @@ graph TD
     n["Can you write $(G,\rho_A,\rho_B)$?"] -- no, unknown --> n1(["Discovery"])
     n -- no, complex/latent $G$ --> n2(["Hard case, possibly back to Locate"])
     n -- "Not exactly" --> n3["What is off?"]
+    n -- yes --> m
     m(["Describe properties: finite / discrete-infinite / continuous; compact; connected; invariant ($\rho_B$ trivial) / equivariant ($A=B$, $\rho_A=\rho_B$) / equivariant ($\rho_A\neq\rho_B$) / linear representations (matrix form for $\rho_A,\rho_B$); static / dynamic"])
     n3 -- "domain restriction" --> n31(["conditions on $\theta$ or $x$"])
     n3 -- "not a group" --> n32(["subset of $G$/weaker structure"])
@@ -126,14 +128,10 @@ Cues that something is wrong, mechanisms to find that something is not right, gu
 
 # Unused
 
-Act: is it a bug, a feature, a prior, an object of study or something to discover?
-
-If it was not possible to write $(G, \rho_X, \rho_Y)$, is it because the symmetry is unknown and discovery is the objective?
-
 Use the symmetry as a prior (\Cref{fig:five-routes}):
 - Should I hard-code it / Do I have competencies and time to develop an equivariant model (symmetry bottleneck, \Cref{par:sym-bottleneck})? Is it worth it (\Cref{sec:edl-tradeoffs}: how well the data satisfy it, its learnability, compute)? If yes, should I try something in-between to still allow it to break (\Cref{sec:approx-relaxed,sec:subgroups})?
 - If not, augment for it (\Cref{sec:data-augmentation}), regularize toward it with an unconstrained model (\Cref{sec:approx-soft}), or let it be learned (then check, \Cref{sec:sym-quantification})
 
-Is $(G, \rho_X, \rho_Y)$ known? If only a candidate is known, its validity can be measured (\Cref{sec:sym-quantification}).
+Validity of $G$ can be measured (\Cref{sec:sym-quantification}).
 
 weaker structure (\Cref{tab:extent-restriction})
