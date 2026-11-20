@@ -226,8 +226,16 @@ def badge(doc, L, cx, cy, n, filled=True, r=2.4):
     gid = doc.uid(f"badge-{n}")
     fill, col = (NAVY, "#ffffff") if filled else ("#ffffff", NAVY)
     doc.frames[gid] = (cx - r, cy - r, 2 * r, 2 * r)
-    b = bx(str(n), 2.7, "bf")
-    t = fr.math_svg(doc, f"{gid}-n", b, cx, cy + 0.34 * 2.7 + 0.05, "middle", col, gid)
+    if n == 5:  # Diagnose is not a step of the progression: a star instead of a number
+        import math
+        ro, ri, yc = 1.55, 0.65, cy + 0.12
+        pts = [(cx + (ro if k % 2 == 0 else ri) * math.sin(k * math.pi / 5),
+                yc - (ro if k % 2 == 0 else ri) * math.cos(k * math.pi / 5)) for k in range(10)]
+        t = (f'<path id="{gid}-star" d="M {" L ".join(f"{f2(x)},{f2(y)}" for x, y in pts)} Z" '
+             f'style="fill:{col};stroke:{col};stroke-width:0.15;stroke-linejoin:round"/>')
+    else:
+        b = bx(str(n), 2.7, "bf")
+        t = fr.math_svg(doc, f"{gid}-n", b, cx, cy + 0.34 * 2.7 + 0.05, "middle", col, gid)
     L.append(f'<g id="{gid}"><circle cx="{f2(cx)}" cy="{f2(cy)}" r="{f2(r)}" '
              f'style="fill:{fill};stroke:{NAVY};stroke-width:0.4"/>{t}</g>')
 
@@ -407,13 +415,13 @@ def characterize_content(doc, L, yb, X0, X1, back_to_y):
     yd, yh = y0 + h / 2 - hh / 2, y0 + h / 2 - hh / 2 + hh + 3.0
     node(doc, L, "out-discovery", xd + wdh / 2, yd, wdh, hh, dl)
     tags(doc, L, ["sec:sym-disco"], xd + wdh - 1.0, yd)
-    node(doc, L, "out-hard", xd + wdh / 2, yh, wdh, hh, hl, dash="1.2,0.6")
+    node(doc, L, "out-hard", xd + wdh / 2, yh, wdh, hh, hl)
     ymid = y0 + h / 2
     line(doc, L, [(xr + wr, ymid), (xd, ymid)])
     line(doc, L, [(xs, ymid), (xs, yh + hh / 2), (xd, yh + hh / 2)])
     put(doc, L, "edge-label", "no", (xr + wr + xs) / 2, ymid - 1.0, FS_ANN, "it", "middle", EDGE)
     line(doc, L, [(xd + wdh, yh + hh / 2), (xb, yh + hh / 2), (xb, back_to_y)], color=NAVY, dash="1.2,0.7")
-    put(doc, L, "back-label", "back to Locate", (xd + wdh + xb) / 2, yh + hh / 2 - 1.1, FS_ANN, "it", "middle",
+    put(doc, L, "back-label", "revise", (xd + wdh + xb) / 2, yh + hh / 2 - 1.1, FS_ANN, "it", "middle",
         NAVY)
 
     # properties (output of the step)
@@ -432,8 +440,8 @@ def characterize_content(doc, L, yb, X0, X1, back_to_y):
     # edges root -> yes / not exactly
     fan(doc, L, c_root, y0 + h, y0 + h + 2.5, [(yes_x, yp, "yes", "R", y0 + h + 5.2),
                                                 (c_wio, yw, "not exactly", "L", None)])
-    for k in ks:
-        line(doc, L, [(k, yk + hk), (k, yp)])
+    for i, k in enumerate(ks):  # 'not a group' leaves the group framework: dashed
+        line(doc, L, [(k, yk + hk), (k, yp)], dash="1.2,0.7" if OFF[i][0] == "not a group" else None)
 
     # the characterization sets the available tools
     by = yp + 3.9 + len(PROPS) * 3.35
@@ -518,8 +526,8 @@ def side_header(doc, L, n, yb, x_badge=5.0, x_text=9.0, extra=None):
         put(doc, L, f"step-{n}-repeat", "repeat per locus", x_text + 3.4, y + 2.6, FS_SMALL, "it", "start", NAVY)
         tags(doc, L, ["fig:sym-loci"], x_text + tw(ref("fig:sym-loci"), FS_TAG) + TAG_PAD, y + 6.4, angle=0)
     if n == 5:
-        put(doc, L, f"step-{n}-hint", "feedback, outside", x_text, y + 1.6, FS_SMALL, "it", "start", GREY)
-        put(doc, L, f"step-{n}-hint2", "the progression", x_text, y + 4.4, FS_SMALL, "it", "start", GREY)
+        put(doc, L, f"step-{n}-hint", "feedback,", x_text, y + 1.6, FS_SMALL, "it", "start", GREY)
+        put(doc, L, f"step-{n}-hint2", "warning cues", x_text, y + 4.4, FS_SMALL, "it", "start", GREY)
 
 
 def top_header(doc, L, n, yb, x0):
@@ -544,8 +552,8 @@ CH = 180.5
 GAP = 4.0
 
 
-def band(doc, L, gid, yb, h, dash=None):
-    rect(doc, L, gid, BAND_X0, yb, BAND_X1 - BAND_X0, h, BAND_STROKE if not dash else NAVY, BAND_FILL,
+def band(doc, L, gid, yb, h, dash=None, x1=BAND_X1):
+    rect(doc, L, gid, BAND_X0, yb, x1 - BAND_X0, h, BAND_STROKE if not dash else NAVY, BAND_FILL,
          0.3 if not dash else 0.35, 2.0, dash, frame=False)
 
 
@@ -555,50 +563,45 @@ def variant_A():
     Lc = doc.layer("content", "Content")
     Lh = doc.layer("headers", "Step headers")
     La = doc.layer("flow", "Flow arrows")
-    X0, X1 = 31.0, 174.5
+    X0, X1 = 31.0, 181.0
+    bx1 = W - 1.0          # no return channel: the bands use the full width
     y = 1.0
     tops = {}
     # 1 Entry
     tops[1] = y
-    h1, target = entry_content(doc, Lc, y, X0, X1)
-    band(doc, Lb, "band-entry", y, h1)
+    h1, _ = entry_content(doc, Lc, y, X0, X1, x_free=0.0)
+    band(doc, Lb, "band-entry", y, x1=bx1, h=h1)
     side_header(doc, Lh, 1, y)
     y += h1 + GAP
     # 2 Locate
     tops[2] = y
     h2 = locate_content(doc, Lc, y, X0, X1)
     h2 = max(h2, 36.0)
-    band(doc, Lb, "band-locate", y, h2)
+    band(doc, Lb, "band-locate", y, x1=bx1, h=h2)
     side_header(doc, Lh, 2, y, extra="repeat")
     y_loc_bottom = y + h2
     y += h2 + GAP
     # 3 Characterize
     tops[3] = y
     h3 = characterize_content(doc, Lc, y, X0, X1, y_loc_bottom)
-    band(doc, Lb, "band-characterize", y, h3)
+    band(doc, Lb, "band-characterize", y, x1=bx1, h=h3)
     side_header(doc, Lh, 3, y)
     y += h3 + GAP
     # 4 Act
     tops[4] = y
     h4 = act_content(doc, Lc, y, X0, X1)
-    band(doc, Lb, "band-act", y, h4)
+    band(doc, Lb, "band-act", y, x1=bx1, h=h4)
     side_header(doc, Lh, 4, y)
     y += h4 + GAP + 1.0
     # 5 Diagnose
     tops[5] = y
     h5 = diagnose_cards(doc, Lc, y, X0, X1)
-    band(doc, Lb, "band-diagnose", y, h5, dash="1.4,0.8")
+    band(doc, Lb, "band-diagnose", y, h5, dash="1.4,0.8", x1=bx1)
     side_header(doc, Lh, 5, y)
     H = y + h5 + 1.0
-    # spine 1 -> 4 (solid), 4 -> 5 (dashed)
-    for n in (1, 2, 3, 4):
-        line(doc, La, [(5.0, tops[n] + 7.6), (5.0, tops[n + 1] + 2.4)], color=NAVY, sw=0.45,
-             dash=None if n < 4 else "1.2,0.7", register=False)
-    # return arrow: Diagnose -> right margin -> Entry (to the 'Suspected' chip)
-    yd = y + h5 / 2
-    line(doc, La, [(BAND_X1, yd), (CH, yd), (CH, target[1]), (target[0] + 0.4, target[1])], color=NAVY, sw=0.45,
-         r=2.0)
-    put(doc, La, "revise", "revise", (target[0] + BAND_X1) / 2, target[1] - 1.2, FS_ANN, "it", "middle", NAVY)
+    # spine 1 -> 4; Diagnose (star) stands apart, outside the progression
+    for n in (1, 2, 3):
+        line(doc, La, [(5.0, tops[n] + 7.6), (5.0, tops[n + 1] + 2.4)], color=NAVY, sw=0.45, register=False)
     return doc, H, "Reasoning with a symmetry: a practical guide (variant A)"
 
 
@@ -620,7 +623,7 @@ def variant_B():
               f'H {f2(BAND_X0 + tip)} L {f2(BAND_X0)},{f2(yD + hD / 2)} Z" '
               f'style="fill:{BAND_FILL};stroke:{NAVY};stroke-width:0.35;stroke-dasharray:1.4,0.8;stroke-linejoin:round"/>')
     xe = top_header(doc, Lh, 5, yD, X0 + tip - 1.0)
-    put(doc, Lh, "step-5-hint", "feedback, outside the progression: when a cue fires, go back to Entry", xe + 0.5,
+    put(doc, Lh, "step-5-hint", "feedback, warning cues", xe + 0.5,
         yD + 5.3, FS_SMALL, "it", "start", GREY)
     y += hD + GAP + 1.0
     tops = {}
