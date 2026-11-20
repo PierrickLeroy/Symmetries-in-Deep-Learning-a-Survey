@@ -39,7 +39,7 @@ $$f(\rho_X(g)\,x) = \rho_Y(g)\,f(x).$$
 
 | Object | Notation | Note |
 |---|---|---|
-| Space acted on by $G$ (input) | $\mathcal{X}$ | |
+| Input / data space | $\mathcal{X}$ | |
 | Domain of signals (GDL) | $\Omega$, points $u\in\Omega$ | The input space is then the space of signals $\mathcal{X}=\mathcal{X}(\Omega,\mathbb{R}^C)$, $x:\Omega\to\mathbb{R}^C$. $G$ acts on $\Omega$ by $u\mapsto g\cdot u$ and on $\mathcal{X}$ by $(g\cdot x)(u)=x(g^{-1}\cdot u)$. |
 | Output / target space | $\mathcal{Y}$ | |
 | Latent / embedding space | $\mathcal{Z}$ | |
@@ -70,8 +70,7 @@ $\rho_{\mathcal{X}}$, which is heavy and non-standard.
 | $\ell$ | Per-example loss, $\ell(x,\theta)$ |
 | $L$ | Loss criterion comparing a prediction to a target, $L(\hat y, y)$ |
 | $\mathcal{L}$ | Single argument loss $\Theta \to \mathbb R$ or $\mathcal F \to \mathbb R$ or full training objective (SimCLR, Barlow Twins, DINO, …) |
-| $\mathcal{L}_R$ | Regularizer (penalty term), $\mathcal{L}(\theta)=\mathcal{L}_F(f_\theta)+\mathcal{L}_R(\theta)$ |
-| $\mathcal{R}$ | Reynolds operator (orbit average), maps $f$ to an equivariant function |
+| $\mathcal{R}$ | Regularizer (penalty term added to $\mathcal{L}$) |
 | $\hat R$ | Empirical risk |
 | $R$ | Population risk |
 

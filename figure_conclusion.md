@@ -11,6 +11,7 @@ A progression in steps:
 Taxonomy axes (\Cref{tab:taxonomy}) per step: Locate = Object; Characterize = Exactness, A priori knowledge, State; Act = Purpose.
 Explicitness is discarded.
 Other questions (group properties, form of the action, cost of equivariance) go beyond the taxonomy.
+The figure reads as the taxonomy turned into a procedure, with some extra.
 
 **Figure**
 The figure progresses from left to right.
@@ -18,28 +19,58 @@ Step 1 is the entry, it could be three icons and should not take much space.
 Steps 2-4 are the three main phases, organized as sequential panels.
 Step 5 is a feedback/warning, it could be an arrow pointing backward.
 Loci should be indicated as leaves in 2., and segments (sections, subsections, subsubsections, paragraphs) as clickable tags where they apply.
+Reuse the row colors from the loci figure (blue, green, yellow, orange, pink, grey) for the Locate leaves, and again on the Act leaves.
 
 ## 1. Entry points
 
-- A symmetry is mentioned: stated or given, e.g. by the problem or a paper
-- A symmetry is hypothesized: a candidate $G$ is assumed but its validity is not checked
-- A symmetry is suspected: there are cues of a symmetry but $G$ is not identified
+Initially, one might have more or less information on the symmetry.
+A symmetry can be:
+- *Given* by the problem or an article (known)
+- *Assumed* if it is a candidate whose validity is unchecked
+- *Suspected* (unknown, at least partially)
 
 ## 2. Locate
-Goal: describe how to pick the box (locus) in \Cref{fig:sym-loci}, i.e. the Object axis.
+**Goal** describe how to pick the box (locus) in \Cref{fig:sym-loci}, i.e. the Object axis.
 It should consist of a small decision tree to identify the locus and answer the question: of which object (usually a map $f$) is the symmetry a property?
 
-1. A natural first step is to ask: can it be conceived without any reference to a model/architecture (problem, data)? If not, is it about a single model and its training (model, optimization, parameter) or about the wider training pipeline as a whole (framework)?
-    1. To separate (problem, data): data is about a single fixed point $x$, $g\cdot x=x$, a symmetry in the strong sense of \Cref{sec:what-is-sym}. Problem involves either a task relating two spaces through the ground truth $f^*:\mathcal{X}\to \mathcal{Y}$ or multiple points through the data distribution $p$.
-    2. To separate (model, optimization, parameter): parameter involves a fixed parameter $\theta$; the symmetric state $g\cdot\theta=\theta$ is the strong sense of \Cref{sec:what-is-sym} again, but for the parameter vector. Model is about the architecture, valid for every $\theta$, and its two loci are distinguished by whether $G$ acts on the task (hypothesis class $\mathcal{H}$, $G$ on $\mathcal{X},\mathcal{Y}$) or on the representation of the model (implementation map $\varphi$, $G$ on $\Theta$). Optimization involves the learning rule: the objective (loss $\mathcal{L}$) or the optimizer (update rule $U$, iterated over timesteps).
-    3. The framework locus is diverse.
+**Output** The map $f:A \to B$ where there is a symmetry and its domains and codomain.
+
+```mermaid
+graph TD
+    n["Model?"] -- no model (data, problem) --> n1["Single $x$?"]
+    n["Model?"] -- model (model, optimization, parameter) --> n2["What is fixed?"]
+    n["Model?"] -- beyond model --> n3(["Framework"])
+    n1 -- no --> n12["Functional or statistical?"]
+    n12 -- functional --> n121(["$f^*$"])
+    n12 -- statistical --> n122(["$p$"])
+    n1 -- yes --> n11(["data"])
+    n2 -- architecture --> n21["$g$ acts on?"]
+    n2 -- learning rule --> n22["does there need to be an update to see the symmetry?"]
+    n22 -- yes () --> n221([$U$])
+    n22 -- no (loss) --> n222([$L$])
+    n2 -- parameter --> n23["$g$ acts on?"]
+    n23 -- $x$ --> n231(["$f_\theta$"])
+    n23 -- $\theta$ --> n232(["SS"])
+    n21 -- $x$ --> n211(["$\mathcal H$"])
+    n21 -- $\theta$ --> n212(["$\varphi$"])
+```
+Comments:
+- A natural first step is to ask if the symmetry needs to be conceived relative to a model.
+- To separate (problem, data): data is about a single fixed point $x$, $g\cdot x=x$, a symmetry about $x$ as an object (in the strong sense of \Cref{sec:what-is-sym}). Problem involves either a task relating two spaces through the ground truth $f^*:\mathcal{X}\to \mathcal{Y}$ or multiple points through the data distribution $p$.
+- To separate (model, optimization, parameter), parameter involves a fixed parameter $\theta$, then the symmetric state $g\cdot\theta=\theta$ is a symmetry of the parameter vector while the implementated function relate input and output spaces. Model is about the architecture, valid for every $\theta$, and its two loci are distinguished by whether $G$ acts on the task (hypothesis class $\mathcal{H}$, $G$ on $\mathcal{X},\mathcal{Y}$) or on the representation of the model (implementation map $\varphi$, $G$ on $\Theta$). Optimization involves the learning rule: the objective (loss $\mathcal{L}$) or the optimizer (update rule $U$, iterated over timesteps).
+- The framework locus is diverse; it is characterized by being not a symmetry of $x$ nor $\theta$.
+$3$ examples are given in the survey but they are not all.
+
+
 
 Now, it should be possible to attempt writing the domain and codomain of $f$.
 
 There might be multiple symmetries and loci. If this is the case, repeat these steps. The arrows of \Cref{fig:sym-loci} can suggest other related loci.
 
 ## 3. Characterize
-Goal: list all important information about the symmetry. It could organize the questions in multiple mini decision-trees, in the best logical order.
+**Goal** list all important information about the symmetry. It could organize the questions in multiple mini decision-trees, in the best logical order.
+
+**Output** $(G,\rho_A,\rho_B)$ plus its Exactness/Known/State tags and properties
 
 Is it possible to write the triplet $(G, \rho_X, \rho_Y)$?
 Is there an algebraic form for the action of $g$?
