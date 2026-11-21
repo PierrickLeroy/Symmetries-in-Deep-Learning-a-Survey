@@ -1220,7 +1220,7 @@ We present the definitions following a natural inclusion order.
 Let $G$ be a group of symmetries of $\varphi$ or $\mathcal{L}$ acting faithfully on $\Theta$.
 A parameter $\theta$ is in a \emph{symmetric state} \citep{simsek2021,ziyin2025} if its stabilizer (\Cref{def:orbit-stabilizer}) is nontrivial, $G_\theta=\{g\in G : g\cdot\theta=\theta\}\neq\{e\}$.
 Since $G_{g\cdot\theta}=gG_\theta g^{-1}$, being symmetric is a property of the orbit, and a larger stabilizer means a smaller orbit $G\cdot\theta\cong G/G_\theta$ (\Cref{thm:orbit-stabilizer}), as depicted in \Cref{fig:param-space-symmetries} b: the orbit of the more symmetric $\tilde \theta$ is smaller than the orbit of $\theta$.
-For example, with the group of permutations, $\theta$ is unchanged when permuting neurons $i$ and $j$ exactly when the two neurons carry identical incoming and outgoing weights.
+For example, with the group of permutations, $\theta$ is unchanged when permuting neurons $i$ and $j$ exactly when the two neurons carry identical incoming and outgoing parameters.
 
 \paragraph{(PS) Parameter-Space Symmetries}\label{sec:PS_param-space-sym}
 % a symmetric state for conjugation appears in [ravanbakhsh2017p3icml] see thread at LLM_saved-outputs/responses-saved/weight-tying_sym-state.md
@@ -1426,8 +1426,8 @@ For general activations, possible width-changing transformations are \emph{dupli
 Homogeneous activations additionally allow \emph{pre-activation splitting}.
 These are architectural symmetries, forming a groupoid (\Cref{sec:extent-restriction}) rather than a group: expansion is always possible but merging is only defined on duplicated configurations.
 Non-minimality can also induce instance symmetries, in particular at symmetric states.
-When two neurons have identical incoming weights, as for permutation symmetric states, a $d_{l+1}$-dimensional additive group acts freely ($d_{l+1}$ the width of the next layer): the paired outgoing weights can be varied arbitrarily as long as their sums stay constant \citep{brea2019}.
-At a rescale-symmetric state ($\theta_v=0$ for a neuron $v$), additive groups of dimensions $d_{l+1}$ and $d_{l-1}$ separately act freely.
+When two neurons have identical incoming parameters, as for permutation symmetric states, a $d_{l+1}$-dimensional additive group acts freely ($d_{l+1}$ the width of the next layer): the paired outgoing weights can be varied arbitrarily as long as their sums stay constant \citep{brea2019}.
+At a rescale-symmetric state ($\theta_v=0$ for a neuron $v$), additive groups of dimensions $d_{l+1}$ (outgoing weights) and $d_{l-1}+1$ (incoming parameters) separately act freely.
 From the second hidden layer of a ReLU MLP on, a unit $v$ whose incoming parameters $\theta^+_v$ are all non-positive causes non-minimality since it does not contribute to the implemented function.
 The scaling $D\theta^+_v$, with $D$ a diagonal matrix with strictly positive diagonal, constitutes a symmetry.
 
