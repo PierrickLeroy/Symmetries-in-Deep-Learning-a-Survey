@@ -265,10 +265,7 @@ The survey is not mathematically self-contained.
 Intuitively, a \emph{symmetry} of an object is an invertible transformation that leaves it unchanged as a whole: it is a statement about identity.
 \emph{Invariance} is a broader, functional term used to qualify a property of an object that does not change under a transformation (the property is called an \emph{invariant}).
 
-The two notions are related as follows: a property is invariant under an invertible transformation if and only if the transformation is a symmetry of that property.
-The symmetries of an object are the transformations under which the object itself is invariant, not only some of its properties.
-The transformations preserving a given list of properties of an object include its symmetries, and adding properties can only shrink this set.
-It reduces to the object's symmetries when the list pins the object down exactly, position included.
+The two notions are related as follows: a property is invariant under an invertible transformation if and only if the transformation is a symmetry of that property. The symmetries of an object are the transformations under which the object itself is invariant, not only some of its properties. The transformations preserving a given list of properties of an object include its symmetries, and adding properties can only shrink this set. It reduces to the object's symmetries when the list pins the object down exactly, position included.
 
 For example, the area of a square is invariant under all isometries of the plane, yet only those superimposing the square onto itself ($\pi/2$ rotations and reflections) are symmetries of the object ``square''.
 
@@ -1406,7 +1403,7 @@ In deep linear networks $f_\theta(x)=W_L\cdots W_2W_1x$ \citep{saxe2014piclr2}, 
 \begin{equation*}
     (W_L,\dots,W_{l+1}M^{-1},\,MW_l,\dots,W_1), \qquad M\in GL(d_l,\mathbb{R}).
 \end{equation*}
-Transformers contain the same structure inside each attention layer: the products $W_K^{\top}W_Q$ and $W_OW_V$ (with $W_O$ the output projection) are invariant under a $GL(d_k,\mathbb{R})$ action on the factors \citep{kobayashi2024anips}.
+Transformers contain the same structure inside each attention layer: the products $W_K^{\top}W_Q$ and $W_OW_V$ (with $W_O$ the output projection) are invariant under actions of $GL(d_k,\mathbb{R})$ and $GL(d_v,\mathbb{R})$ on their respective factors \citep{kobayashi2024anips}.
 Low-rank adapters \citep[LoRA,][]{hu2021} inherit it as well: the update $\Delta W=AB^T$ with $A\in \mathbb R^{m\times r}, B\in \mathbb R^{n\times r}$ is invariant under $(A, B)\mapsto(AM, BM^{-T})$ for $M\in GL(r,\mathbb{R})$ \citep{yen2025iclr}.
 This symmetry, or its orthogonal restriction, is also called \emph{double rotation}.
 
@@ -1573,7 +1570,7 @@ Crucially, the functional dimension is inhomogeneous across parameter space, dro
 \citet{henry2025} study \emph{lightning self-attention}, $X\mapsto VXX^{\top}K^{\top}QX$, a normalization-free variant of self-attention that is polynomial in its weights.
 For a single layer, the generic fiber is exactly the orbit of two symmetries: the group $GL(d_k,\mathbb{R})$ acting on the factors of the attention matrix $A=K^{\top}Q$ where $Q, K\in \mathbb R^{d_k\times d}$ (typically $d_k<d$), and the one-parameter rescaling $(A,V)\mapsto(\lambda A,\lambda^{-1}V)$, $\lambda\neq0$ (deep networks carry an additional between-layer $GL$ symmetry).
 The dimension of the \emph{neuromanifold} $\mathcal{M}=\varphi(\Theta)$, the set of realizable functions, is then computed from the dimension of the generic fiber.
-With the normalization restored, single-layer fibers are generically singletons. The authors conjecture, with numerical support, generic identifiability in the deep case.
+With the normalization restored, the rescaling symmetry disappears and the authors conjecture, with numerical support, generic identifiability up to the $GL(d_k,\mathbb{R})$ orbits of the key-query pairs.
 For networks with monomial activation $z\mapsto z^{r}$, \citet{usevich2025} study \emph{Finite Identifiability} (FI) at generic $\theta$: whether the fiber $\{\eta\in\Theta : f_\eta=f_\theta\}$ consists of finitely many orbits of permutations and rescalings.
 They prove a local-to-global theorem: if every shallow sub-architecture $\big(\min\{d_0,\dots,d_{l-1}\},d_l,d_{l+1}\big)$ is FI, so is the full network.
 Thus, pyramidal architectures ($d_0\ge\dots\ge d_{L-1}\ge2$) and networks whose degree grows linearly with the width ($r_l\ge 2d_l-1$) are FI.
@@ -1666,13 +1663,13 @@ However, on networks whose function decouples parameters from data as $f_\theta(
 \paragraph{Intrinsic Dynamics of the Lifted Parameter}
 Finally, conservation laws govern when the symmetry can be factored out of the dynamics altogether.
 \citet{marcotte2026} consider losses that factor through a symmetry-invariant lifting $\phi$, i.e.\ $\mathcal{L}=f\circ\phi$ (e.g.\ the end-to-end matrix $\phi(\theta)=W_L\cdots W_1$ for linear networks, the path-lifting for ReLU networks), and study the dynamics of the lifted parameter $z(t):=\phi(\theta(t))$.
-\emph{Intrinsic recoverability} asks that $\theta(t)$ be recoverable from the lift and the conservation laws $h:\mathbb{R}^D\to\mathbb{R}^N$, i.e.\ that there exists $\Gamma$ with $\Gamma(\phi(\theta),h(\theta))=\theta$.
-It is equivalent to
+\emph{Intrinsic recoverability} asks that $\theta(t)$ be recoverable from the lift and the conservation laws $h:\mathbb{R}^D\to\mathbb{R}^N$, i.e.\ that there exists a differentiable $\Gamma$ with $\Gamma(\phi(\theta'),h(\theta'))=\theta'$ for all $\theta'$ in a neighborhood of $\theta$.
+This local property is equivalent to
 \begin{equation*}
     \ker\partial\phi(\theta)\cap\ker\partial h(\theta)=\{0\},
 \end{equation*}
 meaning that any infinitesimal displacement of $\theta$ must change either the lifted variable or a conserved quantity.
-As a consequence, linear networks with the product lifting are not intrinsically recoverable in general (except for some initializations), but ReLU networks are.
+As a consequence, linear networks with the product lifting are not intrinsically recoverable, but ReLU networks are for generic initializations.
 
 \subsubsection{Learning Dynamics}\label{sec:learning-dynamics}
 % yang2025: permutation equivariant optimizers preserve neuron parameter's manifold topology for small enough LR
@@ -1689,8 +1686,8 @@ They also observe that at any critical point $x$, the tangent space of the orbit
 symmetry directions carry no curvature.
 For neural networks, \citet{brea2019} encounter \emph{permutation points}, a type of permutation-symmetric state.
 They are critical points, typically saddles of index one.
-Their argument applies to permutation-symmetric states in general: each of the $d_{l+1}$ pairs of outgoing weights can be changed as long as its sum remains constant, yielding $d_{l+1}$ flat Hessian directions.
-These flat directions form a $d_{l+1}$-dimensional affine plateau of critical points from which, remarkably, all $d_l!$ reparametrizations of $\theta$ due to layer-$l$ neuron permutations can be reached along equal-loss paths.
+Their argument applies to permutation-symmetric states in general: each of the $d_{l+1}$ pairs of outgoing weights can be changed while leaving $f_\theta$ unchanged, as long as its sum remains constant.
+These directions span a $d_{l+1}$-dimensional plateau of equal loss remarkably containing all $d_l!$ reparametrizations of $\theta$ due to layer-$l$ neuron permutations.
 Conversely, regularization can force symmetric structure on critical points.
 For the linear autoencoder with encoder $W_1\in\mathbb{R}^{k\times d}$, decoder $W_2\in\mathbb{R}^{d\times k}$ and loss $\mathcal{L}(W_1,W_2)=\lVert X-W_2W_1X\rVert_F^2$, \citet{kunin2019p3icml} show that every critical point of the $L_2$-regularized loss satisfies $W_1=W_2^{\top}$. On whitened data ($XX^\top\propto I$), the swap $(W_1,W_2)\mapsto(W_2^{\top},W_1^{\top})$ is a loss symmetry, so the configuration $W_1=W_2^{\top}$ is a symmetric state.
 
@@ -1869,8 +1866,8 @@ Rather than diluting the permutation asymptotically, other works aim at resolvin
 \end{equation*}
 between neurons $x$ and $y$ of the two networks.
 After alignment, the path height is reduced.
-\citet{brea2019} sample paths between a minimum and a permuted version under the constraint of passing through a permutation-symmetric state, which is an index-$1$ saddle.
-They notice that, at this saddle, an extended loss plateau make all possible symmetric states reachable, and observe that one redundant pair of neurons suffices to make the permuted minima connected \citep{brea2019,simsek2021}.
+\citet{brea2019} sample paths between a minimum and a permuted version under the constraint of passing through a permutation-symmetric state, a critical point that is typically an index-$1$ saddle.
+From this saddle, an equal-loss plateau gives access to every permuted copy of the configuration, and therefore one redundant neuron per layer suffices to connect the permuted minima \citep{brea2019,simsek2021}.
 \citet{zhao2025a} study the minima of a full-rank linear network, $\mathcal{L}^{-1}(0)$ for $\mathcal{L}(\theta)=\lVert Y-W_L\cdots W_1X\rVert_F^2$ with $X,Y\in GL(h,\mathbb{R})$ and $W_l\in\mathbb{R}^{h\times h}$.
 The internal $GL(h,\mathbb{R})^{L-1}$ symmetry acts transitively on that set, and since continuous maps preserve connectedness, the topology of the group transfers to the topology of the minima: $\mathcal{L}^{-1}(0)\cong GL(h,\mathbb{R})^{L-1}$, which thus contains exactly $2^{L-1}$ components, one per sign pattern of the determinants.
 This sign pattern can be chosen by permuting neurons, so MC holds up to permutation.
@@ -2733,7 +2730,7 @@ Since non-equivariant models can learn symmetries, discover-then-enforce strateg
 Whether fibers equal orbits, i.e.\ the reverse inclusion $\varphi^{-1}(\{\varphi(\theta)\})\subseteq G\cdot\theta$ (\Cref{sec:parameter-identifiability}), matters for the zero-loss manifold and weight-space learning.
 Results exist in special cases \citep{phuong2019,bona-pellissier2023,marchetti2025a,gegenfurtner2026,usevich2025}, so the current goal is to pin down the exact conditions of identifiability.
 \citet{shahverdi2026} prove that the generic fiber is finite for generic polynomial activations of large degree, but whether it contains only neuron permutations is open, and \citet{usevich2025} conjecture that finite identifiability implies global identifiability for homogeneous polynomial networks.
-Two other directions are (1) complete architectures, e.g.\ a full transformer with normalization, softmax and MLPs \citep{tran2025iclr,zhang2025p4icml}, where \citet{henry2025} conjecture that normalization makes deep self-attention generically identifiable, and (2) going beyond generic $\theta$ (model locus) to the instance level (parameter locus) \citep{grigsby2023p4icml,grillo2026}, for instance the volume of parameters identifiable up to permutation and rescaling \citep{grillo2026}.
+Two other directions are (1) complete architectures, e.g.\ a full transformer with normalization, softmax and MLPs \citep{tran2025iclr,zhang2025p4icml}, where \citet{henry2025} conjecture that normalization makes deep self-attention generically identifiable up to its $GL$ symmetries, and (2) going beyond generic $\theta$ (model locus) to the instance level (parameter locus) \citep{grigsby2023p4icml,grillo2026}, for instance the volume of parameters identifiable up to permutation and rescaling \citep{grillo2026}.
 
 \vspace{5mm}
 
